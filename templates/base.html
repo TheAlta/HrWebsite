@@ -1,0 +1,21 @@
+{% load static wagtailcore_tags %}<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% firstof page.seo_title page.title %} | {% site_name %}{% endblock %}</title>
+  {% block meta %}{% endblock %}
+  <link rel="preload" href="{% static 'fonts/vazirmatn/Vazirmatn-Variable.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <script src="{% static 'vendor/htmx-2.0.11.min.js' %}" defer></script>
+  <script src="{% static 'vendor/alpine-3.17.5.min.js' %}" defer></script>
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="min-h-screen font-sans {% block body_class %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:start-4 focus:top-4 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:shadow">رفتن به محتوای اصلی</a>
+  {% block header %}{% endblock %}
+  <main id="main">{% block content %}{% endblock %}</main>
+  {% block footer %}{% endblock %}
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

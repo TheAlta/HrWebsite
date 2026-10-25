@@ -1,0 +1,13 @@
+{
+  "name": "hrweb-frontend",
+  "private": true,
+  "description": "Build-time only: compiles Tailwind CSS. Not used at runtime.",
+  "scripts": {
+    "build:css": "tailwindcss -i frontend/main.css -o static/css/main.css --minify",
+    "watch:css": "tailwindcss -i frontend/main.css -o static/css/main.css --watch=always"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "4.3.3",
+    "tailwindcss": "4.3.3"
+  }
+}
