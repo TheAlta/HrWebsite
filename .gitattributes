@@ -1,0 +1,9 @@
+# Force LF so shell scripts and Dockerfiles work inside Linux containers
+* text=auto eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.png binary
+*.jpg binary
+*.webp binary
+*.woff2 binary
+*.pdf binary
