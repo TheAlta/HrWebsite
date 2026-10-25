@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}{% site_name %}{% endblock %}
+
+{% block content %}
+{# Sprint 0 placeholder: proves RTL layout, font, Tailwind, and core filters work. Replaced in sprint 1. #}
+<section class="mx-auto flex min-h-screen max-w-2xl flex-col justify-center gap-6 px-4 py-16">
+  <p class="text-sm font-medium text-teal-700">اسپرینت ۰ · زیرساخت</p>
+  <h1 class="text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl">{{ page.title }}</h1>
+  <p class="text-lg leading-8 text-slate-600">پایه پروژه آماده است: راست‌چین، فونت وزیرمتن، Tailwind، HTMX و Alpine.</p>
+  <dl class="grid grid-cols-1 gap-3 rounded-xl border border-slate-200 p-5 text-sm sm:grid-cols-2">
+    <div><dt class="text-slate-500">تاریخ امروز</dt><dd class="font-semibold">{% now_jalali %}</dd></div>
+    <div><dt class="text-slate-500">نمونه مبلغ (۱۲٬۰۰۰٬۰۰۰ ریال)</dt><dd class="font-semibold">{{ 12000000|toman }}</dd></div>
+  </dl>
+  <div x-data="{ open: false }">
+    <button type="button" @click="open = !open" class="rounded-lg bg-teal-700 px-5 py-2.5 font-medium text-white hover:bg-teal-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700">تست Alpine</button>
+    <p x-show="open" x-cloak class="mt-3 text-slate-600">Alpine کار می‌کند.</p>
+  </div>
+</section>
+{% endblock %}

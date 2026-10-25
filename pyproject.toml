@@ -1,0 +1,51 @@
+[project]
+name = "hrweb"
+version = "0.1.0"
+description = "HR consulting website — Django + Wagtail"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "django>=5.2,<5.3",
+  "wagtail>=8.0,<8.1",
+  "psycopg[binary]>=3.3",
+  "django-environ>=0.14",
+  "django-q2>=1.11",
+  "django-htmx>=1.29",
+  "jdatetime>=6.1",
+  "whitenoise>=6.12",
+  "gunicorn>=26",
+]
+
+[dependency-groups]
+dev = [
+  "ruff>=0.17",
+  "pytest>=9.1",
+  "pytest-django>=4.14",
+  "pytest-cov>=7.1",
+  "factory-boy>=3.3",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+extend-exclude = ["**/migrations/*"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "UP", "DJ", "SIM", "RUF"]
+# RUF001-003: Persian text legitimately contains characters ruff flags as "ambiguous"
+ignore = ["RUF001", "RUF002", "RUF003", "RUF012"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["apps", "config"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings.test"
+python_files = ["tests.py", "test_*.py"]
+addopts = "--reuse-db -q"
+filterwarnings = [
+  # WhiteNoise warns when collectstatic has not run; irrelevant in tests
+  "ignore:No directory at:UserWarning",
+]
+
+[tool.coverage.run]
+source = ["apps"]
+omit = ["*/migrations/*", "*/tests/*"]

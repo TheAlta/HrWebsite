@@ -1,0 +1,35 @@
+/* Tailwind entry point (kept outside static/ so it is never served).
+   Built to static/css/main.css — dev: `css` compose service, prod: Dockerfile. */
+@import "tailwindcss";
+
+/* Scan templates and Python code for class names */
+@source "../templates";
+@source "../apps";
+
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("../fonts/vazirmatn/Vazirmatn-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Font URL is relative to the built file static/css/main.css */
+/* Design tokens: placeholders until the design system in sprint 1 */
+@theme {
+  --font-sans: "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-white text-slate-800 antialiased;
+  }
+}
+
+/* Alpine: hide elements until Alpine initialises them */
+[x-cloak] {
+  display: none !important;
+}

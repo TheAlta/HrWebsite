@@ -1,0 +1,70 @@
+# Local development. Start everything with:  docker compose up
+# Staging/production use their own compose file (sprint 3).
+
+x-app: &app
+  build:
+    context: .
+    target: dev
+  image: hrweb-dev
+  env_file: .env
+  volumes:
+    - .:/app
+  depends_on:
+    db:
+      condition: service_healthy
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-hrweb}
+      POSTGRES_USER: ${POSTGRES_USER:-hrweb}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-hrweb}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  # One-shot: applies migrations, then exits. web and worker wait for it.
+  migrate:
+    <<: *app
+    command: python manage.py migrate --noinput
+
+  web:
+    <<: *app
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      # host port 8100 (8000 is often taken by other local projects); override with WEB_PORT
+      - "${WEB_PORT:-8100}:8000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  worker:
+    <<: *app
+    command: python manage.py qcluster
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  # Rebuilds static/css/main.css whenever a template changes
+  css:
+    image: node:22-alpine
+    working_dir: /app
+    command: sh -c "npm ci --no-audit --no-fund && npm run watch:css"
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+
+  # Catches every outgoing email: http://localhost:8025
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "${MAILPIT_PORT:-8025}:8025"
+
+volumes:
+  pgdata:
+  node_modules:
