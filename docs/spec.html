@@ -1,0 +1,1031 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>سند توسعه سایت مشاوره منابع انسانی</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b1324; --bg-2:#0e182d; --card:#121d35; --card-2:#16233f; --border:#22314f; --border-2:#2c3d60;
+  --text:#dbe4f3; --muted:#8fa0bd; --faint:#5f7090;
+  --accent:#2dd4bf; --accent-2:#5eead4; --accent-bg:rgba(45,212,191,.10); --accent-bd:rgba(45,212,191,.35);
+  --blue:#60a5fa; --blue-bg:rgba(96,165,250,.10);
+  --amber:#fbbf24; --amber-bg:rgba(251,191,36,.10);
+  --red:#f87171; --red-bg:rgba(248,113,113,.10);
+  --green:#34d399; --green-bg:rgba(52,211,153,.10);
+  --gray:#94a3b8; --gray-bg:rgba(148,163,184,.12);
+  --violet:#a78bfa; --violet-bg:rgba(167,139,250,.12);
+  --radius:12px;
+  --fa:'Vazirmatn',system-ui,sans-serif; --en:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--fa);font-size:15.5px;line-height:1.9;
+  background-image:radial-gradient(1200px 500px at 85% -10%,rgba(45,212,191,.08),transparent 60%),radial-gradient(900px 400px at 0% 0%,rgba(96,165,250,.06),transparent 60%);background-attachment:fixed}
+a{color:var(--accent);text-decoration:none}
+a:hover{color:var(--accent-2);text-decoration:underline}
+code,kbd,.ltr{direction:ltr;unicode-bidi:isolate;font-family:var(--mono)}
+:not(pre)>code{font-size:.85em;background:#0a1222;border:1px solid var(--border);padding:1px 6px;border-radius:6px;color:var(--accent-2);white-space:nowrap}
+.en{font-family:var(--en);direction:ltr;unicode-bidi:isolate}
+
+/* layout */
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:32px;max-width:1320px;margin:0 auto;padding:24px}
+aside.sidebar{position:sticky;top:24px;align-self:start;max-height:calc(100vh - 48px);overflow:auto;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 14px}
+.sidebar h4{margin:0 6px 10px;font-size:12px;letter-spacing:.06em;color:var(--faint);font-weight:700}
+.sidebar .brand{display:flex;align-items:center;gap:10px;padding:4px 6px 14px;border-bottom:1px solid var(--border);margin-bottom:14px}
+.brand .logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),#0ea5e9);display:grid;place-items:center;color:#062a26;font-weight:800}
+.brand b{display:block;font-size:14px}
+.brand span{font-size:12px;color:var(--muted)}
+.toc{list-style:none;margin:0;padding:0}
+.toc a{display:flex;gap:10px;align-items:baseline;padding:6px 10px;border-radius:8px;color:var(--muted);font-size:14px;border-right:2px solid transparent}
+.toc a:hover{background:var(--card);color:var(--text);text-decoration:none}
+.toc a.active{background:var(--accent-bg);color:var(--accent);border-right-color:var(--accent)}
+.toc .n{font-size:12px;color:var(--faint);min-width:18px}
+.toc a.active .n{color:var(--accent)}
+main{min-width:0}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:linear-gradient(160deg,#13213f 0%,#0f1a31 60%);border:1px solid var(--border-2);border-radius:18px;padding:40px 36px 32px;margin-bottom:28px}
+.hero::after{content:"";position:absolute;inset:auto -80px -120px auto;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(45,212,191,.18),transparent 70%)}
+.hero .eyebrow{color:var(--accent);font-size:13px;font-weight:700;letter-spacing:.04em}
+.hero h1{margin:8px 0 10px;font-size:clamp(26px,4vw,40px);line-height:1.35;font-weight:800}
+.hero p.sub{margin:0 0 20px;color:var(--muted);max-width:820px;font-size:16.5px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;position:relative;z-index:1}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:13px;background:rgba(255,255,255,.04);border:1px solid var(--border-2);color:var(--text)}
+.chip i{font-style:normal;color:var(--faint)}
+.chip.acc{background:var(--accent-bg);border-color:var(--accent-bd);color:var(--accent-2)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:26px;position:relative;z-index:1}
+.stat{background:rgba(10,18,34,.55);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.stat b{display:block;font-size:24px;color:var(--accent);font-weight:800;line-height:1.3}
+.stat span{font-size:13px;color:var(--muted)}
+
+/* sections */
+section.sec{margin-bottom:34px}
+.sec-head{display:flex;align-items:center;gap:12px;margin:0 0 14px}
+.sec-head .num{width:38px;height:38px;flex:none;border-radius:10px;background:var(--accent-bg);border:1px solid var(--accent-bd);color:var(--accent);display:grid;place-items:center;font-weight:800}
+.sec-head h2{margin:0;font-size:23px;font-weight:800}
+.lead{color:var(--muted);margin:0 0 16px}
+.lead strong{color:var(--text)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;margin-bottom:16px}
+.card h3{margin:0 0 12px;font-size:17px;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:8px}
+.card h3::before{content:"";width:6px;height:18px;border-radius:3px;background:var(--accent)}
+.card p{margin:0 0 10px}
+.card p:last-child{margin-bottom:0}
+.card ul,.card ol{margin:0;padding-right:22px}
+.card li{margin:4px 0}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.grid-2>.card,.grid-3>.card{margin-bottom:0}
+.mini{background:var(--card-2);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.mini b{display:block;color:var(--text);margin-bottom:4px}
+.mini span{color:var(--muted);font-size:14px}
+
+/* callouts */
+.callout{display:flex;gap:12px;border:1px solid;border-right-width:4px;border-radius:10px;padding:14px 16px;margin:14px 0}
+.callout .ic{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:800;color:#0b1324;margin-top:3px}
+.callout .t{font-weight:700;margin-bottom:2px}
+.callout p{margin:0}
+.callout ul{margin:4px 0 0;padding-right:20px}
+.note{background:var(--blue-bg);border-color:rgba(96,165,250,.35);border-right-color:var(--blue)} .note .ic{background:var(--blue)} .note .t{color:var(--blue)}
+.warn{background:var(--amber-bg);border-color:rgba(251,191,36,.35);border-right-color:var(--amber)} .warn .ic{background:var(--amber)} .warn .t{color:var(--amber)}
+.danger{background:var(--red-bg);border-color:rgba(248,113,113,.35);border-right-color:var(--red)} .danger .ic{background:var(--red)} .danger .t{color:var(--red)}
+.ok{background:var(--accent-bg);border-color:var(--accent-bd);border-right-color:var(--accent)} .ok .ic{background:var(--accent)} .ok .t{color:var(--accent)}
+
+/* badges */
+.b{display:inline-block;padding:1px 9px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid;white-space:nowrap;line-height:1.8}
+.b-must{color:var(--red);background:var(--red-bg);border-color:rgba(248,113,113,.4)}
+.b-should{color:var(--amber);background:var(--amber-bg);border-color:rgba(251,191,36,.4)}
+.b-could{color:var(--blue);background:var(--blue-bg);border-color:rgba(96,165,250,.4)}
+.b-wont{color:var(--gray);background:var(--gray-bg);border-color:rgba(148,163,184,.35)}
+.b-p0{color:var(--gray);background:var(--gray-bg);border-color:rgba(148,163,184,.35)}
+.b-p1{color:var(--accent);background:var(--accent-bg);border-color:var(--accent-bd)}
+.b-p2{color:var(--violet);background:var(--violet-bg);border-color:rgba(167,139,250,.4)}
+.b-p3{color:var(--blue);background:var(--blue-bg);border-color:rgba(96,165,250,.4)}
+.b-mod{color:var(--accent-2);background:#0a1222;border-color:var(--border-2);font-family:var(--mono);font-weight:500;direction:ltr}
+.m{display:inline-block;min-width:52px;text-align:center;padding:1px 8px;border-radius:6px;font-family:var(--mono);font-size:12px;font-weight:600;direction:ltr}
+.m-get{color:var(--green);background:var(--green-bg)} .m-post{color:var(--amber);background:var(--amber-bg)}
+.legend{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px;color:var(--muted);font-size:13px}
+
+/* tables */
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);background:var(--card);margin-bottom:16px}
+table{width:100%;border-collapse:collapse;font-size:14.5px}
+thead th{background:#18264a;color:var(--accent-2);text-align:right;font-weight:700;padding:11px 14px;border-bottom:1px solid var(--border-2);white-space:nowrap;position:sticky;top:0}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+tbody tr{transition:background .15s}
+tbody tr:hover{background:rgba(45,212,191,.06)}
+td code{white-space:normal}
+td.nowrap{white-space:nowrap}
+.yes{color:var(--green);font-weight:700} .mid{color:var(--amber);font-weight:700} .no{color:var(--red);font-weight:700}
+
+/* code */
+.code{background:#070d1a;border:1px solid var(--border-2);border-radius:var(--radius);margin:12px 0 16px;overflow:hidden}
+.code .bar{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-bottom:1px solid var(--border);background:#0b1426;direction:ltr}
+.code .bar span{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.code .dots i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;background:#2a3a5c}
+pre{margin:0;padding:16px 18px;overflow:auto;direction:ltr;text-align:left;font-family:var(--mono);font-size:13.5px;line-height:1.75;color:#cfe3ff}
+pre .c{color:#5f7a9e} pre .k{color:#c4a7ff} pre .s{color:#86efac} pre .f{color:var(--accent-2)} pre .d{color:#fbbf24}
+
+/* flow / timeline */
+.timeline{position:relative;margin:6px 0 0;padding:0;list-style:none}
+.timeline li{position:relative;padding:0 46px 18px 0}
+.timeline li::before{content:"";position:absolute;right:15px;top:30px;bottom:-2px;width:2px;background:linear-gradient(var(--accent-bd),var(--border))}
+.timeline li:last-child::before{display:none}
+.timeline .dot{position:absolute;right:0;top:2px;width:32px;height:32px;border-radius:50%;background:var(--card-2);border:2px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-weight:800;font-size:14px}
+.timeline .box{background:var(--card-2);border:1px solid var(--border);border-radius:10px;padding:10px 14px}
+.timeline .box b{color:var(--text)}
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:8px 0}
+.flow .st{background:var(--card-2);border:1px solid var(--border-2);border-radius:10px;padding:10px 14px;min-width:120px;text-align:center;font-size:14px;display:flex;flex-direction:column;justify-content:center}
+.flow .st small{display:block;color:var(--muted);font-size:12px}
+.flow .st.hl{border-color:var(--accent);background:var(--accent-bg)}
+.flow .st.good{border-color:rgba(52,211,153,.5);background:var(--green-bg)}
+.flow .st.bad{border-color:rgba(248,113,113,.5);background:var(--red-bg)}
+.flow .ar{display:flex;align-items:center;padding:0 8px;color:var(--accent);font-size:20px;font-weight:700}
+.flow-v{display:flex;flex-direction:column;align-items:center;gap:0}
+.flow-v .ar{transform:rotate(-90deg);padding:4px 0}
+
+/* architecture */
+.arch{display:flex;flex-direction:column;align-items:stretch;gap:0}
+.arch .layer{border:1px solid var(--border-2);border-radius:12px;padding:12px;background:var(--card-2)}
+.arch .layer>.lbl{text-align:center;font-weight:700;margin-bottom:10px;font-size:14px}
+.arch .row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.arch .row.two{grid-template-columns:repeat(2,minmax(0,1fr));max-width:620px;margin:0 auto;width:100%}
+.arch .node{background:var(--card);border:1px solid var(--border-2);border-radius:10px;padding:10px;text-align:center;font-size:14px}
+.arch .node b{display:block;font-size:14px}
+.arch .node small{color:var(--muted);font-size:12px}
+.arch .node.core{border:2px solid var(--accent);background:var(--accent-bg)}
+.arch .down{text-align:center;color:var(--accent);font-size:20px;line-height:1;padding:6px 0}
+.arch .layer.app{background:linear-gradient(180deg,#14284a,#122039);border-color:var(--accent-bd)}
+.arch .layer.ext{border-style:dashed;background:transparent}
+.arch .tag{display:block;text-align:center;font-size:12px;color:var(--muted);margin-top:-2px}
+
+/* roadmap */
+.roadmap{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;position:relative}
+.phase{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative}
+.phase.hl{border:2px solid var(--accent);background:linear-gradient(180deg,rgba(45,212,191,.10),var(--card))}
+.phase .ph{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:4px}
+.phase h4{margin:0;font-size:16px}
+.phase .wk{color:var(--muted);font-size:13px;margin-bottom:10px;border-bottom:1px solid var(--border);padding-bottom:8px}
+.phase ul{margin:0;padding-right:18px;font-size:14px}
+.gates{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:10px;position:relative}
+.gates::before{content:"";position:absolute;top:13px;right:0;left:0;height:2px;background:var(--border-2)}
+.gates::after{content:"";position:absolute;top:8px;left:-2px;border:6px solid transparent;border-right-color:var(--border-2);border-left:0}
+.gate{position:relative;text-align:left;font-size:13px}
+.gate .dm{width:18px;height:18px;background:var(--accent);transform:rotate(45deg);margin:4px 0 0 -9px;position:relative;z-index:1;border-radius:3px}
+.gate b{display:block;margin-top:8px;margin-left:-60px;width:120px;text-align:center;color:var(--text)}
+.gate span{display:block;margin-left:-70px;width:140px;text-align:center;color:var(--muted)}
+.gate.blank .dm{visibility:hidden}
+
+.checklist{list-style:none;padding:0!important;margin:0}
+.checklist li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px dashed var(--border)}
+.checklist li:last-child{border-bottom:0}
+.checklist .box{flex:none;width:18px;height:18px;border:2px solid var(--accent-bd);border-radius:5px;margin-top:6px}
+.qa{display:grid;gap:10px}
+.qa .q{background:var(--card-2);border:1px solid var(--border);border-right:3px solid var(--amber);border-radius:10px;padding:10px 14px}
+
+footer{color:var(--faint);font-size:13px;text-align:center;padding:24px 0 8px;border-top:1px solid var(--border);margin-top:20px}
+.menu-btn{display:none}
+
+@media (max-width:1000px){
+  .layout{grid-template-columns:1fr;padding:16px}
+  aside.sidebar{position:relative;top:0;max-height:none;display:none}
+  aside.sidebar.open{display:block}
+  .menu-btn{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--border-2);color:var(--text);border-radius:10px;padding:8px 14px;font-family:var(--fa);font-size:14px;cursor:pointer;margin-bottom:12px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .roadmap{grid-template-columns:1fr 1fr}
+  .gates{display:none}
+  .arch .row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero{padding:28px 20px}
+}
+@media (max-width:560px){
+  .roadmap{grid-template-columns:1fr}
+  .flow{flex-direction:column}
+  .flow .ar{transform:rotate(-90deg);justify-content:center;padding:4px 0}
+  .card{padding:16px}
+}
+@media print{aside.sidebar,.menu-btn{display:none}.layout{grid-template-columns:1fr}body{background:#fff;color:#000}}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="logo">HR</div><div><b>سند توسعه</b><span>نسخه ۱.۰ · مرجع تیم فنی</span></div></div>
+  <h4>فهرست مطالب</h4>
+  <ul class="toc" id="toc">
+    <li><a href="#s1"><span class="n">۱</span>خلاصه و اهداف</a></li>
+    <li><a href="#s2"><span class="n">۲</span>نقشه سایت و صفحات</a></li>
+    <li><a href="#s3"><span class="n">۳</span>نیازمندی‌های کارکردی</a></li>
+    <li><a href="#s4"><span class="n">۴</span>نیازمندی‌های غیرکارکردی</a></li>
+    <li><a href="#s5"><span class="n">۵</span>انتخاب استک</a></li>
+    <li><a href="#s6"><span class="n">۶</span>معماری سیستم</a></li>
+    <li><a href="#s7"><span class="n">۷</span>مدل داده</a></li>
+    <li><a href="#s8"><span class="n">۸</span>جریان‌های کلیدی</a></li>
+    <li><a href="#s9"><span class="n">۹</span>یکپارچه‌سازی‌ها</a></li>
+    <li><a href="#s10"><span class="n">۱۰</span>طراحی UI/UX و پنل</a></li>
+    <li><a href="#s11"><span class="n">۱۱</span>امنیت و حریم خصوصی</a></li>
+    <li><a href="#s12"><span class="n">۱۲</span>زیرساخت و DevOps</a></li>
+    <li><a href="#s13"><span class="n">۱۳</span>نقشه راه</a></li>
+    <li><a href="#s14"><span class="n">۱۴</span>تست، ریسک و راه‌اندازی</a></li>
+  </ul>
+</aside>
+
+<main>
+<button class="menu-btn" onclick="document.getElementById('sidebar').classList.toggle('open')">☰ فهرست مطالب</button>
+
+<header class="hero">
+  <div class="eyebrow">ENGINEERING SPEC · سند فنی و محصولی</div>
+  <h1>سند توسعه سایت شخصی مشاوره منابع انسانی</h1>
+  <p class="sub">مرجع کامل برای طراحی، توسعه و راه‌اندازی سایت: معرفی مشاور، خدمات فردی و سازمانی، دوره‌ها و وبینارها، فروش کتاب و محصولات آموزشی، رزرو جلسه، پرداخت اینترنتی، CRM سرنخ‌ها و اطلاع‌رسانی پیامکی.</p>
+  <div class="chips">
+    <span class="chip acc">Django 5 + Wagtail</span>
+    <span class="chip"><i>DB</i> PostgreSQL 16</span>
+    <span class="chip"><i>معماری</i> مونولیت ماژولار</span>
+    <span class="chip"><i>زمان</i> ۱۴ تا ۱۸ هفته</span>
+    <span class="chip"><i>فازها</i> ۰ تا ۳</span>
+    <span class="chip"><i>مخاطب</i> تیم فنی</span>
+    <span class="chip"><i>تاریخ</i> ۲۹ مهر ۱۴۰۵</span>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>۲۰</b><span>صفحه و قالب</span></div>
+    <div class="stat"><b>۴۱</b><span>نیازمندی کارکردی</span></div>
+    <div class="stat"><b>۱۲</b><span>اپ Django</span></div>
+    <div class="stat"><b>۶ هفته</b><span>تا MVP پس از آماده‌سازی</span></div>
+  </div>
+</header>
+
+<!-- 1 -->
+<section class="sec" id="s1">
+  <div class="sec-head"><div class="num">۱</div><h2>خلاصه اجرایی و اهداف</h2></div>
+  <div class="callout ok"><div class="ic">✓</div><div><div class="t">تصمیم پیشنهادی</div><p>سایت به‌صورت یک «مونولیت ماژولار» با <b>Django + Wagtail (CMS) + PostgreSQL</b> ساخته شود و در ۳ فاز طی حدود ۱۴ تا ۱۸ هفته (یک توسعه‌دهنده) منتشر شود. فاز اول (MVP، حدود ۶ هفته) سایت معرفی، مقالات، فرم درخواست مشاوره و رزرو جلسه را زنده می‌کند؛ فروش و پرداخت کامل در فاز دوم می‌آید.</p></div></div>
+  <div class="grid-3" style="margin-bottom:16px">
+    <div class="mini"><b>اعتمادسازی</b><span>معرفی شما، سوابق، نظرات مشتریان، لوگوی سازمان‌ها</span></div>
+    <div class="mini"><b>جذب سرنخ</b><span>فرم‌ها، دانلود کاتالوگ، خبرنامه، درخواست تماس</span></div>
+    <div class="mini"><b>فروش</b><span>جلسه مشاوره، دوره، وبینار، کتاب و فایل آموزشی</span></div>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>مخاطب</th><th>نیاز اصلی</th><th>مسیر تبدیل</th></tr></thead>
+    <tbody>
+      <tr><td>مدیر عامل / مدیر منابع انسانی سازمان</td><td>مشاوره و آموزش سازمانی</td><td>فرم درخواست مشاوره سازمانی ← تماس فروش ← قرارداد</td></tr>
+      <tr><td>کارشناس و مدیر میانی HR</td><td>یادگیری و ارتقای مهارت</td><td>مقاله ← وبینار رایگان ← دوره پولی</td></tr>
+      <tr><td>فرد (کارجو یا مدیر)</td><td>جلسه مشاوره فردی</td><td>صفحه خدمات ← رزرو و پرداخت جلسه</td></tr>
+      <tr><td>برگزارکننده رویداد</td><td>دعوت به سخنرانی</td><td>صفحه سخنرانی‌ها ← فرم دعوت</td></tr>
+      <tr><td>خواننده عمومی</td><td>محتوای آموزشی</td><td>مقاله، پادکست، کتاب</td></tr>
+    </tbody>
+  </table></div>
+  <div class="card"><h3>شاخص‌های موفقیت (پیشنهادی، ۶ ماه اول)</h3>
+    <ul>
+      <li>تعداد درخواست مشاوره سازمانی در ماه</li>
+      <li>نرخ تبدیل بازدید به سرنخ (هدف معمول: ۲ تا ۴ درصد)</li>
+      <li>تعداد جلسات رزرو و پرداخت‌شده</li>
+      <li>ثبت‌نام در وبینارها و فروش دوره و کتاب</li>
+      <li>ترافیک ارگانیک از گوگل به مقالات</li>
+    </ul>
+  </div>
+  <div class="callout warn"><div class="ic">!</div><div><div class="t">سؤال باز</div><p>برند سایت «شخص شما» است یا یک «مجموعه/تیم مشاوره»؟ این روی لحن، نام صفحات و آینده سایت اثر دارد (بخش ۲).</p></div></div>
+</section>
+
+<!-- 2 -->
+<section class="sec" id="s2">
+  <div class="sec-head"><div class="num">۲</div><h2>نقشه سایت و صفحات</h2></div>
+  <div class="callout note"><div class="ic">i</div><div><div class="t">«درباره من» یا «درباره ما»؟</div><p>اگر خودتان چهره اصلی برند هستید (که برای مشاور منابع انسانی معمولاً قوی‌ترین حالت است)، از <b>«درباره من»</b> استفاده کنید؛ اعتماد در خدمات مشاوره‌ای به شخص بسته است نه به شرکت. اگر قصد دارید تیم یا همکار اضافه کنید، ساختار را طوری بسازید که صفحه «درباره من» بعداً به «درباره ما» با بخش «تیم» قابل تبدیل باشد (موجودیت «عضو تیم» از اول در مدل داده وجود داشته باشد).</p></div></div>
+  <div class="card"><h3>ادغام پیشنهادی صفحات</h3>
+    <p>فهرست اولیه ۱۵ صفحه است؛ چند مورد هم‌پوشانی دارند و بهتر است ادغام شوند تا منو شلوغ نشود:</p>
+    <div class="table-wrap" style="margin:0"><table>
+      <thead><tr><th>صفحات اولیه</th><th>نتیجه ادغام</th></tr></thead>
+      <tbody>
+        <tr><td>خدمات مشاوره منابع انسانی + خدمات سازمانی</td><td>بخش <b>«خدمات»</b> با دو زیربخش فردی و سازمانی</td></tr>
+        <tr><td>آموزش‌ها و دوره‌ها + سخنرانی‌ها و وبینارها</td><td>بخش <b>«آموزش و رویدادها»</b> با تقویم مشترک</td></tr>
+        <tr><td>مقالات + پادکست + فایل‌های آموزشی</td><td>بخش <b>«محتوا / مجله»</b> با فیلتر نوع</td></tr>
+        <tr><td>سوابق و پروژه‌ها + نظرات مشتریان</td><td>صفحه <b>«نمونه‌کارها و مشتریان»</b>؛ نظرات در صفحه اصلی و صفحات خدمات هم تکرار شوند</td></tr>
+        <tr><td>درخواست مشاوره / تماس با ما</td><td>جدا بمانند: اولی فرم تبدیل است، دومی اطلاعات تماس</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="card"><h3>منوی اصلی پیشنهادی</h3>
+    <div class="flow">
+      <div class="st">خانه</div><div class="st">درباره من</div><div class="st">خدمات</div><div class="st">آموزش و رویدادها</div><div class="st">کتاب‌ها</div><div class="st">مجله</div><div class="st">نمونه‌کارها</div><div class="st">تماس</div><div class="st hl"><b>درخواست مشاوره</b><small>دکمه برجسته همیشه‌پیدا</small></div>
+    </div>
+  </div>
+  <div class="legend">فاز: <span class="b b-p1">فاز ۱</span><span class="b b-p2">فاز ۲</span></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>صفحه</th><th>آدرس</th><th>محتوای اصلی</th><th>فاز</th></tr></thead>
+    <tbody>
+      <tr><td>صفحه اصلی</td><td><code>/</code></td><td>معرفی کوتاه، خدمات، دوره پیش‌رو، لوگوی مشتریان، نظرات، آخرین مقالات، فراخوان مشاوره</td><td><span class="b b-p1">۱</span></td></tr>
+      <tr><td>درباره من</td><td><code>/about</code></td><td>داستان، تخصص‌ها، مدارک، رزومه قابل دانلود، عکس و ویدئوی معرفی</td><td><span class="b b-p1">۱</span></td></tr>
+      <tr><td>خدمات (فهرست)</td><td><code>/services</code></td><td>کارت هر خدمت</td><td><span class="b b-p1">۱</span></td></tr>
+      <tr><td>جزئیات خدمت</td><td><code>/services/{slug}</code></td><td>مسئله، روش، خروجی، مدت، قیمت یا «استعلام»، نمونه موفق، فرم</td><td><span class="b b-p1">۱</span></td></tr>
+      <tr><td>خدمات سازمانی</td><td><code>/services/corporate</code></td><td>ارزیابی عملکرد، ساختار سازمانی، جذب و استخدام، آموزش سازمانی + فرم درخواست آموزش سازمانی</td><td><span class="b b-p1">۱</span></td></tr>
+      <tr><td>رزرو جلسه</td><td><code>/booking</code></td><td>انتخاب نوع جلسه، تقویم، پرداخت</td><td><span class="b b-p1">۱</span></td></tr>
+      <tr><td>درخواست مشاوره</td><td><code>/consultation</code></td><td>فرم چندمرحله‌ای سازمانی/فردی</td><td><span class="b b-p1">۱</span></td></tr>
+      <tr><td>آموزش و رویدادها</td><td><code>/events</code></td><td>تقویم و فهرست دوره‌ها و وبینارها</td><td><span class="b b-p2">۲</span></td></tr>
+      <tr><td>جزئیات دوره/وبینار</td><td><code>/events/{slug}</code></td><td>سرفصل، مدرس، زمان، ظرفیت، قیمت، ثبت‌نام</td><td><span class="b b-p2">۲</span></td></tr>
+      <tr><td>سخنرانی‌ها</td><td><code>/speaking</code></td><td>سوابق سخنرانی، ویدئو، فرم دعوت به سخنرانی</td><td><span class="b b-p2">۲</span></td></tr>
+      <tr><td>کتاب‌ها و محصولات</td><td><code>/shop</code></td><td>کتاب چاپی، کتاب الکترونیکی، فایل آموزشی</td><td><span class="b b-p2">۲</span></td></tr>
+      <tr><td>جزئیات محصول</td><td><code>/shop/{slug}</code></td><td>معرفی، فهرست مطالب، نمونه صفحات، خرید</td><td><span class="b b-p2">۲</span></td></tr>
+      <tr><td>سبد خرید و پرداخت</td><td><code>/cart</code> ، <code>/checkout</code></td><td>سبد، کد تخفیف، درگاه</td><td><span class="b b-p2">۲</span></td></tr>
+      <tr><td>مجله (فهرست)</td><td><code>/blog</code></td><td>مقالات، پادکست، ویدئو، جست‌وجو و دسته‌بندی</td><td><span class="b b-p1">۱</span></td></tr>
+      <tr><td>جزئیات مطلب</td><td><code>/blog/{slug}</code></td><td>متن، پخش‌کننده صوت/ویدئو، فایل پیوست، نظرات، مطالب مرتبط</td><td><span class="b b-p1">۱</span></td></tr>
+      <tr><td>نمونه‌کارها و مشتریان</td><td><code>/portfolio</code></td><td>پروژه‌ها، لوگوها، نظرات</td><td><span class="b b-p1">۱</span></td></tr>
+      <tr><td>تماس</td><td><code>/contact</code></td><td>اطلاعات تماس، نقشه، واتساپ، فرم «با من تماس بگیرید»</td><td><span class="b b-p1">۱</span></td></tr>
+      <tr><td>حساب کاربری</td><td><code>/account</code></td><td>سفارش‌ها، فاکتورها، دوره‌ها، فایل‌های خریداری‌شده، جلسات</td><td><span class="b b-p2">۲</span></td></tr>
+      <tr><td>قوانین و حریم خصوصی</td><td><code>/terms</code> ، <code>/privacy</code></td><td>قوانین خرید و بازگشت وجه، حریم خصوصی</td><td><span class="b b-p1">۱</span></td></tr>
+      <tr><td>۴۰۴ و صفحه تشکر</td><td>—</td><td>صفحات سیستمی</td><td><span class="b b-p1">۱</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 3 -->
+<section class="sec" id="s3">
+  <div class="sec-head"><div class="num">۳</div><h2>نیازمندی‌های کارکردی</h2></div>
+  <p class="lead">همه امکانات خواسته‌شده در ۱۰ ماژول دسته‌بندی شده‌اند. اولویت‌گذاری با روش <span class="en">MoSCoW</span> است.</p>
+  <div class="legend">اولویت:
+    <span class="b b-must">ضروری</span> بدون آن راه‌اندازی نمی‌کنیم
+    <span class="b b-should">مهم</span>
+    <span class="b b-could">خوب است</span>
+    <span class="b b-wont">فعلاً نه</span>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>کد</th><th>ماژول</th><th>امکان</th><th>اولویت</th><th>فاز</th></tr></thead>
+    <tbody>
+      <tr><td><span class="b b-mod">CMS-1</span></td><td>محتوا</td><td>مدیریت صفحات معرفی، خدمات، سوابق از پنل بدون کدنویسی</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">CMS-2</span></td><td>محتوا</td><td>انتشار مقاله با دسته، برچسب، تصویر شاخص، زمان‌بندی انتشار</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">CMS-3</span></td><td>محتوا</td><td>پادکست و ویدئو (آپلود یا لینک آپارات/یوتیوب/کست‌باکس) و فید RSS پادکست</td><td><span class="b b-should">مهم</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">CMS-4</span></td><td>محتوا</td><td>جست‌وجوی مقالات با پشتیبانی فارسی (ی/ک عربی، نیم‌فاصله)</td><td><span class="b b-should">مهم</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">CMS-5</span></td><td>محتوا</td><td>نظرات زیر مقالات با تأیید مدیر و ضداسپم</td><td><span class="b b-should">مهم</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">CMS-6</span></td><td>محتوا</td><td>نمایش نظرات مشتریان (Testimonial) و لوگوی سازمان‌ها</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">LEAD-1</span></td><td>سرنخ</td><td>فرم درخواست مشاوره (فردی/سازمانی، چندمرحله‌ای)</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">LEAD-2</span></td><td>سرنخ</td><td>فرم درخواست آموزش سازمانی (تعداد نفرات، موضوع، بودجه، زمان)</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">LEAD-3</span></td><td>سرنخ</td><td>فرم «با من تماس بگیرید» (فقط نام و موبایل)</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">LEAD-4</span></td><td>سرنخ</td><td>دانلود کاتالوگ/رزومه در ازای موبایل یا ایمیل (Lead Magnet)</td><td><span class="b b-should">مهم</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">LEAD-5</span></td><td>سرنخ</td><td>CRM ساده: وضعیت هر سرنخ، یادداشت، یادآور پیگیری، خروجی اکسل</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">LEAD-6</span></td><td>سرنخ</td><td>خبرنامه ایمیلی/پیامکی با رضایت کاربر</td><td><span class="b b-could">خوب است</span></td><td>۲</td></tr>
+      <tr><td><span class="b b-mod">BOOK-1</span></td><td>رزرو</td><td>تعریف انواع جلسه (حضوری/آنلاین/تلفنی، مدت، قیمت)</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">BOOK-2</span></td><td>رزرو</td><td>تعریف ساعات کاری، روزهای تعطیل، فاصله بین جلسات</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">BOOK-3</span></td><td>رزرو</td><td>انتخاب زمان آزاد در تقویم شمسی و قفل موقت ۱۵ دقیقه‌ای تا پرداخت</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">BOOK-4</span></td><td>رزرو</td><td>تأیید، لغو و جابه‌جایی جلسه با قوانین (مثلاً تا ۲۴ ساعت قبل)</td><td><span class="b b-should">مهم</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">BOOK-5</span></td><td>رزرو</td><td>یادآور پیامکی ۲۴ ساعت و ۱ ساعت قبل + لینک جلسه آنلاین</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">BOOK-6</span></td><td>رزرو</td><td>همگام‌سازی با Google Calendar</td><td><span class="b b-could">خوب است</span></td><td>۳</td></tr>
+      <tr><td><span class="b b-mod">EVT-1</span></td><td>رویداد</td><td>تعریف دوره/وبینار: زمان‌ها، ظرفیت، قیمت، مدرس، لینک کلاس</td><td><span class="b b-must">ضروری</span></td><td>۲</td></tr>
+      <tr><td><span class="b b-mod">EVT-2</span></td><td>رویداد</td><td>تقویم دوره‌ها و وبینارها (نمای ماهانه و فهرستی)</td><td><span class="b b-should">مهم</span></td><td>۲</td></tr>
+      <tr><td><span class="b b-mod">EVT-3</span></td><td>رویداد</td><td>ثبت‌نام رایگان یا پولی، لیست انتظار وقتی ظرفیت پر است</td><td><span class="b b-must">ضروری</span></td><td>۲</td></tr>
+      <tr><td><span class="b b-mod">EVT-4</span></td><td>رویداد</td><td>ارسال لینک ورود و یادآور پیامکی، انتشار ضبط وبینار برای ثبت‌نام‌کنندگان</td><td><span class="b b-should">مهم</span></td><td>۲</td></tr>
+      <tr><td><span class="b b-mod">EVT-5</span></td><td>رویداد</td><td>صدور گواهی حضور PDF با کد استعلام</td><td><span class="b b-could">خوب است</span></td><td>۳</td></tr>
+      <tr><td><span class="b b-mod">SHOP-1</span></td><td>فروشگاه</td><td>محصول فیزیکی (کتاب چاپی) با موجودی و هزینه ارسال</td><td><span class="b b-must">ضروری</span></td><td>۲</td></tr>
+      <tr><td><span class="b b-mod">SHOP-2</span></td><td>فروشگاه</td><td>محصول دیجیتال (PDF، کتاب صوتی، بسته آموزشی) با لینک دانلود امن و محدود</td><td><span class="b b-must">ضروری</span></td><td>۲</td></tr>
+      <tr><td><span class="b b-mod">SHOP-3</span></td><td>فروشگاه</td><td>سبد خرید، کد تخفیف (درصدی/مبلغی، تاریخ انقضا، سقف استفاده، محدود به محصول)</td><td><span class="b b-must">ضروری</span></td><td>۲</td></tr>
+      <tr><td><span class="b b-mod">PAY-1</span></td><td>پرداخت</td><td>اتصال به درگاه بانکی (حداقل یک درگاه + یک پشتیبان)</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">PAY-2</span></td><td>پرداخت</td><td>صدور فاکتور PDF فارسی با شماره ترتیبی، ارسال لینک آن با پیامک/ایمیل</td><td><span class="b b-must">ضروری</span></td><td>۲</td></tr>
+      <tr><td><span class="b b-mod">PAY-3</span></td><td>پرداخت</td><td>پیش‌فاکتور برای سازمان‌ها و ثبت پرداخت دستی (حواله/چک)</td><td><span class="b b-should">مهم</span></td><td>۲</td></tr>
+      <tr><td><span class="b b-mod">PAY-4</span></td><td>پرداخت</td><td>بازگشت وجه و لغو سفارش از پنل</td><td><span class="b b-should">مهم</span></td><td>۲</td></tr>
+      <tr><td><span class="b b-mod">USER-1</span></td><td>کاربران</td><td>ورود با موبایل و کد یکبارمصرف (OTP)، بدون رمز</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">USER-2</span></td><td>کاربران</td><td>پنل کاربر: سفارش‌ها، فاکتورها، جلسات، دوره‌ها، دانلودها</td><td><span class="b b-must">ضروری</span></td><td>۲</td></tr>
+      <tr><td><span class="b b-mod">USER-3</span></td><td>کاربران</td><td>حساب سازمانی (چند کاربر زیر یک سازمان)</td><td><span class="b b-wont">فعلاً نه</span></td><td>—</td></tr>
+      <tr><td><span class="b b-mod">NTF-1</span></td><td>اطلاع‌رسانی</td><td>پیامک تراکنشی با الگو (OTP، تأیید رزرو، فاکتور، یادآور)</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">NTF-2</span></td><td>اطلاع‌رسانی</td><td>ایمیل تراکنشی و اعلان به مدیر برای هر سرنخ و سفارش جدید</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">NTF-3</span></td><td>اطلاع‌رسانی</td><td>دکمه شناور واتساپ (و تلگرام/بله در صورت نیاز)</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">SOC-1</span></td><td>اجتماعی</td><td>لینک شبکه‌ها، دکمه اشتراک‌گذاری، Open Graph برای پیش‌نمایش لینکدین</td><td><span class="b b-must">ضروری</span></td><td>۱</td></tr>
+      <tr><td><span class="b b-mod">SOC-2</span></td><td>اجتماعی</td><td>نمایش آخرین پست‌های لینکدین/اینستاگرام</td><td><span class="b b-wont">فعلاً نه</span></td><td>—</td></tr>
+      <tr><td><span class="b b-mod">ADM-1</span></td><td>مدیریت</td><td>داشبورد: سرنخ‌های جدید، جلسات امروز، فروش ماه</td><td><span class="b b-should">مهم</span></td><td>۲</td></tr>
+      <tr><td><span class="b b-mod">ADM-2</span></td><td>مدیریت</td><td>گزارش فروش و خروجی اکسل</td><td><span class="b b-should">مهم</span></td><td>۲</td></tr>
+      <tr><td><span class="b b-mod">ADM-3</span></td><td>مدیریت</td><td>نقش‌ها: مدیر کل، ویراستار محتوا، پشتیبان</td><td><span class="b b-should">مهم</span></td><td>۲</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid-2">
+    <div class="callout ok" style="margin:0"><div class="ic">✓</div><div><div class="t">عضویت کاربران</div><p>ثبت‌نام جداگانه نسازید. کاربر هنگام اولین خرید یا رزرو با موبایل و OTP خودکار ساخته شود؛ این نرخ تبدیل را بالا می‌برد.</p></div></div>
+    <div class="callout note" style="margin:0"><div class="ic">i</div><div><div class="t">واتساپ</div><p>لینک کلیک‌به‌چت (<code>wa.me</code>) کافی است. API رسمی واتساپ بیزینس برای ارسال انبوه، با شماره ایرانی و محدودیت‌ها، ارزش هزینه و ریسکش را ندارد؛ پیامک کانال اصلی اطلاع‌رسانی باشد.</p></div></div>
+    <div class="callout warn" style="margin:0"><div class="ic">!</div><div><div class="t">نظرات زیر مقالات</div><p>حتماً با تأیید مدیر؛ بدون آن، اسپم در چند هفته صفحه را پر می‌کند.</p></div></div>
+    <div class="callout note" style="margin:0"><div class="ic">i</div><div><div class="t">حساب سازمانی</div><p>برای فاز اول لازم نیست؛ سازمان‌ها از مسیر فرم و پیش‌فاکتور خرید می‌کنند.</p></div></div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="sec" id="s4">
+  <div class="sec-head"><div class="num">۴</div><h2>نیازمندی‌های غیرکارکردی</h2></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>حوزه</th><th>الزام</th><th>معیار پذیرش</th></tr></thead>
+    <tbody>
+      <tr><td class="nowrap">کارایی</td><td>بارگذاری سریع روی موبایل و اینترنت ضعیف</td><td><span class="en">LCP</span> زیر ۲.۵ ثانیه، امتیاز <span class="en">Lighthouse</span> موبایل بالای ۸۵</td></tr>
+      <tr><td class="nowrap">کارایی</td><td>تصاویر بهینه</td><td>خروجی WebP/AVIF، اندازه‌های واکنش‌گرا، Lazy load</td></tr>
+      <tr><td class="nowrap">مقیاس</td><td>ترافیک هم‌زمان باز شدن ثبت‌نام وبینار</td><td>۲۰۰ کاربر هم‌زمان بدون خطا؛ جلوگیری از فروش بیش از ظرفیت</td></tr>
+      <tr><td class="nowrap">سئو</td><td>صفحات قابل خزش با HTML سمت سرور</td><td>Sitemap، robots، canonical، تگ‌های meta قابل ویرایش در پنل، Schema (Person، Article، Event، Product، FAQ)</td></tr>
+      <tr><td class="nowrap">سئو</td><td>آدرس‌های خوانا</td><td>slug فارسی یا انگلیسی قابل انتخاب، ریدایرکت ۳۰۱ هنگام تغییر</td></tr>
+      <tr><td class="nowrap">RTL و فارسی</td><td>راست‌چین کامل، فونت فارسی</td><td>فونت Vazirmatn یا یکان‌بخ (با لایسنس)، اعداد فارسی در متن</td></tr>
+      <tr><td class="nowrap">RTL و فارسی</td><td>تاریخ شمسی</td><td>همه تاریخ‌ها در نمایش و پنل شمسی، ذخیره در UTC</td></tr>
+      <tr><td class="nowrap">RTL و فارسی</td><td>نرمال‌سازی</td><td>تبدیل ی/ک عربی و اعداد هنگام ذخیره و جست‌وجو</td></tr>
+      <tr><td class="nowrap">دسترس‌پذیری</td><td>استاندارد WCAG 2.1 سطح AA</td><td>کنتراست کافی، ناوبری با کیبورد، alt تصاویر</td></tr>
+      <tr><td class="nowrap">واکنش‌گرایی</td><td>موبایل‌اول</td><td>بیش از ۷۰٪ بازدید از موبایل فرض شود</td></tr>
+      <tr><td class="nowrap">در دسترس بودن</td><td>پایداری</td><td>۹۹.۵٪ در ماه؛ بکاپ روزانه پایگاه داده</td></tr>
+      <tr><td class="nowrap">امنیت</td><td>بخش ۱۱</td><td>تست OWASP Top 10 پیش از راه‌اندازی</td></tr>
+      <tr><td class="nowrap">نگهداری</td><td>پوشش تست</td><td>حداقل ۷۰٪ برای ماژول‌های پرداخت، رزرو و سفارش</td></tr>
+      <tr><td class="nowrap">چندزبانه</td><td>آمادگی برای انگلیسی</td><td>متن‌ها با سیستم ترجمه Django؛ فعلاً فقط فارسی منتشر شود</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 5 -->
+<section class="sec" id="s5">
+  <div class="sec-head"><div class="num">۵</div><h2>انتخاب استک</h2></div>
+  <div class="callout ok"><div class="ic">✓</div><div><div class="t">توصیه: Django</div><p>برای سایتی که ۷۰٪ آن محتوا، فرم و پنل مدیریت است و تیم با پایتون راحت‌تر است و سرعت می‌خواهد، Django بیشترین کار آماده را می‌دهد: پنل ادمین، احراز هویت، ORM و Migration، فرم‌ها، قالب‌های سمت سرور برای سئو، و اکوسیستم CMS (Wagtail). با FastAPI همه این‌ها را باید خودتان بسازید یا سرهم کنید؛ Spring برای این اندازه پروژه سنگین و کندتر است.</p></div></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>معیار</th><th class="en">Django</th><th class="en">FastAPI</th><th class="en">Spring Boot</th></tr></thead>
+    <tbody>
+      <tr><td>سرعت رسیدن به MVP</td><td class="yes">بسیار بالا</td><td class="mid">متوسط</td><td class="no">پایین</td></tr>
+      <tr><td>پنل مدیریت آماده</td><td class="yes">دارد (Admin + Wagtail)</td><td class="no">ندارد (باید بسازید یا SQLAdmin)</td><td class="no">ندارد</td></tr>
+      <tr><td>CMS برای مقاله و صفحات</td><td class="yes">Wagtail، بالغ و قوی</td><td class="no">ندارد</td><td class="no">ندارد</td></tr>
+      <tr><td>رندر سمت سرور برای سئو</td><td class="yes">داخلی</td><td class="mid">نیاز به فرانت جدا (Next.js)</td><td class="mid">Thymeleaf</td></tr>
+      <tr><td>احراز هویت و نقش‌ها</td><td class="yes">داخلی</td><td class="no">دستی</td><td class="mid">Spring Security (پیچیده)</td></tr>
+      <tr><td>کارایی خام API</td><td class="mid">کافی برای این مقیاس</td><td class="yes">بالاتر</td><td class="yes">بالا</td></tr>
+      <tr><td>کتابخانه‌های ایرانی (جلالی، درگاه، پیامک)</td><td class="yes">زیاد</td><td class="no">کم</td><td class="no">کم</td></tr>
+      <tr><td>هزینه نگهداری توسط یک نفر</td><td class="yes">پایین</td><td class="mid">متوسط</td><td class="no">بالا</td></tr>
+      <tr><td>تسلط تیم</td><td class="yes">پایتون</td><td class="yes">پایتون</td><td class="mid">جاوا</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout note"><div class="ic">i</div><div><div class="t">FastAPI کجا به درد می‌خورد؟</div><p>اگر بعداً اپ موبایل یا سرویس مستقل پرسرعت خواستید، می‌توانید کنار Django یک API بسازید. اما برای این پروژه، API داخلی Django با <b class="en">Django Ninja</b> (سینتکس شبیه FastAPI) کافی است.</p></div></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>لایه</th><th>انتخاب</th><th>دلیل</th></tr></thead>
+    <tbody>
+      <tr><td>زبان</td><td><code>Python 3.12+</code></td><td>تسلط تیم</td></tr>
+      <tr><td>فریم‌ورک</td><td><code>Django 5.x</code></td><td>کار آماده بیشتر</td></tr>
+      <tr><td>CMS</td><td><code>Wagtail 6.x</code></td><td>مقاله، صفحات، تصاویر، سئو، زمان‌بندی انتشار، StreamField برای صفحات منعطف</td></tr>
+      <tr><td>API داخلی</td><td><code>Django Ninja</code></td><td>برای بخش‌های تعاملی (تقویم رزرو، سبد) و آینده اپ موبایل</td></tr>
+      <tr><td>فرانت‌اند</td><td><code>Django Templates + HTMX + Alpine.js + Tailwind CSS</code></td><td>بدون SPA جدا؛ سریع، سئوپسند، یک کدبیس</td></tr>
+      <tr><td>پایگاه داده</td><td><code>PostgreSQL 16</code></td><td>تراکنش‌های امن، جست‌وجوی متنی، JSONB</td></tr>
+      <tr><td>کش و صف</td><td><code>Redis</code></td><td>کش، قفل رزرو، صف کارها</td></tr>
+      <tr><td>کارهای پس‌زمینه</td><td><code>Celery + Celery Beat</code> (یا <code>Django-Q2</code>)</td><td>ارسال پیامک، یادآور، ساخت فاکتور</td></tr>
+      <tr><td>تاریخ شمسی</td><td><code>jdatetime + django-jalali</code></td><td>نمایش و ورود تاریخ شمسی</td></tr>
+      <tr><td>فاکتور PDF</td><td><code>WeasyPrint</code></td><td>پشتیبانی RTL و فونت فارسی</td></tr>
+      <tr><td>فایل‌ها</td><td>ذخیره‌سازی S3-سازگار (مثل ابر آروان) + <code>django-storages</code></td><td>فایل‌های دیجیتال و صوت</td></tr>
+      <tr><td>وب‌سرور</td><td><code>Nginx + Gunicorn</code></td><td>استاندارد و پایدار</td></tr>
+      <tr><td>کانتینر</td><td><code>Docker + Docker Compose</code></td><td>محیط یکسان توسعه و تولید</td></tr>
+      <tr><td>مانیتورینگ خطا</td><td><code>Sentry</code> (یا <code>GlitchTip</code> خودمیزبان)</td><td>ردیابی خطا</td></tr>
+      <tr><td>آنالیتیکس</td><td><code>GA4</code> یا <code>Umami</code> خودمیزبان</td><td>تحلیل تبدیل</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout warn"><div class="ic">!</div><div><div class="t">جایگزین سریع‌تر برای شروع: وردپرس؟</div><p>اگر فقط ظرف ۲ هفته یک سایت معرفی لازم است، می‌شود فاز ۱ را با وردپرس بالا آورد. اما با این فهرست امکانات (رزرو، CRM، فروش دیجیتال، فاکتور)، وردپرس به ده‌ها افزونه ناهمگون می‌رسد و نگهداری‌اش سخت می‌شود؛ پیشنهاد همان Django از روز اول است.</p></div></div>
+</section>
+
+<!-- 6 -->
+<section class="sec" id="s6">
+  <div class="sec-head"><div class="num">۶</div><h2>معماری سیستم</h2></div>
+  <p class="lead"><strong>معماری: مونولیت ماژولار.</strong> یک برنامه Django با اپ‌های مستقل، یک پایگاه داده و یک صف کار. میکروسرویس برای این مقیاس فقط هزینه و پیچیدگی اضافه می‌کند؛ مرز اپ‌ها طوری کشیده می‌شود که اگر روزی لازم شد، جدا کردن هر بخش ممکن باشد.</p>
+  <div class="card">
+    <h3>دیاگرام لایه‌ها</h3>
+    <div class="arch">
+      <div class="row two"><div class="node"><b>بازدیدکننده و مشتری</b><small>موبایل و دسکتاپ</small></div><div class="node"><b>مدیر سایت</b><small>پنل Wagtail</small></div></div>
+      <div class="down">↓</div>
+      <div class="layer"><div class="lbl">CDN و <span class="en">Nginx</span><span class="tag">HTTPS · فایل‌های استاتیک · دانلود محافظت‌شده (X-Accel)</span></div></div>
+      <div class="down">↓</div>
+      <div class="layer app">
+        <div class="lbl" style="color:var(--accent)"><span class="en">Django + Wagtail</span> — مونولیت ماژولار (<span class="en">Gunicorn</span>)</div>
+        <div class="row">
+          <div class="node"><b>محتوا</b><small>Wagtail: مقاله، پادکست، فایل</small></div>
+          <div class="node"><b>سرنخ و CRM</b><small>فرم‌ها و پیگیری</small></div>
+          <div class="node"><b>رزرو جلسه</b><small>تقویم و قفل زمان</small></div>
+          <div class="node"><b>رویدادها</b><small>دوره، وبینار، ظرفیت</small></div>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <div class="node"><b>فروشگاه</b><small>کتاب و فایل دیجیتال</small></div>
+          <div class="node core"><b>سفارش و پرداخت</b><small>سفارش واحد، کد تخفیف</small></div>
+          <div class="node"><b>فاکتور</b><small>PDF با شماره ترتیبی</small></div>
+          <div class="node"><b>اطلاع‌رسانی</b><small>پیامک و ایمیل</small></div>
+        </div>
+      </div>
+      <div class="down">↓</div>
+      <div class="layer"><div class="row">
+        <div class="node"><b class="en">PostgreSQL</b><small>داده اصلی و تراکنش‌ها</small></div>
+        <div class="node"><b class="en">Redis</b><small>کش، صف، قفل رزرو</small></div>
+        <div class="node"><b class="en">Celery + Beat</b><small>پیامک، یادآور، PDF</small></div>
+        <div class="node"><b>ذخیره‌سازی ابری</b><small>صوت، ویدئو، فایل پولی</small></div>
+      </div></div>
+      <div class="down">↓</div>
+      <div class="layer ext"><div class="lbl">سرویس‌های بیرونی، پشت آداپتر</div><div class="row">
+        <div class="node"><b>درگاه بانکی</b><small>request / verify / refund</small></div>
+        <div class="node"><b>سامانه پیامک</b><small>ارسال الگو</small></div>
+        <div class="node"><b>سرویس ایمیل</b><small>SMTP تراکنشی</small></div>
+        <div class="node"><b>اسکای‌روم / BBB</b><small>وبینار و جلسه آنلاین</small></div>
+      </div></div>
+    </div>
+    <p style="margin-top:14px;color:var(--muted)">درخواست کاربر از CDN و Nginx به Django می‌رسد؛ کارهای کند (پیامک، ایمیل، ساخت PDF، یادآورها) به Celery سپرده می‌شوند تا صفحه منتظر نماند. همه خریدها از ماژول «سفارش و پرداخت» عبور می‌کنند.</p>
+  </div>
+  <div class="card"><h3>اصول معماری</h3>
+    <ul>
+      <li><b>یک مسیر سفارش و پرداخت برای همه:</b> رزرو، رویداد و فروشگاه فقط Order می‌سازند و به سیگنال <code>order_paid</code> گوش می‌دهند؛ ماژول پرداخت از جزئیات آن‌ها خبر ندارد.</li>
+      <li><b>وابستگی یک‌طرفه:</b> اپ‌های دامنه (<code>booking</code>، <code>events</code>، <code>shop</code>) به <code>orders</code> وابسته‌اند، نه برعکس. <code>notifications</code> به هیچ اپ دامنه‌ای وابسته نیست.</li>
+      <li><b>لایه سرویس:</b> منطق کسب‌وکار در <code>services.py</code> هر اپ، نه در view یا مدل؛ view فقط ورودی را اعتبارسنجی و سرویس را صدا می‌زند.</li>
+      <li><b>آداپتر برای سرویس‌های بیرونی:</b> <code>payments/gateways/</code> و <code>notifications/providers/</code> با یک interface مشترک.</li>
+      <li><b>رندر سمت سرور + HTMX:</b> صفحات برای سئو کامل از سرور می‌آیند؛ بخش‌های تعاملی (انتخاب زمان، سبد، اعمال کد تخفیف) با HTMX بدون رفرش به‌روز می‌شوند.</li>
+      <li><b>API آماده آینده:</b> Django Ninja در <code>/api/v1/</code> برای بخش‌های تعاملی؛ همان API بعداً برای اپ موبایل قابل استفاده است.</li>
+    </ul>
+  </div>
+  <div class="card"><h3>نمونه کد: آداپتر درگاه و سیگنال پرداخت</h3>
+    <div class="code"><div class="bar"><span>payments/gateways/base.py</span><span class="dots"><i></i><i></i><i></i></span></div>
+<pre><span class="k">from</span> abc <span class="k">import</span> ABC, abstractmethod
+<span class="k">from</span> dataclasses <span class="k">import</span> dataclass
+
+<span class="k">@dataclass</span>
+<span class="k">class</span> <span class="f">PaymentRequest</span>:
+    authority: str
+    redirect_url: str
+
+<span class="k">@dataclass</span>
+<span class="k">class</span> <span class="f">VerifyResult</span>:
+    ok: bool
+    ref_id: str | None
+    card_mask: str | None
+    raw: dict
+
+<span class="k">class</span> <span class="f">PaymentGateway</span>(ABC):
+    <span class="c"># amounts are always integer Rials</span>
+    <span class="k">@abstractmethod</span>
+    <span class="k">def</span> <span class="f">request</span>(self, amount: int, callback_url: str, description: str) -&gt; PaymentRequest: ...
+
+    <span class="k">@abstractmethod</span>
+    <span class="k">def</span> <span class="f">verify</span>(self, authority: str, amount: int) -&gt; VerifyResult: ...
+
+    <span class="k">def</span> <span class="f">refund</span>(self, ref_id: str, amount: int) -&gt; bool:
+        <span class="k">raise</span> NotImplementedError</pre></div>
+    <div class="code"><div class="bar"><span>orders/signals.py · booking/receivers.py</span><span class="dots"><i></i><i></i><i></i></span></div>
+<pre><span class="c"># orders/signals.py</span>
+<span class="k">from</span> django.dispatch <span class="k">import</span> Signal
+order_paid = Signal()  <span class="c"># sender=Order, kwargs: order</span>
+
+<span class="c"># booking/receivers.py</span>
+<span class="k">from</span> django.dispatch <span class="k">import</span> receiver
+<span class="k">from</span> orders.signals <span class="k">import</span> order_paid
+<span class="k">from</span> .services <span class="k">import</span> confirm_bookings_for_order
+
+<span class="k">@receiver</span>(order_paid)
+<span class="k">def</span> <span class="f">on_order_paid</span>(sender, order, **kwargs):
+    confirm_bookings_for_order(order)  <span class="c"># held -&gt; confirmed, SMS via Celery</span></pre></div>
+  </div>
+  <div class="legend">متد: <span class="m m-get">GET</span><span class="m m-post">POST</span></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>متد</th><th>مسیر</th><th>کار</th></tr></thead>
+    <tbody>
+      <tr><td><span class="m m-post">POST</span></td><td><code>/api/v1/auth/otp/request</code></td><td>ارسال کد ورود</td></tr>
+      <tr><td><span class="m m-post">POST</span></td><td><code>/api/v1/auth/otp/verify</code></td><td>تأیید کد و ورود</td></tr>
+      <tr><td><span class="m m-get">GET</span></td><td><code>/api/v1/booking/slots?type={id}&amp;from={date}</code></td><td>زمان‌های آزاد</td></tr>
+      <tr><td><span class="m m-post">POST</span></td><td><code>/api/v1/booking/hold</code></td><td>قفل موقت زمان و ساخت سفارش</td></tr>
+      <tr><td><span class="m m-post">POST</span></td><td><code>/api/v1/events/{id}/register</code></td><td>ثبت‌نام رویداد</td></tr>
+      <tr><td><span class="m m-post">POST</span></td><td><code>/api/v1/cart/items</code></td><td>افزودن به سبد</td></tr>
+      <tr><td><span class="m m-post">POST</span></td><td><code>/api/v1/cart/coupon</code></td><td>اعمال کد تخفیف</td></tr>
+      <tr><td><span class="m m-post">POST</span></td><td><code>/api/v1/orders/{id}/pay</code></td><td>شروع پرداخت و دریافت آدرس درگاه</td></tr>
+      <tr><td><span class="m m-get">GET</span></td><td><code>/payments/callback/{gateway}</code></td><td>بازگشت از درگاه (صفحه، نه API)</td></tr>
+      <tr><td><span class="m m-post">POST</span></td><td><code>/api/v1/leads</code></td><td>ثبت هر نوع فرم سرنخ</td></tr>
+      <tr><td><span class="m m-get">GET</span></td><td><code>/downloads/{token}</code></td><td>دانلود امن فایل خریداری‌شده</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 7 -->
+<section class="sec" id="s7">
+  <div class="sec-head"><div class="num">۷</div><h2>مدل داده</h2></div>
+  <div class="callout ok"><div class="ic">✓</div><div><div class="t">قاعده هسته</div><p>همه چیزهای فروختنی (جلسه، دوره، وبینار، کتاب، فایل) از <b>یک مسیر سفارش و پرداخت واحد</b> عبور می‌کنند: یک جدول <code>Order</code> با اقلام چندریختی، نه منطق پرداخت جدا برای هر بخش.</p></div></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>اپ</th><th>موجودیت</th><th>فیلدهای کلیدی</th><th>توضیح</th></tr></thead>
+    <tbody>
+      <tr><td><span class="b b-mod">accounts</span></td><td><code>User</code></td><td><code>mobile (unique), email, full_name, is_staff, created_at</code></td><td>ورود با موبایل</td></tr>
+      <tr><td><span class="b b-mod">accounts</span></td><td><code>OTPCode</code></td><td><code>mobile, code_hash, expires_at, attempts</code></td><td>انقضای ۲ دقیقه، حداکثر ۵ تلاش</td></tr>
+      <tr><td><span class="b b-mod">accounts</span></td><td><code>Organization</code></td><td><code>name, national_id, economic_code, address</code></td><td>برای فاکتور رسمی سازمان‌ها</td></tr>
+      <tr><td><span class="b b-mod">content</span></td><td><code>ArticlePage</code></td><td><code>title, body (StreamField), category, tags, seo_fields, published_at</code></td><td>مقاله (Wagtail Page)</td></tr>
+      <tr><td><span class="b b-mod">content</span></td><td><code>PodcastEpisode</code></td><td><code>title, audio_file | audio_url, duration, episode_no</code></td><td>با فید RSS</td></tr>
+      <tr><td><span class="b b-mod">content</span></td><td><code>Resource</code></td><td><code>title, file, access (public / lead / paid)</code></td><td>فایل آموزشی و کاتالوگ</td></tr>
+      <tr><td><span class="b b-mod">content</span></td><td><code>Comment</code></td><td><code>page, name, text, status (pending / approved / spam)</code></td><td>نظرات</td></tr>
+      <tr><td><span class="b b-mod">portfolio</span></td><td><code>Project, Client, Testimonial</code></td><td><code>client, summary, results, logo, quote, is_featured</code></td><td>سوابق و نظرات</td></tr>
+      <tr><td><span class="b b-mod">crm</span></td><td><code>Lead</code></td><td><code>type (consultation / corporate_training / callback / download / speaking), name, mobile, email, company, payload (JSONB), source, utm, status, assigned_to</code></td><td>همه فرم‌ها یک جدول؛ جزئیات خاص هر فرم در JSONB</td></tr>
+      <tr><td><span class="b b-mod">crm</span></td><td><code>LeadNote</code></td><td><code>lead, author, text, follow_up_at</code></td><td>پیگیری</td></tr>
+      <tr><td><span class="b b-mod">booking</span></td><td><code>SessionType</code></td><td><code>title, mode (online / in_person / phone), duration_min, price, buffer_min, is_active</code></td><td>انواع جلسه</td></tr>
+      <tr><td><span class="b b-mod">booking</span></td><td><code>Availability</code></td><td><code>weekday, start_time, end_time</code></td><td>ساعات کاری هفتگی</td></tr>
+      <tr><td><span class="b b-mod">booking</span></td><td><code>TimeOff</code></td><td><code>start, end, reason</code></td><td>مرخصی و تعطیلی</td></tr>
+      <tr><td><span class="b b-mod">booking</span></td><td><code>Booking</code></td><td><code>user, session_type, start_at, end_at, status (held / confirmed / cancelled / done), meeting_link, order</code></td><td>قید یکتایی زمانی برای جلوگیری از رزرو تکراری</td></tr>
+      <tr><td><span class="b b-mod">events</span></td><td><code>Event</code></td><td><code>kind (course / webinar / talk), title, capacity, price, start_at, sessions (JSON), join_link, recording</code></td><td>دوره و وبینار</td></tr>
+      <tr><td><span class="b b-mod">events</span></td><td><code>Registration</code></td><td><code>event, user, status (pending / paid / waitlist / cancelled), order</code></td><td>ثبت‌نام</td></tr>
+      <tr><td><span class="b b-mod">shop</span></td><td><code>Product</code></td><td><code>kind (physical / digital), title, price, stock, weight, file</code></td><td>کتاب و محصول</td></tr>
+      <tr><td><span class="b b-mod">shop</span></td><td><code>DownloadToken</code></td><td><code>user, product, token, expires_at, downloads_left</code></td><td>لینک دانلود امن</td></tr>
+      <tr><td><span class="b b-mod">orders</span></td><td><code>Order</code></td><td><code>number, user, organization, status (pending / paid / failed / refunded / cancelled), subtotal, discount, tax, total, shipping_address</code></td><td>سفارش واحد</td></tr>
+      <tr><td><span class="b b-mod">orders</span></td><td><code>OrderItem</code></td><td><code>order, content_type + object_id, title_snapshot, unit_price, qty</code></td><td>چندریختی؛ قیمت در لحظه خرید ذخیره می‌شود</td></tr>
+      <tr><td><span class="b b-mod">orders</span></td><td><code>Coupon</code></td><td><code>code, type (percent / amount), value, max_uses, per_user_limit, valid_from, valid_to, applies_to</code></td><td>کد تخفیف</td></tr>
+      <tr><td><span class="b b-mod">payments</span></td><td><code>Payment</code></td><td><code>order, gateway, amount, authority, ref_id, card_mask, status, raw_response (JSONB)</code></td><td>هر تلاش پرداخت یک ردیف</td></tr>
+      <tr><td><span class="b b-mod">billing</span></td><td><code>Invoice</code></td><td><code>order, number, issued_at, pdf_file, buyer_snapshot</code></td><td>شماره ترتیبی و بدون فاصله</td></tr>
+      <tr><td><span class="b b-mod">notifications</span></td><td><code>Notification</code></td><td><code>channel (sms / email), to, template, params, status, provider_message_id, sent_at</code></td><td>لاگ همه پیام‌ها</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid-2">
+    <div class="callout danger" style="margin:0"><div class="ic">×</div><div><div class="t">هرگز float برای پول</div><p>مبالغ به <b>ریال و به‌صورت عدد صحیح</b> (<code>BigIntegerField</code>) ذخیره شوند؛ نمایش به تومان فقط در لایه قالب.</p></div></div>
+    <div class="callout note" style="margin:0"><div class="ic">i</div><div><div class="t">زمان</div><p>همه زمان‌ها در UTC ذخیره و در نمایش به وقت تهران و شمسی تبدیل شوند.</p></div></div>
+    <div class="callout warn" style="margin:0"><div class="ic">!</div><div><div class="t">رزرو هم‌زمان</div><p>از رزرو هم‌زمان یک زمان با <b>قید پایگاه داده</b> (Exclusion Constraint در PostgreSQL روی بازه زمانی) جلوگیری شود، نه فقط با کد. ظرفیت رویداد با <code>SELECT ... FOR UPDATE</code> داخل تراکنش کم شود.</p></div></div>
+    <div class="callout ok" style="margin:0"><div class="ic">✓</div><div><div class="t">snapshot فاکتور</div><p>اطلاعات خریدار در فاکتور به‌صورت snapshot ذخیره شود تا تغییر پروفایل، فاکتور قدیمی را عوض نکند.</p></div></div>
+  </div>
+  <div class="code"><div class="bar"><span>booking/models.py — no overlapping confirmed bookings</span><span class="dots"><i></i><i></i><i></i></span></div>
+<pre><span class="k">from</span> django.contrib.postgres.constraints <span class="k">import</span> ExclusionConstraint
+<span class="k">from</span> django.contrib.postgres.fields <span class="k">import</span> RangeOperators
+<span class="k">from</span> django.db.models <span class="k">import</span> Func, Q
+
+<span class="k">class</span> <span class="f">TsTzRange</span>(Func):
+    function = <span class="s">"TSTZRANGE"</span>
+
+<span class="k">class</span> <span class="f">Booking</span>(models.Model):
+    ...
+    <span class="k">class</span> <span class="f">Meta</span>:
+        constraints = [
+            ExclusionConstraint(
+                name=<span class="s">"booking_no_overlap"</span>,
+                expressions=[(TsTzRange(<span class="s">"start_at"</span>, <span class="s">"end_at"</span>), RangeOperators.OVERLAPS)],
+                condition=Q(status__in=[<span class="s">"held"</span>, <span class="s">"confirmed"</span>]),
+            )
+        ]</pre></div>
+</section>
+
+<!-- 8 -->
+<section class="sec" id="s8">
+  <div class="sec-head"><div class="num">۸</div><h2>جریان‌های کلیدی</h2></div>
+  <div class="card"><h3>۸.۱ رزرو جلسه مشاوره</h3>
+    <div class="flow" style="margin-bottom:16px">
+      <div class="st">انتخاب نوع جلسه</div><div class="ar">←</div>
+      <div class="st">انتخاب زمان</div><div class="ar">←</div>
+      <div class="st">ورود با OTP</div><div class="ar">←</div>
+      <div class="st hl">held<small>قفل ۱۵ دقیقه</small></div><div class="ar">←</div>
+      <div class="st">درگاه</div><div class="ar">←</div>
+      <div class="st good">confirmed<small>پیامک + فاکتور</small></div>
+    </div>
+    <ol class="timeline">
+      <li><span class="dot">۱</span><div class="box">کاربر نوع جلسه را انتخاب می‌کند؛ سیستم زمان‌های آزاد ۱۴ روز آینده را از <code>Availability</code> منهای <code>TimeOff</code> و رزروهای موجود محاسبه می‌کند.</div></li>
+      <li><span class="dot">۲</span><div class="box">کاربر زمان را انتخاب و موبایلش را وارد می‌کند؛ OTP تأیید می‌شود و حساب در صورت نبود ساخته می‌شود.</div></li>
+      <li><span class="dot">۳</span><div class="box">یک <code>Booking</code> با وضعیت <code>held</code> و انقضای ۱۵ دقیقه ساخته می‌شود و یک <code>Order</code> متصل به آن.</div></li>
+      <li><span class="dot">۴</span><div class="box">کاربر به درگاه می‌رود (جریان ۸.۲).</div></li>
+      <li><span class="dot">۵</span><div class="box">پس از پرداخت موفق: Booking ← <code>confirmed</code>، لینک جلسه آنلاین ساخته می‌شود، پیامک تأیید به کاربر و اعلان به مدیر ارسال می‌شود، فاکتور صادر می‌شود.</div></li>
+      <li><span class="dot">۶</span><div class="box">Celery Beat یادآورها را ۲۴ ساعت و ۱ ساعت قبل ارسال می‌کند.</div></li>
+      <li><span class="dot">۷</span><div class="box">اگر پرداخت ظرف ۱۵ دقیقه انجام نشد، یک کار زمان‌بندی‌شده Booking را آزاد می‌کند.</div></li>
+    </ol>
+  </div>
+  <div class="card"><h3>۸.۲ پرداخت (مشترک برای همه خریدها)</h3>
+    <div class="flow" style="margin-bottom:16px">
+      <div class="st">Order<small>pending، مبلغ قفل</small></div><div class="ar">←</div>
+      <div class="st">request<small>authority</small></div><div class="ar">←</div>
+      <div class="st">صفحه درگاه</div><div class="ar">←</div>
+      <div class="st">callback</div><div class="ar">←</div>
+      <div class="st hl">verify سمت سرور<small>+ مقایسه مبلغ</small></div><div class="ar">←</div>
+      <div class="st good">paid<small>order_paid</small></div>
+      <div class="ar" style="color:var(--faint)">/</div>
+      <div class="st bad">failed</div>
+    </div>
+    <ol class="timeline">
+      <li><span class="dot">۱</span><div class="box">Order با وضعیت <code>pending</code> و مبلغ نهایی (پس از کد تخفیف) قفل می‌شود.</div></li>
+      <li><span class="dot">۲</span><div class="box">سرور درخواست توکن پرداخت را به درگاه می‌فرستد و یک <code>Payment</code> با <code>authority</code> ذخیره می‌کند.</div></li>
+      <li><span class="dot">۳</span><div class="box">کاربر به صفحه درگاه منتقل می‌شود.</div></li>
+      <li><span class="dot">۴</span><div class="box">درگاه کاربر را به <code>callback_url</code> برمی‌گرداند.</div></li>
+      <li><span class="dot">۵</span><div class="box">سرور <b>همیشه</b> تراکنش را با متد <code>verify</code> درگاه تأیید می‌کند و مبلغ را با مبلغ سفارش مقایسه می‌کند.</div></li>
+      <li><span class="dot">۶</span><div class="box">موفق: Order ← <code>paid</code> و سیگنال <code>order_paid</code> اجرا می‌شود؛ هر ماژول (رزرو، رویداد، فروشگاه) به آن واکنش نشان می‌دهد.</div></li>
+      <li><span class="dot">۷</span><div class="box">callback باید <b>idempotent</b> باشد: برگشت دوباره یا رفرش صفحه نباید دو بار سفارش را تأیید کند.</div></li>
+      <li><span class="dot">۸</span><div class="box">یک کار هر ۱۰ دقیقه پرداخت‌های معلق را دوباره استعلام می‌کند (برای وقتی کاربر بعد از پرداخت صفحه را بسته است).</div></li>
+    </ol>
+    <div class="callout danger"><div class="ic">×</div><div><div class="t">خطای رایج و خطرناک</div><p>هرگز به پارامترهای برگشتی در callback (مثل <code>Status=OK</code>) اعتماد نکنید. بدون verify سمت سرور، هر کسی می‌تواند با ساختن URL بازگشت، سفارش را «پرداخت‌شده» کند.</p></div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><h3>۸.۳ ثبت‌نام وبینار و دوره</h3>
+      <ol class="timeline">
+        <li><span class="dot">۱</span><div class="box">کاربر روی «ثبت‌نام» می‌زند؛ اگر ظرفیت پر است به لیست انتظار می‌رود.</div></li>
+        <li><span class="dot">۲</span><div class="box">رویداد رایگان: Registration مستقیم <code>paid</code> می‌شود. پولی: جریان ۸.۲.</div></li>
+        <li><span class="dot">۳</span><div class="box">پس از تأیید: پیامک با تاریخ شمسی و لینک ورود، و افزودن به پنل کاربر.</div></li>
+        <li><span class="dot">۴</span><div class="box">یادآور ۱ روز و ۳۰ دقیقه قبل.</div></li>
+        <li><span class="dot">۵</span><div class="box">پس از رویداد: انتشار لینک ضبط برای ثبت‌نام‌کنندگان و (فاز ۳) گواهی.</div></li>
+      </ol>
+    </div>
+    <div class="card"><h3>۸.۴ خرید کتاب و محصول دیجیتال</h3>
+      <ol class="timeline">
+        <li><span class="dot">۱</span><div class="box">افزودن به سبد ← اعمال کد تخفیف ← ورود با OTP ← آدرس (فقط کتاب چاپی) ← پرداخت.</div></li>
+        <li><span class="dot">۲</span><div class="box">محصول دیجیتال: ساخت <code>DownloadToken</code> با اعتبار ۷ روز و ۵ بار دانلود؛ فایل از مسیر محافظت‌شده (<code>X-Accel-Redirect</code> در Nginx یا URL امضاشده S3) تحویل می‌شود، نه لینک عمومی.</div></li>
+        <li><span class="dot">۳</span><div class="box">کتاب چاپی: سفارش در پنل با وضعیت «در حال ارسال» و ثبت کد رهگیری پست؛ پیامک کد رهگیری.</div></li>
+      </ol>
+    </div>
+  </div>
+  <div class="card"><h3>۸.۵ درخواست مشاوره سازمانی (بدون پرداخت آنلاین)</h3>
+    <ol class="timeline">
+      <li><span class="dot">۱</span><div class="box">فرم چندمرحله‌ای: اطلاعات سازمان ← نیاز (ساختار، جذب، ارزیابی عملکرد، آموزش) ← اندازه سازمان و زمان‌بندی ← اطلاعات تماس.</div></li>
+      <li><span class="dot">۲</span><div class="box">ثبت Lead، پیامک تشکر به متقاضی، اعلان فوری به مدیر (پیامک + ایمیل).</div></li>
+      <li><span class="dot">۳</span><div class="box">به‌روزرسانی وضعیت در CRM (قیف زیر).</div></li>
+      <li><span class="dot">۴</span><div class="box">صدور پیش‌فاکتور از پنل و ارسال لینک پرداخت آنلاین یا ثبت پرداخت دستی.</div></li>
+    </ol>
+    <div class="flow" style="margin-top:6px">
+      <div class="st">جدید</div><div class="ar">←</div><div class="st">تماس گرفته شد</div><div class="ar">←</div><div class="st">جلسه اولیه</div><div class="ar">←</div><div class="st hl">پیشنهاد ارسال شد</div><div class="ar">←</div><div class="st good">برنده</div><div class="ar" style="color:var(--faint)">/</div><div class="st bad">بازنده</div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="sec" id="s9">
+  <div class="sec-head"><div class="num">۹</div><h2>یکپارچه‌سازی‌ها</h2></div>
+  <p class="lead">هر سرویس بیرونی پشت یک <strong>لایه آداپتر</strong> (Interface + پیاده‌سازی) قرار می‌گیرد تا تعویض ارائه‌دهنده فقط یک تنظیم را عوض کند.</p>
+  <div class="callout warn"><div class="ic">!</div><div><div class="t">استعلام قبل از قرارداد</div><p>نام ارائه‌دهندگان زیر نمونه‌های رایج‌اند؛ قیمت، شرایط و فعال بودن سرویس را هنگام عقد قرارداد استعلام کنید.</p></div></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>سرویس</th><th>گزینه‌ها</th><th>پیشنهاد</th><th>نکته فنی</th></tr></thead>
+    <tbody>
+      <tr><td>درگاه پرداخت</td><td>واسط‌های پرداخت (مثل زرین‌پال، زیبال، پی‌پینگ) یا درگاه مستقیم بانک (سامان، ملت و...)</td><td>شروع با یک واسط پرداخت (راه‌اندازی سریع‌تر برای شخص حقیقی) + یک درگاه پشتیبان</td><td>کلاس پایه <code>PaymentGateway</code> با <code>request</code>، <code>verify</code>، <code>refund</code>؛ sandbox برای تست</td></tr>
+      <tr><td>پیش‌نیاز درگاه</td><td>نماد اعتماد الکترونیکی (اینماد)</td><td>از هفته اول درخواست دهید؛ چند هفته طول می‌کشد</td><td>معمولاً دامنه فعال، صفحه تماس، قوانین و آدرس واقعی لازم است</td></tr>
+      <tr><td>پیامک</td><td>کاوه‌نگار، SMS.ir، ملی‌پیامک، فراز اس‌ام‌اس</td><td>سامانه‌ای با <b>ارسال الگو (Pattern) از خط خدماتی</b></td><td>پیامک تراکنشی فقط با الگوی تأییدشده؛ تبلیغاتی فقط با رضایت و لغو ۱۱</td></tr>
+      <tr><td>ایمیل</td><td>SMTP اختصاصی، Brevo، Mailgun</td><td>سرویس تراکنشی با SPF، DKIM و DMARC</td><td>ایمیل‌ها از صف Celery ارسال شوند</td></tr>
+      <tr><td>واتساپ</td><td>لینک <code>wa.me</code>، WhatsApp Business API</td><td>فقط لینک کلیک‌به‌چت + پیام پیش‌فرض</td><td>دکمه شناور + در صفحه تماس و صفحات خدمات</td></tr>
+      <tr><td>پیام‌رسان داخلی</td><td>بله، ایتا، تلگرام</td><td>لینک کانال/پشتیبانی در صورت نیاز مخاطب</td><td>اعلان داخلی به مدیر از طریق ربات تلگرام یا بله (اختیاری)</td></tr>
+      <tr><td>وبینار و جلسه آنلاین</td><td>اسکای‌روم، BigBlueButton، Google Meet</td><td>اسکای‌روم یا BBB برای پایداری در ایران</td><td>فاز ۲: لینک دستی در رویداد؛ فاز ۳: ساخت خودکار اتاق با API</td></tr>
+      <tr><td>ویدئو</td><td>آپارات، یوتیوب، ویدئو روی فضای ابری</td><td>آپارات برای مخاطب داخل ایران، یوتیوب برای مخاطب خارج</td><td>فیلد <code>embed_url</code>؛ ویدئوی پولی روی فضای ابری با لینک امضاشده</td></tr>
+      <tr><td>پادکست</td><td>کست‌باکس، اسپاتیفای، فایل خود سایت</td><td>فایل روی فضای ابری + فید RSS از سایت</td><td>فید RSS استاندارد iTunes برای ثبت در اپ‌ها</td></tr>
+      <tr><td>نقشه</td><td>نشان، Google Maps</td><td>نشان یا تصویر ثابت + لینک</td><td>—</td></tr>
+      <tr><td>تقویم</td><td>Google Calendar</td><td>فاز ۳</td><td>OAuth یک‌طرفه برای مسدود کردن زمان‌های شخصی</td></tr>
+      <tr><td>مالیات و فاکتور رسمی</td><td>سامانه مودیان</td><td>با مشاور مالیاتی بررسی شود</td><td>در صورت لزوم، ارسال فاکتورها از طریق شرکت معتمد یا API سامانه در فاز ۳</td></tr>
+      <tr><td>شبکه‌های اجتماعی</td><td>لینکدین، اینستاگرام</td><td>لینک‌ها، دکمه اشتراک، Open Graph</td><td>تصویر OG خودکار برای هر مقاله</td></tr>
+    </tbody>
+  </table></div>
+  <div class="code"><div class="bar"><span>config/settings/base.py — swappable providers</span><span class="dots"><i></i><i></i><i></i></span></div>
+<pre>PAYMENT_GATEWAYS = {
+    <span class="s">"primary"</span>: <span class="s">"payments.gateways.zarinpal.ZarinpalGateway"</span>,
+    <span class="s">"fallback"</span>: <span class="s">"payments.gateways.zibal.ZibalGateway"</span>,
+}
+SMS_PROVIDER = <span class="s">"notifications.providers.kavenegar.KavenegarSMS"</span>
+SMS_TEMPLATES = {
+    <span class="s">"otp"</span>: env(<span class="s">"SMS_TPL_OTP"</span>),
+    <span class="s">"booking_confirmed"</span>: env(<span class="s">"SMS_TPL_BOOKING"</span>),
+    <span class="s">"reminder"</span>: env(<span class="s">"SMS_TPL_REMINDER"</span>),
+    <span class="s">"invoice"</span>: env(<span class="s">"SMS_TPL_INVOICE"</span>),
+}</pre></div>
+</section>
+
+<!-- 10 -->
+<section class="sec" id="s10">
+  <div class="sec-head"><div class="num">۱۰</div><h2>طراحی UI/UX و پنل مدیریت</h2></div>
+  <p class="lead"><strong>جهت طراحی:</strong> حرفه‌ای، گرم و قابل اعتماد؛ نه شرکتی و سرد. مشاور منابع انسانی «آدم‌ها» را می‌فروشد، پس عکس واقعی، فضای سفید زیاد و تایپوگرافی خوانا مهم‌تر از جلوه‌های گرافیکی است.</p>
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card"><h3>هویت بصری</h3><ul>
+      <li><b>رنگ:</b> یک رنگ اصلی عمیق (سرمه‌ای، سبز تیره یا بادمجانی) + یک رنگ تأکید گرم برای دکمه‌های فراخوان + خاکستری‌های خنثی</li>
+      <li><b>فونت:</b> Vazirmatn (رایگان) یا یکان‌بخ/ایران‌سنس (لایسنس تجاری)؛ دو وزن برای تیتر و متن</li>
+      <li><b>عکاسی:</b> یک جلسه عکاسی حرفه‌ای (پرتره، در حال تدریس، در جلسه) قبل از طراحی؛ عکس استوک به حداقل</li>
+      <li><b>سیستم طراحی:</b> اجزای Tailwind مشترک: دکمه، کارت، فرم، نوار اعلان، مودال، تقویم</li>
+    </ul></div>
+    <div class="card"><h3>اصول تجربه کاربری</h3><ul>
+      <li>دکمه «درخواست مشاوره» در هدر همه صفحات و دکمه واتساپ شناور در موبایل</li>
+      <li>فرم‌ها کوتاه؛ فرم سازمانی چندمرحله‌ای با نوار پیشرفت</li>
+      <li>خرید بدون ثبت‌نام قبلی (OTP در لحظه)</li>
+      <li>هر صفحه خدمت با یک نمونه موفق و یک فراخوان</li>
+      <li>پیام‌های خطا و موفقیت فارسی و انسانی</li>
+    </ul></div>
+  </div>
+  <div class="card"><h3>الگوی صفحه اصلی (از بالا به پایین)</h3>
+    <ol class="timeline">
+      <li><span class="dot">۱</span><div class="box"><b>Hero:</b> عکس مشاور + یک جمله ارزش (چه مشکلی از سازمان‌ها حل می‌شود) + دو دکمه «درخواست مشاوره» و «رزرو جلسه»</div></li>
+      <li><span class="dot">۲</span><div class="box">نوار لوگوی سازمان‌های همکار</div></li>
+      <li><span class="dot">۳</span><div class="box">خدمات (۳ تا ۴ کارت)</div></li>
+      <li><span class="dot">۴</span><div class="box">عدد و رقم: سال تجربه، سازمان‌ها، ساعت آموزش، شرکت‌کنندگان</div></li>
+      <li><span class="dot">۵</span><div class="box">دوره یا وبینار پیش‌رو با شمارش معکوس</div></li>
+      <li><span class="dot">۶</span><div class="box">نظرات مشتریان</div></li>
+      <li><span class="dot">۷</span><div class="box">کتاب‌ها</div></li>
+      <li><span class="dot">۸</span><div class="box">آخرین مقالات و پادکست</div></li>
+      <li><span class="dot">۹</span><div class="box">فرم کوتاه «با من تماس بگیرید» + دانلود کاتالوگ</div></li>
+      <li><span class="dot">۱۰</span><div class="box">فوتر: تماس، شبکه‌ها، نماد اعتماد، قوانین</div></li>
+    </ol>
+  </div>
+  <div class="grid-2">
+    <div class="card"><h3>پنل مدیریت</h3><ul>
+      <li><b>Wagtail Admin</b> برای محتوا: صفحات، مقالات، پادکست، تصاویر، سئو، زمان‌بندی انتشار</li>
+      <li><b>Wagtail Snippets / ModelAdmin</b> برای داده‌های عملیاتی: سرنخ‌ها، رزروها، رویدادها، محصولات، سفارش‌ها، کدهای تخفیف — همه در یک پنل</li>
+      <li>داشبورد خانه پنل: سرنخ‌های جدید، جلسات امروز و فردا، ثبت‌نام‌های رویداد بعدی، فروش ۳۰ روز اخیر</li>
+      <li>خروجی اکسل از سرنخ‌ها، سفارش‌ها و ثبت‌نام‌ها</li>
+      <li>تاریخ‌ها در پنل هم شمسی</li>
+    </ul></div>
+    <div class="card"><h3>خروجی‌های طراحی مورد نیاز</h3>
+      <ul class="checklist">
+        <li><span class="box"></span>Moodboard و انتخاب رنگ و فونت</li>
+        <li><span class="box"></span>وایرفریم موبایل و دسکتاپ صفحات کلیدی: خانه، خدمت، رزرو، رویداد، محصول، مقاله، پرداخت</li>
+        <li><span class="box"></span>طرح نهایی در Figma + کیت اجزا</li>
+        <li><span class="box"></span>نمونه اولیه کلیک‌پذیر مسیر رزرو و پرداخت برای تست با ۳ تا ۵ کاربر</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="sec" id="s11">
+  <div class="sec-head"><div class="num">۱۱</div><h2>امنیت، حریم خصوصی و قوانین</h2></div>
+  <div class="callout danger"><div class="ic">×</div><div><div class="t">نقاط پرریسک</div><p>بیشترین ریسک این سایت در <b>پرداخت، OTP و فایل‌های پولی</b> است؛ کنترل‌های زیر پیش از راه‌اندازی الزامی‌اند.</p></div></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>حوزه</th><th>کنترل</th></tr></thead>
+    <tbody>
+      <tr><td class="nowrap">ارتباط</td><td>HTTPS اجباری، HSTS، گواهی Let's Encrypt با تمدید خودکار</td></tr>
+      <tr><td class="nowrap">OTP</td><td>کد ۵ یا ۶ رقمی هش‌شده، انقضای ۲ دقیقه، حداکثر ۵ تلاش، محدودیت ارسال (مثلاً ۳ پیامک در ۱۰ دقیقه برای هر شماره و هر IP) برای جلوگیری از «پیامک‌بمب» و هزینه</td></tr>
+      <tr><td class="nowrap">فرم‌ها</td><td>CSRF داخلی Django، کپچا (Cloudflare Turnstile یا ARCaptcha) و فیلد honeypot، محدودیت نرخ با <code>django-ratelimit</code></td></tr>
+      <tr><td class="nowrap">پرداخت</td><td>verify سمت سرور، مقایسه مبلغ، callback idempotent، لاگ کامل پاسخ درگاه، هرگز ذخیره اطلاعات کارت</td></tr>
+      <tr><td class="nowrap">فایل‌های پولی</td><td>خارج از مسیر عمومی، تحویل با توکن یکبارمصرف یا URL امضاشده با انقضا</td></tr>
+      <tr><td class="nowrap">آپلود</td><td>بررسی نوع و اندازه فایل، عدم اجرای فایل آپلودی</td></tr>
+      <tr><td class="nowrap">پنل مدیریت</td><td>آدرس غیرپیش‌فرض، احراز دومرحله‌ای (<code>django-otp</code>)، محدودیت تلاش ورود (<code>django-axes</code>)</td></tr>
+      <tr><td class="nowrap">اسرار</td><td>کلیدهای درگاه و پیامک در متغیرهای محیطی، نه در کد و گیت</td></tr>
+      <tr><td class="nowrap">هدرها</td><td>CSP، X-Frame-Options، Referrer-Policy (<code>django-csp</code>)</td></tr>
+      <tr><td class="nowrap">وابستگی‌ها</td><td>به‌روزرسانی ماهانه، اسکن با <code>pip-audit</code> و Dependabot</td></tr>
+      <tr><td class="nowrap">بکاپ</td><td>بکاپ روزانه رمزنگاری‌شده پایگاه داده و فایل‌ها در مکان دوم؛ تست بازیابی ماهانه</td></tr>
+      <tr><td class="nowrap">لاگ</td><td>لاگ ورود به پنل، تغییر سفارش‌ها و بازگشت وجه (<code>django-simple-history</code>)</td></tr>
+    </tbody>
+  </table></div>
+  <div class="card"><h3>حریم خصوصی و محتوای حقوقی</h3><ul>
+    <li>صفحه <b>حریم خصوصی</b>: چه داده‌ای (نام، موبایل، ایمیل، اطلاعات سازمان) و برای چه جمع می‌شود، مدت نگهداری، عدم فروش به ثالث</li>
+    <li>صفحه <b>قوانین</b>: شرایط خرید، لغو و بازگشت وجه جلسه (مثلاً تا ۲۴ ساعت قبل)، دوره، محصول دیجیتال (معمولاً غیرقابل بازگشت پس از دانلود) و کتاب چاپی</li>
+    <li>چک‌باکس رضایت جداگانه برای پیامک و ایمیل تبلیغاتی</li>
+    <li><b>محرمانگی مشاوره:</b> اطلاعات سازمان‌ها و یادداشت‌های جلسات حساس‌اند؛ دسترسی پنل به CRM فقط برای نقش مدیر</li>
+    <li>نمایش لوگو و نام مشتریان و نظراتشان <b>فقط با رضایت مکتوب</b> آن‌ها</li>
+  </ul></div>
+  <div class="callout warn"><div class="ic">!</div><div><div class="t">بازبینی حقوقی</div><p>متن‌های حقوقی را یک بار به مشاور حقوقی نشان دهید؛ این سند جایگزین مشاوره حقوقی نیست.</p></div></div>
+</section>
+
+<!-- 12 -->
+<section class="sec" id="s12">
+  <div class="sec-head"><div class="num">۱۲</div><h2>زیرساخت، استقرار و DevOps</h2></div>
+  <div class="callout ok"><div class="ic">✓</div><div><div class="t">پیشنهاد</div><p>یک سرور ابری داخل ایران (به‌دلیل callback درگاه‌ها، سرعت برای مخاطب داخلی و پایداری در زمان اختلال اینترنت بین‌الملل) با Docker Compose، پشت CDN داخلی. برای این حجم ترافیک Kubernetes لازم نیست.</p></div></div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>محیط</th><th>کاربرد</th><th>مشخصات پیشنهادی</th></tr></thead>
+    <tbody>
+      <tr><td><span class="b b-p0">Local</span></td><td>توسعه</td><td>Docker Compose: <code>web, db, redis, worker, mailpit</code></td></tr>
+      <tr><td><span class="b b-p2">Staging</span></td><td>تست با درگاه sandbox و پیامک تست</td><td>سرور کوچک ۲ هسته، ۴ گیگ رم</td></tr>
+      <tr><td><span class="b b-p1">Production</span></td><td>سایت اصلی</td><td>۴ هسته، ۸ گیگ رم، ۸۰ گیگ SSD + ذخیره‌سازی ابری برای فایل‌ها</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card"><h3>کانتینرهای Production</h3><ul>
+      <li><code>nginx</code> — TLS، فایل‌های استاتیک، X-Accel برای دانلود محافظت‌شده</li>
+      <li><code>web</code> — Gunicorn + Django (۳ تا ۵ worker)</li>
+      <li><code>worker</code> — Celery برای پیامک، ایمیل، PDF</li>
+      <li><code>beat</code> — زمان‌بندی یادآورها و آزادسازی رزروهای منقضی</li>
+      <li><code>db</code> — PostgreSQL (یا سرویس مدیریت‌شده، در صورت دسترسی)</li>
+      <li><code>redis</code> — کش، صف، قفل</li>
+    </ul></div>
+    <div class="card"><h3>مانیتورینگ و نگهداری</h3><ul>
+      <li>Sentry/GlitchTip برای خطاها، با اعلان</li>
+      <li>Uptime Kuma یا سرویس مشابه برای پایش در دسترس بودن (هر ۱ دقیقه)</li>
+      <li>لاگ ساخت‌یافته و چرخش لاگ</li>
+      <li>هشدار برای: شکست پرداخت پشت سر هم، اتمام اعتبار پنل پیامک، پر شدن دیسک</li>
+      <li>Google Search Console برای سئو و خطاهای خزش</li>
+    </ul></div>
+  </div>
+  <div class="card"><h3>گردش کار توسعه و استقرار</h3>
+    <div class="flow" style="margin-bottom:14px">
+      <div class="st">feature branch</div><div class="ar">←</div><div class="st">Pull Request<small>CI: lint, test, audit</small></div><div class="ar">←</div><div class="st">merge به main</div><div class="ar">←</div><div class="st">Staging<small>خودکار</small></div><div class="ar">←</div><div class="st">tag v1.x.y</div><div class="ar">←</div><div class="st hl">Production</div>
+    </div>
+    <ol class="timeline">
+      <li><span class="dot">۱</span><div class="box">کد در Git (GitHub یا GitLab خودمیزبان، با توجه به دسترسی از ایران)</div></li>
+      <li><span class="dot">۲</span><div class="box">شاخه <code>main</code> محافظت‌شده؛ کار روی شاخه‌های feature با Pull Request</div></li>
+      <li><span class="dot">۳</span><div class="box">CI در هر PR: <code>ruff</code> (lint و format)، <code>mypy</code> (اختیاری)، <code>pytest</code>، بررسی migrationها، <code>pip-audit</code></div></li>
+      <li><span class="dot">۴</span><div class="box">ادغام در <code>main</code> ← استقرار خودکار روی Staging</div></li>
+      <li><span class="dot">۵</span><div class="box">تگ نسخه (مثلاً <code>v1.2.0</code>) ← استقرار روی Production و اجرای migration</div></li>
+      <li><span class="dot">۶</span><div class="box">بازگشت سریع: نگه‌داشتن ایمیج نسخه قبل</div></li>
+    </ol>
+    <div class="code"><div class="bar"><span>deploy.sh</span><span class="dots"><i></i><i></i><i></i></span></div>
+<pre><span class="c"># on production server</span>
+export TAG=v1.2.0
+docker compose pull
+docker compose run --rm web python manage.py migrate --noinput
+docker compose run --rm web python manage.py collectstatic --noinput
+docker compose up -d
+<span class="c"># rollback: TAG=v1.1.3 docker compose up -d</span></pre></div>
+  </div>
+  <div class="card"><h3>ساختار پیشنهادی پروژه</h3>
+    <div class="code" style="margin:0"><div class="bar"><span>tree</span><span class="dots"><i></i><i></i><i></i></span></div>
+<pre>hr-site/
+  config/            <span class="c"># settings (base, dev, prod), urls, celery</span>
+  apps/
+    accounts/        <span class="c"># User, OTP, Organization</span>
+    content/         <span class="c"># Wagtail pages, articles, podcast, resources</span>
+    portfolio/       <span class="c"># projects, clients, testimonials</span>
+    crm/             <span class="c"># leads, notes</span>
+    booking/         <span class="c"># session types, availability, bookings</span>
+    events/          <span class="c"># courses, webinars, registrations</span>
+    shop/            <span class="c"># products, cart, download tokens</span>
+    orders/          <span class="c"># orders, items, coupons</span>
+    payments/        <span class="c"># gateway adapters, callbacks</span>
+    billing/         <span class="c"># invoices, PDF</span>
+    notifications/   <span class="c"># sms/email adapters, templates</span>
+    core/            <span class="c"># jalali utils, money, shared mixins</span>
+  templates/
+  static/            <span class="c"># tailwind source, htmx, alpine</span>
+  tests/
+  docker/
+  docker-compose.yml
+  pyproject.toml</pre></div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section class="sec" id="s13">
+  <div class="sec-head"><div class="num">۱۳</div><h2>نقشه راه و برآورد زمان</h2></div>
+  <p class="lead"><strong>با یک توسعه‌دهنده تمام‌وقت، MVP حدود هفته ۸ و نسخه کامل فروش حدود هفته ۱۴ منتشر می‌شود.</strong> طراحی، عکاسی و تولید محتوا باید موازی پیش بروند؛ معمولاً محتوا گلوگاه اصلی است، نه کد. برآوردها تقریبی‌اند و با دو توسعه‌دهنده حدود ۳۰٪ کوتاه‌تر می‌شوند.</p>
+  <div class="card">
+    <div class="roadmap">
+      <div class="phase"><div class="ph"><h4>آماده‌سازی</h4><span class="b b-p0">فاز ۰</span></div><div class="wk">هفته ۱ تا ۲</div><ul>
+        <li>نهایی‌سازی نیازمندی‌ها</li><li>ثبت دامنه و درخواست اینماد</li><li>عکاسی و تولید محتوا</li><li>وایرفریم و طرح UI</li><li>ریپو، Docker و CI</li></ul></div>
+      <div class="phase hl"><div class="ph"><h4>MVP</h4><span class="b b-p1">فاز ۱</span></div><div class="wk">هفته ۳ تا ۸</div><ul>
+        <li>صفحات و مقالات با Wagtail</li><li>خدمات، سوابق، نظرات</li><li>فرم‌ها و CRM ساده</li><li>ورود با OTP</li><li>رزرو جلسه و پرداخت</li><li>پیامک و ایمیل</li></ul></div>
+      <div class="phase"><div class="ph"><h4>فروش و رویداد</h4><span class="b b-p2">فاز ۲</span></div><div class="wk">هفته ۹ تا ۱۴</div><ul>
+        <li>دوره، وبینار، تقویم</li><li>فروشگاه کتاب و فایل</li><li>سبد و کد تخفیف</li><li>فاکتور PDF</li><li>پنل کاربر</li><li>داشبورد و گزارش فروش</li></ul></div>
+      <div class="phase"><div class="ph"><h4>تکمیل</h4><span class="b b-p3">فاز ۳</span></div><div class="wk">هفته ۱۵ تا ۱۸</div><ul>
+        <li>گواهی حضور</li><li>Google Calendar</li><li>اتاق وبینار خودکار</li><li>خبرنامه</li><li>بهینه‌سازی سئو و سرعت</li></ul></div>
+    </div>
+    <div class="gates">
+      <div class="gate"><div class="dm"></div><b>گیت ۱</b><span>طرح و محتوای اولیه تأیید</span></div>
+      <div class="gate"><div class="dm"></div><b>گیت ۲</b><span>انتشار عمومی MVP</span></div>
+      <div class="gate"><div class="dm"></div><b>گیت ۳</b><span>اولین فروش آنلاین</span></div>
+      <div class="gate blank"><div class="dm"></div></div>
+    </div>
+  </div>
+  <div class="callout warn"><div class="ic">!</div><div><div class="t">برنامه جایگزین</div><p>اگر اینماد و درگاه تا گیت ۲ آماده نباشند، MVP با فرم و پرداخت دستی منتشر می‌شود و رزرو پولی به فاز ۲ می‌رود.</p></div></div>
+  <div class="grid-2">
+    <div class="card"><h3>تعریف «انجام‌شده» برای MVP</h3><ul class="checklist">
+      <li><span class="box"></span>همه موارد «ضروری» فاز ۱ در بخش ۳ پیاده‌سازی و تست شده‌اند</li>
+      <li><span class="box"></span>یک پرداخت واقعی و یک رزرو کامل روی Production انجام شده است</li>
+      <li><span class="box"></span>چک‌لیست بخش ۱۴ برای موارد فاز ۱ کامل است</li>
+    </ul></div>
+    <div class="card"><h3>اسپرینت‌های فاز ۱ (دوهفته‌ای)</h3>
+      <ol class="timeline">
+        <li><span class="dot">۱</span><div class="box"><b>اسپرینت ۱:</b> اسکلت پروژه، Wagtail، قالب پایه RTL و Tailwind، صفحه اصلی، درباره من، خدمات</div></li>
+        <li><span class="dot">۲</span><div class="box"><b>اسپرینت ۲:</b> مجله (مقاله، پادکست، جست‌وجو، نظرات)، نمونه‌کارها، فرم‌ها و CRM، سئو پایه</div></li>
+        <li><span class="dot">۳</span><div class="box"><b>اسپرینت ۳:</b> OTP، رزرو جلسه، سفارش و درگاه، پیامک و یادآور، استقرار Production</div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 14 -->
+<section class="sec" id="s14">
+  <div class="sec-head"><div class="num">۱۴</div><h2>تست، ریسک‌ها، هزینه‌ها و چک‌لیست راه‌اندازی</h2></div>
+  <div class="card"><h3>راهبرد تست</h3>
+    <div class="table-wrap" style="margin:0"><table>
+      <thead><tr><th>سطح</th><th>ابزار</th><th>پوشش</th></tr></thead>
+      <tbody>
+        <tr><td>واحد</td><td><code>pytest + factory_boy</code></td><td>محاسبه زمان‌های آزاد، اعمال کد تخفیف، محاسبه مبلغ سفارش، تبدیل تاریخ شمسی</td></tr>
+        <tr><td>یکپارچگی</td><td><code>pytest</code> + درگاه ساختگی</td><td>جریان کامل پرداخت: موفق، ناموفق، callback تکراری، مبلغ ناهمخوان</td></tr>
+        <tr><td>هم‌زمانی</td><td><code>pytest</code> + تراکنش موازی</td><td>دو کاربر هم‌زمان روی آخرین ظرفیت وبینار و یک زمان رزرو</td></tr>
+        <tr><td>E2E</td><td><code>Playwright</code></td><td>رزرو جلسه، خرید کتاب دیجیتال، ثبت‌نام وبینار، فرم مشاوره — موبایل و دسکتاپ</td></tr>
+        <tr><td>دستی</td><td>Production</td><td>پرداخت واقعی با مبلغ کم و بازگشت آن پیش از انتشار</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>ریسک</th><th>اثر</th><th>راهکار</th></tr></thead>
+    <tbody>
+      <tr><td><span class="b b-must">بالا</span> تأخیر در اینماد و درگاه</td><td>فروش آنلاین دیر شروع می‌شود</td><td>درخواست از هفته اول؛ تا آماده شدن، فاز ۱ با فرم و پرداخت دستی</td></tr>
+      <tr><td><span class="b b-must">بالا</span> گسترش دامنه (Scope creep)</td><td>MVP هیچ‌وقت منتشر نمی‌شود</td><td>فقط موارد «ضروری» در فاز ۱؛ بقیه در فهرست انتظار</td></tr>
+      <tr><td><span class="b b-must">بالا</span> کمبود محتوا (متن، عکس، سوابق)</td><td>سایت فنی آماده ولی خالی</td><td>تولید محتوا موازی با توسعه از هفته اول</td></tr>
+      <tr><td><span class="b b-should">متوسط</span> قطعی یا محدودیت سرویس‌های خارجی</td><td>خرابی فونت، اسکریپت یا ایمیل</td><td>همه فایل‌ها self-host؛ سرویس‌های داخلی جایگزین</td></tr>
+      <tr><td><span class="b b-should">متوسط</span> هزینه پیامک از سوءاستفاده OTP</td><td>هزینه غیرمنتظره</td><td>محدودیت نرخ و کپچا</td></tr>
+      <tr><td><span class="b b-should">متوسط</span> وابستگی به یک توسعه‌دهنده</td><td>توقف نگهداری</td><td>مستندسازی، کد استاندارد Django، README راه‌اندازی</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout note"><div class="ic">i</div><div><div class="t">هزینه‌های جاری (اقلام، نه رقم)</div><p>ارقام در ایران زود تغییر می‌کنند؛ این اقلام را استعلام و در بودجه بگذارید: دامنه <code>.ir</code> و <code>.com</code>، سرور ابری Production و Staging، فضای ذخیره‌سازی و CDN، شارژ پنل پیامک، کارمزد درگاه، فونت تجاری (اختیاری)، سرویس ایمیل، عکاسی حرفه‌ای، طراحی UI، و نگهداری ماهانه.</p></div></div>
+  <div class="grid-2">
+    <div class="card"><h3>چک‌لیست راه‌اندازی</h3><ul class="checklist">
+      <li><span class="box"></span>دامنه ثبت و DNS روی CDN تنظیم شد</li>
+      <li><span class="box"></span>اینماد دریافت و در فوتر نصب شد</li>
+      <li><span class="box"></span>درگاه در حالت واقعی تست شد (پرداخت و بازگشت وجه)</li>
+      <li><span class="box"></span>الگوهای پیامک تأیید و روی چند اپراتور تست شدند</li>
+      <li><span class="box"></span>SPF، DKIM و DMARC ایمیل تنظیم شد</li>
+      <li><span class="box"></span>صفحات قوانین و حریم خصوصی منتشر شدند</li>
+      <li><span class="box"></span>محتوای اولیه: درباره من، حداقل ۳ خدمت، ۵ مقاله، ۳ نظر مشتری، رزومه</li>
+      <li><span class="box"></span>Sitemap در Search Console ثبت شد؛ تگ‌های meta و OG بررسی شدند</li>
+      <li><span class="box"></span>Lighthouse موبایل بالای ۸۵</li>
+      <li><span class="box"></span>بکاپ خودکار فعال و یک بار بازیابی تست شد</li>
+      <li><span class="box"></span>Sentry و پایش در دسترس بودن فعال‌اند</li>
+      <li><span class="box"></span>حساب ادمین با احراز دومرحله‌ای</li>
+      <li><span class="box"></span>ریدایرکت‌ها از سایت/صفحات قبلی (اگر وجود دارد)</li>
+      <li><span class="box"></span>آنالیتیکس و رویدادهای تبدیل (ارسال فرم، پرداخت موفق) تعریف شدند</li>
+    </ul></div>
+    <div class="card"><h3>سؤال‌های باز</h3><div class="qa">
+      <div class="q">برند شخصی یا مجموعه؟ (بخش ۲)</div>
+      <div class="q">کسب‌وکار به‌صورت حقیقی است یا حقوقی؟ (روی درگاه، اینماد و فاکتور اثر دارد)</div>
+      <div class="q">کتاب‌ها را خودتان ارسال می‌کنید یا ناشر/فروشگاه دیگری؟</div>
+      <div class="q">دوره‌ها زنده (وبینار) هستند یا ضبط‌شده و قابل خرید (LMS)؟ دوره ضبط‌شده با پخش امن، فاز جداگانه‌ای لازم دارد.</div>
+      <div class="q">آیا نسخه انگلیسی برای مخاطب خارج از ایران لازم است؟</div>
+    </div></div>
+  </div>
+</section>
+
+<footer>سند توسعه سایت مشاوره منابع انسانی · نسخه ۱.۰ · ۲۹ مهر ۱۴۰۵</footer>
+</main>
+</div>
+<script>
+(function(){
+  var links=[].slice.call(document.querySelectorAll('#toc a'));
+  var map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  var secs=[].slice.call(document.querySelectorAll('section.sec'));
+  function setActive(id){links.forEach(function(a){a.classList.remove('active')}); if(map[id]) map[id].classList.add('active');}
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting) setActive(e.target.id); });
+    },{rootMargin:'-20% 0px -70% 0px'});
+    secs.forEach(function(s){io.observe(s)});
+  }
+  setActive('s1');
+  links.forEach(function(a){a.addEventListener('click',function(){
+    if(window.innerWidth<=1000) document.getElementById('sidebar').classList.remove('open');
+  });});
+})();
+</script>
+</body>
+</html>
