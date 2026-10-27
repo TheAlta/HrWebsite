@@ -34,6 +34,10 @@ select = ["E", "W", "F", "I", "B", "UP", "DJ", "SIM", "RUF"]
 # RUF001-003: Persian text legitimately contains characters ruff flags as "ambiguous"
 ignore = ["RUF001", "RUF002", "RUF003", "RUF012"]
 
+[tool.ruff.lint.per-file-ignores]
+# Sample Persian copy reads better unbroken
+"apps/content/management/commands/seed_demo.py" = ["E501"]
+
 [tool.ruff.lint.isort]
 known-first-party = ["apps", "config"]
 

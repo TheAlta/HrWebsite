@@ -1,0 +1,14 @@
+{% load wagtailcore_tags wagtailimages_tags core_tags %}
+{# Usage: {% include "components/card_service.html" with service=service %} #}
+<article class="card">
+  {% if service.cover_image %}{% image service.cover_image fill-640x360 format-webp class="aspect-[16/9] w-full object-cover" loading="lazy" alt="" %}{% endif %}
+  <div class="card-body">
+    <span class="badge self-start">{{ service.get_audience_display }}</span>
+    <h3 class="card-title"><a href="{% pageurl service %}" class="hover:text-brand-700">{{ service.title }}</a></h3>
+    <p class="text-[0.95rem] leading-7 text-slate-600">{{ service.summary }}</p>
+    <div class="mt-auto flex items-center justify-between pt-3">
+      <span class="text-sm font-semibold text-slate-700">{% if service.price %}{{ service.price|toman }}{% else %}استعلام قیمت{% endif %}</span>
+      <a href="{% pageurl service %}" class="btn btn-ghost btn-sm">جزئیات {% include "components/icon.html" with name="arrow" size="16" %}</a>
+    </div>
+  </div>
+</article>

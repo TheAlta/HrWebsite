@@ -1,0 +1,21 @@
+{% load wagtailroutablepage_tags %}
+{% routablepageurl page "comment" as action %}
+<form method="post" action="{{ action }}" hx-post="{{ action }}" hx-target="#comment-form" hx-swap="innerHTML" class="space-y-4" novalidate>
+  {% csrf_token %}
+  <h3 class="text-lg font-bold">نظر خود را بنویسید</h3>
+  {% if message %}{% if ok %}{% include "components/alert.html" with level="success" text=message %}{% else %}{% include "components/alert.html" with level="error" text=message %}{% endif %}{% endif %}
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    {% with field=comment_form.name %}{% include "components/field.html" %}{% endwith %}
+    {% with field=comment_form.email %}{% include "components/field.html" %}{% endwith %}
+  </div>
+  {% with field=comment_form.text %}{% include "components/field.html" %}{% endwith %}
+
+  <div class="hp-field" aria-hidden="true">
+    <label for="{{ comment_form.website.id_for_label }}">وب‌سایت</label>
+    <input type="text" name="website" id="{{ comment_form.website.id_for_label }}" tabindex="-1" autocomplete="off">
+  </div>
+
+  <p class="muted">نظرها پس از تأیید نمایش داده می‌شوند.</p>
+  <button type="submit" class="btn btn-primary">ثبت نظر</button>
+</form>

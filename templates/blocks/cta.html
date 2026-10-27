@@ -1,0 +1,11 @@
+<section class="my-10">
+  <div class="rounded-(--radius-card) bg-brand-700 px-6 py-10 text-center text-white sm:px-12">
+    <h2 class="text-2xl font-extrabold">{{ value.title }}</h2>
+    {% if value.text %}<p class="mx-auto mt-3 max-w-2xl text-brand-100">{{ value.text }}</p>{% endif %}
+    {% if value.buttons %}
+    <div class="mt-6 flex flex-wrap justify-center gap-3">
+      {% for button in value.buttons %}<a href="{{ button.href }}" class="btn {% if button.style == 'secondary' %}btn-secondary{% else %}btn-primary{% endif %}">{{ button.label }}</a>{% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>

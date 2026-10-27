@@ -1,0 +1,16 @@
+{% load wagtailcore_tags wagtailimages_tags core_tags %}
+{# Usage: {% include "components/card_article.html" with article=article %} #}
+<article class="card group">
+  <a href="{% pageurl article %}" class="block aspect-[16/9] overflow-hidden bg-slate-100" tabindex="-1" aria-hidden="true">
+    {% if article.cover_image %}{% image article.cover_image fill-640x360 format-webp class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" alt="" %}{% endif %}
+  </a>
+  <div class="card-body">
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="badge">{{ article.get_kind_display }}</span>
+      {% if article.category %}<span class="muted">{{ article.category.name }}</span>{% endif %}
+    </div>
+    <h3 class="card-title"><a href="{% pageurl article %}" class="hover:text-brand-700">{{ article.title }}</a></h3>
+    <p class="line-clamp-3 text-[0.95rem] leading-7 text-slate-600">{{ article.intro }}</p>
+    <p class="muted mt-auto pt-2">{{ article.first_published_at|jdate }} · {{ article.reading_minutes|fa_digits }} دقیقه</p>
+  </div>
+</article>

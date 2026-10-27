@@ -1,0 +1,10 @@
+{% if services %}
+<section class="section">
+  <div class="container-page">
+    {% include "components/section_header.html" with title=value.title intro=value.intro %}
+    <div class="grid gap-6 sm:grid-cols-2 {% if services|length >= 4 %}lg:grid-cols-4{% else %}lg:grid-cols-3{% endif %}">
+      {% for service in services %}{% include "components/card_service.html" with service=service %}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}

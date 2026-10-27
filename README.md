@@ -43,6 +43,15 @@ docker compose exec web python manage.py createsuperuser
 
 نام کاربری، شماره موبایل است (مثل `09121234567`).
 
+**محتوای نمونه** (برای دیدن و تست همه صفحات):
+
+```bash
+docker compose exec web python manage.py seed_demo           # فقط وقتی سایت خالی است
+docker compose exec web python manage.py seed_demo --reset   # پاک کردن و ساخت دوباره محتوای نمونه
+```
+
+**راهنمای طراحی:** http://localhost:8100/styleguide/ همه اجزای مشترک را یک‌جا نشان می‌دهد (فقط در محیط توسعه).
+
 ### سرویس‌های محیط توسعه
 
 | سرویس | کار |
@@ -51,7 +60,7 @@ docker compose exec web python manage.py createsuperuser
 | `migrate` | اجرای migrationها؛ کارش که تمام شد خارج می‌شود |
 | `web` | سرور توسعه Django |
 | `worker` | اجرای کارهای پس‌زمینه (Django-Q2) |
-| `css` | ساخت خودکار CSS با Tailwind هنگام تغییر قالب‌ها |
+| `css` | ساخت خودکار CSS با Tailwind هنگام تغییر قالب‌ها (با polling، چون رویداد تغییر فایل از ویندوز به کانتینر نمی‌رسد) |
 | `mailpit` | گرفتن ایمیل‌های خروجی |
 
 ### دستورهای رایج
@@ -96,10 +105,14 @@ docker run --rm -v "$PWD:/app" -w /app python:3.12-slim sh -c "\
 ```
 config/           تنظیمات (base, dev, test, prod) و URLها
 apps/
-  core/           ابزارهای مشترک: تاریخ شمسی، پول، متن فارسی، فیلد موبایل، healthz
+  core/           ابزارهای مشترک: تاریخ شمسی، پول، متن فارسی، فیلد موبایل، ویدئو، healthz
   accounts/       کاربر با ورود موبایلی
-  content/        صفحات Wagtail
+  content/        صفحات Wagtail، مجله، نظرها، تنظیمات سایت، سئو
+  portfolio/      مشتریان، نظر مشتریان، پروژه‌ها
 templates/        قالب‌های HTML
+  components/     اجزای مشترک (کارت، دکمه، فیلد، ...) — ظاهر از اینجا و توکن‌ها عوض می‌شود
+  blocks/         بلوک‌های قابل چیدن از پنل
+  includes/       هدر، فوتر، متای سئو
 frontend/         ورودی Tailwind (فقط زمان ساخت)
 static/           فایل‌های عمومی: فونت، کتابخانه‌های JS، CSS ساخته‌شده
 requirements/     فایل‌های قفل وابستگی‌ها با hash

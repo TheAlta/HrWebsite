@@ -1,0 +1,8 @@
+{% if embed %}
+<figure class="my-8">
+  <div class="aspect-video overflow-hidden rounded-(--radius-card) bg-slate-900">
+    <iframe src="{{ embed.embed_url }}" title="{% firstof value.caption 'ویدئو' %}" class="h-full w-full" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </div>
+  {% if value.caption %}<figcaption class="muted mt-2 text-center">{{ value.caption }}</figcaption>{% endif %}
+</figure>
+{% endif %}

@@ -1,0 +1,7 @@
+{% load wagtailcore_tags %}
+<section class="section">
+  <div class="container-page max-w-3xl">
+    {% if value.title %}<h2 class="heading-2 mb-4">{{ value.title }}</h2>{% endif %}
+    <div class="prose-fa">{{ value.body|richtext }}</div>
+  </div>
+</section>

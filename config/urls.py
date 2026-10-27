@@ -3,8 +3,10 @@ from django.contrib import admin
 from django.urls import include, path
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
+from wagtail.contrib.sitemaps.views import sitemap
 from wagtail.documents import urls as wagtaildocs_urls
 
+from apps.content import views as content_views
 from apps.core.views import healthz
 
 urlpatterns = [
@@ -12,6 +14,10 @@ urlpatterns = [
     path(settings.DJANGO_ADMIN_PATH, admin.site.urls),
     path(settings.WAGTAIL_ADMIN_PATH, include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
+    path("search/", content_views.search, name="search"),
+    path("sitemap.xml", sitemap, name="sitemap"),
+    path("robots.txt", content_views.robots_txt, name="robots_txt"),
+    path("styleguide/", content_views.styleguide, name="styleguide"),
 ]
 
 if settings.DEBUG:

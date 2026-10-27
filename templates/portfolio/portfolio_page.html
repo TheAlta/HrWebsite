@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+{% include "components/page_header.html" with title=page.title intro=page.intro|richtext %}
+
+{% if projects %}
+<section class="container-page py-12" aria-labelledby="projects-heading">
+  <h2 id="projects-heading" class="heading-2 mb-6">پروژه‌ها</h2>
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{% for project in projects %}{% include "components/card_project.html" with project=project %}{% endfor %}</div>
+</section>
+{% endif %}
+
+{% if clients %}
+<section class="border-y border-slate-200 bg-white py-10" aria-labelledby="clients-heading">
+  <div class="container-page">
+    <h2 id="clients-heading" class="heading-2 mb-6 text-center">مشتریان</h2>
+    <ul class="flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+      {% for client in clients %}<li>{% image client.logo height-48 format-webp class="h-10 w-auto" loading="lazy" alt=client.name %}</li>{% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
+
+{% if testimonials %}
+<section class="section section-muted" aria-labelledby="testimonials-heading">
+  <div class="container-page">
+    <h2 id="testimonials-heading" class="heading-2 mb-6">نظر مشتریان</h2>
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">{% for testimonial in testimonials %}{% include "components/testimonial.html" with testimonial=testimonial %}{% endfor %}</div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

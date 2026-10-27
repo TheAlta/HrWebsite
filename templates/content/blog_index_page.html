@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailroutablepage_tags %}
+
+{% block extra_head %}
+{% routablepageurl page "podcast_feed" as podcast_feed_url %}
+<link rel="alternate" type="application/rss+xml" title="پادکست" href="{{ podcast_feed_url }}">
+{% endblock %}
+
+{% block content %}
+{% include "components/page_header.html" with title=page.title intro=page.intro %}
+<div class="container-page py-10">
+  {# Filters update only the list via HTMX; plain links still work without JavaScript #}
+  <nav aria-label="فیلتر مطالب" class="flex flex-wrap gap-2" hx-target="#article-list" hx-push-url="true">
+    <a href="{% pageurl page %}" hx-get="{% pageurl page %}" class="btn btn-sm {% if not active.kind and not active.category and not active.tag %}btn-primary{% else %}btn-secondary{% endif %}">همه</a>
+    {% for value, label in kinds %}
+      <a href="?kind={{ value }}" hx-get="?kind={{ value }}" class="btn btn-sm {% if active.kind == value %}btn-primary{% else %}btn-secondary{% endif %}">{{ label }}</a>
+    {% endfor %}
+    {% for category in categories %}
+      <a href="?category={{ category.slug }}" hx-get="?category={{ category.slug }}" class="btn btn-sm {% if active.category == category %}btn-primary{% else %}btn-ghost{% endif %}">{{ category.name }}</a>
+    {% endfor %}
+  </nav>
+  {% if active.tag %}<p class="muted mt-4">برچسب: <span class="badge">{{ active.tag }}</span></p>{% endif %}
+
+  <div id="article-list" class="mt-8">{% include "content/includes/article_list.html" %}</div>
+</div>
+{% endblock %}

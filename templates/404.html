@@ -1,9 +1,14 @@
 {% extends "base.html" %}
-{% block title %}صفحه پیدا نشد | {% site_name %}{% endblock %}
+{% block title %}صفحه پیدا نشد | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
+{% block meta %}<meta name="robots" content="noindex">{% endblock %}
 {% block content %}
-<section class="mx-auto flex min-h-screen max-w-xl flex-col items-center justify-center gap-4 px-4 text-center">
-  <p class="text-6xl font-extrabold text-slate-300">۴۰۴</p>
-  <h1 class="text-2xl font-bold">صفحه‌ای که دنبالش بودید پیدا نشد</h1>
-  <a href="/" class="font-medium text-teal-700 underline underline-offset-4">بازگشت به صفحه اصلی</a>
+<section class="container-page flex min-h-[60vh] flex-col items-center justify-center gap-4 py-16 text-center">
+  <p class="text-7xl font-extrabold text-brand-200">۴۰۴</p>
+  <h1 class="heading-2">صفحه‌ای که دنبالش بودید پیدا نشد</h1>
+  <p class="lead">شاید آدرس تغییر کرده باشد. از جست‌وجو یا صفحه اصلی کمک بگیرید.</p>
+  <div class="mt-2 flex flex-wrap justify-center gap-3">
+    <a href="/" class="btn btn-primary">صفحه اصلی</a>
+    <a href="{% url 'search' %}" class="btn btn-secondary">جست‌وجو</a>
+  </div>
 </section>
 {% endblock %}

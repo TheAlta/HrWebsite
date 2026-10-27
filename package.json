@@ -4,7 +4,7 @@
   "description": "Build-time only: compiles Tailwind CSS. Not used at runtime.",
   "scripts": {
     "build:css": "tailwindcss -i frontend/main.css -o static/css/main.css --minify",
-    "watch:css": "tailwindcss -i frontend/main.css -o static/css/main.css --watch=always"
+    "watch:css": "tailwindcss -i frontend/main.css -o static/css/main.css --watch=always --poll=1000"
   },
   "devDependencies": {
     "@tailwindcss/cli": "4.3.3",

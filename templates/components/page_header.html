@@ -1,0 +1,8 @@
+{# Top of inner pages. Usage: {% include "components/page_header.html" with title=page.title intro="..." %} #}
+<div class="border-b border-slate-200 bg-slate-50">
+  <div class="container-page py-10 sm:py-14">
+    {% include "components/breadcrumbs.html" %}
+    <h1 class="heading-1 mt-3">{{ title }}</h1>
+    {% if intro %}<div class="lead mt-3 max-w-3xl">{{ intro }}</div>{% endif %}
+  </div>
+</div>

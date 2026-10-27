@@ -1,0 +1,12 @@
+{% load wagtailcore_tags %}
+{% if page and page.depth > 2 %}
+<nav aria-label="مسیر صفحه" class="text-sm text-slate-500">
+  <ol class="flex flex-wrap items-center gap-1.5">
+    {% for crumb in page.get_breadcrumbs %}
+      <li><a href="{% pageurl crumb %}" class="hover:text-brand-700">{% if crumb.depth == 2 %}خانه{% else %}{{ crumb.title }}{% endif %}</a></li>
+      <li aria-hidden="true" class="text-slate-300">/</li>
+    {% endfor %}
+    <li aria-current="page" class="text-slate-700">{{ page.title }}</li>
+  </ol>
+</nav>
+{% endif %}

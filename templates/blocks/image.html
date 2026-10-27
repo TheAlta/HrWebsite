@@ -1,0 +1,5 @@
+{% load wagtailimages_tags %}
+<figure class="my-8">
+  {% srcset_image value.image width-{480,800,1200} format-webp sizes="(min-width: 768px) 768px, 100vw" class="w-full rounded-(--radius-card)" loading="lazy" alt=value.caption|default:"" %}
+  {% if value.caption %}<figcaption class="muted mt-2 text-center">{{ value.caption }}</figcaption>{% endif %}
+</figure>

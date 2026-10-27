@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags core_tags %}
+
+{% block content %}
+<section class="border-b border-slate-200 bg-slate-50">
+  <div class="container-page grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-[1fr_auto]">
+    <div>
+      {% include "components/breadcrumbs.html" %}
+      <h1 class="heading-1 mt-3">{% firstof page.headline page.title %}</h1>
+      {% if page.intro %}<div class="lead mt-4 max-w-2xl">{{ page.intro|richtext }}</div>{% endif %}
+      <div class="mt-6 flex flex-wrap gap-3">
+        {% if page.resume %}<a href="{{ page.resume.url }}" class="btn btn-secondary">{% include "components/icon.html" with name="download" size="18" %}دانلود رزومه</a>{% endif %}
+        {% if settings.content.SiteSettings.cta_page %}<a href="{% pageurl settings.content.SiteSettings.cta_page %}" class="btn btn-primary">{{ settings.content.SiteSettings.cta_label }}</a>{% endif %}
+      </div>
+    </div>
+    {% if page.photo %}{% picture page.photo format-{avif,webp,jpeg} fill-400x480 class="w-full max-w-xs justify-self-center rounded-[2rem] object-cover shadow-lg" alt=page.title fetchpriority="high" %}{% endif %}
+  </div>
+</section>
+
+<div class="container-page grid gap-12 py-12 lg:grid-cols-[1fr_20rem]">
+  <article>
+    {% if page.intro_video %}
+      {% include "blocks/video.html" with embed=page.intro_video value=None %}
+    {% endif %}
+    {% for block in page.body %}{% include_block block %}{% endfor %}
+  </article>
+
+  <aside class="space-y-8">
+    {% if page.expertise %}
+    <section class="card"><div class="card-body">
+      <h2 class="card-title">تخصص‌ها</h2>
+      <ul class="space-y-2">
+        {% for item in page.expertise %}<li class="flex items-start gap-2">{% include "components/icon.html" with name="check" size="18" class="mt-1.5 text-brand-600" %}<span>{{ item.value }}</span></li>{% endfor %}
+      </ul>
+    </div></section>
+    {% endif %}
+    {% if page.credentials %}
+    <section class="card"><div class="card-body">
+      <h2 class="card-title">مدارک و گواهی‌ها</h2>
+      <ul class="space-y-3">
+        {% for item in page.credentials %}
+        <li><p class="font-semibold text-slate-900">{{ item.value.title }}</p><p class="muted">{{ item.value.issuer }}{% if item.value.year %} · {{ item.value.year|fa_digits }}{% endif %}</p></li>
+        {% endfor %}
+      </ul>
+    </div></section>
+    {% endif %}
+  </aside>
+</div>
+
+{% if team %}
+<section class="section section-muted">
+  <div class="container-page">
+    {% include "components/section_header.html" with title="تیم" %}
+    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {% for member in team %}
+      <li class="card"><div class="card-body items-center text-center">
+        {% if member.photo %}{% image member.photo fill-160x160 format-webp class="h-24 w-24 rounded-full object-cover" loading="lazy" alt="" %}{% endif %}
+        <p class="card-title">{{ member.name }}</p>
+        <p class="muted">{{ member.role }}</p>
+      </div></li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

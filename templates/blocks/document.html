@@ -1,0 +1,6 @@
+{% load core_tags %}
+<a href="{{ value.document.url }}" class="my-4 flex items-center gap-3 rounded-(--radius-control) border border-slate-200 bg-white px-4 py-3 hover:border-brand-300 hover:bg-brand-50">
+  {% include "components/icon.html" with name="download" class="text-brand-600" %}
+  <span class="font-medium text-slate-800">{% firstof value.title value.document.title %}</span>
+  <span class="muted ms-auto uppercase">{{ value.document.file_extension }}</span>
+</a>

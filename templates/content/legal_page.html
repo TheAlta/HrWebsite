@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags core_tags %}
+
+{% block content %}
+{% include "components/page_header.html" with title=page.title %}
+<div class="container-page max-w-3xl py-12">
+  <div class="prose-fa">{{ page.body|richtext }}</div>
+  {% if page.last_published_at %}<p class="muted mt-10">آخرین به‌روزرسانی: {{ page.last_published_at|jdate }}</p>{% endif %}
+</div>
+{% endblock %}

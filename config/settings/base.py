@@ -19,7 +19,11 @@ INSTALLED_APPS = [
     "apps.core",
     "apps.accounts",
     "apps.content",
+    "apps.portfolio",
     # Wagtail
+    "wagtail.contrib.settings",
+    "wagtail.contrib.sitemaps",
+    "wagtail.contrib.routable_page",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.embeds",
@@ -43,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sitemaps",
 ]
 
 MIDDLEWARE = [
@@ -72,6 +77,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "wagtail.contrib.settings.context_processors.settings",
+                "apps.core.context_processors.site",
             ],
             "builtins": ["apps.core.templatetags.core_tags"],
         },
@@ -131,13 +138,20 @@ Q_CLUSTER = {
 }
 
 # Wagtail
-WAGTAIL_SITE_NAME = env("SITE_NAME", default="مشاوره منابع انسانی")
+WAGTAIL_SITE_NAME = env("SITE_NAME", default="Arezoo")
 WAGTAILADMIN_BASE_URL = env("WAGTAILADMIN_BASE_URL", default="http://localhost:8100")
 WAGTAIL_ADMIN_PATH = env("WAGTAIL_ADMIN_PATH", default="panel/")
 DJANGO_ADMIN_PATH = env("DJANGO_ADMIN_PATH", default="django-admin/")
-WAGTAILSEARCH_BACKENDS = {"default": {"BACKEND": "wagtail.search.backends.database"}}
+# "simple": no English stemming/stop words, so Persian text is indexed as-is
+WAGTAILSEARCH_BACKENDS = {
+    "default": {"BACKEND": "wagtail.search.backends.database", "SEARCH_CONFIG": "simple"}
+}
+WAGTAILEMBEDS_RESPONSIVE_HTML = True
 WAGTAILDOCS_EXTENSIONS = ["csv", "docx", "odt", "pdf", "pptx", "txt", "xlsx", "zip"]
 WAGTAILIMAGES_FORMAT_CONVERSIONS = {"bmp": "webp", "png": "webp", "jpeg": "webp"}
+
+# SEO: only production lets search engines index the site (robots.txt + meta robots)
+SEO_ALLOW_INDEXING = env.bool("SEO_ALLOW_INDEXING", default=False)
 
 LOGGING = {
     "version": 1,
@@ -149,5 +163,6 @@ LOGGING = {
     "root": {"handlers": ["console"], "level": env("LOG_LEVEL", default="INFO")},
     "loggers": {
         "django.db.backends": {"level": "WARNING"},
+        "django_tasks": {"level": "WARNING"},
     },
 }
