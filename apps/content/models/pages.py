@@ -140,6 +140,13 @@ class ContactPage(BasePage):
     class Meta:
         verbose_name = "تماس"
 
+    def get_context(self, request, *args, **kwargs):
+        from apps.crm.forms import CallbackForm
+
+        context = super().get_context(request, *args, **kwargs)
+        context["callback_form"] = CallbackForm()
+        return context
+
 
 class LegalPage(BasePage):
     """Terms, privacy policy and similar text pages."""

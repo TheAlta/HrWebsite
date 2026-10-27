@@ -52,3 +52,23 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.get_full_name() or self.mobile
+
+
+class OTPCode(models.Model):
+    """One-time login code (USER-1). Only an HMAC of the code is stored."""
+
+    mobile = models.CharField(max_length=11, db_index=True)
+    code_hash = models.CharField(max_length=64)
+    expires_at = models.DateTimeField()
+    attempts = models.PositiveSmallIntegerField(default=0)
+    used_at = models.DateTimeField(null=True, blank=True)
+    ip_hash = models.CharField(max_length=64, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        verbose_name = "کد ورود"
+        verbose_name_plural = "کدهای ورود"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.mobile} @ {self.created_at:%Y-%m-%d %H:%M}"

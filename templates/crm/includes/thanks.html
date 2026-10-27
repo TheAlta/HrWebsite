@@ -1,0 +1,16 @@
+{# Replaces a submitted lead form (HTMX) and is the body of crm/thanks.html #}
+<div class="card" role="status">
+  <div class="card-body items-center gap-3 py-10 text-center">
+    <span class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">{% include "components/icon.html" with name="check" size="28" %}</span>
+    {% if kind == "download" %}
+      <p class="card-title">فایل آماده است</p>
+      {% if document %}<a href="{{ document.url }}" class="btn btn-primary">{% include "components/icon.html" with name="download" size="18" %}دانلود {{ document.title }}</a>{% endif %}
+    {% elif kind == "callback" %}
+      <p class="card-title">درخواست شما ثبت شد</p>
+      <p class="muted">به‌زودی با شما تماس می‌گیرم.</p>
+    {% else %}
+      <p class="card-title">درخواست شما ثبت شد</p>
+      <p class="muted max-w-md">{% firstof thank_you_text "پیامک تأیید برایتان ارسال شد. ظرف یک روز کاری با شما تماس می‌گیرم." %}</p>
+    {% endif %}
+  </div>
+</div>

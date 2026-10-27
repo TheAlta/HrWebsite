@@ -1,0 +1,22 @@
+{# Lead magnet (LEAD-4): file in exchange for mobile or email. #}
+<div id="download-form-{{ form.document.value }}" class="card">
+<form method="post" action="{% url 'crm:submit' 'download' %}" hx-post="{% url 'crm:submit' 'download' %}" hx-target="#download-form-{{ form.document.value }}" hx-swap="outerHTML" class="card-body gap-4" novalidate>
+  {% csrf_token %}
+  <input type="hidden" name="source" value="{{ request.path }}">
+  {{ form.document }}
+  <div class="hp-field" aria-hidden="true"><label for="dl-website-{{ form.document.value }}">وب‌سایت</label><input type="text" name="website" id="dl-website-{{ form.document.value }}" tabindex="-1" autocomplete="off"></div>
+  <div>
+    <h2 class="card-title">{{ title|default:"دریافت فایل" }}</h2>
+    {% if text %}<p class="muted mt-1">{{ text }}</p>{% endif %}
+  </div>
+  {% if error %}{% include "components/alert.html" with level="error" text=error %}{% endif %}
+  {% if form.non_field_errors %}{% include "components/alert.html" with level="error" text=form.non_field_errors.0 %}{% endif %}
+  {% with field=form.name %}{% include "components/field.html" %}{% endwith %}
+  <div class="grid gap-4 sm:grid-cols-2">
+    {% with field=form.mobile %}{% include "components/field.html" %}{% endwith %}
+    {% with field=form.email %}{% include "components/field.html" %}{% endwith %}
+  </div>
+  {% with field=form.marketing_consent %}{% include "components/field.html" %}{% endwith %}
+  <button type="submit" class="btn btn-primary self-start">{% include "components/icon.html" with name="download" size="18" %}{{ button_label|default:"دریافت فایل" }}</button>
+</form>
+</div>

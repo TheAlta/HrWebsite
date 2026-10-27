@@ -73,6 +73,14 @@ class SiteSettings(BaseSiteSetting):
         help_text="کد HTML اینماد. فقط کدی را که خود سامانه اینماد می‌دهد اینجا بگذارید.",
     )
 
+    # Where new leads and follow-up reminders are sent (sprint 2)
+    notify_email = models.EmailField(
+        "ایمیل دریافت اعلان‌ها", blank=True, help_text="سرنخ‌های جدید و یادآورهای پیگیری"
+    )
+    notify_mobile = MobileField(
+        "موبایل دریافت اعلان‌ها", blank=True, help_text="پیامک کوتاه برای هر سرنخ جدید"
+    )
+
     # SEO
     default_og_image = models.ForeignKey(
         "wagtailimages.Image",
@@ -120,6 +128,9 @@ class SiteSettings(BaseSiteSetting):
                     FieldPanel("trust_seal_html"),
                 ],
                 heading="منو و فوتر",
+            ),
+            ObjectList(
+                [FieldPanel("notify_email"), FieldPanel("notify_mobile")], heading="اعلان‌ها"
             ),
         ]
     )

@@ -140,6 +140,9 @@ class CorporateServicesPage(BasePage):
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
+        from apps.crm.forms import CorporateTrainingForm
+
+        context["training_form"] = CorporateTrainingForm()
         context["services"] = (
             ServicePage.objects.sibling_of(self)
             .live()

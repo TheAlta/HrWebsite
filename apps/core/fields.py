@@ -27,6 +27,13 @@ def _normalize_if_valid(value):
 class MobileFormField(forms.CharField):
     default_validators = [validate_mobile]
 
+    def widget_attrs(self, widget):
+        attrs = super().widget_attrs(widget)
+        if "maxlength" in attrs:
+            # Room for "+98 912 123 4567"; the stored value is still 11 digits
+            attrs["maxlength"] = "20"
+        return attrs
+
     def to_python(self, value):
         return _normalize_if_valid(super().to_python(value))
 

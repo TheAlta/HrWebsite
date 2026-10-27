@@ -16,11 +16,7 @@
     {% if site.whatsapp_url %}<a href="{{ site.whatsapp_url }}" target="_blank" rel="noopener" class="btn btn-primary mt-8">{% include "components/icon.html" with name="whatsapp" %}گفت‌وگو در واتساپ</a>{% endif %}
   </div>
 
-  {# The «با من تماس بگیرید» form (LEAD-3) is added here in sprint 2 #}
-  <div class="card"><div class="card-body justify-center text-center">
-    <p class="card-title">با من تماس بگیرید</p>
-    <p class="muted">فرم درخواست تماس به‌زودی اینجا قرار می‌گیرد.</p>
-  </div></div>
+  <div>{% include "crm/includes/callback_form.html" with form=callback_form %}</div>
 </div>
 {% endwith %}
 {% endblock %}
