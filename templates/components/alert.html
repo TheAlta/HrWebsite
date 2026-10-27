@@ -1,0 +1,2 @@
+{# Usage: {% include "components/alert.html" with level="success|error|info" text="..." %} #}
+<div class="alert {% if level == 'success' %}alert-success{% elif level == 'error' %}alert-error{% else %}alert-info{% endif %}" {% if level == 'error' %}role="alert"{% endif %}>{{ text }}</div>

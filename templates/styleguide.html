@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}راهنمای طراحی{% endblock %}
+{% block meta %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block content %}
+{# Development only (DEBUG). Shows every shared component so the look can be reviewed in one place. #}
+<div class="container-page space-y-14 py-12">
+  <header>
+    <p class="eyebrow">فقط محیط توسعه</p>
+    <h1 class="heading-1">راهنمای طراحی</h1>
+    <p class="lead mt-2">توکن‌ها و اجزای مشترک. ظاهر موقت است و در اسپرینت UI از روی دمو جایگزین می‌شود.</p>
+  </header>
+
+  <section>
+    <h2 class="heading-2 mb-4">رنگ‌ها</h2>
+    <div class="grid grid-cols-3 gap-3 sm:grid-cols-6">
+      <div><div class="h-16 rounded-lg bg-brand-50"></div><p class="muted mt-1">brand-50</p></div>
+      <div><div class="h-16 rounded-lg bg-brand-200"></div><p class="muted mt-1">brand-200</p></div>
+      <div><div class="h-16 rounded-lg bg-brand-500"></div><p class="muted mt-1">brand-500</p></div>
+      <div><div class="h-16 rounded-lg bg-brand-700"></div><p class="muted mt-1">brand-700</p></div>
+      <div><div class="h-16 rounded-lg bg-brand-900"></div><p class="muted mt-1">brand-900</p></div>
+      <div><div class="h-16 rounded-lg bg-accent-500"></div><p class="muted mt-1">accent-500</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="heading-2 mb-4">تایپوگرافی</h2>
+    <p class="eyebrow">برچسب بالای تیتر</p>
+    <p class="heading-1">تیتر اصلی صفحه</p>
+    <p class="heading-2 mt-2">تیتر بخش</p>
+    <p class="lead mt-2">متن مقدمه با اندازه بزرگ‌تر برای شروع هر بخش.</p>
+    <p class="mt-2">متن معمولی بدنه. ارقام فارسی: ۱۲۳۴۵۶۷۸۹۰ و مبلغ {{ 25000000|toman }}.</p>
+    <p class="muted mt-1">متن کم‌رنگ برای توضیحات. {% now_jalali %}</p>
+  </section>
+
+  <section>
+    <h2 class="heading-2 mb-4">دکمه‌ها</h2>
+    <div class="flex flex-wrap items-center gap-3">
+      <button class="btn btn-primary">اصلی</button>
+      <button class="btn btn-secondary">ثانویه</button>
+      <button class="btn btn-ghost">ساده</button>
+      <button class="btn btn-primary btn-sm">کوچک</button>
+      <button class="btn btn-primary" disabled>غیرفعال</button>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="heading-2 mb-4">اعلان‌ها</h2>
+    <div class="space-y-2">
+      {% include "components/alert.html" with level="success" text="عملیات با موفقیت انجام شد." %}
+      {% include "components/alert.html" with level="error" text="خطایی رخ داد. دوباره تلاش کنید." %}
+      {% include "components/alert.html" with level="info" text="این یک پیام اطلاع‌رسانی است." %}
+    </div>
+  </section>
+
+  <section>
+    <h2 class="heading-2 mb-4">فرم</h2>
+    <div class="grid max-w-xl gap-4">
+      <div><label class="field-label" for="sg-1">نام</label><input id="sg-1" class="field-input" placeholder="نام و نام خانوادگی"></div>
+      <div><label class="field-label" for="sg-2">موبایل</label><input id="sg-2" class="field-input" aria-invalid="true" value="۰۹۱۲"><p class="field-error">شماره موبایل معتبر نیست.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="heading-2 mb-4">کارت و نشان</h2>
+    <div class="grid gap-6 sm:grid-cols-3">
+      <div class="card"><div class="card-body"><span class="badge self-start">نشان</span><p class="card-title">عنوان کارت</p><p class="muted">متن کوتاه کارت برای معرفی یک مورد.</p></div></div>
+    </div>
+  </section>
+
+  <section x-data="{ open: false }">
+    <h2 class="heading-2 mb-4">مودال</h2>
+    <button class="btn btn-secondary" @click="open = true">باز کردن مودال</button>
+    <div x-show="open" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4" @click.self="open = false" @keydown.escape.window="open = false" role="dialog" aria-modal="true" aria-labelledby="sg-modal-title">
+      <div class="card w-full max-w-md"><div class="card-body">
+        <p id="sg-modal-title" class="card-title">عنوان مودال</p>
+        <p>محتوای مودال اینجا قرار می‌گیرد.</p>
+        <button class="btn btn-primary mt-3 self-start" @click="open = false">بستن</button>
+      </div></div>
+    </div>
+  </section>
+</div>
+{% endblock %}

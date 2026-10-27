@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags core_tags %}
+
+{% block content %}
+{% include "components/page_header.html" with title=page.title intro=page.summary %}
+<div class="container-page grid gap-12 py-12 lg:grid-cols-[1fr_20rem]">
+  <article>
+    {% if page.problem %}<section><h2 class="heading-2 mb-3">چه مسئله‌ای را حل می‌کند</h2><div class="prose-fa">{{ page.problem|richtext }}</div></section>{% endif %}
+    {% if page.approach %}<section class="mt-10"><h2 class="heading-2 mb-3">روش کار</h2><div class="prose-fa">{{ page.approach|richtext }}</div></section>{% endif %}
+    {% if page.deliverables %}
+    <section class="mt-10">
+      <h2 class="heading-2 mb-4">خروجی‌ها</h2>
+      <ul class="grid gap-3 sm:grid-cols-2">
+        {% for item in page.deliverables %}<li class="flex items-start gap-2 rounded-(--radius-control) bg-slate-50 px-4 py-3">{% include "components/icon.html" with name="check" size="18" class="mt-1.5 text-brand-600" %}<span>{{ item.value }}</span></li>{% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+    {% for block in page.body %}{% include_block block %}{% endfor %}
+
+    {% if page.case_study and page.case_study.is_published %}
+    <section class="mt-12">
+      <h2 class="heading-2 mb-4">نمونه موفق</h2>
+      {% include "components/card_project.html" with project=page.case_study %}
+    </section>
+    {% endif %}
+  </article>
+
+  <aside class="space-y-6 lg:sticky lg:top-24 lg:self-start">
+    <div class="card"><div class="card-body">
+      <span class="badge self-start">{{ page.get_audience_display }}</span>
+      {% if page.duration %}<p class="flex items-center gap-2">{% include "components/icon.html" with name="clock" size="18" class="text-brand-600" %}{{ page.duration }}</p>{% endif %}
+      <p class="text-xl font-extrabold text-slate-900">{% if page.price %}{{ page.price|toman }}{% else %}استعلام قیمت{% endif %}</p>
+      {% if settings.content.SiteSettings.cta_page %}<a href="{% pageurl settings.content.SiteSettings.cta_page %}" class="btn btn-primary mt-2">{{ settings.content.SiteSettings.cta_label }}</a>{% endif %}
+      {% if settings.content.SiteSettings.whatsapp_url %}<a href="{{ settings.content.SiteSettings.whatsapp_url }}" target="_blank" rel="noopener" class="btn btn-secondary">پرسش در واتساپ</a>{% endif %}
+    </div></div>
+    {% if page.testimonial and page.testimonial.consent_received %}{% include "components/testimonial.html" with testimonial=page.testimonial %}{% endif %}
+  </aside>
+</div>
+{% endblock %}

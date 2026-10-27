@@ -1,0 +1,13 @@
+<section class="section bg-brand-800 text-white">
+  <div class="container-page">
+    {% if value.title %}<h2 class="mb-8 text-center text-2xl font-extrabold">{{ value.title }}</h2>{% endif %}
+    <dl class="grid grid-cols-2 gap-8 text-center lg:flex lg:justify-around">
+      {% for item in value.items %}
+      <div class="flex flex-col-reverse">
+        <dt class="mt-1 text-brand-200">{{ item.label }}</dt>
+        <dd class="text-4xl font-extrabold text-accent-500">{{ item.value }}</dd>
+      </div>
+      {% endfor %}
+    </dl>
+  </div>
+</section>

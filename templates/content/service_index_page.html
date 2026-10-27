@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+{% include "components/page_header.html" with title=page.title intro=page.intro|richtext %}
+<div class="container-page py-12">
+  {% if corporate_services %}
+  <section aria-labelledby="corporate-heading">
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <h2 id="corporate-heading" class="heading-2">خدمات سازمانی</h2>
+      {% if corporate_page %}<a href="{% pageurl corporate_page %}" class="btn btn-secondary btn-sm">درباره خدمات سازمانی</a>{% endif %}
+    </div>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {% for service in corporate_services %}{% include "components/card_service.html" with service=service %}{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if individual_services %}
+  <section aria-labelledby="individual-heading" class="mt-14">
+    <h2 id="individual-heading" class="heading-2 mb-6">خدمات فردی</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {% for service in individual_services %}{% include "components/card_service.html" with service=service %}{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

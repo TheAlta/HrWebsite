@@ -1,0 +1,10 @@
+{# One form field with label and error. Usage: {% with field=form.name %}{% include "components/field.html" %}{% endwith %} #}
+<div>
+  <label for="{{ field.id_for_label }}" class="field-label">{{ field.label }}{% if field.field.required %} <span class="text-red-600" aria-hidden="true">*</span>{% endif %}</label>
+  {% if field.field.widget.input_type == "textarea" or field.field.widget.template_name == "django/forms/widgets/textarea.html" %}
+    <textarea name="{{ field.html_name }}" id="{{ field.id_for_label }}" rows="{{ field.field.widget.attrs.rows|default:4 }}" class="field-input" {% if field.field.required %}required{% endif %} {% if field.field.max_length %}maxlength="{{ field.field.max_length }}"{% endif %} {% if field.errors %}aria-invalid="true" aria-describedby="{{ field.id_for_label }}-error"{% endif %}>{{ field.value|default:"" }}</textarea>
+  {% else %}
+    <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}" class="field-input" {% if field.field.required %}required{% endif %} {% if field.field.max_length %}maxlength="{{ field.field.max_length }}"{% endif %} {% if field.errors %}aria-invalid="true" aria-describedby="{{ field.id_for_label }}-error"{% endif %}>
+  {% endif %}
+  {% if field.errors %}<p id="{{ field.id_for_label }}-error" class="field-error">{{ field.errors.0 }}</p>{% endif %}
+</div>

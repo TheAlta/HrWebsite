@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags core_tags %}
+
+{% block content %}
+{% include "components/page_header.html" with title=page.title %}
+{% with site=settings.content.SiteSettings %}
+<div class="container-page grid gap-10 py-12 lg:grid-cols-2">
+  <div>
+    {% if page.intro %}<div class="prose-fa">{{ page.intro|richtext }}</div>{% endif %}
+    <ul class="mt-6 space-y-4">
+      {% if site.phone %}<li class="flex items-center gap-3">{% include "components/icon.html" with name="phone" class="text-brand-600" %}<a href="tel:{{ site.phone|cut:' ' }}" class="font-semibold hover:text-brand-700" dir="ltr">{{ site.phone|fa_digits }}</a></li>{% endif %}
+      {% if site.email %}<li class="flex items-center gap-3">{% include "components/icon.html" with name="mail" class="text-brand-600" %}<a href="mailto:{{ site.email }}" class="font-semibold hover:text-brand-700">{{ site.email }}</a></li>{% endif %}
+      {% if site.address %}<li class="flex items-start gap-3">{% include "components/icon.html" with name="map" class="mt-1.5 text-brand-600" %}<span>{{ site.address|linebreaksbr }}{% if site.map_url %}<br><a href="{{ site.map_url }}" target="_blank" rel="noopener" class="text-sm font-semibold text-brand-600 hover:underline">مشاهده روی نقشه</a>{% endif %}</span></li>{% endif %}
+      {% if site.working_hours %}<li class="flex items-center gap-3">{% include "components/icon.html" with name="clock" class="text-brand-600" %}<span>{{ site.working_hours }}</span></li>{% endif %}
+    </ul>
+    {% if site.whatsapp_url %}<a href="{{ site.whatsapp_url }}" target="_blank" rel="noopener" class="btn btn-primary mt-8">{% include "components/icon.html" with name="whatsapp" %}گفت‌وگو در واتساپ</a>{% endif %}
+  </div>
+
+  {# The «با من تماس بگیرید» form (LEAD-3) is added here in sprint 2 #}
+  <div class="card"><div class="card-body justify-center text-center">
+    <p class="card-title">با من تماس بگیرید</p>
+    <p class="muted">فرم درخواست تماس به‌زودی اینجا قرار می‌گیرد.</p>
+  </div></div>
+</div>
+{% endwith %}
+{% endblock %}

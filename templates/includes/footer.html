@@ -1,0 +1,40 @@
+{% load wagtailcore_tags core_tags %}{% with site=settings.content.SiteSettings %}
+<footer class="mt-16 border-t border-slate-200 bg-brand-900 text-brand-100">
+  <div class="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="lg:col-span-2">
+      <p class="text-xl font-extrabold text-white">{{ site.brand_name }}</p>
+      {% if site.tagline %}<p class="mt-1 text-brand-200">{{ site.tagline }}</p>{% endif %}
+      {% if site.footer_text %}<p class="mt-4 max-w-md text-sm leading-7 text-brand-200">{{ site.footer_text|linebreaksbr }}</p>{% endif %}
+      {% if site.social_links %}
+      <ul class="mt-5 flex flex-wrap gap-2" aria-label="شبکه‌های اجتماعی">
+        {% for link in site.social_links %}
+        <li><a href="{{ link.url }}" class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20" rel="noopener" target="_blank" aria-label="{{ link.label }}">{% include "components/icon.html" with name=link.key %}</a></li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+
+    <nav aria-label="لینک‌های فوتر">
+      <p class="font-bold text-white">دسترسی سریع</p>
+      <ul class="mt-3 space-y-2 text-sm">
+        {% for item in site.main_menu %}<li><a href="{{ item.value.href }}" class="hover:text-white">{{ item.value.label }}</a></li>{% endfor %}
+      </ul>
+    </nav>
+
+    <div>
+      <p class="font-bold text-white">تماس</p>
+      <ul class="mt-3 space-y-2 text-sm">
+        {% if site.phone %}<li><a href="tel:{{ site.phone|cut:' ' }}" class="hover:text-white" dir="ltr">{{ site.phone|fa_digits }}</a></li>{% endif %}
+        {% if site.email %}<li><a href="mailto:{{ site.email }}" class="hover:text-white">{{ site.email }}</a></li>{% endif %}
+        {% if site.address %}<li>{{ site.address|linebreaksbr }}</li>{% endif %}
+      </ul>
+      {% if site.trust_seal_html %}<div class="mt-4">{{ site.trust_seal_html|safe }}</div>{% endif %}
+    </div>
+  </div>
+  <div class="border-t border-white/10">
+    <div class="container-page flex flex-col gap-2 py-5 text-xs text-brand-200 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {% now_jalali_year %} {{ site.brand_name }}. همه حقوق محفوظ است.</p>
+    </div>
+  </div>
+</footer>
+{% endwith %}

@@ -49,5 +49,10 @@ def now_jalali():
 
 
 @register.simple_tag
+def now_jalali_year():
+    return text.to_fa_digits(jalali.to_jalali(timezone.localdate()).year)
+
+
+@register.simple_tag
 def site_name():
     return settings.WAGTAIL_SITE_NAME

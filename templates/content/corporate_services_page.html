@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+{% include "components/page_header.html" with title=page.title intro=page.intro|richtext %}
+<div class="container-page py-12">
+  {% if services %}
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {% for service in services %}{% include "components/card_service.html" with service=service %}{% endfor %}
+  </div>
+  {% endif %}
+  <div class="mx-auto max-w-3xl">
+    {% for block in page.body %}{% include_block block %}{% endfor %}
+  </div>
+  {# The corporate training request form (LEAD-2) is added here in sprint 2 #}
+</div>
+{% endblock %}

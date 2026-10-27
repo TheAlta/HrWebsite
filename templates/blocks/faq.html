@@ -1,0 +1,15 @@
+{% load wagtailcore_tags %}
+<section class="my-10">
+  {% if value.title %}<h2 class="heading-2 mb-5">{{ value.title }}</h2>{% endif %}
+  <div class="divide-y divide-slate-200 rounded-(--radius-card) border border-slate-200 bg-white">
+    {% for item in value.items %}
+    <details class="group px-5 py-4">
+      <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold text-slate-900">
+        {{ item.question }}
+        <span class="text-brand-600 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+      </summary>
+      <div class="prose-fa mt-3 text-[0.98rem]">{{ item.answer|richtext }}</div>
+    </details>
+    {% endfor %}
+  </div>
+</section>

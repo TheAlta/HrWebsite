@@ -1,0 +1,37 @@
+{% load wagtailcore_tags wagtailimages_tags content_tags %}{% with site=settings.content.SiteSettings %}
+<header class="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur" x-data="{ open: false }" @keydown.escape.window="open = false">
+  <div class="container-page flex h-16 items-center justify-between gap-4">
+    <a href="/" class="flex items-center gap-2 text-lg font-extrabold text-brand-800">
+      {% if site.logo %}{% image site.logo height-40 class="h-10 w-auto" alt=site.brand_name %}{% else %}{{ site.brand_name }}{% endif %}
+    </a>
+
+    <nav aria-label="منوی اصلی" class="hidden lg:block">
+      <ul class="flex items-center gap-1">
+        {% for item in site.main_menu %}
+          {% is_active item.value.href as active %}
+          <li><a href="{{ item.value.href }}" class="rounded-lg px-3 py-2 text-[0.95rem] font-medium text-slate-700 hover:bg-slate-100 hover:text-brand-700 aria-[current=page]:text-brand-700" {% if active %}aria-current="page"{% endif %}>{{ item.value.label }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a href="{% url 'search' %}" class="btn btn-ghost btn-sm" aria-label="جست‌وجو">{% include "components/icon.html" with name="search" %}</a>
+      {% if site.cta_page %}<a href="{% pageurl site.cta_page %}" class="btn btn-primary btn-sm hidden sm:inline-flex">{{ site.cta_label }}</a>{% endif %}
+      <button type="button" class="btn btn-ghost btn-sm lg:hidden" @click="open = !open" :aria-expanded="open.toString()" aria-controls="mobile-menu" aria-label="منو">
+        <span x-show="!open">{% include "components/icon.html" with name="menu" %}</span>
+        <span x-show="open" x-cloak>{% include "components/icon.html" with name="close" %}</span>
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobile-menu" aria-label="منوی موبایل" class="border-t border-slate-200 bg-white lg:hidden" x-show="open" x-cloak x-transition.opacity>
+    <ul class="container-page flex flex-col py-3">
+      {% for item in site.main_menu %}
+        {% is_active item.value.href as active %}
+        <li><a href="{{ item.value.href }}" class="block rounded-lg px-3 py-3 font-medium text-slate-700 hover:bg-slate-100 aria-[current=page]:text-brand-700" {% if active %}aria-current="page"{% endif %}>{{ item.value.label }}</a></li>
+      {% endfor %}
+      {% if site.cta_page %}<li class="pt-2"><a href="{% pageurl site.cta_page %}" class="btn btn-primary w-full">{{ site.cta_label }}</a></li>{% endif %}
+    </ul>
+  </nav>
+</header>
+{% endwith %}

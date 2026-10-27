@@ -1,0 +1,16 @@
+{% load wagtailcore_tags wagtailimages_tags core_tags %}
+{# Usage: {% include "components/card_project.html" with project=project %} #}
+<article class="card">
+  {% if project.image %}{% image project.image fill-640x360 format-webp class="aspect-[16/9] w-full object-cover" loading="lazy" alt="" %}{% endif %}
+  <div class="card-body">
+    <p class="muted">{% if project.client %}{{ project.client.name }}{% endif %}{% if project.year %} · {{ project.year|fa_digits }}{% endif %}</p>
+    <h3 class="card-title">{{ project.title }}</h3>
+    <p class="text-[0.95rem] leading-7 text-slate-600">{{ project.summary }}</p>
+    {% if project.results %}
+    <details class="mt-2 text-sm">
+      <summary class="cursor-pointer font-semibold text-brand-700">نتایج</summary>
+      <div class="prose-fa mt-2 text-sm">{{ project.results|richtext }}</div>
+    </details>
+    {% endif %}
+  </div>
+</article>

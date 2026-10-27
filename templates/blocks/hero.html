@@ -1,0 +1,19 @@
+{% load wagtailimages_tags %}
+<section class="relative overflow-hidden bg-gradient-to-b from-brand-50 to-white">
+  <div class="container-page grid items-center gap-10 py-14 sm:py-20 lg:grid-cols-2">
+    <div>
+      <h1 class="heading-1 text-4xl sm:text-5xl">{{ value.title }}</h1>
+      {% if value.subtitle %}<p class="lead mt-5 max-w-xl">{{ value.subtitle }}</p>{% endif %}
+      {% if value.buttons %}
+      <div class="mt-8 flex flex-wrap gap-3">
+        {% for button in value.buttons %}<a href="{{ button.href }}" class="btn {% if button.style == 'secondary' %}btn-secondary{% else %}btn-primary{% endif %}">{{ button.label }}</a>{% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {% if value.image %}
+    <div class="justify-self-center lg:justify-self-end">
+      {% picture value.image format-{avif,webp,jpeg} fill-560x640 sizes="(min-width: 1024px) 480px, 90vw" class="aspect-[7/8] w-full max-w-md rounded-[2rem] object-cover shadow-xl" alt="" fetchpriority="high" %}
+    </div>
+    {% endif %}
+  </div>
+</section>

@@ -15,11 +15,12 @@ def test_healthz_rejects_post(client):
 
 
 def test_home_page_renders_rtl_persian(client):
+    # Without sections the home page shows a hint for the editor (sprint 1)
     response = client.get("/")
     assert response.status_code == 200
     html = response.content.decode()
     assert 'dir="rtl"' in html
-    assert "۱٬۲۰۰٬۰۰۰ تومان" in html
+    assert "بخش‌های صفحه اصلی را از پنل مدیریت اضافه کنید" in html
 
 
 def test_unknown_url_gives_persian_404(client):

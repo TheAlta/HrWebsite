@@ -1,0 +1,14 @@
+{% load wagtailimages_tags %}
+{# Usage: {% include "components/testimonial.html" with testimonial=t %} #}
+<figure class="card">
+  <div class="card-body">
+    <blockquote class="text-[0.98rem] leading-8 text-slate-700">«{{ testimonial.quote }}»</blockquote>
+    <figcaption class="mt-auto flex items-center gap-3 pt-4">
+      {% if testimonial.photo %}{% image testimonial.photo fill-96x96 format-webp class="h-12 w-12 rounded-full object-cover" loading="lazy" alt="" %}{% endif %}
+      <div>
+        <p class="font-bold text-slate-900">{{ testimonial.author_name }}</p>
+        <p class="muted">{{ testimonial.author_title }}{% if testimonial.client %}{% if testimonial.author_title %}، {% endif %}{{ testimonial.client.name }}{% endif %}</p>
+      </div>
+    </figcaption>
+  </div>
+</figure>

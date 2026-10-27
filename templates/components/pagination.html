@@ -1,0 +1,13 @@
+{% load core_tags %}
+{# Usage: {% include "components/pagination.html" with page_obj=page_obj query=querystring_without_page %} #}
+{% if page_obj.paginator.num_pages > 1 %}
+<nav aria-label="صفحه‌بندی" class="mt-10 flex items-center justify-center gap-2">
+  {% if page_obj.has_previous %}
+    <a class="btn btn-secondary btn-sm" href="?{% if query %}{{ query }}&{% endif %}page={{ page_obj.previous_page_number }}" rel="prev">قبلی</a>
+  {% endif %}
+  <span class="muted px-2">صفحه {{ page_obj.number|fa_digits }} از {{ page_obj.paginator.num_pages|fa_digits }}</span>
+  {% if page_obj.has_next %}
+    <a class="btn btn-secondary btn-sm" href="?{% if query %}{{ query }}&{% endif %}page={{ page_obj.next_page_number }}" rel="next">بعدی</a>
+  {% endif %}
+</nav>
+{% endif %}

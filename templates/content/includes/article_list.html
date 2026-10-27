@@ -1,0 +1,11 @@
+{% if articles %}
+<div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  {% for article in articles %}{% include "components/card_article.html" with article=article %}{% endfor %}
+</div>
+{% if active.kind %}{% with q="kind="|add:active.kind %}{% include "components/pagination.html" with query=q %}{% endwith %}
+{% elif active.category %}{% with q="category="|add:active.category.slug %}{% include "components/pagination.html" with query=q %}{% endwith %}
+{% elif active.tag %}{% with q="tag="|add:active.tag %}{% include "components/pagination.html" with query=q %}{% endwith %}
+{% else %}{% include "components/pagination.html" %}{% endif %}
+{% else %}
+<p class="lead py-10 text-center">مطلبی پیدا نشد.</p>
+{% endif %}

@@ -1,0 +1,13 @@
+{% load wagtailimages_tags %}
+{% if clients %}
+<section class="border-y border-slate-200 bg-white py-10" aria-label="{{ value.title }}">
+  <div class="container-page">
+    {% if value.title %}<p class="muted text-center">{{ value.title }}</p>{% endif %}
+    <ul class="mt-6 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+      {% for client in clients %}
+      <li>{% image client.logo height-48 format-webp class="h-10 w-auto opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0" loading="lazy" alt=client.name %}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
