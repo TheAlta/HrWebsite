@@ -49,8 +49,8 @@ docker pull hello-world   # باید بدون خطا تمام شود
 ساخت پوشه‌ها. شناسه `1000` همان کاربری است که برنامه با آن اجرا می‌شود:
 
 ```bash
-mkdir -p /srv/hrweb/{production,staging}/{media,postgres,backups} /srv/hrweb/caddy/{data,config}
-chown -R 1000:1000 /srv/hrweb/production/media /srv/hrweb/staging/media
+mkdir -p /srv/hrweb/{production,staging}/{media,private,postgres,backups} /srv/hrweb/caddy/{data,config}
+chown -R 1000:1000 /srv/hrweb/{production,staging}/{media,private}
 ```
 
 ## ۴. کد و تنظیمات
@@ -139,6 +139,16 @@ openssl enc -d -aes-256-cbc -pbkdf2 -pass file:/srv/hrweb/backup-passphrase \
 | `SMS_TPL_BOOKING_REMINDER` | `token10`، `token20` | یادآوری جلسه: %token10. لینک: %token20 |
 | `SMS_TPL_BOOKING_CANCELLED` | `token10` | جلسه %token10 لغو شد. |
 | `SMS_TPL_BOOKING_PROBLEM` | `token10` | پرداخت شما ثبت شد ولی زمان %token10 آزاد نیست. به‌زودی تماس می‌گیرم. |
+| `SMS_TPL_EVENT_REGISTERED` | `token`، `token10`، `token20` | ثبت‌نام شما در %token20 انجام شد. زمان: %token10. لینک ورود: %token |
+| `SMS_TPL_EVENT_WAITLISTED` | `token20` | ظرفیت %token20 پر است و شما در لیست انتظار هستید. |
+| `SMS_TPL_EVENT_SEAT_OPEN` | `token10`، `token20` | در %token20 جا باز شد. تا %token10 از حساب کاربری پرداخت کنید. |
+| `SMS_TPL_EVENT_CANCELLED` | `token20` | ثبت‌نام شما در %token20 لغو شد. |
+| `SMS_TPL_EVENT_REMINDER` | `token`، `token10`، `token20` | یادآوری %token20: %token10. لینک ورود: %token |
+| `SMS_TPL_EVENT_RECORDING` | `token20` | ضبط %token20 در حساب کاربری شما آماده است. |
+| `SMS_TPL_EVENT_PROBLEM` | `token20` | پرداخت شما برای %token20 ثبت شد ولی ظرفیت پر شده است. به‌زودی تماس می‌گیرم. |
+| `SMS_TPL_ORDER_DIGITAL` | `token` | سفارش %token آماده است. فایل را از حساب کاربری دانلود کنید. |
+| `SMS_TPL_ORDER_SHIPPED` | `token`، `token2` | سفارش %token ارسال شد. کد رهگیری: %token2 |
+| `SMS_TPL_ORDER_PROBLEM` | `token` | پرداخت سفارش %token ثبت شد ولی موجودی تمام شده است. به‌زودی تماس می‌گیرم. |
 
 ## ۸. انتشار نسخه جدید
 

@@ -24,11 +24,19 @@ class OrderLine:
 
 
 @transaction.atomic
-def create_order(user, lines: list[OrderLine]) -> Order:
+def create_order(
+    user, lines: list[OrderLine], *, discount: int = 0, shipping: int = 0, coupon_code: str = ""
+) -> Order:
     subtotal = sum(line.unit_price * line.qty for line in lines)
     # Temporary unique value: the real number needs the primary key
     order = Order.objects.create(
-        user=user, number=uuid.uuid4().hex[:20], subtotal=subtotal, total=subtotal
+        user=user,
+        number=uuid.uuid4().hex[:20],
+        subtotal=subtotal,
+        discount=discount,
+        shipping=shipping,
+        coupon_code=coupon_code,
+        total=subtotal - discount + shipping,
     )
     order.number = str(NUMBER_OFFSET + order.pk)
     order.save(update_fields=["number"])

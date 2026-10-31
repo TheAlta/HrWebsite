@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load core_tags %}
+
+{% block title %}تکمیل خرید | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
+{% block meta %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block content %}
+{% include "components/page_header.html" with title="تکمیل خرید" %}
+<form method="post" class="container-page grid gap-10 py-12 lg:grid-cols-[1fr_20rem]" novalidate>
+  {% csrf_token %}
+  <div class="min-w-0 space-y-6">
+    {% if form %}
+    <section class="card" aria-labelledby="address-heading">
+      <div class="card-body gap-4">
+        <h2 id="address-heading" class="card-title">نشانی ارسال</h2>
+        <div class="grid gap-4 sm:grid-cols-2">
+          {% with field=form.recipient %}{% include "components/field.html" %}{% endwith %}
+          {% with field=form.mobile %}{% include "components/field.html" %}{% endwith %}
+          {% with field=form.province %}{% include "components/field.html" %}{% endwith %}
+          {% with field=form.city %}{% include "components/field.html" %}{% endwith %}
+        </div>
+        {% with field=form.address %}{% include "components/field.html" %}{% endwith %}
+        {% with field=form.postal_code %}{% include "components/field.html" %}{% endwith %}
+      </div>
+    </section>
+    {% endif %}
+    <section class="card" aria-labelledby="items-heading">
+      <div class="card-body">
+        <h2 id="items-heading" class="card-title">اقلام سفارش</h2>
+        <ul class="divide-y divide-slate-200">
+          {% for line in quote.lines %}
+          <li class="flex items-center justify-between gap-4 py-2"><span>{{ line.product.title }}{% if line.qty > 1 %} × {{ line.qty|fa_digits }}{% endif %}</span><span class="font-semibold">{% if line.total %}{{ line.total|toman }}{% else %}رایگان{% endif %}</span></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <aside class="card self-start">
+    <div class="card-body gap-4">
+      {% include "shop/includes/totals.html" %}
+      <button type="submit" class="btn btn-primary">{% if quote.total %}پرداخت{% else %}ثبت سفارش{% endif %}</button>
+      <a href="{% url 'shop:cart' %}" class="btn btn-ghost">بازگشت به سبد</a>
+    </div>
+  </aside>
+</form>
+{% endblock %}

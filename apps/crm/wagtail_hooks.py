@@ -1,8 +1,9 @@
 from wagtail import hooks
 from wagtail.admin.views.generic.models import IndexView
 from wagtail.admin.viewsets.model import ModelViewSet
-from wagtail.permission_policies import ModelPermissionPolicy
 from wagtail.permissions import register_permission_policy
+
+from apps.core.admin_policies import NoManualAddPolicy
 
 from .models import Lead
 
@@ -23,15 +24,6 @@ EXPORT_HEADINGS = {
 
 class LeadIndexView(IndexView):
     export_headings = EXPORT_HEADINGS
-
-
-class NoManualAddPolicy(ModelPermissionPolicy):
-    """Leads come only from the site forms."""
-
-    def user_has_permission(self, user, action):
-        if action == "add":
-            return False
-        return super().user_has_permission(user, action)
 
 
 class LeadViewSet(ModelViewSet):

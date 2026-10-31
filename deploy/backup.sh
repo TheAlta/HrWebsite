@@ -29,7 +29,7 @@ DB_FILE="$BACKUP_DIR/db-$STAMP.sql.gz.enc"
 docker exec "hrweb-$APP_ENV-db-1" pg_dump -U "$POSTGRES_USER" "$POSTGRES_DB" | gzip | encrypt >"$DB_FILE"
 
 MEDIA_FILE="$BACKUP_DIR/media-$STAMP.tar.gz.enc"
-tar -C "$DATA_DIR" -czf - media | encrypt >"$MEDIA_FILE"
+tar -C "$DATA_DIR" -czf - media private | encrypt >"$MEDIA_FILE"
 
 # An empty dump means pg_dump failed silently; fail loudly instead
 [ "$(stat -c %s "$DB_FILE")" -gt 1024 ] || { echo "database backup looks empty" >&2; exit 1; }

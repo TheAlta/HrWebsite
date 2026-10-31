@@ -1,0 +1,57 @@
+{% load core_tags %}
+{# The part of the cart HTMX replaces after a change (quantity, removal, discount code). #}
+<div id="cart-body">
+  {% if quote.lines %}
+  <div class="grid gap-10 lg:grid-cols-[1fr_20rem]">
+    <ul class="card divide-y divide-slate-200">
+      {% for line in quote.lines %}
+      <li class="flex flex-wrap items-center justify-between gap-3 p-5">
+        <div class="min-w-0">
+          <p class="font-semibold text-slate-900">{{ line.product.title }}</p>
+          <p class="muted">{{ line.product.get_kind_display }} · {% if line.product.price %}{{ line.product.price|toman }}{% else %}رایگان{% endif %}</p>
+        </div>
+        <div class="flex items-center gap-2">
+          {% if not line.product.is_digital %}
+          <form method="post" action="{% url 'shop:cart_update' line.product.pk %}" hx-post="{% url 'shop:cart_update' line.product.pk %}" hx-target="#cart-body" hx-swap="outerHTML" class="flex items-center gap-2">
+            {% csrf_token %}
+            <label for="qty-{{ line.product.pk }}" class="sr-only">تعداد {{ line.product.title }}</label>
+            <input id="qty-{{ line.product.pk }}" type="number" name="qty" min="1" max="10" value="{{ line.qty }}" class="field-input w-20 py-1.5" dir="ltr" hx-post="{% url 'shop:cart_update' line.product.pk %}" hx-trigger="change" hx-target="#cart-body" hx-swap="outerHTML" hx-include="closest form">
+            <noscript><button type="submit" class="btn btn-secondary btn-sm">به‌روزرسانی</button></noscript>
+          </form>
+          {% endif %}
+          <form method="post" action="{% url 'shop:cart_update' line.product.pk %}" hx-post="{% url 'shop:cart_update' line.product.pk %}" hx-target="#cart-body" hx-swap="outerHTML">
+            {% csrf_token %}<input type="hidden" name="qty" value="0">
+            <button type="submit" class="btn btn-ghost btn-sm">حذف</button>
+          </form>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <aside class="card self-start">
+      <div class="card-body gap-4">
+        <form method="post" action="{% url 'shop:cart_coupon' %}" hx-post="{% url 'shop:cart_coupon' %}" hx-target="#cart-body" hx-swap="outerHTML" class="flex items-end gap-2">
+          {% csrf_token %}
+          {% if quote.coupon %}
+          <p class="flex-1 text-sm text-emerald-800">کد <span dir="ltr" class="font-semibold">{{ quote.coupon.code }}</span> اعمال شد.</p>
+          <input type="hidden" name="code" value="">
+          <button type="submit" class="btn btn-ghost btn-sm">حذف کد</button>
+          {% else %}
+          <div class="flex-1">
+            <label for="coupon-code" class="field-label">کد تخفیف</label>
+            <input id="coupon-code" type="text" name="code" value="{{ cart.coupon_code }}" maxlength="40" class="field-input py-1.5" dir="ltr" autocomplete="off" {% if coupon_error %}aria-invalid="true" aria-describedby="coupon-error"{% endif %}>
+          </div>
+          <button type="submit" class="btn btn-secondary btn-sm">اعمال</button>
+          {% endif %}
+        </form>
+        {% if coupon_error %}<p id="coupon-error" class="field-error">{{ coupon_error }}</p>{% endif %}
+
+        {% include "shop/includes/totals.html" %}
+        <a href="{% url 'shop:checkout' %}" class="btn btn-primary">ادامه خرید</a>
+      </div>
+    </aside>
+  </div>
+  {% else %}
+  <p class="lead py-10 text-center">سبد خرید شما خالی است.</p>
+  {% endif %}
+</div>
