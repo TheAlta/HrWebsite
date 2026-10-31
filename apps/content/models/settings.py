@@ -4,6 +4,7 @@ from django.db import models
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, ObjectList, TabbedInterface
 from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
 from wagtail.fields import StreamField
+from wagtail.models import Site
 
 from apps.core.fields import MobileField
 
@@ -137,6 +138,12 @@ class SiteSettings(BaseSiteSetting):
 
     class Meta:
         verbose_name = "تنظیمات سایت"
+
+    @classmethod
+    def for_default_site(cls):
+        """Settings outside a request (background tasks). None before a site exists."""
+        site = Site.objects.filter(is_default_site=True).first()
+        return cls.for_site(site) if site else None
 
     @property
     def whatsapp_url(self):

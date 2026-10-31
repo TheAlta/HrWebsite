@@ -6,12 +6,14 @@
 All text is placeholder; the owner replaces it from the panel.
 """
 
+import datetime as dt
 import io
 import random
 
+from django.conf import settings as django_settings
 from django.core.files.images import ImageFile
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from PIL import Image as PILImage
 from PIL import ImageDraw
@@ -20,6 +22,7 @@ from wagtail.images import get_image_model
 from wagtail.models import Page, Site
 from wagtail.rich_text import RichText
 
+from apps.booking.models import Availability, Booking, BookingPage, SessionType
 from apps.content.models import (
     AboutPage,
     ArticleKind,
@@ -38,6 +41,8 @@ from apps.content.models import (
     TeamMember,
 )
 from apps.crm.models import ConsultationPage
+from apps.orders.models import Order
+from apps.payments.models import Payment
 from apps.portfolio.models import Client, PortfolioPage, Project, Testimonial
 
 DEMO_TAG = "[demo]"  # marks sample images/documents so --reset can remove them
@@ -129,6 +134,8 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, reset=False, **options):
+        if not django_settings.ALLOW_SEED_DEMO:
+            raise CommandError("seed_demo is disabled here (ALLOW_SEED_DEMO=false).")
         home = HomePage.objects.first()
         if home is None:
             self.stderr.write("HomePage not found. Run migrations first.")
@@ -435,6 +442,39 @@ class Command(BaseCommand):
                 show_in_menus=False,
             ),
         )
+        booking_page = publish(
+            home,
+            BookingPage(
+                title="رزرو جلسه",
+                slug="booking",
+                intro=p("نوع جلسه را انتخاب کنید، زمان مناسب را بردارید و پرداخت کنید."),
+            ),
+        )
+        for i, (title, mode, minutes, price) in enumerate(
+            [
+                ("جلسه مشاوره آنلاین", SessionType.Mode.ONLINE, 60, 25_000_000),
+                ("جلسه مشاوره حضوری", SessionType.Mode.IN_PERSON, 90, 40_000_000),
+                ("گفت‌وگوی تلفنی کوتاه", SessionType.Mode.PHONE, 20, 0),
+            ]
+        ):
+            SessionType.objects.create(
+                title=title,
+                description="این متن نمونه است و از پنل مدیریت قابل تغییر است.",
+                mode=mode,
+                duration_min=minutes,
+                price=price,
+                buffer_min=15,
+                meeting_link="https://example.com/room" if mode == "online" else "",
+                sort_order=i,
+            )
+        for weekday in Availability.Weekday.values[:5]:  # Saturday to Wednesday
+            Availability.objects.create(
+                weekday=weekday, start_time=dt.time(9, 0), end_time=dt.time(13, 0)
+            )
+            Availability.objects.create(
+                weekday=weekday, start_time=dt.time(14, 0), end_time=dt.time(17, 0)
+            )
+
         publish(
             home,
             LegalPage(title="قوانین و مقررات", slug="terms", body=p(LOREM), show_in_menus=False),
@@ -536,6 +576,7 @@ class Command(BaseCommand):
                 ("خانه", home),
                 ("درباره من", about),
                 ("خدمات", services_index),
+                ("رزرو جلسه", booking_page),
                 ("مجله", blog),
                 ("نمونه‌کارها", portfolio),
                 ("تماس", contact),
@@ -548,6 +589,8 @@ class Command(BaseCommand):
         )
 
     def _reset(self, home):
+        for model in (Payment, Booking, Order, Availability, SessionType):
+            model.objects.all().delete()
         # Queryset delete lets treebeard keep the tree counters (numchild) consistent
         home.get_children().delete()
         # Reload before saving: the in-memory `home` still holds the old child count,

@@ -1,0 +1,70 @@
+# Staging and production on the server. One copy of this stack runs per environment:
+#   docker compose -f compose.prod.yml --env-file .env.production -p hrweb-production up -d
+# The only public entry point is Caddy (compose.caddy.yml); web listens on localhost.
+
+x-app: &app
+  build:
+    context: .
+    target: prod
+    args:
+      PIP_INDEX_URL: ${PIP_INDEX_URL:-https://repo.hmirror.ir/python/simple}
+  image: hrweb-${APP_ENV}:${IMAGE_TAG:-latest}
+  env_file: ${ENV_FILE}
+  restart: unless-stopped
+  volumes:
+    - ${DATA_DIR}/media:/app/media
+  logging: &logging
+    driver: json-file
+    options:
+      max-size: "20m"
+      max-file: "5"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - ${DATA_DIR}/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    logging: *logging
+
+  # One-shot: applies migrations, then exits. web and worker wait for it.
+  migrate:
+    <<: *app
+    restart: "no"
+    command: python manage.py migrate --noinput
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    <<: *app
+    ports:
+      - "127.0.0.1:${WEB_PORT}:8000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request as u; u.urlopen(u.Request('http://127.0.0.1:8000/healthz', headers={'Host': 'localhost', 'X-Forwarded-Proto': 'https'}))"
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  worker:
+    <<: *app
+    command: python manage.py qcluster
+    depends_on:
+      migrate:
+        condition: service_completed_successfully

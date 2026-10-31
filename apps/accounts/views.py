@@ -76,8 +76,18 @@ def logout_view(request):
 
 @login_required
 def account_view(request):
-    """Placeholder until the user panel (USER-2, sprint 5)."""
-    return render(request, "accounts/account.html")
+    """Sessions for now; the full user panel arrives with USER-2 (sprint 5)."""
+    from apps.booking.models import Booking
+    from apps.booking.services import can_change
+
+    bookings = list(
+        Booking.objects.filter(user=request.user)
+        .exclude(status=Booking.Status.EXPIRED)
+        .select_related("session_type", "order")[:20]
+    )
+    for booking in bookings:
+        booking.changeable = can_change(booking)
+    return render(request, "accounts/account.html", {"bookings": bookings})
 
 
 def _template(request, step):

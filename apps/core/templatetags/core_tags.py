@@ -30,6 +30,19 @@ def jdatetime(value):
 
 
 @register.filter
+def jtime(value):
+    if value in (None, ""):
+        return ""
+    return jalali.format_time(value)
+
+
+@register.filter
+def unix(value):
+    """Whole-second Unix timestamp, for passing a moment through a URL or form."""
+    return int(value.timestamp())
+
+
+@register.filter
 def toman(value):
     if value in (None, ""):
         return ""

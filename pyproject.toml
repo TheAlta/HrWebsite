@@ -15,6 +15,7 @@ dependencies = [
   "gunicorn>=26",
   "httpx>=0.28",
   "openpyxl>=3.1",
+  "sentry-sdk>=2.20",
 ]
 
 [dependency-groups]
@@ -46,7 +47,7 @@ known-first-party = ["apps", "config"]
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings.test"
 python_files = ["tests.py", "test_*.py"]
-addopts = "--reuse-db -q"
+addopts = "-q"
 filterwarnings = [
   # WhiteNoise warns when collectstatic has not run; irrelevant in tests
   "ignore:No directory at:UserWarning",

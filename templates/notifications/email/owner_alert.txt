@@ -1,0 +1,4 @@
+{% autoescape off %}{{ message }}
+
+این پیام خودکار از سایت ارسال شده است.
+{% endautoescape %}

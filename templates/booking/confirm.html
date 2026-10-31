@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load wagtailroutablepage_tags core_tags %}
+
+{% block title %}تأیید رزرو | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
+{% block meta %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block content %}
+{% include "components/page_header.html" with title="تأیید رزرو" %}
+{% routablepageurl page "slots" session_type.pk as slots_url %}
+<div class="container-page grid gap-10 py-12 lg:grid-cols-[1fr_20rem]">
+  <form method="post" class="card">
+    {% csrf_token %}
+    <div class="card-body gap-4">
+      <h2 class="card-title">{{ session_type.title }}</h2>
+      <dl class="grid gap-3 sm:grid-cols-2">
+        <div><dt class="muted">زمان</dt><dd class="font-semibold text-slate-900">{{ start_at|jdate:"weekday" }}، ساعت {{ start_at|jtime }}</dd></div>
+        <div><dt class="muted">مدت</dt><dd class="font-semibold text-slate-900">{{ session_type.duration_min|fa_digits }} دقیقه</dd></div>
+        <div><dt class="muted">نحوه برگزاری</dt><dd class="font-semibold text-slate-900">{{ session_type.get_mode_display }}</dd></div>
+        <div><dt class="muted">مبلغ</dt><dd class="font-semibold text-slate-900">{% if session_type.price %}{{ session_type.price|toman }}{% else %}رایگان{% endif %}</dd></div>
+      </dl>
+      <div class="flex flex-wrap items-center gap-3 pt-2">
+        <button type="submit" class="btn btn-primary">{% if session_type.price %}پرداخت و ثبت رزرو{% else %}ثبت رزرو{% endif %}</button>
+        <a href="{{ slots_url }}" class="btn btn-ghost">انتخاب زمان دیگر</a>
+      </div>
+    </div>
+  </form>
+  <aside class="card self-start">
+    <div class="card-body text-[0.95rem]">
+      <p class="card-title">پیش از پرداخت</p>
+      <ul class="list-disc space-y-1 ps-5 text-slate-600">
+        <li>این زمان {{ hold_minutes|fa_digits }} دقیقه برای شما نگه داشته می‌شود.</li>
+        <li>لغو یا تغییر زمان تا ۲۴ ساعت قبل از جلسه ممکن است.</li>
+        <li>بعد از پرداخت، پیامک تأیید می‌گیرید.</li>
+      </ul>
+    </div>
+  </aside>
+</div>
+{% endblock %}

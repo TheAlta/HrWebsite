@@ -40,9 +40,10 @@ RUN uv pip sync --require-hashes /tmp/requirements.txt
 COPY . .
 COPY --from=css /build/static/css ./static/css
 RUN SECRET_KEY=build-only DATABASE_URL=sqlite:////tmp/build.db ALLOWED_HOSTS=localhost \
+    PAYMENT_GATEWAY_ORDER=zarinpal \
     DJANGO_SETTINGS_MODULE=config.settings.prod python manage.py collectstatic --noinput \
  && useradd --system --uid 1000 --home /app app \
  && mkdir -p /app/media && chown -R app:app /app/media
 USER app
 EXPOSE 8000
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--access-logfile", "-"]
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--access-logfile", "-", "--no-control-socket"]

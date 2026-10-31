@@ -53,6 +53,12 @@ def format_datetime(value: dt.datetime) -> str:
     return to_fa_digits(f"{j.day} {MONTHS[j.month - 1]} {j.year}، ساعت {j.hour:02d}:{j.minute:02d}")
 
 
+def format_time(value: dt.datetime) -> str:
+    """-> '۱۴:۳۰' in Tehran time."""
+    local = timezone.localtime(value)
+    return to_fa_digits(f"{local.hour:02d}:{local.minute:02d}")
+
+
 def parse_date(text: str) -> dt.date:
     """'۱۴۰۵/۰۸/۰۳' or '1405-8-3' -> Gregorian date. Raises ValueError if invalid."""
     parts = to_en_digits(text.strip()).replace("-", "/").split("/")

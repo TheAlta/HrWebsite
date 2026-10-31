@@ -20,6 +20,9 @@ htmlcov/
 .env.*
 !.env.example
 
+# Local test of the production stack
+/.env.prodtest
+
 # Frontend
 node_modules/
 
