@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}درگاه آزمایشی{% endblock %}
+{% block meta %}<meta name="robots" content="noindex">{% endblock %}
+{% block header %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<section class="container-page flex min-h-screen items-center justify-center py-12">
+  <form method="post" class="card w-full max-w-sm">
+    {% csrf_token %}
+    <div class="card-body items-center gap-4 text-center">
+      <span class="badge">فقط محیط توسعه</span>
+      <h1 class="text-xl font-extrabold">درگاه پرداخت آزمایشی</h1>
+      <p class="muted">این صفحه نقش بانک را بازی می‌کند. پول واقعی جابه‌جا نمی‌شود.</p>
+      <button type="submit" name="result" value="ok" class="btn btn-primary w-full">پرداخت موفق</button>
+      <button type="submit" name="result" value="fail" class="btn btn-secondary w-full">انصراف از پرداخت</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

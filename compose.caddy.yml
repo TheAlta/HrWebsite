@@ -1,0 +1,26 @@
+# The single public entry point of the server: HTTPS for production and staging.
+#   docker compose -f compose.caddy.yml --env-file /srv/hrweb/caddy.env -p hrweb-caddy up -d
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    # Host networking: Caddy reaches each stack's web on 127.0.0.1 and owns ports 80/443
+    network_mode: host
+    environment:
+      DOMAIN: ${DOMAIN}
+      STAGING_DOMAIN: ${STAGING_DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL}
+      PRODUCTION_PORT: ${PRODUCTION_PORT:-8001}
+      STAGING_PORT: ${STAGING_PORT:-8002}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - /srv/hrweb/production/media:/srv/production/media:ro
+      - /srv/hrweb/staging/media:/srv/staging/media:ro
+      - /srv/hrweb/caddy/data:/data
+      - /srv/hrweb/caddy/config:/config
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"

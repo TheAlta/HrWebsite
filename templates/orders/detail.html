@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load core_tags %}
+
+{% block title %}سفارش {{ order.number|fa_digits }} | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
+{% block meta %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block content %}
+<section class="container-page max-w-xl py-12">
+  <div class="card" role="status">
+    <div class="card-body items-center gap-3 py-10 text-center">
+      {% if order.status == "paid" %}
+        <span class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">{% include "components/icon.html" with name="check" size="28" %}</span>
+        <h1 class="card-title">{% if order.total %}پرداخت با موفقیت انجام شد{% else %}ثبت شد{% endif %}</h1>
+        <p class="muted">پیامک تأیید برایتان ارسال می‌شود.</p>
+      {% elif order.status == "pending" %}
+        <span class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-accent-100 text-accent-700">{% include "components/icon.html" with name="clock" size="28" %}</span>
+        <h1 class="card-title">{% if payment %}پرداخت انجام نشد{% else %}در انتظار پرداخت{% endif %}</h1>
+        <p class="muted">اگر مبلغی از حسابتان کم شده، نگران نباشید: وضعیت پرداخت تا چند دقیقه دیگر خودکار بررسی می‌شود.</p>
+      {% else %}
+        <span class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-500">{% include "components/icon.html" with name="close" size="28" %}</span>
+        <h1 class="card-title">این سفارش {{ order.get_status_display }} است</h1>
+        <p class="muted">زمان پرداخت تمام شده است. برای رزرو دوباره یک زمان جدید انتخاب کنید.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <dl class="card mt-6 divide-y divide-slate-200 text-[0.95rem]">
+    <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">شماره سفارش</dt><dd class="font-semibold">{{ order.number|fa_digits }}</dd></div>
+    {% for item in order.items.all %}
+    <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">شرح</dt><dd class="font-semibold">{{ item.title_snapshot }}</dd></div>
+    {% endfor %}
+    <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">مبلغ</dt><dd class="font-semibold">{% if order.total %}{{ order.total|toman }}{% else %}رایگان{% endif %}</dd></div>
+    {% if order.status == "paid" and payment.ref_id %}
+    <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">کد پیگیری</dt><dd class="font-semibold" dir="ltr">{{ payment.ref_id }}</dd></div>
+    {% endif %}
+  </dl>
+
+  <div class="mt-6 flex flex-wrap justify-center gap-3">
+    {% if order.can_pay %}
+    <form method="post" action="{% url 'payments:pay' order.number %}">{% csrf_token %}<button type="submit" class="btn btn-primary">پرداخت</button></form>
+    {% endif %}
+    <a href="{% url 'accounts:account' %}" class="btn btn-secondary">جلسات من</a>
+  </div>
+</section>
+{% endblock %}

@@ -8,8 +8,33 @@
   <h1 class="heading-1">حساب کاربری</h1>
   <div class="card mt-6"><div class="card-body">
     <p>شماره موبایل: <span dir="ltr" class="font-semibold">{{ user.mobile|fa_digits }}</span></p>
-    <p class="muted">سفارش‌ها، جلسات، دوره‌ها و فایل‌های شما به‌زودی اینجا نمایش داده می‌شوند.</p>
+    <p class="muted">سفارش‌ها، دوره‌ها و فایل‌های شما به‌زودی اینجا نمایش داده می‌شوند.</p>
     <form method="post" action="{% url 'accounts:logout' %}" class="mt-2">{% csrf_token %}<button type="submit" class="btn btn-secondary btn-sm">خروج</button></form>
   </div></div>
+
+  <section class="mt-10" aria-labelledby="sessions-heading">
+    <h2 id="sessions-heading" class="heading-2">جلسات من</h2>
+    <ul class="mt-4 space-y-4">
+      {% for booking in bookings %}
+      <li class="card"><div class="card-body">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <p class="card-title">{{ booking.session_type.title }}</p>
+          <span class="badge">{{ booking.get_status_display }}</span>
+        </div>
+        <p>{{ booking.start_at|jdatetime }}</p>
+        {% if booking.status == "confirmed" and booking.meeting_link %}<a href="{{ booking.meeting_link }}" target="_blank" rel="noopener" class="font-semibold text-brand-600 hover:underline">ورود به جلسه آنلاین</a>{% endif %}
+        {% if booking.status == "held" and booking.order %}<a href="{% url 'orders:detail' booking.order.number %}" class="btn btn-primary btn-sm self-start">تکمیل پرداخت</a>{% endif %}
+        {% if booking.changeable %}
+        <div class="mt-2 flex flex-wrap gap-2">
+          <a href="{% url 'booking:reschedule' booking.pk %}" class="btn btn-secondary btn-sm">تغییر زمان</a>
+          <form method="post" action="{% url 'booking:cancel' booking.pk %}" x-data @submit="if (!confirm('این جلسه لغو شود؟')) $event.preventDefault()">{% csrf_token %}<button type="submit" class="btn btn-ghost btn-sm">لغو جلسه</button></form>
+        </div>
+        {% endif %}
+      </div></li>
+      {% empty %}
+      <li class="muted">هنوز جلسه‌ای رزرو نکرده‌اید.</li>
+      {% endfor %}
+    </ul>
+  </section>
 </section>
 {% endblock %}

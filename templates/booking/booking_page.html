@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailroutablepage_tags core_tags %}
+
+{% block content %}
+{% include "components/page_header.html" with title=page.title intro=page.intro|richtext %}
+<div class="container-page py-12">
+  {% if session_types %}
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {% for session in session_types %}
+    {% routablepageurl page "slots" session.pk as slots_url %}
+    <article class="card">
+      <div class="card-body">
+        <span class="badge self-start">{{ session.get_mode_display }}</span>
+        <h2 class="card-title"><a href="{{ slots_url }}" class="hover:text-brand-700">{{ session.title }}</a></h2>
+        {% if session.description %}<p class="text-[0.95rem] leading-7 text-slate-600">{{ session.description }}</p>{% endif %}
+        <p class="flex items-center gap-2 text-sm text-slate-600">{% include "components/icon.html" with name="clock" size="16" class="text-brand-600" %}{{ session.duration_min|fa_digits }} دقیقه</p>
+        <div class="mt-auto flex items-center justify-between pt-3">
+          <span class="text-sm font-semibold text-slate-700">{% if session.price %}{{ session.price|toman }}{% else %}رایگان{% endif %}</span>
+          <a href="{{ slots_url }}" class="btn btn-primary btn-sm">انتخاب زمان</a>
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="lead py-10 text-center">فعلاً جلسه‌ای برای رزرو تعریف نشده است.</p>
+  {% endif %}
+</div>
+{% endblock %}

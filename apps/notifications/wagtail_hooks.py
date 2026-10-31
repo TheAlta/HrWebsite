@@ -1,18 +1,10 @@
 from wagtail import hooks
 from wagtail.admin.viewsets.model import ModelViewSet
-from wagtail.permission_policies import ModelPermissionPolicy
 from wagtail.permissions import register_permission_policy
 
+from apps.core.admin_policies import ReadOnlyPolicy
+
 from .models import Notification
-
-
-class ReadOnlyPolicy(ModelPermissionPolicy):
-    """The log is written by the system only."""
-
-    def user_has_permission(self, user, action):
-        if action in ("add", "change", "delete"):
-            return False
-        return super().user_has_permission(user, action)
 
 
 class NotificationViewSet(ModelViewSet):

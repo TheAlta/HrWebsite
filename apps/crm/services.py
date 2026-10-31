@@ -75,25 +75,20 @@ def send_followup_reminders() -> int:
     A note is marked reminded only when the email was queued, so reminders are
     not lost while the notification address is still empty.
     """
-    from wagtail.models import Site
-
     notes = list(
         LeadNote.objects.filter(
             done=False, reminded_at__isnull=True, follow_up_at__lte=timezone.now()
         ).select_related("lead")
     )
-    site = Site.objects.filter(is_default_site=True).first()
-    if not notes or site is None:
-        return 0
-    site_settings = SiteSettings.for_site(site)
-    if not site_settings.notify_email:
+    site_settings = SiteSettings.for_default_site()
+    if not notes or site_settings is None or not site_settings.notify_email:
         return 0
 
     send_email(
         site_settings.notify_email,
         f"یادآوری پیگیری: {len(notes)} مورد",
         "crm/email/followup_reminder.txt",
-        {"notes": notes, "base_url": site.root_url.rstrip("/")},
+        {"notes": notes, "base_url": site_settings.site.root_url.rstrip("/")},
     )
     LeadNote.objects.filter(pk__in=[n.pk for n in notes]).update(reminded_at=timezone.now())
     return len(notes)

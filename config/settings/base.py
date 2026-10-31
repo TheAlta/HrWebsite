@@ -22,6 +22,9 @@ INSTALLED_APPS = [
     "apps.portfolio",
     "apps.notifications",
     "apps.crm",
+    "apps.orders",
+    "apps.payments",
+    "apps.booking",
     # Wagtail
     "wagtail.contrib.settings",
     "wagtail.contrib.sitemaps",
@@ -50,6 +53,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
+    "django.contrib.postgres",
 ]
 
 MIDDLEWARE = [
@@ -141,12 +145,30 @@ SMS_TEMPLATES = {
     "otp": env("SMS_TPL_OTP", default="otp"),
     "lead_received": env("SMS_TPL_LEAD_RECEIVED", default="lead-received"),
     "lead_admin": env("SMS_TPL_LEAD_ADMIN", default="lead-admin"),
+    "booking_confirmed": env("SMS_TPL_BOOKING_CONFIRMED", default="booking-confirmed"),
+    "booking_reminder": env("SMS_TPL_BOOKING_REMINDER", default="booking-reminder"),
+    "booking_cancelled": env("SMS_TPL_BOOKING_CANCELLED", default="booking-cancelled"),
+    "booking_problem": env("SMS_TPL_BOOKING_PROBLEM", default="booking-problem"),
 }
 # Parameters of these templates are masked in the message log once sent
 SMS_SENSITIVE_TEMPLATES = {"otp"}
 # Alert when this many SMS go out within an hour (OTP abuse, REPORT #023)
 SMS_ALERT_PER_HOUR = env.int("SMS_ALERT_PER_HOUR", default=50)
 ALERT_EMAILS = env.list("ALERT_EMAILS", default=[])
+
+# Payment (PAY-1). The order is primary then backup; `fake` is the local test bank
+PAYMENT_GATEWAYS = {
+    "zarinpal": "apps.payments.gateways.zarinpal.ZarinpalGateway",
+    "zibal": "apps.payments.gateways.zibal.ZibalGateway",
+    "fake": "apps.payments.gateways.fake.FakeGateway",
+}
+PAYMENT_GATEWAY_ORDER = env.list("PAYMENT_GATEWAY_ORDER", default=["fake"])
+ZARINPAL_MERCHANT_ID = env("ZARINPAL_MERCHANT_ID", default="")
+ZARINPAL_SANDBOX = env.bool("ZARINPAL_SANDBOX", default=False)
+ZIBAL_MERCHANT = env("ZIBAL_MERCHANT", default="")
+
+# seed_demo deletes and recreates pages; production keeps this off
+ALLOW_SEED_DEMO = env.bool("ALLOW_SEED_DEMO", default=True)
 
 # Behind Caddy in production (sprint 3) the client IP comes from X-Forwarded-For
 TRUST_X_FORWARDED_FOR = env.bool("TRUST_X_FORWARDED_FOR", default=False)

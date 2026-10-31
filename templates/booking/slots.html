@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load wagtailroutablepage_tags core_tags %}
+
+{% block title %}{{ session_type.title }} | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
+
+{% block content %}
+{% include "components/page_header.html" with title=session_type.title intro=session_type.description %}
+<div class="container-page py-12">
+  <p class="mb-6 flex flex-wrap items-center gap-3 text-slate-600">
+    <span class="badge">{{ session_type.get_mode_display }}</span>
+    <span>{{ session_type.duration_min|fa_digits }} دقیقه</span>
+    <span class="font-semibold text-slate-800">{% if session_type.price %}{{ session_type.price|toman }}{% else %}رایگان{% endif %}</span>
+  </p>
+  {% routablepageurl page "confirm" session_type.pk as confirm_url %}
+  {% include "booking/includes/slot_picker.html" with days=days action=confirm_url method="get" %}
+</div>
+{% endblock %}
