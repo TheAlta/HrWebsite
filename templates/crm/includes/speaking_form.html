@@ -1,0 +1,21 @@
+{# Invitation to speak at an event (/speaking). #}
+<div id="speaking-form" class="card">
+<form method="post" action="{% url 'crm:submit' 'speaking' %}" hx-post="{% url 'crm:submit' 'speaking' %}" hx-target="#speaking-form" hx-swap="outerHTML" class="card-body gap-4" novalidate>
+  {% csrf_token %}
+  <input type="hidden" name="source" value="{{ request.path }}">
+  <div class="hp-field" aria-hidden="true"><label for="sp-website">وب‌سایت</label><input type="text" name="website" id="sp-website" tabindex="-1" autocomplete="off"></div>
+  <div>
+    <h2 class="card-title">دعوت به سخنرانی</h2>
+    <p class="muted mt-1">جزئیات رویداد را بنویسید؛ در اولین فرصت تماس می‌گیرم.</p>
+  </div>
+  {% if error %}{% include "components/alert.html" with level="error" text=error %}{% endif %}
+  {% with field=form.name %}{% include "components/field.html" %}{% endwith %}
+  {% with field=form.mobile %}{% include "components/field.html" %}{% endwith %}
+  {% with field=form.company %}{% include "components/field.html" %}{% endwith %}
+  {% with field=form.topic %}{% include "components/field.html" %}{% endwith %}
+  {% with field=form.event_date %}{% include "components/field.html" %}{% endwith %}
+  {% with field=form.audience_size %}{% include "components/field.html" %}{% endwith %}
+  {% with field=form.description %}{% include "components/field.html" %}{% endwith %}
+  <button type="submit" class="btn btn-primary">ارسال دعوت</button>
+</form>
+</div>

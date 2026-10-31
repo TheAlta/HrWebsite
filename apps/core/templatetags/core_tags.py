@@ -37,6 +37,12 @@ def jtime(value):
 
 
 @register.filter
+def jdate_day(value):
+    """Only the day of the Jalali month: '۳'."""
+    return text.to_fa_digits(jalali.to_jalali(value).day)
+
+
+@register.filter
 def unix(value):
     """Whole-second Unix timestamp, for passing a moment through a URL or form."""
     return int(value.timestamp())

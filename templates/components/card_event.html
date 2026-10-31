@@ -1,0 +1,15 @@
+{% load wagtailcore_tags wagtailimages_tags core_tags %}
+{# Usage: {% include "components/card_event.html" with event=event %} #}
+<article class="card">
+  {% if event.cover_image %}{% image event.cover_image fill-640x360 format-webp class="aspect-[16/9] w-full object-cover" loading="lazy" alt="" %}{% endif %}
+  <div class="card-body">
+    <span class="badge self-start">{{ event.get_kind_display }}</span>
+    <h3 class="card-title"><a href="{% pageurl event %}" class="hover:text-brand-700">{{ event.title }}</a></h3>
+    <p class="flex items-center gap-2 text-sm text-slate-600">{% include "components/icon.html" with name="calendar" size="16" class="text-brand-600" %}{{ event.start_at|jdatetime }}</p>
+    {% if event.summary %}<p class="text-[0.95rem] leading-7 text-slate-600">{{ event.summary }}</p>{% endif %}
+    <div class="mt-auto flex items-center justify-between pt-3">
+      <span class="text-sm font-semibold text-slate-700">{% if event.kind == "talk" %}{{ event.venue }}{% elif event.price %}{{ event.price|toman }}{% else %}رایگان{% endif %}</span>
+      <a href="{% pageurl event %}" class="btn btn-ghost btn-sm">جزئیات {% include "components/icon.html" with name="arrow" size="16" %}</a>
+    </div>
+  </div>
+</article>

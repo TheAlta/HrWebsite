@@ -8,6 +8,7 @@ from wagtail.fields import RichTextField
 
 from apps.content.models.base import BasePage
 from apps.core.fields import MobileField
+from apps.core.widgets import JalaliDateTimeInput
 
 
 class LeadType(models.TextChoices):
@@ -120,7 +121,10 @@ class LeadNote(models.Model):
     reminded_at = models.DateTimeField(null=True, blank=True, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    panels = [FieldPanel("text"), FieldRowPanel([FieldPanel("follow_up_at"), FieldPanel("done")])]
+    panels = [
+        FieldPanel("text"),
+        FieldRowPanel([FieldPanel("follow_up_at", widget=JalaliDateTimeInput), FieldPanel("done")]),
+    ]
 
     class Meta:
         verbose_name = "یادداشت"

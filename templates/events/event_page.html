@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags wagtailroutablepage_tags core_tags %}
+
+{% block content %}
+{% include "components/page_header.html" with title=page.title intro=page.summary %}
+<div class="container-page grid gap-10 py-12 lg:grid-cols-[1fr_20rem]">
+  <div class="min-w-0">
+    {% if page.cover_image %}{% image page.cover_image fill-960x540 format-webp class="mb-8 aspect-[16/9] w-full rounded-(--radius-card) object-cover" alt="" %}{% endif %}
+    {% if page.video %}{% include "blocks/video.html" with embed=page.video value=None %}{% endif %}
+    {% if page.body %}<div class="prose-fa">{{ page.body|richtext }}</div>{% endif %}
+
+    {% with sessions=page.sessions.all %}
+    {% if sessions %}
+    <section aria-labelledby="sessions-heading" class="mt-10">
+      <h2 id="sessions-heading" class="heading-2">برنامه جلسه‌ها</h2>
+      <ol class="mt-4 divide-y divide-slate-200">
+        {% for session in sessions %}
+        <li class="flex flex-wrap items-center justify-between gap-2 py-3">
+          <span class="font-semibold text-slate-900">جلسه {{ forloop.counter|fa_digits }}{% if session.title %}: {{ session.title }}{% endif %}</span>
+          <span class="muted">{{ session.start_at|jdatetime }}</span>
+        </li>
+        {% endfor %}
+      </ol>
+    </section>
+    {% endif %}
+    {% endwith %}
+  </div>
+
+  <aside class="card self-start lg:sticky lg:top-24">
+    <div class="card-body gap-4">
+      <span class="badge self-start">{{ page.get_kind_display }}</span>
+      <dl class="grid gap-3">
+        <div><dt class="muted">زمان شروع</dt><dd class="font-semibold text-slate-900">{{ page.start_at|jdate:"weekday" }}، ساعت {{ page.start_at|jtime }}</dd></div>
+        {% if page.instructor %}<div><dt class="muted">مدرس</dt><dd class="font-semibold text-slate-900">{{ page.instructor }}</dd></div>{% endif %}
+        <div><dt class="muted">محل برگزاری</dt><dd class="font-semibold text-slate-900">{% firstof page.venue 'آنلاین' %}</dd></div>
+        {% if page.kind != "talk" %}
+        <div><dt class="muted">هزینه</dt><dd class="font-semibold text-slate-900">{% if page.price %}{{ page.price|toman }}{% else %}رایگان{% endif %}</dd></div>
+        {% if seats_left is not None and page.registration_open %}<div><dt class="muted">ظرفیت باقی‌مانده</dt><dd class="font-semibold text-slate-900">{% if seats_left %}{{ seats_left|fa_digits }} نفر{% else %}تکمیل{% endif %}</dd></div>{% endif %}
+        {% endif %}
+      </dl>
+
+      {% include "events/includes/register_box.html" %}
+    </div>
+  </aside>
+</div>
+{% endblock %}

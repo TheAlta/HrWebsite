@@ -52,6 +52,8 @@ PAYLOAD_LABELS = {
     "budget": "بودجه",
     "delivery": "نحوه برگزاری",
     "document": "فایل",
+    "event_date": "تاریخ رویداد",
+    "audience_size": "تعداد مخاطبان",
 }
 
 CONTACT_FIELDS = ("name", "mobile", "email", "company", "marketing_consent")
@@ -169,6 +171,22 @@ class CorporateTrainingForm(LeadForm):
     timeframe = forms.ChoiceField(label="زمان برگزاری", choices=TIMEFRAMES, required=False)
 
 
+class SpeakingForm(LeadForm):
+    """Invitation to speak at an event (spec section 3, /speaking)."""
+
+    lead_type = LeadType.SPEAKING
+
+    company = forms.CharField(label="برگزارکننده", max_length=200)
+    topic = forms.CharField(label="موضوع سخنرانی", max_length=200)
+    event_date = forms.CharField(label="تاریخ رویداد", required=False, max_length=100)
+    audience_size = forms.IntegerField(
+        label="تعداد مخاطبان", required=False, min_value=1, max_value=1000000
+    )
+    description = forms.CharField(
+        label="توضیح", required=False, max_length=2000, widget=forms.Textarea(attrs={"rows": 3})
+    )
+
+
 class DownloadForm(LeadForm):
     """Catalog / CV download in exchange for contact details (LEAD-4)."""
 
@@ -206,4 +224,5 @@ FORMS = {
     LeadType.CORPORATE_TRAINING: CorporateTrainingForm,
     LeadType.CALLBACK: CallbackForm,
     LeadType.DOWNLOAD: DownloadForm,
+    LeadType.SPEAKING: SpeakingForm,
 }

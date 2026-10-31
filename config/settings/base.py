@@ -25,6 +25,8 @@ INSTALLED_APPS = [
     "apps.orders",
     "apps.payments",
     "apps.booking",
+    "apps.events",
+    "apps.shop",
     # Wagtail
     "wagtail.contrib.settings",
     "wagtail.contrib.sitemaps",
@@ -86,6 +88,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "wagtail.contrib.settings.context_processors.settings",
                 "apps.core.context_processors.site",
+                "apps.shop.context_processors.cart",
             ],
             "builtins": ["apps.core.templatetags.core_tags"],
         },
@@ -125,6 +128,11 @@ MEDIA_ROOT = BASE_DIR / "media"
 STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+    # Paid files (SHOP-2): outside MEDIA_ROOT, so no URL reaches them directly
+    "private": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "OPTIONS": {"location": BASE_DIR / "private", "base_url": None},
+    },
 }
 
 # Email
@@ -149,6 +157,16 @@ SMS_TEMPLATES = {
     "booking_reminder": env("SMS_TPL_BOOKING_REMINDER", default="booking-reminder"),
     "booking_cancelled": env("SMS_TPL_BOOKING_CANCELLED", default="booking-cancelled"),
     "booking_problem": env("SMS_TPL_BOOKING_PROBLEM", default="booking-problem"),
+    "event_registered": env("SMS_TPL_EVENT_REGISTERED", default="event-registered"),
+    "event_waitlisted": env("SMS_TPL_EVENT_WAITLISTED", default="event-waitlisted"),
+    "event_seat_open": env("SMS_TPL_EVENT_SEAT_OPEN", default="event-seat-open"),
+    "event_cancelled": env("SMS_TPL_EVENT_CANCELLED", default="event-cancelled"),
+    "event_reminder": env("SMS_TPL_EVENT_REMINDER", default="event-reminder"),
+    "event_recording": env("SMS_TPL_EVENT_RECORDING", default="event-recording"),
+    "event_problem": env("SMS_TPL_EVENT_PROBLEM", default="event-problem"),
+    "order_digital": env("SMS_TPL_ORDER_DIGITAL", default="order-digital"),
+    "order_shipped": env("SMS_TPL_ORDER_SHIPPED", default="order-shipped"),
+    "order_problem": env("SMS_TPL_ORDER_PROBLEM", default="order-problem"),
 }
 # Parameters of these templates are masked in the message log once sent
 SMS_SENSITIVE_TEMPLATES = {"otp"}

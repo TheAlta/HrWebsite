@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags core_tags %}
+
+{% block content %}
+{% include "components/page_header.html" with title=page.title intro=page.intro|richtext %}
+<div class="container-page grid gap-10 py-12 lg:grid-cols-[1fr_24rem]">
+  <section aria-labelledby="talks-heading" class="min-w-0">
+    <h2 id="talks-heading" class="heading-2">سوابق سخنرانی</h2>
+    {% if talks %}
+    <div class="mt-6 grid gap-6 sm:grid-cols-2">
+      {% for talk in talks %}{% include "components/card_event.html" with event=talk %}{% endfor %}
+    </div>
+    {% else %}
+    <p class="lead py-6">سوابق سخنرانی به‌زودی اینجا قرار می‌گیرد.</p>
+    {% endif %}
+  </section>
+  <div>{% include "crm/includes/speaking_form.html" %}</div>
+</div>
+{% endblock %}

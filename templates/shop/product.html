@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags content_tags core_tags %}
+
+{% block title %}{{ product.title }} | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
+{% block meta %}
+  {% if product.summary %}<meta name="description" content="{{ product.summary|truncatechars:160 }}">{% endif %}
+  <link rel="canonical" href="{{ schema.url }}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ product.title }}">
+  <meta property="og:url" content="{{ schema.url }}">
+  <meta property="og:site_name" content="{{ settings.content.SiteSettings.brand_name }}">
+  <meta property="og:locale" content="fa_IR">
+  {% jsonld schema %}
+  {% if not SEO_ALLOW_INDEXING %}<meta name="robots" content="noindex, nofollow">{% endif %}
+{% endblock %}
+
+{% block content %}
+{% include "components/page_header.html" with title=product.title intro=product.summary leaf=product.title %}
+<div class="container-page grid gap-10 py-12 lg:grid-cols-[1fr_20rem]">
+  <div class="min-w-0">
+    {% if product.cover_image %}{% image product.cover_image fill-960x540 format-webp class="mb-8 aspect-[16/9] w-full rounded-(--radius-card) object-cover" alt="" %}{% endif %}
+    {% if product.description %}<div class="prose-fa">{{ product.description|richtext }}</div>{% endif %}
+    {% if product.contents %}
+    <section aria-labelledby="contents-heading" class="mt-10">
+      <h2 id="contents-heading" class="heading-2">فهرست مطالب</h2>
+      <div class="prose-fa">{{ product.contents|richtext }}</div>
+    </section>
+    {% endif %}
+  </div>
+
+  <aside class="card self-start lg:sticky lg:top-24">
+    <div class="card-body gap-4">
+      <span class="badge self-start">{{ product.get_kind_display }}</span>
+      <p class="card-title">{% if product.price %}{{ product.price|toman }}{% else %}رایگان{% endif %}</p>
+      {% if product.in_stock %}
+      <form method="post" action="{% url 'shop:cart_add' product.pk %}">{% csrf_token %}
+        <button type="submit" class="btn btn-primary w-full">افزودن به سبد</button>
+      </form>
+      {% else %}
+      <p class="muted">این کتاب فعلاً موجود نیست.</p>
+      {% endif %}
+      {% if product.sample %}<a href="{{ product.sample.url }}" class="btn btn-secondary">{% include "components/icon.html" with name="download" size="16" %}دانلود نمونه صفحات</a>{% endif %}
+      {% if product.is_digital %}<p class="muted">بعد از پرداخت، لینک دانلود در حساب کاربری شما فعال می‌شود.</p>{% endif %}
+    </div>
+  </aside>
+</div>
+{% endblock %}

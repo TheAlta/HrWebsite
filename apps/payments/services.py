@@ -14,8 +14,7 @@ from django.conf import settings
 from django.db import transaction
 from django.utils import timezone
 
-from apps.content.models import SiteSettings
-from apps.notifications.services import send_email
+from apps.content.alerts import email_owner
 from apps.orders import services as orders
 from apps.orders.models import Order
 
@@ -100,13 +99,13 @@ def settle(payment_id: int) -> Payment:
 
     if result.ok and not amount_ok:
         logger.error("amount mismatch on payment %s: %s", payment.pk, result.amount)
-        _alert_owner(
+        email_owner(
             "مغایرت مبلغ پرداخت",
             f"سفارش {order.number}: درگاه مبلغ {result.amount} ریال را تأیید کرد، "
             f"ولی مبلغ سفارش {payment.amount} ریال است. پرداخت رد شد.",
         )
     elif payment.status == Payment.Status.PAID and not first_payment:
-        _alert_owner(
+        email_owner(
             "پرداخت تکراری",
             f"سفارش {order.number} دو بار پرداخت شده است (کد پیگیری {payment.ref_id}). "
             "مبلغ اضافه باید برگردانده شود.",
@@ -139,16 +138,3 @@ def reconcile() -> int:
         checked += 1
     orders.retry_unfulfilled()
     return checked
-
-
-def _alert_owner(subject: str, message: str):
-    site_settings = SiteSettings.for_default_site()
-    if site_settings and site_settings.notify_email:
-        send_email(
-            site_settings.notify_email,
-            subject,
-            "notifications/email/owner_alert.txt",
-            {"message": message},
-        )
-    else:
-        logger.error("owner alert not delivered: %s: %s", subject, message)
