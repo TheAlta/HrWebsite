@@ -16,3 +16,4 @@ docs
 .ruff_cache
 htmlcov
 .coverage
+pass
