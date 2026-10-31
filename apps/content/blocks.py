@@ -141,6 +141,27 @@ class DocumentBlock(blocks.StructBlock):
         label = "فایل پیوست"
 
 
+class LeadMagnetBlock(blocks.StructBlock):
+    """A file (catalog, CV) given in exchange for contact details (LEAD-4)."""
+
+    title = blocks.CharBlock(default="دریافت کاتالوگ خدمات", label="عنوان")
+    text = blocks.TextBlock(required=False, label="متن")
+    document = DocumentChooserBlock(label="فایل")
+    button_label = blocks.CharBlock(default="دریافت فایل", label="متن دکمه")
+
+    def get_context(self, value, parent_context=None):
+        from apps.crm.forms import DownloadForm
+
+        context = super().get_context(value, parent_context)
+        context["form"] = DownloadForm(initial={"document": value["document"].pk})
+        return context
+
+    class Meta:
+        icon = "download"
+        template = "blocks/lead_magnet.html"
+        label = "فایل در ازای اطلاعات تماس"
+
+
 RICH_TEXT_FEATURES = ["h2", "h3", "bold", "italic", "link", "ol", "ul", "hr", "document-link"]
 
 
@@ -159,6 +180,7 @@ class BodyBlock(blocks.StreamBlock):
     faq = FAQBlock()
     document = DocumentBlock()
     cta = CallToActionBlock()
+    lead_magnet = LeadMagnetBlock()
 
 
 # ---------- Home page sections (spec section 10, home page layout) ----------
@@ -285,6 +307,25 @@ class LatestArticlesBlock(blocks.StructBlock):
         label = "آخرین مطالب مجله"
 
 
+class CallbackFormBlock(blocks.StructBlock):
+    """«با من تماس بگیرید» form as a page section (LEAD-3)."""
+
+    title = blocks.CharBlock(default="با من تماس بگیرید", label="عنوان")
+    text = blocks.TextBlock(required=False, label="متن")
+
+    def get_context(self, value, parent_context=None):
+        from apps.crm.forms import CallbackForm
+
+        context = super().get_context(value, parent_context)
+        context["form"] = CallbackForm()
+        return context
+
+    class Meta:
+        icon = "mobile-alt"
+        template = "blocks/callback_form.html"
+        label = "فرم درخواست تماس"
+
+
 class RichTextSectionBlock(blocks.StructBlock):
     title = blocks.CharBlock(required=False, label="عنوان")
     body = blocks.RichTextBlock(features=RICH_TEXT_FEATURES, label="متن")
@@ -306,3 +347,5 @@ class HomeBlock(blocks.StreamBlock):
     text = RichTextSectionBlock()
     video = VideoBlock()
     faq = FAQBlock()
+    callback_form = CallbackFormBlock()
+    lead_magnet = LeadMagnetBlock()

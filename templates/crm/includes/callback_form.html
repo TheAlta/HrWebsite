@@ -1,0 +1,16 @@
+{# «با من تماس بگیرید» (LEAD-3). Usage: {% include "crm/includes/callback_form.html" with form=callback_form title="..." text="..." %} #}
+<div id="callback-form" class="card">
+<form method="post" action="{% url 'crm:submit' 'callback' %}" hx-post="{% url 'crm:submit' 'callback' %}" hx-target="#callback-form" hx-swap="outerHTML" class="card-body gap-4" novalidate>
+  {% csrf_token %}
+  <input type="hidden" name="source" value="{{ request.path }}">
+  <div class="hp-field" aria-hidden="true"><label for="cb-website">وب‌سایت</label><input type="text" name="website" id="cb-website" tabindex="-1" autocomplete="off"></div>
+  <div>
+    <h2 class="card-title">{{ title|default:"با من تماس بگیرید" }}</h2>
+    <p class="muted mt-1">{{ text|default:"نام و شماره‌تان را بگذارید؛ در اولین فرصت تماس می‌گیرم." }}</p>
+  </div>
+  {% if error %}{% include "components/alert.html" with level="error" text=error %}{% endif %}
+  {% with field=form.name %}{% include "components/field.html" %}{% endwith %}
+  {% with field=form.mobile %}{% include "components/field.html" %}{% endwith %}
+  <button type="submit" class="btn btn-primary">درخواست تماس</button>
+</form>
+</div>

@@ -20,6 +20,8 @@ INSTALLED_APPS = [
     "apps.accounts",
     "apps.content",
     "apps.portfolio",
+    "apps.notifications",
+    "apps.crm",
     # Wagtail
     "wagtail.contrib.settings",
     "wagtail.contrib.sitemaps",
@@ -61,6 +63,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
+    "apps.core.middleware.UTMMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
@@ -125,6 +128,28 @@ EMAIL_CONFIG = env.email_url("EMAIL_URL", default="consolemail://")
 vars().update(EMAIL_CONFIG)
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="noreply@localhost")
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
+# Login (OTP, sprint 2)
+LOGIN_URL = "accounts:login"
+LOGIN_REDIRECT_URL = "accounts:account"
+
+# SMS (NTF-1). Development logs messages; production sets the Kavenegar provider.
+SMS_PROVIDER = env("SMS_PROVIDER", default="apps.notifications.providers.console.ConsoleSMS")
+KAVENEGAR_API_KEY = env("KAVENEGAR_API_KEY", default="")
+# Template names as approved in the SMS panel; keys are used in code
+SMS_TEMPLATES = {
+    "otp": env("SMS_TPL_OTP", default="otp"),
+    "lead_received": env("SMS_TPL_LEAD_RECEIVED", default="lead-received"),
+    "lead_admin": env("SMS_TPL_LEAD_ADMIN", default="lead-admin"),
+}
+# Parameters of these templates are masked in the message log once sent
+SMS_SENSITIVE_TEMPLATES = {"otp"}
+# Alert when this many SMS go out within an hour (OTP abuse, REPORT #023)
+SMS_ALERT_PER_HOUR = env.int("SMS_ALERT_PER_HOUR", default=50)
+ALERT_EMAILS = env.list("ALERT_EMAILS", default=[])
+
+# Behind Caddy in production (sprint 3) the client IP comes from X-Forwarded-For
+TRUST_X_FORWARDED_FOR = env.bool("TRUST_X_FORWARDED_FOR", default=False)
 
 # Background tasks (Django-Q2, queue stored in PostgreSQL — see REPORT #005)
 Q_CLUSTER = {

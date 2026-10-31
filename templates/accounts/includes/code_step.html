@@ -1,0 +1,14 @@
+{% load core_tags %}
+<form method="post" action="{% url 'accounts:verify' %}" hx-post="{% url 'accounts:verify' %}" hx-target="#login-card" class="card-body gap-4" novalidate>
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ next }}">
+  {{ form.mobile }}
+  <div>
+    <h1 class="text-xl font-extrabold text-slate-900">کد تأیید</h1>
+    <p class="muted mt-1">کد ۵ رقمی ارسال‌شده به <span dir="ltr">{{ mobile|fa_digits }}</span> را وارد کنید. این کد ۲ دقیقه اعتبار دارد.</p>
+  </div>
+  {% if error %}{% include "components/alert.html" with level="error" text=error %}{% endif %}
+  {% with field=form.code %}{% include "components/field.html" %}{% endwith %}
+  <button type="submit" class="btn btn-primary w-full">ورود</button>
+  <a href="{% url 'accounts:login' %}?next={{ next|urlencode }}" class="btn btn-ghost btn-sm self-center">تغییر شماره یا ارسال دوباره کد</a>
+</form>

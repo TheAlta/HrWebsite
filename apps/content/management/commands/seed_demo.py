@@ -37,6 +37,7 @@ from apps.content.models import (
     SiteSettings,
     TeamMember,
 )
+from apps.crm.models import ConsultationPage
 from apps.portfolio.models import Client, PortfolioPage, Project, Testimonial
 
 DEMO_TAG = "[demo]"  # marks sample images/documents so --reset can remove them
@@ -215,6 +216,7 @@ class Command(BaseCommand):
         ]
 
         # --- pages ---------------------------------------------------------
+        resume = make_pdf("رزومه")
         about = publish(
             home,
             AboutPage(
@@ -225,7 +227,20 @@ class Command(BaseCommand):
                     "مشاور منابع انسانی با بیش از ۱۵ سال تجربه در سازمان‌های تولیدی، خدماتی و فناوری."
                 ),
                 photo=portrait,
-                body=[("heading", "داستان من"), ("paragraph", p(LOREM)), ("paragraph", p(LOREM))],
+                body=[
+                    ("heading", "داستان من"),
+                    ("paragraph", p(LOREM)),
+                    ("paragraph", p(LOREM)),
+                    (
+                        "lead_magnet",
+                        {
+                            "title": "دریافت رزومه کامل",
+                            "text": "رزومه و فهرست پروژه‌ها را دریافت کنید.",
+                            "document": resume,
+                            "button_label": "دریافت رزومه",
+                        },
+                    ),
+                ],
                 expertise=[
                     ("item", t)
                     for t in [
@@ -245,7 +260,7 @@ class Command(BaseCommand):
                         },
                     )
                 ],
-                resume=make_pdf("رزومه"),
+                resume=resume,
             ),
         )
         services_index = publish(
@@ -411,6 +426,15 @@ class Command(BaseCommand):
                 intro=p("برای هماهنگی جلسه یا پرسش، از راه‌های زیر با من در تماس باشید."),
             ),
         )
+        consultation = publish(
+            home,
+            ConsultationPage(
+                title="درخواست مشاوره",
+                slug="consultation",
+                intro=p("چند سؤال کوتاه تا بهتر بتوانم کمکتان کنم. کمتر از دو دقیقه وقت می‌گیرد."),
+                show_in_menus=False,
+            ),
+        )
         publish(
             home,
             LegalPage(title="قوانین و مقررات", slug="terms", body=p(LOREM), show_in_menus=False),
@@ -430,7 +454,12 @@ class Command(BaseCommand):
                     "subtitle": "مشاوره، آموزش و همراهی در ارزیابی عملکرد، ساختار سازمانی و جذب استعدادها.",
                     "image": portrait,
                     "buttons": [
-                        {"label": "درخواست مشاوره", "page": contact, "url": "", "style": "primary"},
+                        {
+                            "label": "درخواست مشاوره",
+                            "page": consultation,
+                            "url": "",
+                            "style": "primary",
+                        },
                         {
                             "label": "آشنایی با خدمات",
                             "page": services_index,
@@ -460,12 +489,24 @@ class Command(BaseCommand):
             ("testimonials", {"title": "نظر مشتریان", "testimonials": []}),
             ("latest_articles", {"title": "از مجله", "count": 3}),
             (
+                "callback_form",
+                {
+                    "title": "با من تماس بگیرید",
+                    "text": "نام و شماره‌تان را بگذارید؛ در اولین فرصت تماس می‌گیرم.",
+                },
+            ),
+            (
                 "cta",
                 {
                     "title": "آماده‌اید شروع کنیم؟",
                     "text": "یک جلسه کوتاه برای شناخت نیاز سازمان شما.",
                     "buttons": [
-                        {"label": "درخواست مشاوره", "page": contact, "url": "", "style": "primary"},
+                        {
+                            "label": "درخواست مشاوره",
+                            "page": consultation,
+                            "url": "",
+                            "style": "primary",
+                        },
                     ],
                 },
             ),
@@ -487,7 +528,7 @@ class Command(BaseCommand):
         settings.telegram_url = "https://t.me/"
         settings.footer_text = "مشاوره و آموزش منابع انسانی برای سازمان‌ها و افراد."
         settings.cta_label = "درخواست مشاوره"
-        settings.cta_page = contact
+        settings.cta_page = consultation
         settings.default_og_image = images[0]
         settings.main_menu = [
             ("link", {"label": label, "page": page, "url": ""})

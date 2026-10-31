@@ -1,0 +1,28 @@
+{# Corporate training request (LEAD-2). Usage: {% include "crm/includes/corporate_training_form.html" with form=training_form %} #}
+<div id="training-form" class="card">
+<form method="post" action="{% url 'crm:submit' 'corporate_training' %}" hx-post="{% url 'crm:submit' 'corporate_training' %}" hx-target="#training-form" hx-swap="outerHTML" class="card-body gap-5" novalidate>
+  {% csrf_token %}
+  <input type="hidden" name="source" value="{{ request.path }}">
+  <div class="hp-field" aria-hidden="true"><label for="tf-website">وب‌سایت</label><input type="text" name="website" id="tf-website" tabindex="-1" autocomplete="off"></div>
+  <div>
+    <h2 class="heading-2">درخواست آموزش سازمانی</h2>
+    <p class="muted mt-1">نیاز آموزشی سازمانتان را بنویسید تا پیشنهاد اختصاصی بفرستم.</p>
+  </div>
+  {% if error %}{% include "components/alert.html" with level="error" text=error %}{% endif %}
+  <div class="grid gap-5 sm:grid-cols-2">
+    {% with field=form.company %}{% include "components/field.html" %}{% endwith %}
+    {% with field=form.topic %}{% include "components/field.html" %}{% endwith %}
+    {% with field=form.headcount %}{% include "components/field.html" %}{% endwith %}
+    {% with field=form.budget %}{% include "components/field.html" %}{% endwith %}
+  </div>
+  {% with field=form.delivery %}{% include "components/field.html" %}{% endwith %}
+  {% with field=form.timeframe %}{% include "components/field.html" %}{% endwith %}
+  <div class="grid gap-5 sm:grid-cols-2">
+    {% with field=form.name %}{% include "components/field.html" %}{% endwith %}
+    {% with field=form.mobile %}{% include "components/field.html" %}{% endwith %}
+  </div>
+  {% with field=form.email %}{% include "components/field.html" %}{% endwith %}
+  {% with field=form.marketing_consent %}{% include "components/field.html" %}{% endwith %}
+  <button type="submit" class="btn btn-primary self-start">ارسال درخواست</button>
+</form>
+</div>

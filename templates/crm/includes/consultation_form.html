@@ -1,0 +1,39 @@
+{% load core_tags %}
+{% comment %}Multi-step form (LEAD-1). All steps are one <form>; Alpine shows one step at a time.
+After a server error the first step containing an error is opened.{% endcomment %}
+<div id="consultation-form" class="card">
+<form method="post" action="{% url 'crm:submit' 'consultation' %}" hx-post="{% url 'crm:submit' 'consultation' %}" hx-target="#consultation-form" hx-swap="outerHTML" class="card-body gap-6" novalidate
+      x-data="{ step: {{ form.first_error_step }}, total: {{ form.steps|length }} }">
+  {% csrf_token %}
+  <input type="hidden" name="source" value="{{ request.path }}">
+  <div class="hp-field" aria-hidden="true"><label for="cf-website">وب‌سایت</label><input type="text" name="website" id="cf-website" tabindex="-1" autocomplete="off"></div>
+
+  {% if error %}{% include "components/alert.html" with level="error" text=error %}{% endif %}
+  {% if form.non_field_errors %}{% include "components/alert.html" with level="error" text=form.non_field_errors.0 %}{% endif %}
+
+  {# Progress #}
+  <ol class="flex items-center gap-2" aria-label="مراحل فرم">
+    {% for title, fields in form.steps %}
+    <li class="flex flex-1 flex-col gap-1.5">
+      <span class="h-1.5 rounded-full transition-colors" :class="step >= {{ forloop.counter0 }} ? 'bg-brand-600' : 'bg-slate-200'"></span>
+      <span class="text-xs font-semibold" :class="step === {{ forloop.counter0 }} ? 'text-brand-700' : 'text-slate-400'">{{ forloop.counter|fa_digits }}. {{ title }}</span>
+    </li>
+    {% endfor %}
+  </ol>
+
+  {% for title, fields in form.steps %}
+  <fieldset class="space-y-5" x-show="step === {{ forloop.counter0 }}" {% if not forloop.first %}x-cloak{% endif %}>
+    <legend class="sr-only">{{ title }}</legend>
+    {% for field in fields %}{% include "components/field.html" %}{% endfor %}
+  </fieldset>
+  {% endfor %}
+
+  <div class="flex items-center justify-between gap-3">
+    <button type="button" class="btn btn-ghost" x-show="step > 0" x-cloak @click="step--">مرحله قبل</button>
+    <span x-show="step === 0"></span>
+    <button type="button" class="btn btn-primary" x-show="step < total - 1" @click="step++">مرحله بعد</button>
+    <button type="submit" class="btn btn-primary" x-show="step === total - 1" x-cloak>ثبت درخواست</button>
+  </div>
+  <noscript><button type="submit" class="btn btn-primary w-full">ثبت درخواست</button></noscript>
+</form>
+</div>

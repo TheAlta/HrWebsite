@@ -12,6 +12,6 @@
   <div class="mx-auto max-w-3xl">
     {% for block in page.body %}{% include_block block %}{% endfor %}
   </div>
-  {# The corporate training request form (LEAD-2) is added here in sprint 2 #}
+  <div id="request" class="mx-auto mt-12 max-w-3xl">{% include "crm/includes/corporate_training_form.html" with form=training_form %}</div>
 </div>
 {% endblock %}

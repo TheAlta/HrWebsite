@@ -1,0 +1,9 @@
+{% load core_tags %}{% autoescape off %}زمان پیگیری این موارد رسیده است:
+{% for note in notes %}
+- {{ note.lead.name }} ({{ note.lead.get_type_display }}{% if note.lead.mobile %}، {{ note.lead.mobile }}{% endif %})
+  {{ note.text }}
+  یادآوری: {{ note.follow_up_at|jdatetime }}
+  {{ base_url }}{% url 'leads:edit' note.lead.pk %}
+{% endfor %}
+بعد از پیگیری، تیک «انجام شد» را در یادداشت بزنید.
+{% endautoescape %}

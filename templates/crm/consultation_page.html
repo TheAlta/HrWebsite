@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+{% include "components/page_header.html" with title=page.title intro=page.intro|richtext %}
+<div class="container-page grid gap-10 py-12 lg:grid-cols-[1fr_20rem]">
+  <div>{% include "crm/includes/consultation_form.html" %}</div>
+  <aside class="space-y-4 text-[0.95rem]">
+    <div class="card"><div class="card-body">
+      <p class="card-title">بعد از ارسال فرم</p>
+      <ol class="list-decimal space-y-1 ps-5 text-slate-600">
+        <li>پیامک تأیید دریافت می‌کنید.</li>
+        <li>ظرف یک روز کاری تماس می‌گیرم.</li>
+        <li>یک جلسه کوتاه برای شناخت نیاز هماهنگ می‌کنیم.</li>
+      </ol>
+    </div></div>
+    {% if settings.content.SiteSettings.whatsapp_url %}
+    <a href="{{ settings.content.SiteSettings.whatsapp_url }}" target="_blank" rel="noopener" class="btn btn-secondary w-full">{% include "components/icon.html" with name="whatsapp" %}یا پیام در واتساپ</a>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

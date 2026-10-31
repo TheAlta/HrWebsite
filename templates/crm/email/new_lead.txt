@@ -1,0 +1,16 @@
+{% load core_tags %}{% autoescape off %}سرنخ جدید ثبت شد.
+
+نوع: {{ lead.get_type_display }}
+نام: {{ lead.name }}
+{% if lead.mobile %}موبایل: {{ lead.mobile }}
+{% endif %}{% if lead.email %}ایمیل: {{ lead.email }}
+{% endif %}{% if lead.company %}سازمان: {{ lead.company }}
+{% endif %}زمان: {{ lead.created_at|jdatetime }}
+{% for label, value in lead.payload_display %}{{ label }}: {{ value }}
+{% endfor %}{% if lead.source_url %}
+صفحه: {{ lead.source_url }}{% endif %}{% if lead.utm %}
+کمپین: {{ lead.utm }}{% endif %}
+
+مشاهده و پیگیری در پنل:
+{{ admin_url }}
+{% endautoescape %}

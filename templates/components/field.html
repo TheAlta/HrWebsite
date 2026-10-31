@@ -1,10 +1,41 @@
-{# One form field with label and error. Usage: {% with field=form.name %}{% include "components/field.html" %}{% endwith %} #}
+{# One form field with label, help and error. Usage: {% with field=form.name %}{% include "components/field.html" %}{% endwith %} #}
+{% with widget=field.field.widget.template_name error_id=field.auto_id|add:"-error" %}
+{% if widget == "django/forms/widgets/hidden.html" %}{{ field }}
+{% elif widget == "django/forms/widgets/checkbox.html" %}
+<div>
+  <label class="flex items-start gap-3 text-[0.95rem] leading-7 text-slate-700">
+    <input type="checkbox" name="{{ field.html_name }}" id="{{ field.id_for_label }}" class="mt-1.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-brand-600" {% if field.value %}checked{% endif %}>
+    <span>{{ field.label }}</span>
+  </label>
+  {% if field.errors %}<p id="{{ error_id }}" class="field-error">{{ field.errors.0 }}</p>{% endif %}
+</div>
+{% elif widget == "django/forms/widgets/radio.html" or widget == "django/forms/widgets/checkbox_select.html" %}
+<fieldset {% if field.errors %}aria-describedby="{{ error_id }}"{% endif %}>
+  <legend class="field-label">{{ field.label }}{% if field.field.required %} <span class="text-red-600" aria-hidden="true">*</span>{% endif %}</legend>
+  <div class="grid gap-2 sm:grid-cols-2">
+    {% for choice in field %}
+    <label class="flex cursor-pointer items-center gap-3 rounded-(--radius-control) border border-slate-300 bg-white px-4 py-3 text-[0.95rem] has-checked:border-brand-500 has-checked:bg-brand-50">
+      {{ choice.tag }}<span>{{ choice.choice_label }}</span>
+    </label>
+    {% endfor %}
+  </div>
+  {% if field.help_text %}<p class="muted mt-1">{{ field.help_text }}</p>{% endif %}
+  {% if field.errors %}<p id="{{ error_id }}" class="field-error">{{ field.errors.0 }}</p>{% endif %}
+</fieldset>
+{% else %}
 <div>
   <label for="{{ field.id_for_label }}" class="field-label">{{ field.label }}{% if field.field.required %} <span class="text-red-600" aria-hidden="true">*</span>{% endif %}</label>
-  {% if field.field.widget.input_type == "textarea" or field.field.widget.template_name == "django/forms/widgets/textarea.html" %}
-    <textarea name="{{ field.html_name }}" id="{{ field.id_for_label }}" rows="{{ field.field.widget.attrs.rows|default:4 }}" class="field-input" {% if field.field.required %}required{% endif %} {% if field.field.max_length %}maxlength="{{ field.field.max_length }}"{% endif %} {% if field.errors %}aria-invalid="true" aria-describedby="{{ field.id_for_label }}-error"{% endif %}>{{ field.value|default:"" }}</textarea>
+  {% if widget == "django/forms/widgets/textarea.html" %}
+    <textarea name="{{ field.html_name }}" id="{{ field.id_for_label }}" rows="{{ field.field.widget.attrs.rows|default:4 }}" class="field-input" {% if field.field.required %}required{% endif %} {% if field.field.max_length %}maxlength="{{ field.field.max_length }}"{% endif %} {% if field.errors %}aria-invalid="true" aria-describedby="{{ error_id }}"{% endif %}>{{ field.value|default:"" }}</textarea>
+  {% elif widget == "django/forms/widgets/select.html" %}
+    <select name="{{ field.html_name }}" id="{{ field.id_for_label }}" class="field-input" {% if field.field.required %}required{% endif %} {% if field.errors %}aria-invalid="true" aria-describedby="{{ error_id }}"{% endif %}>
+      {% for value, label in field.field.choices %}<option value="{{ value }}" {% if field.value|stringformat:"s" == value|stringformat:"s" %}selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select>
   {% else %}
-    <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}" class="field-input" {% if field.field.required %}required{% endif %} {% if field.field.max_length %}maxlength="{{ field.field.max_length }}"{% endif %} {% if field.errors %}aria-invalid="true" aria-describedby="{{ field.id_for_label }}-error"{% endif %}>
+    <input type="{{ field.field.widget.input_type }}" name="{{ field.html_name }}" id="{{ field.id_for_label }}" value="{{ field.value|default:'' }}" class="field-input" {% for name, value in field.field.widget.attrs.items %}{{ name }}="{{ value }}" {% endfor %}{% if field.field.required %}required{% endif %} {% if field.errors %}aria-invalid="true" aria-describedby="{{ error_id }}"{% endif %}>
   {% endif %}
-  {% if field.errors %}<p id="{{ field.id_for_label }}-error" class="field-error">{{ field.errors.0 }}</p>{% endif %}
+  {% if field.help_text %}<p class="muted mt-1">{{ field.help_text }}</p>{% endif %}
+  {% if field.errors %}<p id="{{ error_id }}" class="field-error">{{ field.errors.0 }}</p>{% endif %}
 </div>
+{% endif %}
+{% endwith %}
