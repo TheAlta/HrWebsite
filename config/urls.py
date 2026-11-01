@@ -17,6 +17,7 @@ urlpatterns = [
     path("search/", content_views.search, name="search"),
     path("account/bookings/", include("apps.booking.urls")),
     path("account/registrations/", include("apps.events.urls")),
+    path("account/", include("apps.billing.urls")),
     path("account/", include("apps.accounts.urls")),
     path("orders/", include("apps.orders.urls")),
     path("payments/", include("apps.payments.urls")),

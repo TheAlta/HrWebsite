@@ -19,7 +19,7 @@ from apps.orders import services as orders
 from apps.orders.models import Order
 
 from .gateways import GatewayError, get_gateway
-from .models import Payment
+from .models import MANUAL_GATEWAY, Payment
 
 logger = logging.getLogger(__name__)
 
@@ -112,6 +112,26 @@ def settle(payment_id: int) -> Payment:
         )
     if payment.status == Payment.Status.PAID:
         _fulfil_safely(order)
+    return payment
+
+
+def record_manual_payment(order: Order, *, method: str, reference: str, by=None) -> Payment:
+    """Money that arrived outside the gateway, such as a transfer or a cheque (PAY-3)."""
+    with transaction.atomic():
+        locked = Order.objects.select_for_update().get(pk=order.pk)
+        if not locked.can_pay:
+            raise orders.OrderError("فقط سفارش در انتظار پرداخت قابل ثبت است.")
+        payment = Payment.objects.create(
+            order=locked,
+            gateway=MANUAL_GATEWAY,
+            amount=locked.total,
+            ref_id=reference,
+            status=Payment.Status.PAID,
+            raw_response={"method": method, "recorded_by": by.pk if by else None},
+            verified_at=timezone.now(),
+        )
+        orders.mark_paid(locked)
+    _fulfil_safely(locked)
     return payment
 
 

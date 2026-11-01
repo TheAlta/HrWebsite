@@ -4,6 +4,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
+from apps.core import jalali
 from apps.core.money import format_toman
 
 
@@ -28,6 +29,14 @@ class Order(models.Model):
         on_delete=models.PROTECT,
         related_name="orders",
     )
+    organization = models.ForeignKey(
+        "accounts.Organization",
+        verbose_name="سازمان",
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="orders",
+    )
     status = models.CharField(
         "وضعیت", max_length=20, choices=Status.choices, default=Status.PENDING, db_index=True
     )
@@ -47,6 +56,7 @@ class Order(models.Model):
         verbose_name = "سفارش"
         verbose_name_plural = "سفارش‌ها"
         ordering = ["-created_at"]
+        permissions = [("refund_order", "ثبت بازگشت وجه و لغو سفارش")]
 
     def __str__(self):
         return self.number
@@ -58,6 +68,41 @@ class Order(models.Model):
     @admin.display(description="مبلغ", ordering="total")
     def total_display(self):
         return format_toman(self.total)
+
+    @admin.display(description="اقلام")
+    def items_display(self):
+        return "، ".join(item.title_snapshot for item in self.items.all())
+
+    @admin.display(description="زمان ثبت", ordering="created_at")
+    def created_display(self):
+        return jalali.format_datetime(self.created_at)
+
+
+class Refund(models.Model):
+    """Money returned to a customer (PAY-4). The money itself moves at the bank or gateway."""
+
+    order = models.OneToOneField(
+        Order, verbose_name="سفارش", on_delete=models.PROTECT, related_name="refund"
+    )
+    amount = models.BigIntegerField("مبلغ (ریال)")
+    reference = models.CharField("شماره پیگیری", max_length=100, blank=True)
+    note = models.TextField("توضیح", blank=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name="ثبت‌کننده",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    created_at = models.DateTimeField("زمان ثبت", auto_now_add=True)
+
+    class Meta:
+        verbose_name = "بازگشت وجه"
+        verbose_name_plural = "بازگشت وجه‌ها"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return str(self.order)
 
 
 class OrderItem(models.Model):

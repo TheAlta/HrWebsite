@@ -29,3 +29,12 @@ class EditOnlyPolicy(ModelPermissionPolicy):
         if action in ("add", "delete"):
             return False
         return super().user_has_permission(user, action)
+
+
+class NoDeletePolicy(ModelPermissionPolicy):
+    """For financial records: they are cancelled, never removed."""
+
+    def user_has_permission(self, user, action):
+        if action == "delete":
+            return False
+        return super().user_has_permission(user, action)

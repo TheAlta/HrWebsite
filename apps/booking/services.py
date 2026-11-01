@@ -239,8 +239,11 @@ def can_change(booking: Booking, now=None) -> bool:
     return booking.status == Booking.Status.CONFIRMED and booking.start_at - now >= CHANGE_DEADLINE
 
 
-def cancel(booking: Booking, *, by_owner=False) -> Booking:
-    """Cancel a session (BOOK-4). Customers: up to 24 hours before; the owner: any time."""
+def cancel(booking: Booking, *, by_owner=False, refunded=False) -> Booking:
+    """Cancel a session (BOOK-4). Customers: up to 24 hours before; the owner: any time.
+
+    `refunded` means the money already went back, so the owner needs no reminder.
+    """
     if not by_owner and not can_change(booking):
         raise BookingError("لغو جلسه فقط تا ۲۴ ساعت قبل از شروع ممکن است.")
     was_paid = bool(
@@ -251,14 +254,20 @@ def cancel(booking: Booking, *, by_owner=False) -> Booking:
     booking.status = Booking.Status.CANCELLED
     booking.save(update_fields=["status"])
     send_sms(booking.user.mobile, "booking_cancelled", {"token10": _when(booking)})
-    if was_paid:
-        # Automatic refunds arrive with PAY-4 (sprint 5)
+    if was_paid and not refunded:
         email_owner(
             "لغو جلسه پرداخت‌شده",
             f"سفارش {booking.order.number}: جلسه {_when(booking)} لغو شد. "
-            "بازگشت وجه به‌صورت دستی انجام شود.",
+            "مبلغ را برگردانید و در پنل، در صفحه سفارش، ثبت کنید.",
         )
     return booking
+
+
+def release_bookings_for_order(order) -> None:
+    """A reversed order frees its session (receiver of `order_reversed`)."""
+    active = Booking.objects.filter(order=order, status__in=Booking.ACTIVE_STATUSES)
+    for booking in active.select_related("user", "order"):
+        cancel(booking, by_owner=True, refunded=True)
 
 
 def reschedule(booking: Booking, new_start) -> Booking:

@@ -149,6 +149,9 @@ openssl enc -d -aes-256-cbc -pbkdf2 -pass file:/srv/hrweb/backup-passphrase \
 | `SMS_TPL_ORDER_DIGITAL` | `token` | سفارش %token آماده است. فایل را از حساب کاربری دانلود کنید. |
 | `SMS_TPL_ORDER_SHIPPED` | `token`، `token2` | سفارش %token ارسال شد. کد رهگیری: %token2 |
 | `SMS_TPL_ORDER_PROBLEM` | `token` | پرداخت سفارش %token ثبت شد ولی موجودی تمام شده است. به‌زودی تماس می‌گیرم. |
+| `SMS_TPL_ORDER_INVOICE` | `token` | فاکتور شماره %token صادر شد: arezoo-zahmatbaran.ir/account/invoices/%token/ |
+| `SMS_TPL_ORDER_REFUNDED` | `token` | مبلغ سفارش %token به حساب شما برگردانده شد. |
+| `SMS_TPL_PROFORMA_READY` | `token`، `token2` | پیش‌فاکتور %token صادر شد. مشاهده و پرداخت: arezoo-zahmatbaran.ir/orders/%token2/ |
 
 ## ۸. انتشار نسخه جدید
 

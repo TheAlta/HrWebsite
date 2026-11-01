@@ -202,8 +202,11 @@ def _report_lost_seat(registration: Registration) -> None:
     )
 
 
-def cancel(registration: Registration, *, by_owner=False) -> Registration:
-    """Leave an event. A paid seat can only be cancelled by the owner, who refunds it."""
+def cancel(registration: Registration, *, by_owner=False, refunded=False) -> Registration:
+    """Leave an event. A paid seat can only be cancelled by the owner, who refunds it.
+
+    `refunded` means the money already went back, so the owner needs no reminder.
+    """
     now = timezone.now()
     with transaction.atomic():
         event = _lock_event(registration.event_id)
@@ -221,14 +224,20 @@ def cancel(registration: Registration, *, by_owner=False) -> Registration:
     if unpaid:
         orders.cancel_unpaid(registration.order)
     send_sms(registration.user.mobile, "event_cancelled", {"token20": _title(event)})
-    if was_paid:
-        # Automatic refunds arrive with PAY-4 (sprint 5)
+    if was_paid and not refunded:
         email_owner(
             "لغو ثبت‌نام پرداخت‌شده",
             f"سفارش {registration.order.number}: ثبت‌نام در «{event.title}» لغو شد. "
-            "بازگشت وجه به‌صورت دستی انجام شود.",
+            "مبلغ را برگردانید و در پنل، در صفحه سفارش، ثبت کنید.",
         )
     return registration
+
+
+def release_registrations_for_order(order) -> None:
+    """A reversed order frees its seat (receiver of `order_reversed`)."""
+    active = Registration.objects.filter(order=order, status__in=Registration.ACTIVE_STATUSES)
+    for registration in active:
+        cancel(registration, by_owner=True, refunded=True)
 
 
 def housekeeping() -> None:

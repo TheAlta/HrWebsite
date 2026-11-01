@@ -45,7 +45,9 @@ def stock(product):
 
 
 def last_sms(user):
-    return [m for m in CapturingSMS.outbox if m["to"] == user.mobile][-1]
+    """The last message of this app; the invoice SMS of a paid order is billing's."""
+    messages = [m for m in CapturingSMS.outbox if m["to"] == user.mobile]
+    return [m for m in messages if m["template"] != "order-invoice"][-1]
 
 
 # --- cart -------------------------------------------------------------------------------

@@ -3,6 +3,8 @@ from django.db.models import Q
 
 from apps.orders.models import Order
 
+MANUAL_GATEWAY = "manual"  # bank transfer or cheque, recorded by hand (PAY-3)
+
 
 class Payment(models.Model):
     """One attempt to pay an order; an order may have several (spec section 7)."""

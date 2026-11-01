@@ -225,7 +225,7 @@ def test_customer_cancels_a_day_before(session_type, customer, far_slot, demo_si
     services.cancel(booking)
     assert booking.status == Booking.Status.CANCELLED
     assert any(m["template"] == "booking-cancelled" for m in CapturingSMS.outbox)
-    assert "بازگشت وجه" in mail.outbox[-1].body
+    assert "برگردانید" in mail.outbox[-1].body
     assert services.is_free(session_type, far_slot)  # the time is open again
 
 
