@@ -76,9 +76,12 @@ def logout_view(request):
 
 @login_required
 def account_view(request):
-    """Sessions for now; the full user panel arrives with USER-2 (sprint 5)."""
+    """What the customer bought; the full user panel arrives with USER-2 (sprint 5)."""
     from apps.booking.models import Booking
     from apps.booking.services import can_change
+    from apps.events.models import Registration
+    from apps.orders.models import Order
+    from apps.shop.models import DownloadToken
 
     bookings = list(
         Booking.objects.filter(user=request.user)
@@ -87,7 +90,15 @@ def account_view(request):
     )
     for booking in bookings:
         booking.changeable = can_change(booking)
-    return render(request, "accounts/account.html", {"bookings": bookings})
+    context = {
+        "bookings": bookings,
+        "registrations": Registration.objects.filter(
+            user=request.user, status__in=Registration.ACTIVE_STATUSES
+        ).select_related("event", "order")[:20],
+        "downloads": DownloadToken.objects.filter(user=request.user).select_related("product")[:20],
+        "orders": Order.objects.filter(user=request.user)[:10],
+    }
+    return render(request, "accounts/account.html", context)
 
 
 def _template(request, step):

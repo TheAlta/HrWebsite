@@ -16,6 +16,7 @@
 
     <div class="flex items-center gap-2">
       <a href="{% url 'search' %}" class="btn btn-ghost btn-sm" aria-label="جست‌وجو">{% include "components/icon.html" with name="search" %}</a>
+      {% if cart_count %}<a href="{% url 'shop:cart' %}" class="btn btn-ghost btn-sm" aria-label="سبد خرید، {{ cart_count|fa_digits }} قلم">{% include "components/icon.html" with name="cart" %}<span class="badge">{{ cart_count|fa_digits }}</span></a>{% endif %}
       <a href="{% if user.is_authenticated %}{% url 'accounts:account' %}{% else %}{% url 'accounts:login' %}{% endif %}" class="btn btn-ghost btn-sm" aria-label="{% if user.is_authenticated %}حساب کاربری{% else %}ورود{% endif %}">{% include "components/icon.html" with name="user" %}</a>
       {% if site.cta_page %}<a href="{% pageurl site.cta_page %}" class="btn btn-primary btn-sm hidden sm:inline-flex">{{ site.cta_label }}</a>{% endif %}
       <button type="button" class="btn btn-ghost btn-sm lg:hidden" @click="open = !open" :aria-expanded="open.toString()" aria-controls="mobile-menu" aria-label="منو">

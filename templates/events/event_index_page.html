@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags core_tags %}
+
+{% block content %}
+{% include "components/page_header.html" with title=page.title intro=page.intro|richtext %}
+<div class="container-page py-12">
+  <nav aria-label="نحوه نمایش" class="mb-8 flex gap-2">
+    <a href="{% pageurl page %}" class="btn btn-sm {% if view == 'list' %}btn-primary{% else %}btn-secondary{% endif %}" {% if view == 'list' %}aria-current="page"{% endif %}>فهرست</a>
+    <a href="{% pageurl page %}?view=month" class="btn btn-sm {% if view == 'month' %}btn-primary{% else %}btn-secondary{% endif %}" {% if view == 'month' %}aria-current="page"{% endif %}>تقویم</a>
+  </nav>
+
+  {% if view == "month" %}
+    {% include "events/includes/month.html" %}
+  {% else %}
+    <section aria-labelledby="upcoming-heading">
+      <h2 id="upcoming-heading" class="heading-2">پیش‌رو</h2>
+      {% if upcoming %}
+      <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {% for event in upcoming %}{% include "components/card_event.html" with event=event %}{% endfor %}
+      </div>
+      {% else %}
+      <p class="lead py-6">فعلاً دوره یا وبیناری برنامه‌ریزی نشده است.</p>
+      {% endif %}
+    </section>
+    {% if past %}
+    <section aria-labelledby="past-heading" class="mt-14">
+      <h2 id="past-heading" class="heading-2">برگزارشده</h2>
+      <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {% for event in past %}{% include "components/card_event.html" with event=event %}{% endfor %}
+      </div>
+    </section>
+    {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

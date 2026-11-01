@@ -1,0 +1,28 @@
+{% load core_tags %}
+{# What a paid order delivered. Only shop orders have these rows. #}
+{% with downloads=order.download_tokens.all %}
+{% if downloads %}
+<section class="card mt-6" aria-labelledby="order-files-heading">
+  <div class="card-body">
+    <h2 id="order-files-heading" class="card-title">فایل‌های این سفارش</h2>
+    <ul class="divide-y divide-slate-200">
+      {% for download in downloads %}
+      <li class="flex flex-wrap items-center justify-between gap-3 py-2">
+        <span>{{ download.product.title }}</span>
+        {% if download.is_valid %}<a href="{{ download.get_absolute_url }}" class="btn btn-secondary btn-sm">{% include "components/icon.html" with name="download" size="16" %}دانلود</a>{% else %}<span class="muted">منقضی شده</span>{% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
+{% endwith %}
+
+{% if order.shipment %}
+<dl class="card mt-6 divide-y divide-slate-200 text-[0.95rem]">
+  <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">وضعیت ارسال</dt><dd class="font-semibold">{{ order.shipment.get_status_display }}</dd></div>
+  <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">گیرنده</dt><dd class="font-semibold">{{ order.shipment.recipient }}</dd></div>
+  <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">نشانی</dt><dd class="font-semibold">{{ order.shipment.city }}، {{ order.shipment.address }}</dd></div>
+  {% if order.shipment.tracking_code %}<div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">کد رهگیری</dt><dd class="font-semibold" dir="ltr">{{ order.shipment.tracking_code }}</dd></div>{% endif %}
+</dl>
+{% endif %}

@@ -1,0 +1,46 @@
+{% load wagtailcore_tags core_tags %}
+{# The month grid is an overview; the list under it carries the links on every screen size. #}
+<section aria-labelledby="month-heading">
+  <div class="flex items-center justify-between gap-3">
+    <a href="?view=month&y={{ previous_month.y }}&m={{ previous_month.m }}" class="btn btn-secondary btn-sm">ماه قبل</a>
+    <h2 id="month-heading" class="heading-2">{{ month_label|fa_digits }}</h2>
+    <a href="?view=month&y={{ next_month.y }}&m={{ next_month.m }}" class="btn btn-secondary btn-sm">ماه بعد</a>
+  </div>
+
+  <table class="mt-6 w-full table-fixed border-collapse text-center text-sm">
+    <thead>
+      <tr>{% for name in weekdays %}<th scope="col" class="py-2 font-semibold text-slate-600"><abbr title="{{ name }}" class="no-underline">{{ name|slice:":1" }}</abbr></th>{% endfor %}</tr>
+    </thead>
+    <tbody>
+      {% for week in weeks %}
+      <tr>
+        {% for day in week %}
+        <td class="h-14 border border-slate-200 align-top sm:h-20 {% if day.is_today %}bg-accent-100{% endif %}">
+          {% if day %}
+          <span class="block pt-1 text-slate-700">{{ day.date|jdate_day }}</span>
+          {% for event in day.events %}
+          <a href="{% pageurl event %}" class="mx-1 mt-1 hidden truncate rounded bg-brand-50 px-1 text-xs font-semibold leading-6 text-brand-700 hover:bg-brand-100 sm:block">{{ event.title }}</a>
+          {% endfor %}
+          {% if day.events %}<span class="mx-auto mt-1 block h-2 w-2 rounded-full bg-accent-500 sm:hidden" aria-hidden="true"></span>{% endif %}
+          {% endif %}
+        </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h3 class="card-title mt-8">رویدادهای این ماه</h3>
+  {% if month_events %}
+  <ul class="mt-3 divide-y divide-slate-200">
+    {% for event in month_events %}
+    <li class="flex flex-wrap items-center justify-between gap-2 py-3">
+      <a href="{% pageurl event %}" class="font-semibold text-brand-700 hover:underline">{{ event.title }}</a>
+      <span class="muted">{{ event.start_at|jdatetime }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="muted mt-3">در این ماه رویدادی نیست.</p>
+  {% endif %}
+</section>

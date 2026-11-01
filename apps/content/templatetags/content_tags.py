@@ -35,6 +35,7 @@ def is_active(context, href):
     return "true" if path.startswith(href) else ""
 
 
+@register.simple_tag(name="jsonld")
 def _jsonld(data):
     # Escape "<" so content can never close the <script> element
     payload = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c")
@@ -99,5 +100,8 @@ def page_jsonld(context, page):
         if image:
             article["image"] = image
         blocks.append(article)
+
+    if hasattr(page, "extra_jsonld"):
+        blocks.append(page.extra_jsonld(url))
 
     return mark_safe("".join(_jsonld(b) for b in blocks))

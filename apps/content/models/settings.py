@@ -82,6 +82,17 @@ class SiteSettings(BaseSiteSetting):
         "موبایل دریافت اعلان‌ها", blank=True, help_text="پیامک کوتاه برای هر سرنخ جدید"
     )
 
+    # Shop (SHOP-1)
+    shipping_fee = models.BigIntegerField(
+        "هزینه ارسال (ریال)", default=0, help_text="مبلغ ثابت برای هر سفارش کتاب چاپی."
+    )
+    free_shipping_from = models.BigIntegerField(
+        "ارسال رایگان از مبلغ (ریال)",
+        null=True,
+        blank=True,
+        help_text="سفارش‌های بالای این مبلغ هزینه ارسال ندارند. خالی یعنی همیشه هزینه دارد.",
+    )
+
     # SEO
     default_og_image = models.ForeignKey(
         "wagtailimages.Image",
@@ -132,6 +143,9 @@ class SiteSettings(BaseSiteSetting):
             ),
             ObjectList(
                 [FieldPanel("notify_email"), FieldPanel("notify_mobile")], heading="اعلان‌ها"
+            ),
+            ObjectList(
+                [FieldPanel("shipping_fee"), FieldPanel("free_shipping_from")], heading="فروشگاه"
             ),
         ]
     )

@@ -19,7 +19,7 @@
       {% else %}
         <span class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-500">{% include "components/icon.html" with name="close" size="28" %}</span>
         <h1 class="card-title">این سفارش {{ order.get_status_display }} است</h1>
-        <p class="muted">زمان پرداخت تمام شده است. برای رزرو دوباره یک زمان جدید انتخاب کنید.</p>
+        <p class="muted">مهلت پرداخت این سفارش تمام شده است و باید دوباره ثبت شود.</p>
       {% endif %}
     </div>
   </div>
@@ -29,17 +29,21 @@
     {% for item in order.items.all %}
     <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">شرح</dt><dd class="font-semibold">{{ item.title_snapshot }}</dd></div>
     {% endfor %}
+    {% if order.discount %}<div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">تخفیف</dt><dd class="font-semibold">{{ order.discount|toman }}</dd></div>{% endif %}
+    {% if order.shipping %}<div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">هزینه ارسال</dt><dd class="font-semibold">{{ order.shipping|toman }}</dd></div>{% endif %}
     <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">مبلغ</dt><dd class="font-semibold">{% if order.total %}{{ order.total|toman }}{% else %}رایگان{% endif %}</dd></div>
     {% if order.status == "paid" and payment.ref_id %}
     <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">کد پیگیری</dt><dd class="font-semibold" dir="ltr">{{ payment.ref_id }}</dd></div>
     {% endif %}
   </dl>
 
+  {% include "orders/includes/delivery.html" %}
+
   <div class="mt-6 flex flex-wrap justify-center gap-3">
     {% if order.can_pay %}
     <form method="post" action="{% url 'payments:pay' order.number %}">{% csrf_token %}<button type="submit" class="btn btn-primary">پرداخت</button></form>
     {% endif %}
-    <a href="{% url 'accounts:account' %}" class="btn btn-secondary">جلسات من</a>
+    <a href="{% url 'accounts:account' %}" class="btn btn-secondary">حساب کاربری</a>
   </div>
 </section>
 {% endblock %}

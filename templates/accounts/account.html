@@ -8,7 +8,6 @@
   <h1 class="heading-1">حساب کاربری</h1>
   <div class="card mt-6"><div class="card-body">
     <p>شماره موبایل: <span dir="ltr" class="font-semibold">{{ user.mobile|fa_digits }}</span></p>
-    <p class="muted">سفارش‌ها، دوره‌ها و فایل‌های شما به‌زودی اینجا نمایش داده می‌شوند.</p>
     <form method="post" action="{% url 'accounts:logout' %}" class="mt-2">{% csrf_token %}<button type="submit" class="btn btn-secondary btn-sm">خروج</button></form>
   </div></div>
 
@@ -36,5 +35,7 @@
       {% endfor %}
     </ul>
   </section>
+
+  {% include "accounts/includes/purchases.html" %}
 </section>
 {% endblock %}

@@ -1,0 +1,24 @@
+{% load wagtailroutablepage_tags core_tags %}
+{% if page.kind != "talk" %}
+  {% if registration.status == "paid" %}
+    {% include "components/alert.html" with level="success" text="ثبت‌نام شما قطعی است." %}
+    {% if page.join_link and not page.has_ended %}<a href="{{ page.join_link }}" target="_blank" rel="noopener" class="btn btn-primary">ورود به کلاس</a>{% endif %}
+    {% if page.recording_url and page.has_ended %}<a href="{{ page.recording_url }}" target="_blank" rel="noopener" class="btn btn-primary">مشاهده ضبط</a>{% endif %}
+  {% elif registration.status == "pending" %}
+    {% include "components/alert.html" with level="info" text="جای شما نگه داشته شده است. پرداخت را کامل کنید." %}
+    <a href="{% url 'orders:detail' registration.order.number %}" class="btn btn-primary">تکمیل پرداخت</a>
+  {% elif registration.status == "waitlist" %}
+    {% include "components/alert.html" with level="info" text="در لیست انتظار هستید. اگر جایی باز شد پیامک می‌گیرید." %}
+  {% elif page.registration_open %}
+    {% routablepageurl page "register" as register_url %}
+    {% if user.is_authenticated %}
+    <form method="post" action="{{ register_url }}">{% csrf_token %}
+      <button type="submit" class="btn btn-primary w-full">{% if seats_left == 0 %}ثبت در لیست انتظار{% elif page.price %}ثبت‌نام و پرداخت{% else %}ثبت‌نام رایگان{% endif %}</button>
+    </form>
+    {% else %}
+    <a href="{% url 'accounts:login' %}?next={{ page.url|urlencode }}" class="btn btn-primary">ورود و ثبت‌نام</a>
+    {% endif %}
+  {% else %}
+    <p class="muted">ثبت‌نام این رویداد بسته شده است.</p>
+  {% endif %}
+{% endif %}

@@ -54,8 +54,7 @@ class TimeOffViewSet(ModelViewSet):
     url_prefix = "time-off"
     icon = "warning"
     menu_label = "مرخصی و تعطیلی"
-    list_display = ["reason", "start", "end"]
-    form_fields = ["start", "end", "reason"]
+    list_display = ["reason", "start_display", "end_display"]
 
 
 class BookingGroup(ModelViewSetGroup):

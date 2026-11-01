@@ -1,13 +1,18 @@
 import pytest
 from django.core.cache import cache
+from django.core.files.storage import FileSystemStorage
 from django.core.management import call_command
 
 from apps.content.models import ArticlePage, BlogIndexPage, HomePage
+from apps.shop.models import Product
 
 
 @pytest.fixture(autouse=True)
-def _isolated_media_and_cache(settings, tmp_path):
+def _isolated_media_and_cache(settings, tmp_path, monkeypatch):
     settings.MEDIA_ROOT = tmp_path / "media"
+    # The field holds its storage from import time, so a settings override would miss it
+    private = FileSystemStorage(location=tmp_path / "private")
+    monkeypatch.setattr(Product._meta.get_field("file"), "storage", private)
     cache.clear()
 
 

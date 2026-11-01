@@ -12,6 +12,7 @@ from wagtail.fields import RichTextField
 
 from apps.content.models.base import BasePage
 from apps.core import jalali
+from apps.core.widgets import JalaliDateTimeInput
 from apps.orders.models import Order
 
 
@@ -93,6 +94,12 @@ class TimeOff(models.Model):
     end = models.DateTimeField("تا")
     reason = models.CharField("دلیل", max_length=200, blank=True)
 
+    panels = [
+        FieldPanel("start", widget=JalaliDateTimeInput),
+        FieldPanel("end", widget=JalaliDateTimeInput),
+        FieldPanel("reason"),
+    ]
+
     class Meta:
         verbose_name = "مرخصی یا تعطیلی"
         verbose_name_plural = "مرخصی و تعطیلی"
@@ -104,6 +111,14 @@ class TimeOff(models.Model):
     def clean(self):
         if self.start and self.end and self.start >= self.end:
             raise ValidationError({"end": "پایان باید بعد از شروع باشد."})
+
+    @admin.display(description="از", ordering="start")
+    def start_display(self):
+        return jalali.format_datetime(self.start)
+
+    @admin.display(description="تا", ordering="end")
+    def end_display(self):
+        return jalali.format_datetime(self.end)
 
 
 class BookingAdminForm(WagtailAdminModelForm):

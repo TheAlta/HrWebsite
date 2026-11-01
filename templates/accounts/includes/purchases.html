@@ -1,0 +1,58 @@
+{% load wagtailcore_tags core_tags %}
+{# Courses, files and orders on the account page. The full user panel arrives with USER-2 (sprint 5). #}
+{% if registrations %}
+<section class="mt-10" aria-labelledby="events-heading">
+  <h2 id="events-heading" class="heading-2">دوره‌های من</h2>
+  <ul class="mt-4 space-y-4">
+    {% for registration in registrations %}
+    <li class="card"><div class="card-body">
+      <div class="flex flex-wrap items-center justify-between gap-2">
+        <a href="{% pageurl registration.event %}" class="card-title hover:text-brand-700">{{ registration.event.title }}</a>
+        <span class="badge">{{ registration.get_status_display }}</span>
+      </div>
+      <p>{{ registration.event.start_at|jdatetime }}</p>
+      {% if registration.status == "paid" and registration.event.join_link and not registration.event.has_ended %}<a href="{{ registration.event.join_link }}" target="_blank" rel="noopener" class="font-semibold text-brand-600 hover:underline">ورود به کلاس</a>{% endif %}
+      {% if registration.status == "paid" and registration.event.recording_url and registration.event.has_ended %}<a href="{{ registration.event.recording_url }}" target="_blank" rel="noopener" class="font-semibold text-brand-600 hover:underline">مشاهده ضبط</a>{% endif %}
+      {% if registration.status == "pending" and registration.order %}<a href="{% url 'orders:detail' registration.order.number %}" class="btn btn-primary btn-sm self-start">تکمیل پرداخت</a>{% endif %}
+      {% if registration.status == "pending" or registration.status == "waitlist" or registration.status == "paid" and not registration.order %}
+      <form method="post" action="{% url 'events:cancel' registration.pk %}" class="mt-1" x-data @submit="if (!confirm('این ثبت‌نام لغو شود؟')) $event.preventDefault()">{% csrf_token %}<button type="submit" class="btn btn-ghost btn-sm">لغو ثبت‌نام</button></form>
+      {% endif %}
+    </div></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if downloads %}
+<section class="mt-10" aria-labelledby="files-heading">
+  <h2 id="files-heading" class="heading-2">فایل‌های من</h2>
+  <ul class="mt-4 space-y-4">
+    {% for download in downloads %}
+    <li class="card"><div class="card-body">
+      <p class="card-title">{{ download.product.title }}</p>
+      {% if download.is_valid %}
+      <p class="muted">{{ download.downloads_left|fa_digits }} بار دانلود باقی مانده، تا {{ download.expires_at|jdate }}</p>
+      <a href="{{ download.get_absolute_url }}" class="btn btn-secondary btn-sm self-start">{% include "components/icon.html" with name="download" size="16" %}دانلود</a>
+      {% else %}
+      <p class="muted">مهلت یا تعداد دانلود تمام شده است.</p>
+      {% endif %}
+    </div></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% if orders %}
+<section class="mt-10" aria-labelledby="orders-heading">
+  <h2 id="orders-heading" class="heading-2">سفارش‌های من</h2>
+  <ul class="card mt-4 divide-y divide-slate-200">
+    {% for order in orders %}
+    <li><a href="{% url 'orders:detail' order.number %}" class="flex flex-wrap items-center justify-between gap-2 px-5 py-3 hover:bg-slate-50">
+      <span class="font-semibold text-slate-900">{{ order.number|fa_digits }}</span>
+      <span class="muted">{{ order.created_at|jdate }}</span>
+      <span class="badge">{{ order.get_status_display }}</span>
+    </a></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}

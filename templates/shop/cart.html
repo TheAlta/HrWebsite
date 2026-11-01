@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load core_tags %}
+
+{% block title %}سبد خرید | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
+{% block meta %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block content %}
+{% include "components/page_header.html" with title="سبد خرید" %}
+<div class="container-page py-12">{% include "shop/includes/cart_body.html" %}</div>
+{% endblock %}

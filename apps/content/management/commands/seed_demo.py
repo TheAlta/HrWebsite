@@ -15,6 +15,7 @@ from django.core.files.images import ImageFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
+from django.utils import timezone
 from PIL import Image as PILImage
 from PIL import ImageDraw
 from wagtail.documents import get_document_model
@@ -41,9 +42,11 @@ from apps.content.models import (
     TeamMember,
 )
 from apps.crm.models import ConsultationPage
+from apps.events.models import EventIndexPage, EventPage, Registration, SpeakingPage
 from apps.orders.models import Order
 from apps.payments.models import Payment
 from apps.portfolio.models import Client, PortfolioPage, Project, Testimonial
+from apps.shop.models import Coupon, CouponUse, DownloadToken, Product, Shipment, ShopPage
 
 DEMO_TAG = "[demo]"  # marks sample images/documents so --reset can remove them
 
@@ -475,6 +478,84 @@ class Command(BaseCommand):
                 weekday=weekday, start_time=dt.time(14, 0), end_time=dt.time(17, 0)
             )
 
+        events_page = publish(
+            home,
+            EventIndexPage(
+                title="آموزش و رویدادها",
+                slug="events",
+                intro=p("دوره‌ها و وبینارهای پیش‌رو. این متن نمونه است."),
+            ),
+        )
+        now = timezone.now().replace(minute=0, second=0, microsecond=0)
+        for i, (title, kind, days, price, capacity) in enumerate(
+            [
+                ("دوره ارزیابی عملکرد", EventPage.Kind.COURSE, 12, 80_000_000, 12),
+                ("وبینار طراحی ساختار سازمانی", EventPage.Kind.WEBINAR, 5, 0, None),
+                ("دوره جذب و مصاحبه", EventPage.Kind.COURSE, 30, 60_000_000, 1),
+                ("وبینار مسیر شغلی", EventPage.Kind.WEBINAR, -20, 15_000_000, 50),
+                ("سخنرانی همایش منابع انسانی", EventPage.Kind.TALK, -60, 0, None),
+            ]
+        ):
+            start = now + dt.timedelta(days=days)
+            publish(
+                events_page,
+                EventPage(
+                    title=title,
+                    slug=f"event-{i + 1}",
+                    kind=kind,
+                    cover_image=images[i % len(images)],
+                    summary="این متن نمونه است و از پنل مدیریت قابل تغییر است.",
+                    body=p(LOREM),
+                    instructor="مدرس نمونه",
+                    venue="تهران، سالن نمونه" if kind == EventPage.Kind.TALK else "",
+                    start_at=start,
+                    end_at=start + dt.timedelta(hours=2),
+                    capacity=capacity,
+                    price=price,
+                    join_link="https://example.com/room",
+                ),
+            )
+        publish(
+            home,
+            SpeakingPage(
+                title="سخنرانی‌ها",
+                slug="speaking",
+                intro=p("سوابق سخنرانی و فرم دعوت. این متن نمونه است."),
+            ),
+        )
+
+        shop_page = publish(
+            home,
+            ShopPage(
+                title="کتاب‌ها و محصولات",
+                slug="shop",
+                intro=p("کتاب چاپی و فایل آموزشی. این متن نمونه است."),
+            ),
+        )
+        for i, (title, kind, price, stock) in enumerate(
+            [
+                ("کتاب مبانی منابع انسانی", Product.Kind.PHYSICAL, 3_500_000, 20),
+                ("کتاب ارزیابی عملکرد", Product.Kind.PHYSICAL, 4_200_000, 0),
+                ("راهنمای مصاحبه (PDF)", Product.Kind.DIGITAL, 1_500_000, 0),
+            ]
+        ):
+            Product.objects.create(
+                title=title,
+                slug=f"product-{i + 1}",
+                kind=kind,
+                cover_image=images[i % len(images)],
+                summary="این متن نمونه است و از پنل مدیریت قابل تغییر است.",
+                description=p(LOREM),
+                contents=p("فصل اول، فصل دوم، فصل سوم"),
+                price=price,
+                stock=stock,
+                file=SimpleUploadedFile("sample.pdf", b"%PDF-1.4 sample")
+                if kind == Product.Kind.DIGITAL
+                else "",
+                sort_order=i,
+            )
+        Coupon.objects.create(code="DEMO10", type=Coupon.Type.PERCENT, value=10)
+
         publish(
             home,
             LegalPage(title="قوانین و مقررات", slug="terms", body=p(LOREM), show_in_menus=False),
@@ -567,6 +648,8 @@ class Command(BaseCommand):
         settings.instagram_url = "https://www.instagram.com/"
         settings.telegram_url = "https://t.me/"
         settings.footer_text = "مشاوره و آموزش منابع انسانی برای سازمان‌ها و افراد."
+        settings.shipping_fee = 500_000
+        settings.free_shipping_from = 10_000_000
         settings.cta_label = "درخواست مشاوره"
         settings.cta_page = consultation
         settings.default_og_image = images[0]
@@ -577,6 +660,8 @@ class Command(BaseCommand):
                 ("درباره من", about),
                 ("خدمات", services_index),
                 ("رزرو جلسه", booking_page),
+                ("رویدادها", events_page),
+                ("فروشگاه", shop_page),
                 ("مجله", blog),
                 ("نمونه‌کارها", portfolio),
                 ("تماس", contact),
@@ -589,7 +674,19 @@ class Command(BaseCommand):
         )
 
     def _reset(self, home):
-        for model in (Payment, Booking, Order, Availability, SessionType):
+        for model in (
+            CouponUse,
+            Coupon,
+            DownloadToken,
+            Shipment,
+            Registration,
+            Payment,
+            Booking,
+            Order,
+            Product,
+            Availability,
+            SessionType,
+        ):
             model.objects.all().delete()
         # Queryset delete lets treebeard keep the tree counters (numchild) consistent
         home.get_children().delete()

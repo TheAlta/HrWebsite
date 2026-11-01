@@ -43,7 +43,7 @@ RUN SECRET_KEY=build-only DATABASE_URL=sqlite:////tmp/build.db ALLOWED_HOSTS=loc
     PAYMENT_GATEWAY_ORDER=zarinpal \
     DJANGO_SETTINGS_MODULE=config.settings.prod python manage.py collectstatic --noinput \
  && useradd --system --uid 1000 --home /app app \
- && mkdir -p /app/media && chown -R app:app /app/media
+ && mkdir -p /app/media /app/private && chown -R app:app /app/media /app/private
 USER app
 EXPOSE 8000
 CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--access-logfile", "-", "--no-control-socket"]

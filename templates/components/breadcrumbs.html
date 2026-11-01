@@ -6,7 +6,13 @@
       <li><a href="{% pageurl crumb %}" class="hover:text-brand-700">{% if crumb.depth == 2 %}خانه{% else %}{{ crumb.title }}{% endif %}</a></li>
       <li aria-hidden="true" class="text-slate-300">/</li>
     {% endfor %}
-    <li aria-current="page" class="text-slate-700">{{ page.title }}</li>
+    {% if leaf %}
+      <li><a href="{% pageurl page %}" class="hover:text-brand-700">{{ page.title }}</a></li>
+      <li aria-hidden="true" class="text-slate-300">/</li>
+      <li aria-current="page" class="text-slate-700">{{ leaf }}</li>
+    {% else %}
+      <li aria-current="page" class="text-slate-700">{{ page.title }}</li>
+    {% endif %}
   </ol>
 </nav>
 {% endif %}

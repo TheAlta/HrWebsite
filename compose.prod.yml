@@ -13,6 +13,7 @@ x-app: &app
   restart: unless-stopped
   volumes:
     - ${DATA_DIR}/media:/app/media
+    - ${DATA_DIR}/private:/app/private
   logging: &logging
     driver: json-file
     options:

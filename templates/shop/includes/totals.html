@@ -1,0 +1,7 @@
+{% load core_tags %}
+<dl class="grid gap-2 text-[0.95rem]">
+  <div class="flex items-center justify-between gap-4"><dt class="muted">جمع</dt><dd class="font-semibold">{{ quote.subtotal|toman }}</dd></div>
+  {% if quote.discount %}<div class="flex items-center justify-between gap-4 text-emerald-800"><dt>تخفیف</dt><dd class="font-semibold">{{ quote.discount|toman }}</dd></div>{% endif %}
+  {% if quote.needs_shipping %}<div class="flex items-center justify-between gap-4"><dt class="muted">هزینه ارسال</dt><dd class="font-semibold">{% if quote.shipping %}{{ quote.shipping|toman }}{% else %}رایگان{% endif %}</dd></div>{% endif %}
+  <div class="flex items-center justify-between gap-4 border-t border-slate-200 pt-2"><dt class="font-semibold text-slate-900">مبلغ نهایی</dt><dd class="font-extrabold text-slate-900">{% if quote.total %}{{ quote.total|toman }}{% else %}رایگان{% endif %}</dd></div>
+</dl>

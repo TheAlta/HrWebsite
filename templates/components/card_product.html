@@ -1,0 +1,15 @@
+{% load wagtailimages_tags wagtailroutablepage_tags core_tags %}
+{# Usage: {% include "components/card_product.html" with product=product %} — needs `page` (the ShopPage). #}
+{% routablepageurl page "product" product.slug as product_url %}
+<article class="card">
+  {% if product.cover_image %}{% image product.cover_image fill-640x360 format-webp class="aspect-[16/9] w-full object-cover" loading="lazy" alt="" %}{% endif %}
+  <div class="card-body">
+    <span class="badge self-start">{{ product.get_kind_display }}</span>
+    <h2 class="card-title"><a href="{{ product_url }}" class="hover:text-brand-700">{{ product.title }}</a></h2>
+    {% if product.summary %}<p class="text-[0.95rem] leading-7 text-slate-600">{{ product.summary }}</p>{% endif %}
+    <div class="mt-auto flex items-center justify-between pt-3">
+      <span class="text-sm font-semibold text-slate-700">{% if not product.in_stock %}ناموجود{% elif product.price %}{{ product.price|toman }}{% else %}رایگان{% endif %}</span>
+      <a href="{{ product_url }}" class="btn btn-ghost btn-sm">جزئیات {% include "components/icon.html" with name="arrow" size="16" %}</a>
+    </div>
+  </div>
+</article>

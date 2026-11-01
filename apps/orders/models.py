@@ -34,6 +34,8 @@ class Order(models.Model):
     subtotal = models.BigIntegerField("جمع (ریال)", default=0)
     discount = models.BigIntegerField("تخفیف (ریال)", default=0)
     tax = models.BigIntegerField("مالیات (ریال)", default=0)
+    shipping = models.BigIntegerField("هزینه ارسال (ریال)", default=0)
+    coupon_code = models.CharField("کد تخفیف", max_length=40, blank=True)
     total = models.BigIntegerField("مبلغ نهایی (ریال)", default=0)
     paid_at = models.DateTimeField("زمان پرداخت", null=True, blank=True)
     # Set after order_paid receivers finish; a paid order without it is retried

@@ -12,9 +12,9 @@ from datetime import timedelta
 from django.db import IntegrityError, connection, transaction
 from django.utils import timezone
 
-from apps.content.models import SiteSettings
+from apps.content.alerts import email_owner
 from apps.core import jalali
-from apps.notifications.services import send_email, send_sms
+from apps.notifications.services import send_sms
 from apps.orders import services as orders
 from apps.orders.services import OrderLine
 
@@ -215,7 +215,7 @@ def _notify_confirmed(booking: Booking):
         "booking_confirmed",
         {"token": booking.order.number if booking.order else "-", "token10": _when(booking)},
     )
-    _email_owner(
+    email_owner(
         f"رزرو جدید: {booking.session_type.title}",
         f"{booking.user} — {_when(booking)}",
     )
@@ -223,7 +223,7 @@ def _notify_confirmed(booking: Booking):
 
 def _report_lost_slot(booking: Booking):
     send_sms(booking.user.mobile, "booking_problem", {"token10": _when(booking)})
-    _email_owner(
+    email_owner(
         "پرداخت بعد از انقضای رزرو",
         f"سفارش {booking.order.number}: {booking.user} بعد از پایان قفل پرداخت کرد و زمان "
         f"{_when(booking)} را شخص دیگری گرفته است. زمان جدید هماهنگ یا مبلغ برگردانده شود.",
@@ -232,17 +232,6 @@ def _report_lost_slot(booking: Booking):
 
 def _when(booking: Booking) -> str:
     return jalali.format_datetime(booking.start_at)
-
-
-def _email_owner(subject: str, message: str):
-    site_settings = SiteSettings.for_default_site()
-    if site_settings and site_settings.notify_email:
-        send_email(
-            site_settings.notify_email,
-            subject,
-            "notifications/email/owner_alert.txt",
-            {"message": message},
-        )
 
 
 def can_change(booking: Booking, now=None) -> bool:
@@ -264,7 +253,7 @@ def cancel(booking: Booking, *, by_owner=False) -> Booking:
     send_sms(booking.user.mobile, "booking_cancelled", {"token10": _when(booking)})
     if was_paid:
         # Automatic refunds arrive with PAY-4 (sprint 5)
-        _email_owner(
+        email_owner(
             "لغو جلسه پرداخت‌شده",
             f"سفارش {booking.order.number}: جلسه {_when(booking)} لغو شد. "
             "بازگشت وجه به‌صورت دستی انجام شود.",
