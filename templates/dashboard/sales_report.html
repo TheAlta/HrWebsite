@@ -1,0 +1,43 @@
+{% extends "wagtailadmin/generic/base.html" %}
+{% load wagtailadmin_tags core_tags %}
+
+{% block main_content %}
+<form method="get" class="w-mb-8">
+    <div class="w-flex w-flex-wrap w-gap-4 w-items-end">
+        {% for field in form %}<div>{% include "wagtailadmin/shared/field.html" with field=field %}</div>{% endfor %}
+        <div><button type="submit" class="button">نمایش</button></div>
+    </div>
+    {% if form.non_field_errors %}<p class="error-message">{{ form.non_field_errors.0 }}</p>{% endif %}
+</form>
+
+<p>از {{ report.start|jdatetime }} تا {{ report.last_moment|jdatetime }}</p>
+
+<table class="listing w-mb-8">
+    <tbody>
+        <tr><th scope="row">تعداد سفارش پرداخت‌شده</th><td>{{ report.count|fa_digits }}</td></tr>
+        <tr><th scope="row">فروش</th><td>{{ report.gross|toman }}</td></tr>
+        <tr><th scope="row">تخفیف داده‌شده</th><td>{{ report.discount|toman }}</td></tr>
+        <tr><th scope="row">هزینه ارسال دریافتی</th><td>{{ report.shipping|toman }}</td></tr>
+        <tr><th scope="row">بازگشت وجه</th><td>{{ report.refunded|toman }}</td></tr>
+        <tr><th scope="row">خالص</th><td><strong>{{ report.net|toman }}</strong></td></tr>
+    </tbody>
+</table>
+
+<h2 class="w-h3">به تفکیک زمان</h2>
+{% if report.periods %}
+<table class="listing w-mb-8">
+    <thead><tr><th>دوره</th><th>تعداد</th><th>مبلغ</th></tr></thead>
+    <tbody>{% for label, count, total in report.periods %}<tr><td>{{ label }}</td><td>{{ count|fa_digits }}</td><td>{{ total|toman }}</td></tr>{% endfor %}</tbody>
+</table>
+{% else %}<p>در این بازه فروشی نبوده است.</p>{% endif %}
+
+<h2 class="w-h3">به تفکیک نوع</h2>
+{% if report.by_kind %}
+<table class="listing w-mb-8">
+    <thead><tr><th>نوع</th><th>مبلغ پیش از تخفیف</th></tr></thead>
+    <tbody>{% for label, total in report.by_kind %}<tr><td>{{ label }}</td><td>{{ total|toman }}</td></tr>{% endfor %}</tbody>
+</table>
+{% endif %}
+
+<a href="?{% if request.GET.start %}start={{ request.GET.start|urlencode }}&{% endif %}{% if request.GET.end %}end={{ request.GET.end|urlencode }}&{% endif %}export=xlsx" class="button button-secondary">{% icon name="download" %} خروجی اکسل</a>
+{% endblock %}

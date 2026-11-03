@@ -56,7 +56,10 @@ class Order(models.Model):
         verbose_name = "سفارش"
         verbose_name_plural = "سفارش‌ها"
         ordering = ["-created_at"]
-        permissions = [("refund_order", "ثبت بازگشت وجه و لغو سفارش")]
+        permissions = [
+            ("refund_order", "ثبت بازگشت وجه و لغو سفارش"),
+            ("view_sales", "دیدن آمار و گزارش فروش"),
+        ]
 
     def __str__(self):
         return self.number

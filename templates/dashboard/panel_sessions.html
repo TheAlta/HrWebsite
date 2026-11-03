@@ -1,0 +1,19 @@
+{% load wagtailadmin_tags core_tags %}
+{% panel id="dashboard-sessions" heading="جلسات امروز و فردا" classname="w-panel--dashboard" %}
+    {% if rows %}
+    <table class="listing">
+        <thead><tr><th>زمان</th><th>نوع جلسه</th><th>مشتری</th></tr></thead>
+        <tbody>
+            {% for booking in rows %}
+            <tr>
+                <td><a href="{% url 'panel_bookings:edit' booking.pk %}">{{ booking.start_at|jdatetime }}</a></td>
+                <td>{{ booking.session_type.title }}</td>
+                <td>{{ booking.user }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>امروز و فردا جلسه‌ای نیست.</p>
+    {% endif %}
+{% endpanel %}

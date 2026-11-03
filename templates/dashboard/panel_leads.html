@@ -1,0 +1,19 @@
+{% load wagtailadmin_tags core_tags %}
+{% panel id="dashboard-leads" heading="سرنخ‌های جدید" classname="w-panel--dashboard" %}
+    {% if rows %}
+    <table class="listing">
+        <thead><tr><th>نام</th><th>نوع</th><th>زمان ثبت</th></tr></thead>
+        <tbody>
+            {% for lead in rows %}
+            <tr>
+                <td><a href="{% url 'leads:edit' lead.pk %}">{{ lead.name }}</a></td>
+                <td>{{ lead.get_type_display }}</td>
+                <td>{{ lead.created_at|jdatetime }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>سرنخ جدیدی نیست.</p>
+    {% endif %}
+{% endpanel %}

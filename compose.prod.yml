@@ -41,7 +41,7 @@ services:
   migrate:
     <<: *app
     restart: "no"
-    command: python manage.py migrate --noinput
+    command: sh -c "python manage.py migrate --noinput && python manage.py setup_roles"
     depends_on:
       db:
         condition: service_healthy

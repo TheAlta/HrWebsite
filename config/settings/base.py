@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "apps.events",
     "apps.shop",
     "apps.billing",
+    "apps.dashboard",
     # Wagtail
     "wagtail.contrib.settings",
     "wagtail.contrib.sitemaps",
