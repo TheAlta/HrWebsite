@@ -54,12 +54,12 @@ class CampaignViewSet(ModelViewSet):
     url_prefix = "campaigns"
     icon = "mail"
     menu_label = "خبرنامه‌ها"
-    list_display = ["title", "channel", "status", "sent_count", "created_at"]
+    list_display = ["title", "channel", "status", "sent_count", "created_display"]
     list_filter = ["channel", "status"]
     copy_view_enabled = False
     inspect_view_enabled = True
     inspect_view_class = CampaignInspectView
-    inspect_view_fields = ["title", "channel", "body", "status", "sent_count", "sent_at"]
+    inspect_view_fields = ["title", "channel", "body", "status", "sent_count", "sent_display"]
 
     def get_urlpatterns(self):
         return [

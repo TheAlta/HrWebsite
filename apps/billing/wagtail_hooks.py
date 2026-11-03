@@ -35,7 +35,14 @@ class InvoiceViewSet(ModelViewSet):
     copy_view_enabled = False
     inspect_view_enabled = True
     inspect_view_class = InvoiceInspectView
-    inspect_view_fields = ["number", "order", "buyer_display", "issued_at", "voided_at"]
+    inspect_view_fields = [
+        "number",
+        "order",
+        "buyer_display",
+        "total_display",
+        "issued_display",
+        "voided_display",
+    ]
     list_export = ["number", "order", "buyer_display", "total_display", "issued_display"]
     export_filename = "invoices"
 
@@ -102,14 +109,15 @@ class ProFormaViewSet(ModelViewSet):
     inspect_view_enabled = True
     inspect_view_class = ProFormaInspectView
     inspect_view_fields = [
-        "organization",
+        "organization_display",
         "contact_name",
         "mobile",
         "status",
         "total_display",
-        "valid_until",
-        "note",
-        "order",
+        "valid_until_display",
+        "note_display",
+        "order_display",
+        "created_display",
     ]
 
     def get_urlpatterns(self):

@@ -33,6 +33,13 @@ class ActionFormView(WagtailAdminTemplateMixin, FormView):
     def get_page_subtitle(self):
         return str(self.object)
 
+    def get_breadcrumbs_items(self):
+        return [
+            *self.breadcrumbs_items,
+            {"url": self.get_success_url(), "label": str(self.object)},
+            {"url": "", "label": self.get_page_title()},
+        ]
+
     def get_success_url(self):
         raise NotImplementedError
 

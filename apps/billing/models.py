@@ -9,6 +9,7 @@ from wagtail.admin.panels import FieldPanel, FieldRowPanel, InlinePanel
 from wagtail.models import Orderable
 
 from apps.core import jalali
+from apps.core.admin_display import jalali_column, optional_column
 from apps.core.fields import MobileField
 from apps.core.money import format_rial
 from apps.core.storage import private_storage
@@ -56,6 +57,8 @@ class Invoice(models.Model):
     @admin.display(description="مبلغ", ordering="order__total")
     def total_display(self):
         return format_rial(self.order.total)
+
+    voided_display = jalali_column("voided_at", "زمان ابطال")
 
     @admin.display(description="خریدار")
     def buyer_display(self):
@@ -143,6 +146,11 @@ class ProForma(ClusterableModel):
     @admin.display(description="زمان ثبت", ordering="created_at")
     def created_display(self):
         return jalali.format_date(self.created_at)
+
+    organization_display = optional_column("organization", "سازمان")
+    valid_until_display = jalali_column("valid_until", "اعتبار تا")
+    order_display = optional_column("order", "سفارش")
+    note_display = optional_column("note", "توضیح")
 
 
 class ProFormaLine(Orderable):

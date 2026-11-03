@@ -5,6 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 from apps.core import jalali
+from apps.core.admin_display import jalali_column, optional_column, toman_column
 from apps.core.money import format_toman
 
 
@@ -72,6 +73,13 @@ class Order(models.Model):
     def total_display(self):
         return format_toman(self.total)
 
+    organization_display = optional_column("organization", "سازمان")
+    subtotal_display = toman_column("subtotal", "جمع")
+    discount_display = toman_column("discount", "تخفیف")
+    shipping_display = toman_column("shipping", "هزینه ارسال")
+    coupon_display = optional_column("coupon_code", "کد تخفیف")
+    paid_display = jalali_column("paid_at", "زمان پرداخت")
+
     @admin.display(description="اقلام")
     def items_display(self):
         return "، ".join(item.title_snapshot for item in self.items.all())
@@ -106,6 +114,9 @@ class Refund(models.Model):
 
     def __str__(self):
         return str(self.order)
+
+    amount_display = toman_column("amount", "مبلغ")
+    created_display = jalali_column("created_at", "زمان ثبت")
 
 
 class OrderItem(models.Model):

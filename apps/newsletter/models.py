@@ -6,6 +6,7 @@ from django.db.models import Q
 from wagtail.admin.panels import FieldPanel
 
 from apps.core import jalali
+from apps.core.admin_display import jalali_column
 from apps.core.fields import MobileField
 
 
@@ -83,6 +84,9 @@ class Campaign(models.Model):
 
     def __str__(self):
         return self.title
+
+    created_display = jalali_column("created_at", "زمان ثبت")
+    sent_display = jalali_column("sent_at", "زمان ارسال")
 
 
 class Delivery(models.Model):

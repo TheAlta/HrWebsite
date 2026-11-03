@@ -114,15 +114,16 @@ class OrderViewSet(ModelViewSet):
     inspect_view_fields = [
         "number",
         "user",
-        "organization",
+        "organization_display",
         "status",
         "items_display",
-        "subtotal",
-        "discount",
-        "shipping",
-        "total",
-        "coupon_code",
-        "paid_at",
+        "subtotal_display",
+        "discount_display",
+        "shipping_display",
+        "total_display",
+        "coupon_display",
+        "paid_display",
+        "created_display",
     ]
     list_export = ["number", "user", "status", "total", "discount", "shipping", "paid_at"]
     export_filename = "orders"
@@ -142,7 +143,7 @@ class PaymentViewSet(ModelViewSet):
     url_prefix = "payments"
     icon = "form"
     menu_label = "پرداخت‌ها"
-    list_display = ["order", "gateway", "amount", "status", "ref_id", "created_at"]
+    list_display = ["order", "gateway", "amount_display", "status", "ref_id", "created_display"]
     list_filter = ["status", "gateway"]
     search_fields = ["order__number", "ref_id", "authority"]
     ordering = ["-created_at"]
@@ -152,13 +153,13 @@ class PaymentViewSet(ModelViewSet):
     inspect_view_fields = [
         "order",
         "gateway",
-        "amount",
+        "amount_display",
         "status",
         "authority",
         "ref_id",
         "card_mask",
-        "created_at",
-        "verified_at",
+        "created_display",
+        "verified_display",
     ]
 
 
@@ -168,11 +169,19 @@ class RefundViewSet(ModelViewSet):
     url_prefix = "refunds"
     icon = "undo"
     menu_label = "بازگشت وجه‌ها"
-    list_display = ["order", "amount", "reference", "created_by", "created_at"]
+    list_display = ["order", "amount_display", "reference", "created_by", "created_display"]
     search_fields = ["order__number", "reference"]
     form_fields = ["reference"]  # required by ModelViewSet; editing is disabled by the policy
     copy_view_enabled = False
     inspect_view_enabled = True
+    inspect_view_fields = [
+        "order",
+        "amount_display",
+        "reference",
+        "note",
+        "created_by",
+        "created_display",
+    ]
 
 
 class SalesGroup(ModelViewSetGroup):
