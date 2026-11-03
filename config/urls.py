@@ -22,6 +22,7 @@ urlpatterns = [
     path("orders/", include("apps.orders.urls")),
     path("payments/", include("apps.payments.urls")),
     path("leads/", include("apps.crm.urls")),
+    path("newsletter/", include("apps.newsletter.urls")),
     path("", include("apps.shop.urls")),
     path("sitemap.xml", sitemap, name="sitemap"),
     path("robots.txt", content_views.robots_txt, name="robots_txt"),

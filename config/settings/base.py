@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "apps.shop",
     "apps.billing",
     "apps.dashboard",
+    "apps.newsletter",
     # Wagtail
     "wagtail.contrib.settings",
     "wagtail.contrib.sitemaps",
@@ -91,6 +92,7 @@ TEMPLATES = [
                 "wagtail.contrib.settings.context_processors.settings",
                 "apps.core.context_processors.site",
                 "apps.shop.context_processors.cart",
+                "apps.newsletter.context_processors.newsletter",
             ],
             "builtins": ["apps.core.templatetags.core_tags"],
         },
@@ -172,6 +174,7 @@ SMS_TEMPLATES = {
     "order_invoice": env("SMS_TPL_ORDER_INVOICE", default="order-invoice"),
     "order_refunded": env("SMS_TPL_ORDER_REFUNDED", default="order-refunded"),
     "proforma_ready": env("SMS_TPL_PROFORMA_READY", default="proforma-ready"),
+    "newsletter": env("SMS_TPL_NEWSLETTER", default="newsletter"),
 }
 # Parameters of these templates are masked in the message log once sent
 SMS_SENSITIVE_TEMPLATES = {"otp"}
