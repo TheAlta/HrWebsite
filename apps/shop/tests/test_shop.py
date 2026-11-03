@@ -566,7 +566,7 @@ def test_order_page_shows_files_and_shipping(client, book, ebook, customer, addr
 
 def test_account_page_lists_files_and_orders(client, token, customer):
     client.force_login(customer)
-    content = client.get(reverse("accounts:account")).content.decode()
+    content = client.get(reverse("accounts:downloads")).content.decode()
     assert token.product.title in content
     assert token.get_absolute_url() in content
 

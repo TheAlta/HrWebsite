@@ -355,7 +355,7 @@ def test_booking_journey_end_to_end(client, session_type, customer, first_slot, 
 
     booking = Booking.objects.get()
     assert booking.status == Booking.Status.CONFIRMED
-    assert session_type.title in client.get("/account/").content.decode()
+    assert session_type.title in client.get("/account/sessions/").content.decode()
 
 
 def test_taken_time_returns_to_the_calendar_with_a_message(
@@ -400,7 +400,7 @@ def test_cancel_and_reschedule_pages(client, session_type, customer, far_slot):
     response = client.post(
         f"/account/bookings/{booking.pk}/reschedule/", {"start": int(target.timestamp())}
     )
-    assert response.url == "/account/"
+    assert response.url == "/account/sessions/"
     booking.refresh_from_db()
     assert booking.start_at == target
     client.post(f"/account/bookings/{booking.pk}/cancel/")

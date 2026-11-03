@@ -428,7 +428,7 @@ def test_customer_cancels_own_registration_only(client, free_event, customer, ot
 def test_account_page_lists_registrations(client, free_event, customer):
     services.register(customer, free_event)
     client.force_login(customer)
-    content = client.get(reverse("accounts:account")).content.decode()
+    content = client.get(reverse("accounts:courses")).content.decode()
     assert free_event.title in content
 
 

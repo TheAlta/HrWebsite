@@ -1,0 +1,2 @@
+{% url url_name as item_url %}
+<li class="shrink-0"><a href="{{ item_url }}" class="block rounded-lg px-3 py-2 text-[0.95rem] font-medium hover:bg-slate-100 {% if section == key %}bg-brand-50 text-brand-700{% else %}text-slate-700{% endif %}" {% if section == key %}aria-current="page"{% endif %}>{{ label }}</a></li>

@@ -1,7 +1,9 @@
 from django import forms
 
 from apps.core.fields import MobileFormField
-from apps.core.text import to_en_digits
+from apps.core.text import normalize_fa, to_en_digits
+
+from .models import User
 
 
 class MobileForm(forms.Form):
@@ -30,3 +32,18 @@ class CodeForm(forms.Form):
         if not code.isdigit():
             raise forms.ValidationError("کد فقط از عدد تشکیل شده است.")
         return code
+
+
+class ProfileForm(forms.ModelForm):
+    """Name and email appear on invoices. The mobile is the login, so it is not editable here."""
+
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "email"]
+        labels = {"first_name": "نام", "last_name": "نام خانوادگی", "email": "ایمیل"}
+
+    def clean_first_name(self):
+        return normalize_fa(self.cleaned_data["first_name"])
+
+    def clean_last_name(self):
+        return normalize_fa(self.cleaned_data["last_name"])
