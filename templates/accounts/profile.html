@@ -1,0 +1,17 @@
+{% extends "accounts/layout.html" %}
+{% load core_tags %}
+{% block title %}مشخصات من | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
+
+{% block account_content %}
+<h1 class="heading-1">مشخصات من</h1>
+<form method="post" class="card mt-6 max-w-xl" novalidate>
+  {% csrf_token %}
+  <div class="card-body gap-4">
+    <p class="muted">شماره موبایل: <span dir="ltr">{{ user.mobile|fa_digits }}</span></p>
+    {% with field=form.first_name %}{% include "components/field.html" %}{% endwith %}
+    {% with field=form.last_name %}{% include "components/field.html" %}{% endwith %}
+    {% with field=form.email %}{% include "components/field.html" %}{% endwith %}
+    <button type="submit" class="btn btn-primary self-start">ذخیره</button>
+  </div>
+</form>
+{% endblock %}

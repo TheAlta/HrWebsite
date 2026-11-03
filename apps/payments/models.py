@@ -1,7 +1,10 @@
 from django.db import models
 from django.db.models import Q
 
+from apps.core.admin_display import jalali_column, toman_column
 from apps.orders.models import Order
+
+MANUAL_GATEWAY = "manual"  # bank transfer or cheque, recorded by hand (PAY-3)
 
 
 class Payment(models.Model):
@@ -41,3 +44,7 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"{self.order.number} / {self.gateway} / {self.get_status_display()}"
+
+    amount_display = toman_column("amount", "مبلغ")
+    created_display = jalali_column("created_at", "زمان شروع")
+    verified_display = jalali_column("verified_at", "زمان تأیید")

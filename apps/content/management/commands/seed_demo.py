@@ -23,6 +23,8 @@ from wagtail.images import get_image_model
 from wagtail.models import Page, Site
 from wagtail.rich_text import RichText
 
+from apps.accounts.models import Organization
+from apps.billing.models import Invoice, ProForma
 from apps.booking.models import Availability, Booking, BookingPage, SessionType
 from apps.content.models import (
     AboutPage,
@@ -43,7 +45,7 @@ from apps.content.models import (
 )
 from apps.crm.models import ConsultationPage
 from apps.events.models import EventIndexPage, EventPage, Registration, SpeakingPage
-from apps.orders.models import Order
+from apps.orders.models import Order, Refund
 from apps.payments.models import Payment
 from apps.portfolio.models import Client, PortfolioPage, Project, Testimonial
 from apps.shop.models import Coupon, CouponUse, DownloadToken, Product, Shipment, ShopPage
@@ -649,6 +651,7 @@ class Command(BaseCommand):
         settings.telegram_url = "https://t.me/"
         settings.footer_text = "مشاوره و آموزش منابع انسانی برای سازمان‌ها و افراد."
         settings.shipping_fee = 500_000
+        settings.seller_name = "فروشنده نمونه"
         settings.free_shipping_from = 10_000_000
         settings.cta_label = "درخواست مشاوره"
         settings.cta_page = consultation
@@ -674,7 +677,11 @@ class Command(BaseCommand):
         )
 
     def _reset(self, home):
+        # Invoices, pre-invoices and refunds protect their orders, so they go first
         for model in (
+            Invoice,
+            ProForma,
+            Refund,
             CouponUse,
             Coupon,
             DownloadToken,
@@ -683,6 +690,7 @@ class Command(BaseCommand):
             Payment,
             Booking,
             Order,
+            Organization,
             Product,
             Availability,
             SessionType,

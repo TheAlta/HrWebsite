@@ -31,7 +31,7 @@ services:
   # One-shot: applies migrations, then exits. web and worker wait for it.
   migrate:
     <<: *app
-    command: python manage.py migrate --noinput
+    command: sh -c "python manage.py migrate --noinput && python manage.py setup_roles"
 
   web:
     <<: *app

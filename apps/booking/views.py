@@ -80,7 +80,7 @@ def cancel(request, pk):
         messages.error(request, str(exc))
     else:
         messages.success(request, "جلسه لغو شد.")
-    return redirect("accounts:account")
+    return redirect("accounts:sessions")
 
 
 @login_required
@@ -88,7 +88,7 @@ def reschedule(request, pk):
     booking = _own_booking(request, pk)
     if not services.can_change(booking):
         messages.error(request, "جابه‌جایی جلسه فقط تا ۲۴ ساعت قبل از شروع ممکن است.")
-        return redirect("accounts:account")
+        return redirect("accounts:sessions")
 
     if request.method == "POST":
         try:
@@ -97,7 +97,7 @@ def reschedule(request, pk):
             messages.error(request, str(exc))
             return redirect(reverse("booking:reschedule", args=[booking.pk]))
         messages.success(request, "زمان جلسه تغییر کرد.")
-        return redirect("accounts:account")
+        return redirect("accounts:sessions")
 
     days = services.free_slots(booking.session_type, ignore=booking)
     return render(request, "booking/reschedule.html", {"booking": booking, "days": days})

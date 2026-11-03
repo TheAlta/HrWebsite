@@ -56,6 +56,13 @@ def toman(value):
 
 
 @register.filter
+def rial(value):
+    if value in (None, ""):
+        return ""
+    return money.format_rial(value)
+
+
+@register.filter
 def fa_digits(value):
     if value is None:
         return ""

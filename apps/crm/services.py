@@ -38,6 +38,10 @@ def create_lead(form, request, ip_hash: str) -> Lead:
         ip_hash=ip_hash,
     )
     notify_new_lead(lead, SiteSettings.for_request(request), request)
+    if lead.marketing_consent and (lead.email or lead.mobile):
+        from apps.newsletter.services import subscribe
+
+        subscribe(email=lead.email, mobile=lead.mobile, source="lead")
     return lead
 
 

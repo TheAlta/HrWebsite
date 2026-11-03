@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load core_tags %}
+{% block meta %}<meta name="robots" content="noindex">{% endblock %}
+
+{% block content %}
+<div class="container-page grid gap-8 py-10 lg:grid-cols-[14rem_1fr]">
+  <nav aria-label="پنل کاربر" class="min-w-0">
+    <ul class="flex gap-1 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible lg:pb-0">
+      {% include "accounts/includes/nav_item.html" with key="home" url_name="accounts:account" label="خلاصه" %}
+      {% include "accounts/includes/nav_item.html" with key="orders" url_name="accounts:orders" label="سفارش‌ها" %}
+      {% include "accounts/includes/nav_item.html" with key="invoices" url_name="accounts:invoices" label="فاکتورها" %}
+      {% include "accounts/includes/nav_item.html" with key="sessions" url_name="accounts:sessions" label="جلسات" %}
+      {% include "accounts/includes/nav_item.html" with key="courses" url_name="accounts:courses" label="دوره‌ها" %}
+      {% include "accounts/includes/nav_item.html" with key="downloads" url_name="accounts:downloads" label="دانلودها" %}
+      {% include "accounts/includes/nav_item.html" with key="profile" url_name="accounts:profile" label="مشخصات من" %}
+    </ul>
+    <form method="post" action="{% url 'accounts:logout' %}" class="mt-2 hidden lg:block">{% csrf_token %}<button type="submit" class="btn btn-ghost btn-sm">خروج</button></form>
+  </nav>
+  <section class="min-w-0">
+    {% block account_content %}{% endblock %}
+  </section>
+</div>
+{% endblock %}

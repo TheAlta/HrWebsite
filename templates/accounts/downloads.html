@@ -1,0 +1,25 @@
+{% extends "accounts/layout.html" %}
+{% load core_tags %}
+{% block title %}دانلودها | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
+
+{% block account_content %}
+<h1 class="heading-1">دانلودها</h1>
+{% if page_obj.object_list %}
+<ul class="mt-6 space-y-4">
+  {% for download in page_obj %}
+  <li class="card"><div class="card-body">
+    <p class="card-title">{{ download.product.title }}</p>
+    {% if download.is_valid %}
+    <p class="muted">{{ download.downloads_left|fa_digits }} بار دانلود باقی مانده، تا {{ download.expires_at|jdate }}</p>
+    <a href="{{ download.get_absolute_url }}" class="btn btn-secondary btn-sm self-start">{% include "components/icon.html" with name="download" size="16" %}دانلود</a>
+    {% else %}
+    <p class="muted">مهلت یا تعداد دانلود تمام شده است.</p>
+    {% endif %}
+  </div></li>
+  {% endfor %}
+</ul>
+{% include "components/pagination.html" %}
+{% else %}
+<p class="lead mt-6">هنوز فایلی نخریده‌اید.</p>
+{% endif %}
+{% endblock %}

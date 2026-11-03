@@ -1,0 +1,5 @@
+{% load wagtailadmin_tags %}
+<li>
+    {% icon name=icon %}
+    <a href="{{ url }}">{% load core_tags %}<span>{{ value|fa_digits }}</span> {{ label }}</a>
+</li>

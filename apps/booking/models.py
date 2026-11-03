@@ -217,6 +217,10 @@ class Booking(models.Model):
     def start_display(self):
         return jalali.format_datetime(self.start_at)
 
+    @admin.display(description="زمان ثبت", ordering="created_at")
+    def created_display(self):
+        return jalali.format_datetime(self.created_at)
+
 
 class BookingPage(RoutablePageMixin, BasePage):
     """/booking — choose a session type, a time, then pay (spec section 8.1)."""

@@ -3,6 +3,7 @@ from django.core.cache import cache
 from django.core.files.storage import FileSystemStorage
 from django.core.management import call_command
 
+from apps.billing.models import Invoice
 from apps.content.models import ArticlePage, BlogIndexPage, HomePage
 from apps.shop.models import Product
 
@@ -13,6 +14,7 @@ def _isolated_media_and_cache(settings, tmp_path, monkeypatch):
     # The field holds its storage from import time, so a settings override would miss it
     private = FileSystemStorage(location=tmp_path / "private")
     monkeypatch.setattr(Product._meta.get_field("file"), "storage", private)
+    monkeypatch.setattr(Invoice._meta.get_field("pdf_file"), "storage", private)
     cache.clear()
 
 

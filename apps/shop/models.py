@@ -4,7 +4,6 @@ from django import forms
 from django.conf import settings
 from django.contrib import admin
 from django.core.exceptions import ValidationError
-from django.core.files.storage import storages
 from django.core.validators import RegexValidator
 from django.db import models
 from django.urls import reverse
@@ -20,13 +19,10 @@ from apps.content.models.base import BasePage
 from apps.core import jalali
 from apps.core.fields import MobileField
 from apps.core.money import format_toman
+from apps.core.storage import private_storage
 from apps.core.text import to_en_digits
 from apps.core.widgets import JalaliDateTimeInput
 from apps.orders.models import Order
-
-
-def private_storage():
-    return storages["private"]
 
 
 def normalize_code(code: str) -> str:

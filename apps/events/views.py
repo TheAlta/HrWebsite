@@ -39,4 +39,4 @@ def cancel(request, pk):
         messages.error(request, str(exc))
     else:
         messages.success(request, "ثبت‌نام لغو شد.")
-    return redirect("accounts:account")
+    return redirect("accounts:courses")

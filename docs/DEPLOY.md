@@ -96,9 +96,12 @@ docker exec -it hrweb-production-web-1 python manage.py createsuperuser
 
 در پنل، این‌ها را تنظیم کنید:
 
+نقش‌های پنل («مدیر کل»، «ویراستار محتوا»، «پشتیبان») بعد از هر migrate خودکار ساخته می‌شوند. برای هر کارمند در **Settings ← Users** یک کاربر بسازید و یکی از این گروه‌ها را به او بدهید. سرنخ‌ها و آمار فروش فقط برای «مدیر کل» دیده می‌شوند.
+
 1. **Settings ← Sites:** نام میزبان را `arezoo-zahmatbaran.ir` و پورت را `443` بگذارید. آدرس canonical از این‌جا ساخته می‌شود.
 2. **Settings ← تنظیمات سایت:** تماس، واتساپ، منو، ایمیل و موبایل اعلان‌ها.
 3. **رزرو جلسه:** انواع جلسه، ساعات کاری، مرخصی‌ها.
+4. **Settings ← تنظیمات سایت ← فاکتور:** نام حقیقی یا حقوقی، شناسه ملی، کد اقتصادی و نشانی فروشنده. این‌ها روی هر فاکتور تازه چاپ می‌شوند و فاکتورهای قبلی تغییر نمی‌کنند.
 
 ## ۶. بکاپ
 
@@ -149,6 +152,12 @@ openssl enc -d -aes-256-cbc -pbkdf2 -pass file:/srv/hrweb/backup-passphrase \
 | `SMS_TPL_ORDER_DIGITAL` | `token` | سفارش %token آماده است. فایل را از حساب کاربری دانلود کنید. |
 | `SMS_TPL_ORDER_SHIPPED` | `token`، `token2` | سفارش %token ارسال شد. کد رهگیری: %token2 |
 | `SMS_TPL_ORDER_PROBLEM` | `token` | پرداخت سفارش %token ثبت شد ولی موجودی تمام شده است. به‌زودی تماس می‌گیرم. |
+| `SMS_TPL_ORDER_INVOICE` | `token` | فاکتور شماره %token صادر شد: arezoo-zahmatbaran.ir/account/invoices/%token/ |
+| `SMS_TPL_ORDER_REFUNDED` | `token` | مبلغ سفارش %token به حساب شما برگردانده شد. |
+| `SMS_TPL_PROFORMA_READY` | `token`، `token2` | پیش‌فاکتور %token صادر شد. مشاهده و پرداخت: arezoo-zahmatbaran.ir/orders/%token2/ |
+| `SMS_TPL_NEWSLETTER` | `token20` | %token20 arezoo-zahmatbaran.ir لغو۱۱ |
+
+> **پیامک خبرنامه** تبلیغاتی است و کاوه‌نگار برای آن خط و الگوی جدا می‌خواهد. قبل از اولین ارسال پیامکی، شرایط پنل را بررسی کنید.
 
 ## ۸. انتشار نسخه جدید
 

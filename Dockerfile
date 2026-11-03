@@ -17,6 +17,8 @@ RUN npm run build:css
 # ---------- 2. Base: Python + dependencies ----------
 FROM python:3.12-slim AS base
 ARG PIP_INDEX_URL
+# Pango and HarfBuzz: WeasyPrint needs them to shape Persian text in PDFs (PAY-2)
+RUN apt-get update  && apt-get install -y --no-install-recommends libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0  && rm -rf /var/lib/apt/lists/*
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \

@@ -93,6 +93,15 @@ class SiteSettings(BaseSiteSetting):
         help_text="سفارش‌های بالای این مبلغ هزینه ارسال ندارند. خالی یعنی همیشه هزینه دارد.",
     )
 
+    # Seller on invoices (PAY-2): the legal name, which may differ from the brand
+    seller_name = models.CharField(
+        "نام فروشنده", max_length=200, blank=True, help_text="نام حقیقی یا حقوقی روی فاکتور."
+    )
+    seller_national_id = models.CharField("شناسه یا کد ملی", max_length=20, blank=True)
+    seller_economic_code = models.CharField("کد اقتصادی", max_length=20, blank=True)
+    seller_address = models.TextField("نشانی فروشنده", blank=True)
+    seller_postal_code = models.CharField("کد پستی فروشنده", max_length=10, blank=True)
+
     # SEO
     default_og_image = models.ForeignKey(
         "wagtailimages.Image",
@@ -146,6 +155,16 @@ class SiteSettings(BaseSiteSetting):
             ),
             ObjectList(
                 [FieldPanel("shipping_fee"), FieldPanel("free_shipping_from")], heading="فروشگاه"
+            ),
+            ObjectList(
+                [
+                    FieldPanel("seller_name"),
+                    FieldPanel("seller_national_id"),
+                    FieldPanel("seller_economic_code"),
+                    FieldPanel("seller_address"),
+                    FieldPanel("seller_postal_code"),
+                ],
+                heading="فاکتور",
             ),
         ]
     )

@@ -1,0 +1,31 @@
+{% extends "accounts/layout.html" %}
+{% load core_tags %}
+{% block title %}جلسات | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
+
+{% block account_content %}
+<h1 class="heading-1">جلسات</h1>
+{% if page_obj.object_list %}
+<ul class="mt-6 space-y-4">
+  {% for booking in page_obj %}
+  <li class="card"><div class="card-body">
+    <div class="flex flex-wrap items-center justify-between gap-2">
+      <p class="card-title">{{ booking.session_type.title }}</p>
+      <span class="badge">{{ booking.get_status_display }}</span>
+    </div>
+    <p>{{ booking.start_at|jdatetime }}</p>
+    {% if booking.status == "confirmed" and booking.meeting_link %}<a href="{{ booking.meeting_link }}" target="_blank" rel="noopener" class="font-semibold text-brand-600 hover:underline">ورود به جلسه آنلاین</a>{% endif %}
+    {% if booking.status == "held" and booking.order %}<a href="{% url 'orders:detail' booking.order.number %}" class="btn btn-primary btn-sm self-start">تکمیل پرداخت</a>{% endif %}
+    {% if booking.changeable %}
+    <div class="mt-2 flex flex-wrap gap-2">
+      <a href="{% url 'booking:reschedule' booking.pk %}" class="btn btn-secondary btn-sm">تغییر زمان</a>
+      <form method="post" action="{% url 'booking:cancel' booking.pk %}" x-data @submit="if (!confirm('این جلسه لغو شود؟')) $event.preventDefault()">{% csrf_token %}<button type="submit" class="btn btn-ghost btn-sm">لغو جلسه</button></form>
+    </div>
+    {% endif %}
+  </div></li>
+  {% endfor %}
+</ul>
+{% include "components/pagination.html" %}
+{% else %}
+<p class="lead mt-6">هنوز جلسه‌ای رزرو نکرده‌اید.</p>
+{% endif %}
+{% endblock %}
