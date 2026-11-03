@@ -671,3 +671,15 @@ def test_panel_lists_open(admin_client, customer, organization):
     invoice = Invoice.objects.get()
     page = admin_client.get(reverse("panel_invoices:inspect", args=[invoice.pk])).content.decode()
     assert invoice_url() in page
+
+
+def test_sample_data_reset_clears_invoices_first(demo_site, customer, organization):
+    from django.core.management import call_command
+
+    order = make_order(customer)
+    pay(order)
+    orders.refund(order)
+    services.send_proforma(make_proforma(organization))
+    call_command("seed_demo", "--reset", verbosity=0)
+    assert not Invoice.objects.exists()
+    assert not Order.objects.exists()
