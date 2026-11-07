@@ -85,6 +85,11 @@ class EventPage(RoutablePageMixin, BasePage):
     video_url = models.URLField(
         "ویدئوی عمومی", blank=True, help_text="لینک آپارات یا یوتیوب. برای همه نمایش داده می‌شود."
     )
+    issues_certificate = models.BooleanField(
+        "گواهی حضور دارد",
+        default=False,
+        help_text="بعد از پایان رویداد، از دکمه «صدور گواهی حضور» برای حاضران صادر می‌شود.",
+    )
 
     content_panels = [
         *BasePage.content_panels,
@@ -106,6 +111,7 @@ class EventPage(RoutablePageMixin, BasePage):
             heading="زمان و مکان",
         ),
         FieldRowPanel([FieldPanel("capacity"), FieldPanel("price")], heading="ثبت‌نام"),
+        FieldPanel("issues_certificate"),
         MultiFieldPanel(
             [FieldPanel("join_link"), FieldPanel("recording_url"), FieldPanel("video_url")],
             heading="لینک‌ها",
@@ -141,6 +147,10 @@ class EventPage(RoutablePageMixin, BasePage):
     @property
     def registration_open(self):
         return self.kind != self.Kind.TALK and timezone.now() < self.start_at
+
+    @property
+    def has_started(self):
+        return timezone.now() >= self.start_at
 
     @property
     def has_ended(self):

@@ -155,6 +155,7 @@ openssl enc -d -aes-256-cbc -pbkdf2 -pass file:/srv/hrweb/backup-passphrase \
 | `SMS_TPL_ORDER_INVOICE` | `token` | فاکتور شماره %token صادر شد: arezoo-zahmatbaran.ir/account/invoices/%token/ |
 | `SMS_TPL_ORDER_REFUNDED` | `token` | مبلغ سفارش %token به حساب شما برگردانده شد. |
 | `SMS_TPL_PROFORMA_READY` | `token`، `token2` | پیش‌فاکتور %token صادر شد. مشاهده و پرداخت: arezoo-zahmatbaran.ir/orders/%token2/ |
+| `SMS_TPL_CERTIFICATE_READY` | `token`، `token20` | گواهی حضور شما در %token20 صادر شد. کد استعلام: %token. دریافت از حساب کاربری: arezoo-zahmatbaran.ir/account/courses/ |
 | `SMS_TPL_NEWSLETTER` | `token20` | %token20 arezoo-zahmatbaran.ir لغو۱۱ |
 
 > **پیامک خبرنامه** تبلیغاتی است و کاوه‌نگار برای آن خط و الگوی جدا می‌خواهد. قبل از اولین ارسال پیامکی، شرایط پنل را بررسی کنید.

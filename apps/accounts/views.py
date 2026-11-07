@@ -154,7 +154,7 @@ def courses_view(request):
 
     rows = Registration.objects.filter(
         user=request.user, status__in=Registration.ACTIVE_STATUSES
-    ).select_related("event", "order")
+    ).select_related("event", "order", "certificate")
     context = {"page_obj": _page(request, rows), "section": "courses"}
     return render(request, "accounts/courses.html", context)
 

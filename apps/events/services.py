@@ -18,7 +18,7 @@ from django.utils import timezone
 
 from apps.content.alerts import email_owner
 from apps.core import jalali
-from apps.notifications.services import send_sms
+from apps.notifications.services import send_sms, sms_words
 from apps.orders import services as orders
 from apps.orders.services import OrderLine
 
@@ -26,7 +26,6 @@ from .models import EventPage, Registration
 
 SEAT_HOLD = timedelta(minutes=15)
 WAITLIST_HOLD = timedelta(hours=24)  # time to pay after a seat is offered
-SMS_TITLE_WORDS = 8  # Kavenegar limits the spaces in token20
 
 
 class RegistrationError(Exception):
@@ -217,6 +216,8 @@ def cancel(registration: Registration, *, by_owner=False, refunded=False) -> Reg
         was_paid = bool(registration.is_confirmed and registration.order)
         if was_paid and not by_owner:
             raise RegistrationError("برای انصراف از ثبت‌نام پرداخت‌شده با ما تماس بگیرید.")
+        if event.start_at <= now and not by_owner:
+            raise RegistrationError("این رویداد شروع شده است و ثبت‌نام آن لغو نمی‌شود.")
         unpaid = registration.status == Registration.Status.PENDING
         registration.status = Registration.Status.CANCELLED
         registration.save(update_fields=["status"])
@@ -331,7 +332,7 @@ def send_recordings(now=None) -> int:
 
 
 def _title(event: EventPage) -> str:
-    return " ".join(event.title.split()[:SMS_TITLE_WORDS])
+    return sms_words(event.title)
 
 
 def _when(event: EventPage) -> str:

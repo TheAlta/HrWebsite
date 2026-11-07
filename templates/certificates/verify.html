@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load core_tags %}
+{% block title %}استعلام گواهی | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
+{% block meta %}<meta name="robots" content="noindex">{% endblock %}
+{% block content %}
+<section class="container-page max-w-xl py-16">
+  <h1 class="heading-2">استعلام گواهی حضور</h1>
+  <p class="lead mt-3">کد روی گواهی را وارد کنید تا درستی آن را ببینید.</p>
+
+  <form method="get" action="{% url 'certificates:verify' %}" class="mt-6 grid gap-4" novalidate>
+    {% with field=form.code %}{% include "components/field.html" %}{% endwith %}
+    <button type="submit" class="btn btn-primary justify-self-start">استعلام</button>
+  </form>
+
+  {% if searched and form.is_valid %}
+  <div class="mt-8" aria-live="polite">
+    {% if certificate %}
+    <div class="card"><div class="card-body gap-4">
+      {% if certificate.is_valid %}
+      {% include "components/alert.html" with level="success" text="این گواهی معتبر است." %}
+      {% else %}
+      {% include "components/alert.html" with level="error" text="این گواهی باطل شده است." %}
+      {% endif %}
+      <dl class="grid gap-3">
+        <div><dt class="muted">نام</dt><dd class="font-semibold text-slate-900">{{ certificate.full_name|default:"—" }}</dd></div>
+        <div><dt class="muted">{{ certificate.event_kind }}</dt><dd class="font-semibold text-slate-900">{{ certificate.event_title }}</dd></div>
+        <div><dt class="muted">تاریخ برگزاری</dt><dd class="font-semibold text-slate-900">{{ certificate.event_start|jdate }}</dd></div>
+        {% if certificate.instructor %}<div><dt class="muted">مدرس</dt><dd class="font-semibold text-slate-900">{{ certificate.instructor }}</dd></div>{% endif %}
+        <div><dt class="muted">کد</dt><dd class="font-semibold text-slate-900" dir="ltr">{{ certificate.code }}</dd></div>
+      </dl>
+    </div></div>
+    {% else %}
+    {% include "components/alert.html" with level="error" text="گواهی با این کد پیدا نشد. کد را دوباره بررسی کنید." %}
+    {% endif %}
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

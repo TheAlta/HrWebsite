@@ -24,6 +24,7 @@ urlpatterns = [
     path("leads/", include("apps.crm.urls")),
     path("newsletter/", include("apps.newsletter.urls")),
     path("", include("apps.shop.urls")),
+    path("", include("apps.certificates.urls")),
     path("sitemap.xml", sitemap, name="sitemap"),
     path("robots.txt", content_views.robots_txt, name="robots_txt"),
     path("styleguide/", content_views.styleguide, name="styleguide"),

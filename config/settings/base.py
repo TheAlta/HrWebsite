@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "apps.billing",
     "apps.dashboard",
     "apps.newsletter",
+    "apps.certificates",
     # Wagtail
     "wagtail.contrib.settings",
     "wagtail.contrib.sitemaps",
@@ -175,6 +176,7 @@ SMS_TEMPLATES = {
     "order_refunded": env("SMS_TPL_ORDER_REFUNDED", default="order-refunded"),
     "proforma_ready": env("SMS_TPL_PROFORMA_READY", default="proforma-ready"),
     "newsletter": env("SMS_TPL_NEWSLETTER", default="newsletter"),
+    "certificate_ready": env("SMS_TPL_CERTIFICATE_READY", default="certificate-ready"),
 }
 # Parameters of these templates are masked in the message log once sent
 SMS_SENSITIVE_TEMPLATES = {"otp"}

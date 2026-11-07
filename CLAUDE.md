@@ -100,6 +100,9 @@ Agent دسترسی کامل دارد و کار را خودکار جلو می‌�
   - `storage.private_storage`: فایل‌هایی که لینک عمومی ندارند
   - `panel.ActionFormView`: صفحه یک کار روی یک رکورد در پنل، مثل بازگشت وجه
   - فیلتر `rial` برای مبلغ ریالی روی فاکتور
+  - `pdf.render_pdf`: PDF فارسی از قالب
+  - `http.absolute_url`: آدرس کامل برای پیامک، ایمیل و PDF
+  - `notifications.services.sms_words`: متن آزاد در اندازه `token20` کاوه‌نگار
 - **تست:** قبل از هر PR، `ruff` و `pytest` داخل کانتینر سبز باشند، و هر تغییر قابل دیدن در مرورگر هم واقعاً اجرا و بررسی شود.
 - **تست هم‌زمانی:** تست با تراکنش واقعی همیشه `transaction=True, serialized_rollback=True` دارد (#044).
 
