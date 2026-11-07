@@ -18,6 +18,8 @@ from apps.core.embeds import parse_video_url
 from apps.core.widgets import JalaliDateTimeInput
 from apps.orders.models import Order
 
+from .rooms import get_room_provider
+
 
 class EventIndexPage(BasePage):
     """/events — upcoming courses and webinars, as a list or a month (EVT-2)."""
@@ -145,6 +147,11 @@ class EventPage(RoutablePageMixin, BasePage):
         return parse_video_url(self.video_url) if self.video_url else None
 
     @property
+    def has_class_room(self):
+        """Whether "ورود به کلاس" leads somewhere: the typed link, or a room service."""
+        return bool(self.join_link) or (not self.venue and get_room_provider() is not None)
+
+    @property
     def registration_open(self):
         return self.kind != self.Kind.TALK and timezone.now() < self.start_at
 
@@ -194,6 +201,27 @@ class EventPage(RoutablePageMixin, BasePage):
         from . import views
 
         return views.register(request, self)
+
+
+class EventRoom(models.Model):
+    """The room service's room for an online event (foundation, REPORT #051).
+
+    Kept off the page: publishing an older revision would bring back an old room.
+    """
+
+    event = models.OneToOneField(
+        EventPage, verbose_name="رویداد", on_delete=models.CASCADE, related_name="room"
+    )
+    provider = models.CharField("سرویس", max_length=100)
+    room_id = models.CharField("شناسه اتاق", max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "اتاق کلاس"
+        verbose_name_plural = "اتاق‌های کلاس"
+
+    def __str__(self):
+        return f"{self.event} — {self.room_id}"
 
 
 class EventSession(Orderable):

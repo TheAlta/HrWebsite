@@ -13,7 +13,7 @@
       <span class="badge">{{ registration.get_status_display }}</span>
     </div>
     <p>{{ registration.event.start_at|jdatetime }}</p>
-    {% if registration.status == "paid" and registration.event.join_link and not registration.event.has_ended %}<a href="{{ registration.event.join_link }}" target="_blank" rel="noopener" class="font-semibold text-brand-600 hover:underline">ورود به کلاس</a>{% endif %}
+    {% if registration.status == "paid" and registration.event.has_class_room and not registration.event.has_ended %}<a href="{% url 'events:join' registration.pk %}" target="_blank" rel="noopener" class="font-semibold text-brand-600 hover:underline">ورود به کلاس</a>{% endif %}
     {% with certificate=registration.certificate %}{% if registration.status == "paid" and certificate.is_valid %}<a href="{% url 'certificates:download' certificate.code %}" class="font-semibold text-brand-600 hover:underline">دریافت گواهی حضور</a>{% endif %}{% endwith %}
     {% if registration.status == "paid" and registration.event.recording_url and registration.event.has_ended %}<a href="{{ registration.event.recording_url }}" target="_blank" rel="noopener" class="font-semibold text-brand-600 hover:underline">مشاهده ضبط</a>{% endif %}
     {% if registration.status == "pending" and registration.order %}<a href="{% url 'orders:detail' registration.order.number %}" class="btn btn-primary btn-sm self-start">تکمیل پرداخت</a>{% endif %}

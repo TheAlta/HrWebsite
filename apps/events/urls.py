@@ -6,4 +6,5 @@ app_name = "events"
 
 urlpatterns = [
     path("<int:pk>/cancel/", views.cancel, name="cancel"),
+    path("<int:pk>/join/", views.join, name="join"),
 ]

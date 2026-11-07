@@ -199,6 +199,9 @@ ZIBAL_MERCHANT = env("ZIBAL_MERCHANT", default="")
 # Empty keeps the feature off. These are secrets: .env only (REPORT #051)
 BUSY_CALENDAR_URLS = env.list("BUSY_CALENDAR_URLS", default=[])
 
+# Online class rooms: a RoomProvider class. Empty keeps the typed class link (REPORT #051)
+ROOM_PROVIDER = env("ROOM_PROVIDER", default="")
+
 # seed_demo deletes and recreates pages; production keeps this off
 ALLOW_SEED_DEMO = env.bool("ALLOW_SEED_DEMO", default=True)
 

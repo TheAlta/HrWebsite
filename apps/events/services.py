@@ -10,6 +10,7 @@ code that holds the event must not touch an existing order. Orders of ended
 holds are cancelled after the event lock is released.
 """
 
+import logging
 from datetime import timedelta
 
 from django.db import transaction
@@ -22,7 +23,10 @@ from apps.notifications.services import send_sms, sms_words
 from apps.orders import services as orders
 from apps.orders.services import OrderLine
 
-from .models import EventPage, Registration
+from . import rooms
+from .models import EventPage, EventRoom, Registration
+
+logger = logging.getLogger(__name__)
 
 SEAT_HOLD = timedelta(minutes=15)
 WAITLIST_HOLD = timedelta(hours=24)  # time to pay after a seat is offered
@@ -337,3 +341,33 @@ def _title(event: EventPage) -> str:
 
 def _when(event: EventPage) -> str:
     return jalali.format_datetime(event.start_at)
+
+
+def class_url(registration: Registration) -> str:
+    """Where "ورود به کلاس" leads for this attendee; empty if nowhere yet.
+
+    With a room service switched on, an online event gets a personal link; if the
+    service fails, the link typed on the event is used instead.
+    """
+    event = registration.event
+    provider = rooms.get_room_provider()
+    if provider is not None and not event.venue:
+        try:
+            room = _room_for(event, provider)
+            return provider.join_url(room.room_id, registration.user)
+        except rooms.RoomError:
+            logger.warning("room service failed for event %s; using the typed link", event.pk)
+    return event.join_link
+
+
+def _room_for(event: EventPage, provider: rooms.RoomProvider) -> EventRoom:
+    room = EventRoom.objects.filter(event=event).first()
+    if room is None:
+        # No lock while the service is called: holding the event row during a slow
+        # request would stall registration. Two first visitors at once may leave one
+        # unused room at the service; phase 2 creates rooms ahead of time instead.
+        room_id = provider.create_room(event)
+        room, _ = EventRoom.objects.get_or_create(
+            event=event, defaults={"provider": type(provider).__name__, "room_id": room_id}
+        )
+    return room

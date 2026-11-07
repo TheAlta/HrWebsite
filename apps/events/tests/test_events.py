@@ -384,7 +384,10 @@ def test_join_link_is_hidden_until_the_seat_is_confirmed(client, paid_event, cus
     client.force_login(customer)
     assert "room.test" not in client.get(paid_event.url).content.decode()
     pay(registration)
-    assert "room.test" in client.get(paid_event.url).content.decode()
+    content = client.get(paid_event.url).content.decode()
+    # The page links the class entrance, which hands the room address only to this seat
+    assert reverse("events:join", args=[registration.pk]) in content
+    assert "room.test" not in content
 
 
 def test_recording_is_hidden_from_visitors(client, make_event, customer):
