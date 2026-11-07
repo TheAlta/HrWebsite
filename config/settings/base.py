@@ -195,6 +195,10 @@ ZARINPAL_MERCHANT_ID = env("ZARINPAL_MERCHANT_ID", default="")
 ZARINPAL_SANDBOX = env.bool("ZARINPAL_SANDBOX", default=False)
 ZIBAL_MERCHANT = env("ZIBAL_MERCHANT", default="")
 
+# Busy times from the owner's calendars (BOOK-6): secret iCal addresses, comma-separated.
+# Empty keeps the feature off. These are secrets: .env only (REPORT #051)
+BUSY_CALENDAR_URLS = env.list("BUSY_CALENDAR_URLS", default=[])
+
 # seed_demo deletes and recreates pages; production keeps this off
 ALLOW_SEED_DEMO = env.bool("ALLOW_SEED_DEMO", default=True)
 

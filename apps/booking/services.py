@@ -18,7 +18,8 @@ from apps.notifications.services import send_sms
 from apps.orders import services as orders
 from apps.orders.services import OrderLine
 
-from .models import Availability, Booking, SessionType, TimeOff
+from . import calendars
+from .models import Availability, Booking, CalendarBusy, CalendarSync, SessionType, TimeOff
 
 BOOKING_DAYS = 14
 HOLD_MINUTES = 15
@@ -27,6 +28,7 @@ MAX_ACTIVE_HOLDS = 2  # one account cannot block the calendar with unpaid holds
 CHANGE_DEADLINE = timedelta(hours=24)  # latest customer cancel or reschedule (BOOK-4)
 CALENDAR_LOCK_ID = 7_140_501  # any fixed number unique to this lock
 SLOT_TAKEN = "این زمان همین الان رزرو شد. لطفاً زمان دیگری انتخاب کنید."
+CALENDAR_ALERT_AFTER = 3  # failed reads in a row, half an hour at one read per 10 minutes
 
 
 class BookingError(Exception):
@@ -69,6 +71,9 @@ def free_slots(
         busy_rows = busy_rows.exclude(pk=ignore.pk)
     busy = list(busy_rows.values_list("start_at", "blocked_until"))
     busy += list(TimeOff.objects.filter(start__lt=horizon, end__gt=now).values_list("start", "end"))
+    busy += list(
+        CalendarBusy.objects.filter(start__lt=horizon, end__gt=now).values_list("start", "end")
+    )
 
     working_hours: dict[int, list[Availability]] = {}
     for row in Availability.objects.all():
@@ -344,3 +349,54 @@ def housekeeping() -> None:
     Booking.objects.filter(status=Booking.Status.CONFIRMED, end_at__lt=timezone.now()).update(
         status=Booking.Status.DONE
     )
+
+
+def read_calendars(now=None) -> list[calendars.Range]:
+    """Busy times of every configured calendar, for the booking window and a bit more."""
+    now = now or timezone.now()
+    until = now + timedelta(days=BOOKING_DAYS + 2)
+    ranges = []
+    for number, url in enumerate(calendars.feed_urls(), 1):
+        try:
+            ranges += calendars.busy_ranges(calendars.fetch(url), now, until)
+        except calendars.FeedError as exc:
+            raise calendars.FeedError(f"calendar {number}: {exc}") from None
+    return ranges
+
+
+def sync_calendars(now=None) -> int | None:
+    """Every 10 minutes: copy busy times from the owner's calendars (BOOK-6).
+
+    Off while BUSY_CALENDAR_URLS is empty, and turning it off drops the copied
+    times. A failed read keeps the last good times, so booking goes on; the owner
+    is emailed once when reads keep failing.
+    """
+    if not calendars.feed_urls():
+        CalendarBusy.objects.all().delete()
+        return None
+    now = now or timezone.now()
+    state, _ = CalendarSync.objects.get_or_create(pk=1)
+    try:
+        ranges = read_calendars(now)
+    except calendars.FeedError as exc:
+        state.failures += 1
+        state.last_error = str(exc)[:200]
+        state.last_attempt_at = now
+        state.save()
+        if state.failures == CALENDAR_ALERT_AFTER:
+            email_owner(
+                "تقویم شما خوانده نمی‌شود",
+                f"زمان‌های اشغال تقویم شما نیم ساعت است خوانده نمی‌شوند ({exc}). "
+                "رزرو با آخرین زمان‌های خوانده‌شده ادامه دارد. "
+                "راهنما: docs/DEPLOY.md، بخش تقویم.",
+            )
+        return None
+    with transaction.atomic():
+        _lock_calendar()  # a hold being checked sees the old times or the new, never half
+        CalendarBusy.objects.all().delete()
+        CalendarBusy.objects.bulk_create(CalendarBusy(start=s, end=e) for s, e in ranges)
+    state.failures = 0
+    state.last_error = ""
+    state.last_attempt_at = state.last_success_at = now
+    state.save()
+    return len(ranges)
