@@ -54,6 +54,24 @@ class User(AbstractUser):
         return self.get_full_name() or self.mobile
 
 
+class Organization(models.Model):
+    """The buyer on a company's pre-invoice and invoice (spec section 7, PAY-3)."""
+
+    name = models.CharField("نام سازمان", max_length=200)
+    national_id = models.CharField("شناسه ملی", max_length=20, blank=True)
+    economic_code = models.CharField("کد اقتصادی", max_length=20, blank=True)
+    address = models.TextField("نشانی", blank=True)
+    postal_code = models.CharField("کد پستی", max_length=10, blank=True)
+
+    class Meta:
+        verbose_name = "سازمان"
+        verbose_name_plural = "سازمان‌ها"
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+
 class OTPCode(models.Model):
     """One-time login code (USER-1). Only an HMAC of the code is stored."""
 

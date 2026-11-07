@@ -27,3 +27,8 @@ def format_toman(amount: int, *, suffix: bool = True) -> str:
     toman = rial_to_toman(amount)
     text = to_fa_digits(f"{toman:,}".replace(",", FA_THOUSANDS_SEP))
     return f"{text} تومان" if suffix else text
+
+
+def format_rial(amount: int) -> str:
+    """12000000 Rials -> '۱۲٬۰۰۰٬۰۰۰'. Invoices state Rials, the legal currency."""
+    return to_fa_digits(f"{_ensure_rial(amount):,}".replace(",", FA_THOUSANDS_SEP))

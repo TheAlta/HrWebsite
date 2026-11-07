@@ -1,0 +1,7 @@
+{% autoescape off %}{% load core_tags %}فاکتور شماره {{ invoice.number|fa_digits }} برای سفارش {{ invoice.order.number|fa_digits }} صادر شد.
+
+دریافت فاکتور:
+{{ url }}
+
+این پیام خودکار از سایت ارسال شده است.
+{% endautoescape %}

@@ -1,0 +1,83 @@
+{% load core_tags %}<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>{{ title }} {{ number }}</title>
+<style>
+  @font-face { font-family: "Vazirmatn"; src: url("{{ font_url }}") format("woff2"); font-weight: 100 900; }
+  @page { size: A4; margin: 16mm 14mm; @bottom-center { content: counter(page, persian) " / " counter(pages, persian); font-family: "Vazirmatn"; font-size: 8pt; color: #64748b; } }
+  body { font-family: "Vazirmatn", sans-serif; font-size: 10pt; line-height: 1.7; color: #1e293b; direction: rtl; }
+  header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #1c3970; padding-bottom: 8pt; }
+  h1 { font-size: 17pt; font-weight: 800; color: #1c3970; margin: 0; }
+  .meta { text-align: left; font-size: 9.5pt; }
+  .meta div { margin-bottom: 2pt; }
+  .parties { display: flex; gap: 10pt; margin-top: 12pt; }
+  .party { flex: 1; border: 1px solid #cbd5e1; border-radius: 4pt; padding: 7pt 9pt; }
+  .party h2 { font-size: 10pt; font-weight: 700; color: #1c3970; margin: 0 0 3pt; }
+  .party p { margin: 0; }
+  table { width: 100%; border-collapse: collapse; margin-top: 14pt; }
+  th { background: #eef3fb; color: #1c3970; font-weight: 700; text-align: right; padding: 5pt 6pt; border: 1px solid #cbd5e1; }
+  td { padding: 5pt 6pt; border: 1px solid #cbd5e1; vertical-align: top; }
+  td.number, th.number { text-align: left; white-space: nowrap; }
+  .totals { width: 46%; margin-top: 10pt; margin-right: auto; }
+  .totals td { border: 1px solid #cbd5e1; }
+  .totals tr.final td { font-weight: 800; background: #eef3fb; }
+  .note { margin-top: 14pt; font-size: 9pt; color: #475569; }
+  .void { position: fixed; top: 42%; left: 18%; transform: rotate(-24deg); font-size: 54pt; font-weight: 800; color: #b91c1c; opacity: .18; }
+</style>
+</head>
+<body>
+{% if is_void %}<div class="void">باطل شده</div>{% endif %}
+<header>
+  <h1>{{ title }}</h1>
+  <div class="meta">
+    <div>شماره: {{ number|fa_digits }}</div>
+    <div>تاریخ: {{ date|jdate }}</div>
+    <div>سفارش: {{ order.number|fa_digits }}</div>
+    {% if valid_until %}<div>اعتبار تا: {{ valid_until|jdate }}</div>{% endif %}
+  </div>
+</header>
+
+<section class="parties">
+  <div class="party">
+    <h2>فروشنده</h2>
+    <p>{{ seller.name }}</p>
+    {% if seller.national_id %}<p>شناسه ملی: {{ seller.national_id|fa_digits }}</p>{% endif %}
+    {% if seller.economic_code %}<p>کد اقتصادی: {{ seller.economic_code|fa_digits }}</p>{% endif %}
+    {% if seller.address %}<p>{{ seller.address }}</p>{% endif %}
+    {% if seller.postal_code %}<p>کد پستی: {{ seller.postal_code|fa_digits }}</p>{% endif %}
+    {% if seller.phone %}<p>تلفن: <span dir="ltr">{{ seller.phone|fa_digits }}</span></p>{% endif %}
+  </div>
+  <div class="party">
+    <h2>خریدار</h2>
+    {% if buyer.organization %}<p>{{ buyer.organization }}</p>{% endif %}
+    {% if buyer.name %}<p>{{ buyer.name }}</p>{% endif %}
+    {% if buyer.national_id %}<p>شناسه ملی: {{ buyer.national_id|fa_digits }}</p>{% endif %}
+    {% if buyer.economic_code %}<p>کد اقتصادی: {{ buyer.economic_code|fa_digits }}</p>{% endif %}
+    {% if buyer.address %}<p>{{ buyer.address }}</p>{% endif %}
+    <p>موبایل: {{ buyer.mobile|fa_digits }}</p>
+  </div>
+</section>
+
+<table>
+  <thead>
+    <tr><th style="width: 7%">ردیف</th><th>شرح</th><th style="width: 9%">تعداد</th><th class="number" style="width: 20%">قیمت واحد (ریال)</th><th class="number" style="width: 20%">جمع (ریال)</th></tr>
+  </thead>
+  <tbody>
+    {% for line in lines %}
+    <tr><td>{{ forloop.counter|fa_digits }}</td><td>{{ line.title_snapshot }}</td><td>{{ line.qty|fa_digits }}</td><td class="number">{{ line.unit_price|rial }}</td><td class="number">{{ line.line_total|rial }}</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<table class="totals">
+  <tr><td>جمع کل</td><td class="number">{{ order.subtotal|rial }}</td></tr>
+  {% if order.discount %}<tr><td>تخفیف</td><td class="number">{{ order.discount|rial }}</td></tr>{% endif %}
+  {% if order.shipping %}<tr><td>هزینه ارسال</td><td class="number">{{ order.shipping|rial }}</td></tr>{% endif %}
+  {% if order.tax %}<tr><td>مالیات</td><td class="number">{{ order.tax|rial }}</td></tr>{% endif %}
+  <tr class="final"><td>مبلغ نهایی (ریال)</td><td class="number">{{ order.total|rial }}</td></tr>
+</table>
+
+{% if note %}<p class="note">{{ note|linebreaksbr }}</p>{% endif %}
+</body>
+</html>

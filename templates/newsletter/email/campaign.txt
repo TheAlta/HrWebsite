@@ -1,0 +1,6 @@
+{% autoescape off %}{{ campaign.body }}
+
+---
+برای لغو عضویت در خبرنامه:
+{{ unsubscribe_url }}
+{% endautoescape %}

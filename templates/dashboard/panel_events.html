@@ -1,0 +1,20 @@
+{% load wagtailadmin_tags core_tags %}
+{% panel id="dashboard-events" heading="رویدادهای پیش‌رو" classname="w-panel--dashboard" %}
+    {% if rows %}
+    <table class="listing">
+        <thead><tr><th>رویداد</th><th>شروع</th><th>ثبت‌نام</th><th>لیست انتظار</th></tr></thead>
+        <tbody>
+            {% for event in rows %}
+            <tr>
+                <td><a href="{% url 'panel_registrations:index' %}?event={{ event.pk }}">{{ event.title }}</a></td>
+                <td>{{ event.start_at|jdatetime }}</td>
+                <td>{{ event.taken|fa_digits }}{% if event.capacity %} از {{ event.capacity|fa_digits }}{% endif %}</td>
+                <td>{{ event.waiting|fa_digits }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>رویداد پیش‌رویی نیست.</p>
+    {% endif %}
+{% endpanel %}

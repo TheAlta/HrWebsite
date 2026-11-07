@@ -45,7 +45,9 @@ def stock(product):
 
 
 def last_sms(user):
-    return [m for m in CapturingSMS.outbox if m["to"] == user.mobile][-1]
+    """The last message of this app; the invoice SMS of a paid order is billing's."""
+    messages = [m for m in CapturingSMS.outbox if m["to"] == user.mobile]
+    return [m for m in messages if m["template"] != "order-invoice"][-1]
 
 
 # --- cart -------------------------------------------------------------------------------
@@ -564,7 +566,7 @@ def test_order_page_shows_files_and_shipping(client, book, ebook, customer, addr
 
 def test_account_page_lists_files_and_orders(client, token, customer):
     client.force_login(customer)
-    content = client.get(reverse("accounts:account")).content.decode()
+    content = client.get(reverse("accounts:downloads")).content.decode()
     assert token.product.title in content
     assert token.get_absolute_url() in content
 

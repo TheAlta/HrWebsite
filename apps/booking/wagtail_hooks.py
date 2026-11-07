@@ -16,6 +16,16 @@ class BookingViewSet(ModelViewSet):
     ordering = ["-start_at"]
     copy_view_enabled = False
     inspect_view_enabled = True
+    inspect_view_fields = [
+        "session_type",
+        "user",
+        "start_display",
+        "status",
+        "meeting_link",
+        "order",
+        "admin_note",
+        "created_display",
+    ]
 
 
 class SessionTypeViewSet(ModelViewSet):

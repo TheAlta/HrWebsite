@@ -1,14 +1,19 @@
+from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_http_methods, require_POST
 
 from apps.core.http import hashed_ip
 
 from . import services
-from .forms import CodeForm, MobileForm
+from .forms import CodeForm, MobileForm, ProfileForm
+
+PER_PAGE = 10
 
 
 def _next_url(request):
@@ -74,31 +79,104 @@ def logout_view(request):
     return redirect("/")
 
 
+def _page(request, rows):
+    """One page of a list. A bad page number shows the nearest real page."""
+    return Paginator(rows, PER_PAGE).get_page(request.GET.get("page"))
+
+
 @login_required
 def account_view(request):
-    """What the customer bought; the full user panel arrives with USER-2 (sprint 5)."""
+    """The start of the user panel (USER-2): what needs attention, and what is next."""
     from apps.booking.models import Booking
-    from apps.booking.services import can_change
     from apps.events.models import Registration
     from apps.orders.models import Order
-    from apps.shop.models import DownloadToken
 
-    bookings = list(
-        Booking.objects.filter(user=request.user)
-        .exclude(status=Booking.Status.EXPIRED)
-        .select_related("session_type", "order")[:20]
-    )
-    for booking in bookings:
-        booking.changeable = can_change(booking)
+    now = timezone.now()
     context = {
-        "bookings": bookings,
-        "registrations": Registration.objects.filter(
-            user=request.user, status__in=Registration.ACTIVE_STATUSES
-        ).select_related("event", "order")[:20],
-        "downloads": DownloadToken.objects.filter(user=request.user).select_related("product")[:20],
-        "orders": Order.objects.filter(user=request.user)[:10],
+        "unpaid": Order.objects.filter(
+            user=request.user, status=Order.Status.PENDING, total__gt=0
+        ).prefetch_related("items")[:5],
+        "next_session": Booking.objects.filter(
+            user=request.user, status=Booking.Status.CONFIRMED, start_at__gt=now
+        )
+        .select_related("session_type")
+        .order_by("start_at")
+        .first(),
+        "next_course": Registration.objects.filter(
+            user=request.user, status=Registration.Status.PAID, event__end_at__gt=now
+        )
+        .select_related("event")
+        .order_by("event__start_at")
+        .first(),
+        "section": "home",
     }
     return render(request, "accounts/account.html", context)
+
+
+@login_required
+def orders_view(request):
+    from apps.orders.models import Order
+
+    rows = Order.objects.filter(user=request.user).prefetch_related("items")
+    context = {"page_obj": _page(request, rows), "section": "orders"}
+    return render(request, "accounts/orders.html", context)
+
+
+@login_required
+def invoices_view(request):
+    from apps.billing.models import Invoice
+
+    rows = Invoice.objects.filter(order__user=request.user).select_related("order")
+    context = {"page_obj": _page(request, rows), "section": "invoices"}
+    return render(request, "accounts/invoices.html", context)
+
+
+@login_required
+def sessions_view(request):
+    from apps.booking.models import Booking
+    from apps.booking.services import can_change
+
+    rows = (
+        Booking.objects.filter(user=request.user)
+        .exclude(status=Booking.Status.EXPIRED)
+        .select_related("session_type", "order")
+    )
+    page_obj = _page(request, rows)
+    for booking in page_obj:
+        booking.changeable = can_change(booking)
+    context = {"page_obj": page_obj, "section": "sessions"}
+    return render(request, "accounts/sessions.html", context)
+
+
+@login_required
+def courses_view(request):
+    from apps.events.models import Registration
+
+    rows = Registration.objects.filter(
+        user=request.user, status__in=Registration.ACTIVE_STATUSES
+    ).select_related("event", "order")
+    context = {"page_obj": _page(request, rows), "section": "courses"}
+    return render(request, "accounts/courses.html", context)
+
+
+@login_required
+def downloads_view(request):
+    from apps.shop.models import DownloadToken
+
+    rows = DownloadToken.objects.filter(user=request.user).select_related("product")
+    context = {"page_obj": _page(request, rows), "section": "downloads"}
+    return render(request, "accounts/downloads.html", context)
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def profile_view(request):
+    form = ProfileForm(request.POST or None, instance=request.user)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "مشخصات شما ذخیره شد.")
+        return redirect("accounts:profile")
+    return render(request, "accounts/profile.html", {"form": form, "section": "profile"})
 
 
 def _template(request, step):

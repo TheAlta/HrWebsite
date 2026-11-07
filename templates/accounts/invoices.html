@@ -1,0 +1,23 @@
+{% extends "accounts/layout.html" %}
+{% load core_tags %}
+{% block title %}فاکتورها | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
+
+{% block account_content %}
+<h1 class="heading-1">فاکتورها</h1>
+{% if page_obj.object_list %}
+<ul class="card mt-6 divide-y divide-slate-200">
+  {% for invoice in page_obj %}
+  <li class="flex flex-wrap items-center justify-between gap-3 px-5 py-4">
+    <span class="min-w-0">
+      <span class="block font-semibold text-slate-900">فاکتور {{ invoice.number|fa_digits }}{% if invoice.is_void %} <span class="badge">باطل شده</span>{% endif %}</span>
+      <span class="muted">{{ invoice.issued_at|jdate }} · {{ invoice.order.total|toman }}</span>
+    </span>
+    <a href="{% url 'billing:invoice' invoice.number %}" class="btn btn-secondary btn-sm">{% include "components/icon.html" with name="download" size="16" %}دریافت PDF</a>
+  </li>
+  {% endfor %}
+</ul>
+{% include "components/pagination.html" %}
+{% else %}
+<p class="lead mt-6">هنوز فاکتوری صادر نشده است.</p>
+{% endif %}
+{% endblock %}

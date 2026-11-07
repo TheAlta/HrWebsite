@@ -1,5 +1,12 @@
 {% load core_tags %}
-{# What a paid order delivered. Only shop orders have these rows. #}
+{# Documents and what a paid order delivered. Each row exists only for some orders. #}
+{% if order.invoice or order.proforma %}
+<div class="mt-6 flex flex-wrap justify-center gap-3">
+  {% if order.invoice %}<a href="{% url 'billing:invoice' order.invoice.number %}" class="btn btn-secondary">{% include "components/icon.html" with name="download" size="16" %}فاکتور{% if order.invoice.is_void %} (باطل شده){% endif %}</a>{% endif %}
+  {% if order.proforma %}<a href="{% url 'billing:proforma' order.proforma.pk %}" class="btn btn-secondary">{% include "components/icon.html" with name="download" size="16" %}پیش‌فاکتور</a>{% endif %}
+</div>
+{% endif %}
+
 {% with downloads=order.download_tokens.all %}
 {% if downloads %}
 <section class="card mt-6" aria-labelledby="order-files-heading">

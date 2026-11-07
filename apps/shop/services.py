@@ -272,13 +272,36 @@ def release_unpaid(now=None) -> int:
             # Only one caller wins this, so stock can never come back twice
             if not orders.cancel_unpaid(order):
                 continue
-            Shipment.objects.filter(order=order).update(
-                status=Shipment.Status.CANCELLED, stock_released_at=now
-            )
-            for item in _physical_items(order):
-                Product.objects.filter(pk=item.object_id).update(stock=F("stock") + item.qty)
+            _give_stock_back(order, now)
         released += 1
     return released
+
+
+def _give_stock_back(order: Order, now) -> None:
+    Shipment.objects.filter(order=order).update(
+        status=Shipment.Status.CANCELLED, stock_released_at=now
+    )
+    for item in _physical_items(order):
+        Product.objects.filter(pk=item.object_id).update(stock=F("stock") + item.qty)
+
+
+def reverse_order(order: Order) -> None:
+    """Take back what a reversed order delivered (receiver of `order_reversed`).
+
+    A book already on its way stays out of stock: whether it comes back is for the
+    owner to see, and the panel can raise the stock when it does.
+    """
+    DownloadToken.objects.filter(order=order).update(downloads_left=0)
+    shipment = Shipment.objects.filter(order=order).first()
+    if shipment is None or shipment.status in (
+        Shipment.Status.SHIPPED,
+        Shipment.Status.DELIVERED,
+    ):
+        return
+    if shipment.stock_released_at or shipment.status == Shipment.Status.OUT_OF_STOCK:
+        Shipment.objects.filter(pk=shipment.pk).update(status=Shipment.Status.CANCELLED)
+    else:
+        _give_stock_back(order, timezone.now())
 
 
 def notify_shipped(shipment: Shipment) -> None:

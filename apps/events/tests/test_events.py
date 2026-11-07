@@ -38,7 +38,9 @@ def expire_hold(registration):
 
 
 def last_sms(user):
-    return [m for m in CapturingSMS.outbox if m["to"] == user.mobile][-1]
+    """The last message of this app; the invoice SMS of a paid order is billing's."""
+    messages = [m for m in CapturingSMS.outbox if m["to"] == user.mobile]
+    return [m for m in messages if m["template"] != "order-invoice"][-1]
 
 
 def set_owner_email():
@@ -426,7 +428,7 @@ def test_customer_cancels_own_registration_only(client, free_event, customer, ot
 def test_account_page_lists_registrations(client, free_event, customer):
     services.register(customer, free_event)
     client.force_login(customer)
-    content = client.get(reverse("accounts:account")).content.decode()
+    content = client.get(reverse("accounts:courses")).content.decode()
     assert free_event.title in content
 
 

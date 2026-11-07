@@ -1,41 +1,52 @@
-{% extends "base.html" %}
-{% load core_tags %}
+{% extends "accounts/layout.html" %}
+{% load wagtailcore_tags core_tags %}
 {% block title %}حساب کاربری | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
-{% block meta %}<meta name="robots" content="noindex">{% endblock %}
 
-{% block content %}
-<section class="container-page max-w-2xl py-12">
-  <h1 class="heading-1">حساب کاربری</h1>
-  <div class="card mt-6"><div class="card-body">
-    <p>شماره موبایل: <span dir="ltr" class="font-semibold">{{ user.mobile|fa_digits }}</span></p>
-    <form method="post" action="{% url 'accounts:logout' %}" class="mt-2">{% csrf_token %}<button type="submit" class="btn btn-secondary btn-sm">خروج</button></form>
-  </div></div>
+{% block account_content %}
+<h1 class="heading-1">{% if user.first_name %}سلام {{ user.first_name }}{% else %}حساب کاربری{% endif %}</h1>
+<p class="muted mt-2">شماره موبایل: <span dir="ltr">{{ user.mobile|fa_digits }}</span></p>
+{% if not user.first_name %}<div class="mt-4">{% include "components/alert.html" with level="info" text="نام خود را در «مشخصات من» کامل کنید تا روی فاکتورها درج شود." %}</div>{% endif %}
 
-  <section class="mt-10" aria-labelledby="sessions-heading">
-    <h2 id="sessions-heading" class="heading-2">جلسات من</h2>
-    <ul class="mt-4 space-y-4">
-      {% for booking in bookings %}
-      <li class="card"><div class="card-body">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <p class="card-title">{{ booking.session_type.title }}</p>
-          <span class="badge">{{ booking.get_status_display }}</span>
-        </div>
-        <p>{{ booking.start_at|jdatetime }}</p>
-        {% if booking.status == "confirmed" and booking.meeting_link %}<a href="{{ booking.meeting_link }}" target="_blank" rel="noopener" class="font-semibold text-brand-600 hover:underline">ورود به جلسه آنلاین</a>{% endif %}
-        {% if booking.status == "held" and booking.order %}<a href="{% url 'orders:detail' booking.order.number %}" class="btn btn-primary btn-sm self-start">تکمیل پرداخت</a>{% endif %}
-        {% if booking.changeable %}
-        <div class="mt-2 flex flex-wrap gap-2">
-          <a href="{% url 'booking:reschedule' booking.pk %}" class="btn btn-secondary btn-sm">تغییر زمان</a>
-          <form method="post" action="{% url 'booking:cancel' booking.pk %}" x-data @submit="if (!confirm('این جلسه لغو شود؟')) $event.preventDefault()">{% csrf_token %}<button type="submit" class="btn btn-ghost btn-sm">لغو جلسه</button></form>
-        </div>
-        {% endif %}
-      </div></li>
-      {% empty %}
-      <li class="muted">هنوز جلسه‌ای رزرو نکرده‌اید.</li>
-      {% endfor %}
-    </ul>
-  </section>
-
-  {% include "accounts/includes/purchases.html" %}
+{% if unpaid %}
+<section class="mt-8" aria-labelledby="unpaid-heading">
+  <h2 id="unpaid-heading" class="heading-2">در انتظار پرداخت</h2>
+  <ul class="card mt-4 divide-y divide-slate-200">
+    {% for order in unpaid %}
+    <li class="flex flex-wrap items-center justify-between gap-3 px-5 py-3">
+      <span class="min-w-0"><span class="block font-semibold text-slate-900">{{ order.items_display }}</span><span class="muted">{{ order.total|toman }}</span></span>
+      <a href="{% url 'orders:detail' order.number %}" class="btn btn-primary btn-sm">پرداخت</a>
+    </li>
+    {% endfor %}
+  </ul>
 </section>
+{% endif %}
+
+<div class="mt-8 grid gap-6 sm:grid-cols-2">
+  <section class="card" aria-labelledby="next-session-heading">
+    <div class="card-body">
+      <h2 id="next-session-heading" class="card-title">جلسه بعدی</h2>
+      {% if next_session %}
+      <p class="font-semibold text-slate-900">{{ next_session.session_type.title }}</p>
+      <p>{{ next_session.start_at|jdatetime }}</p>
+      {% if next_session.meeting_link %}<a href="{{ next_session.meeting_link }}" target="_blank" rel="noopener" class="font-semibold text-brand-600 hover:underline">ورود به جلسه آنلاین</a>{% endif %}
+      {% else %}
+      <p class="muted">جلسه‌ای در پیش ندارید.</p>
+      {% endif %}
+    </div>
+  </section>
+  <section class="card" aria-labelledby="next-course-heading">
+    <div class="card-body">
+      <h2 id="next-course-heading" class="card-title">دوره بعدی</h2>
+      {% if next_course %}
+      <a href="{% pageurl next_course.event %}" class="font-semibold text-slate-900 hover:text-brand-700">{{ next_course.event.title }}</a>
+      <p>{{ next_course.event.start_at|jdatetime }}</p>
+      {% if next_course.event.join_link %}<a href="{{ next_course.event.join_link }}" target="_blank" rel="noopener" class="font-semibold text-brand-600 hover:underline">ورود به کلاس</a>{% endif %}
+      {% else %}
+      <p class="muted">در دوره‌ای ثبت‌نام نکرده‌اید.</p>
+      {% endif %}
+    </div>
+  </section>
+</div>
+
+<form method="post" action="{% url 'accounts:logout' %}" class="mt-8 lg:hidden">{% csrf_token %}<button type="submit" class="btn btn-secondary btn-sm">خروج</button></form>
 {% endblock %}
