@@ -141,6 +141,13 @@ def test_success_without_javascript_shows_thank_you_page(client, demo_site):
     )
 
 
+def test_a_sent_form_reports_a_conversion(client, demo_site):
+    """For the analytics tool chosen at launch (docs/LAUNCH.md, item 14)."""
+    html = post(client, "callback", CALLBACK).content.decode()
+    assert 'data-conversion="generate_lead"' in html
+    assert 'data-conversion-form="callback"' in html
+
+
 def test_errors_without_javascript_render_consultation_page(client, demo_site):
     response = post(client, "consultation", {**CONSULTATION, "topics": []}, htmx=False)
     html = response.content.decode()

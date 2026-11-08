@@ -1,5 +1,5 @@
 {# Replaces a submitted lead form (HTMX) and is the body of crm/thanks.html #}
-<div class="card" role="status">
+<div class="card" role="status" data-conversion="generate_lead" data-conversion-form="{{ kind|default:'consultation' }}">
   <div class="card-body items-center gap-3 py-10 text-center">
     <span class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">{% include "components/icon.html" with name="check" size="28" %}</span>
     {% if kind == "download" %}
