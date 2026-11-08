@@ -213,6 +213,8 @@ cd /srv/hrweb/app-production && ./deploy/deploy.sh production v1.0.0
   docker exec -it hrweb-production-web-1 python manage.py axes_reset_username 0912xxxxxxx
   ```
 - `PANEL_2FA_REQUIRED` و `AXES_ENABLED` روی سرور نباید `false` شوند. فقط روی سیستم محلی ورود دومرحله‌ای پیش‌فرض خاموش است.
+- **سوابق ورود:** در پنل، منوی «امنیت»، فقط برای مدیر کل. ورودها و ورودهای ناموفق با زمان و آدرس IP دیده می‌شوند و بعد از ۹۰ روز خودکار پاک می‌شوند.
+- **حجم آپلود:** Caddy درخواست بزرگ‌تر از ۱۰۰ مگابایت را نمی‌پذیرد (`deploy/Caddyfile`).
 
 ## ۱۱. ویژگی‌های خاموش و روشن کردنشان
 

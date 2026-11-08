@@ -278,3 +278,42 @@ def test_a_refused_action_is_not_written(client, staff, customer):
     client.force_login(staff)
     client.post(reverse("panel_orders:refund", args=[order.pk]))  # not paid: refused
     assert not ModelLogEntry.objects.filter(action="hrweb.refund").exists()
+
+
+# --- login records -------------------------------------------------------------------------
+
+
+def test_logins_and_failures_are_recorded_and_shown(client, staff, axes_on):
+    from axes.models import AccessFailureLog, AccessLog
+
+    panel_login(client, "wrong")
+    panel_login(client, "right-password")
+    assert AccessFailureLog.objects.filter(username="09120000000").count() == 1
+    assert AccessLog.objects.filter(username="09120000000").count() == 1
+    assert "09120000000" in client.get("/panel/logins/").content.decode()
+    assert "10.0.0.1" in client.get("/panel/failed-logins/").content.decode()
+
+
+def test_support_staff_do_not_see_login_records(client, django_user_model):
+    setup_roles()
+    member = django_user_model.objects.create_user("09130000000")
+    member.groups.add(Group.objects.get(name=SUPPORT))
+    client.force_login(member)
+    assert client.get("/panel/logins/").status_code in (302, 403)
+
+
+def test_old_login_records_are_dropped(staff):
+    from datetime import timedelta
+
+    from axes.models import AccessLog
+    from django.utils import timezone
+
+    from apps.accounts.services import LOGIN_LOG_DAYS, trim_login_logs
+
+    old = AccessLog.objects.create(username="old", user_agent="", http_accept="", path_info="/")
+    recent = AccessLog.objects.create(username="new", user_agent="", http_accept="", path_info="/")
+    AccessLog.objects.filter(pk=old.pk).update(
+        attempt_time=timezone.now() - timedelta(days=LOGIN_LOG_DAYS + 1)
+    )
+    assert trim_login_logs() == 1
+    assert list(AccessLog.objects.values_list("pk", flat=True)) == [recent.pk]

@@ -61,7 +61,10 @@ def is_active(context, href):
 def _jsonld(data):
     # Escape "<" so content can never close the <script> element
     payload = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c")
-    return format_html('<script type="application/ld+json">{}</script>', mark_safe(payload))
+    return format_html(
+        '<script type="application/ld+json">{}</script>',
+        mark_safe(payload),  # noqa: S308 — JSON with "<" escaped above
+    )
 
 
 @register.simple_tag(takes_context=True)
@@ -126,4 +129,4 @@ def page_jsonld(context, page):
     if hasattr(page, "extra_jsonld"):
         blocks.append(page.extra_jsonld(url))
 
-    return mark_safe("".join(_jsonld(b) for b in blocks))
+    return mark_safe("".join(_jsonld(b) for b in blocks))  # noqa: S308 — each is built safe above

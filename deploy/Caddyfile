@@ -5,6 +5,11 @@
 
 (common) {
 	encode zstd gzip
+	# Largest request body, uploads included: stops a huge upload filling the disk.
+	# Paid course videos, if any, go to object storage directly (spec section 7)
+	request_body {
+		max_size 100MB
+	}
 	header {
 		-Server
 	}

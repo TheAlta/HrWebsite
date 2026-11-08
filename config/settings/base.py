@@ -250,6 +250,8 @@ AXES_USERNAME_FORM_FIELD = "username"
 AXES_RESET_ON_SUCCESS = True
 AXES_CLIENT_IP_CALLABLE = "apps.core.http.client_ip"
 AXES_LOCKOUT_TEMPLATE = "accounts/panel_locked.html"
+# Successful logins are recorded by default; record failed ones too (panel: «امنیت»)
+AXES_ENABLE_ACCESS_FAILURE_LOG = True
 
 # Content-Security-Policy: the browser runs only this site's own files. Inline style
 # attributes stay allowed (video embed wrappers use one); they cannot run code.

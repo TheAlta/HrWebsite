@@ -26,6 +26,9 @@ SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 X_FRAME_OPTIONS = "DENY"
+# HSTS preload is left off on purpose: once browsers ship the domain in their
+# preload list it cannot quickly be undone. Decide after launch (REPORT #052)
+SILENCED_SYSTEM_CHECKS = ["security.W021"]
 
 # Error tracking; works with Sentry or a self-hosted GlitchTip
 SENTRY_DSN = env("SENTRY_DSN", default="")  # noqa: F405

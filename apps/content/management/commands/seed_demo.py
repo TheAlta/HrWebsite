@@ -63,7 +63,7 @@ PALETTE = [
 
 def make_image(title, size=(1200, 800), seed=0):
     """A simple generated picture (gradient + circles) — no network or stock photos needed."""
-    rnd = random.Random(seed)
+    rnd = random.Random(seed)  # noqa: S311 — sample pictures, not secrets
     start, end = PALETTE[seed % len(PALETTE)]
     img = PILImage.new("RGB", size, start)
     draw = ImageDraw.Draw(img)
