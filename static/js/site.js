@@ -27,5 +27,6 @@ function reportConversions(root) {
   });
 }
 document.addEventListener("DOMContentLoaded", () => reportConversions(document));
-// Lead forms are replaced in place by htmx (an outerHTML swap), without a page load
-document.addEventListener("htmx:afterSettle", () => reportConversions(document));
+// Lead forms are replaced in place by htmx (an outerHTML swap), without a page load.
+// htmx:load fires on the new content; events on the replaced element never reach document
+document.addEventListener("htmx:load", () => reportConversions(document));

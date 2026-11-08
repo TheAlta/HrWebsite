@@ -32,6 +32,8 @@ dev = [
   "pytest-django>=4.14",
   "pytest-cov>=7.1",
   "factory-boy>=3.3",
+  "pytest-playwright>=0.7",
+  "axe-playwright-python>=0.1.4",
 ]
 
 [tool.ruff]
@@ -50,6 +52,7 @@ ignore = ["RUF001", "RUF002", "RUF003", "RUF012"]
 "apps/content/management/commands/seed_demo.py" = ["E501"]
 # Tests assert, and use throwaway passwords
 "**/tests/**" = ["S101", "S105", "S106", "S603"]
+"e2e/**" = ["S101"]
 "conftest.py" = ["S101"]
 
 [tool.ruff.lint.isort]
@@ -58,7 +61,9 @@ known-first-party = ["apps", "config"]
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings.test"
 python_files = ["tests.py", "test_*.py"]
-addopts = "-q"
+# Browser tests run on their own: pytest -m e2e e2e/ (README)
+addopts = "-q -m 'not e2e'"
+markers = ["e2e: end-to-end tests in a real browser (Playwright)"]
 filterwarnings = [
   # WhiteNoise warns when collectstatic has not run; irrelevant in tests
   "ignore:No directory at:UserWarning",

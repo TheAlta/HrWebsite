@@ -69,6 +69,42 @@ jobs:
       - run: python manage.py makemigrations --check --dry-run
       - run: pytest --create-db --cov --cov-report=term
 
+  e2e:
+    # The four customer journeys in a real browser, phone and desktop (spec section 14)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: hrweb
+          POSTGRES_USER: hrweb
+          POSTGRES_PASSWORD: hrweb
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U hrweb" --health-interval 3s --health-timeout 3s --health-retries 20
+    env:
+      DJANGO_SETTINGS_MODULE: config.settings.test
+      SECRET_KEY: ci-only-not-secret
+      DATABASE_URL: postgres://hrweb:hrweb@localhost:5432/hrweb
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci --no-audit --no-fund && npm run build:css
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: sudo apt-get update && sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0
+      - run: pip install -r requirements/dev.txt
+      - run: playwright install --with-deps chromium
+      - run: pytest -m e2e e2e/ --create-db --screenshot only-on-failure
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: e2e-screenshots
+          path: test-results/
+
   docker:
     runs-on: ubuntu-latest
     steps:
