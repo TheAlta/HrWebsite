@@ -47,7 +47,11 @@ def test_booking_a_paid_session(page, site, login):
     second_day = page.get_by_role("tab").nth(1)
     second_day.click()
     expect(second_day).to_have_attribute("aria-selected", "true")  # Alpine has switched days
-    page.locator("button[name=start]:visible").first.click()
+    # The slot comes from that day's own panel: a ":visible" query could catch the
+    # previous day's panel in the moment before Alpine hides it
+    slot = page.locator(f"#{second_day.get_attribute('aria-controls')} button[name=start]").first
+    expect(slot).to_be_visible()
+    slot.click()
     assert_accessible(page)
     page.get_by_role("button", name="پرداخت و ثبت رزرو").click()
     pay_at_the_test_bank(page)
