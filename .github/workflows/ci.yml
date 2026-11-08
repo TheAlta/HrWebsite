@@ -15,7 +15,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -27,7 +27,7 @@ jobs:
     # Known vulnerabilities in the locked dependencies (spec section 11)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -60,7 +60,7 @@ jobs:
       SECRET_KEY: ci-only-not-secret
       DATABASE_URL: postgres://hrweb:hrweb@localhost:5432/hrweb
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -87,7 +87,7 @@ jobs:
       SECRET_KEY: ci-only-not-secret
       DATABASE_URL: postgres://hrweb:hrweb@localhost:5432/hrweb
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
@@ -108,6 +108,6 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Build production image
         run: docker build --target prod --build-arg PIP_INDEX_URL=https://pypi.org/simple -t hrweb:ci .
