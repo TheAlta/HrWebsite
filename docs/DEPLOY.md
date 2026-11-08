@@ -248,3 +248,21 @@ cd /srv/hrweb/app-production && ./deploy/deploy.sh production v1.0.0
   docker exec -it hrweb-production-web-1 python manage.py check_rooms
   ```
 - **اگر سرویس قطع شود:** کلاس با لینک واردشده در صفحه رویداد باز می‌شود. پس برای رویدادهای مهم، لینک دستی را هم پر نگه دارید.
+
+## ۱۲. تست بار روی Staging
+
+سند می‌خواهد ۲۰۰ کاربر هم‌زمان بدون خطا کار کنند و ظرفیت رویداد بیشتر از حد فروخته نشود (بخش ۴). این تست فقط روی Staging اجرا می‌شود و روی Production اجازه ندارد (`ALLOW_SEED_DEMO`).
+
+```bash
+# ۱. یک رویداد رایگان با ۵۰ صندلی و ۲۰۰ مشتری واردشده می‌سازد
+docker exec hrweb-staging-web-1 python manage.py prepare_load_test --users 200 --capacity 50 > rush.json
+# ۲. مرور یک‌دقیقه‌ای با مکث ۵ ثانیه بین صفحه‌ها، بعد هجوم هم‌زمان برای ثبت‌نام
+pip install httpx && python loadtest/rush.py https://staging.arezoo-zahmatbaran.ir rush.json --browse-seconds 60 --think-seconds 5
+# ۳. شمارش: دقیقاً ۵۰ قطعی و بقیه در لیست انتظار
+docker exec hrweb-staging-web-1 python manage.py shell -c "from apps.events.models import Registration; print(Registration.objects.filter(event__slug='load-test-rush').values_list('status', flat=True))"
+# ۴. پاک کردن
+docker exec hrweb-staging-web-1 python manage.py prepare_load_test --cleanup
+```
+
+- **تعداد پردازش‌گر:** `WEB_CONCURRENCY` در `.env` برابر «۲ × تعداد هسته‌ها + ۱» باشد.
+- **نتیجه‌ی محلی (اسپرینت ۶، REPORT #052):** هیچ خطایی در کار نبود و ظرفیت هم بیشتر از حد فروخته نشد (۵۰ قطعی و ۱۵۰ لیست انتظار). عدد سرعت روی سرور واقعی معتبر است، نه روی کامپیوتر محلی.
