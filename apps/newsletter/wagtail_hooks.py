@@ -31,6 +31,7 @@ class SendCampaignView(ActionFormView):
     model = Campaign
     permission = "newsletter.change_campaign"
     page_title = "ارسال خبرنامه"
+    log_action = "hrweb.send_campaign"
     submit_label = "ارسال"
     success_message = "ارسال شروع شد."
 

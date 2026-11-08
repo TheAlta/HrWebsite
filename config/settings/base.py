@@ -1,8 +1,10 @@
 """Settings shared by every environment. Environment-specific files override these."""
 
+from datetime import timedelta
 from pathlib import Path
 
 import environ
+from csp.constants import NONE, SELF, UNSAFE_INLINE
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -60,6 +62,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
     "django.contrib.postgres",
+    "django_otp",
+    "django_otp.plugins.otp_totp",
+    "django_otp.plugins.otp_static",
+    "axes",
 ]
 
 MIDDLEWARE = [
@@ -70,11 +76,21 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django_otp.middleware.OTPMiddleware",
+    "apps.accounts.two_factor.PanelTwoFactorMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
     "apps.core.middleware.UTMMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    "apps.core.csp.SiteCSPMiddleware",
+    # Last, as django-axes asks
+    "axes.middleware.AxesMiddleware",
+]
+
+AUTHENTICATION_BACKENDS = [
+    "axes.backends.AxesStandaloneBackend",  # counts failed panel logins
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -219,10 +235,71 @@ Q_CLUSTER = {
     "catch_up": False,
 }
 
+# Panel hardening (spec section 11, REPORT #051)
+# A second step with an authenticator app for everyone who can open the panel
+PANEL_2FA_REQUIRED = env.bool("PANEL_2FA_REQUIRED", default=True)
+OTP_TOTP_ISSUER = env("SITE_NAME", default="Arezoo")
+# Five wrong passwords for one username from one address close the panel login for 30 minutes
+AXES_ENABLED = env.bool("AXES_ENABLED", default=True)
+AXES_FAILURE_LIMIT = 5
+AXES_COOLOFF_TIME = timedelta(minutes=30)
+AXES_LOCKOUT_PARAMETERS = [["username", "ip_address"]]
+# The panel login form names the field "username"; without this axes looks for
+# "mobile" (our USERNAME_FIELD), finds nothing and never locks anyone out
+AXES_USERNAME_FORM_FIELD = "username"
+AXES_RESET_ON_SUCCESS = True
+AXES_CLIENT_IP_CALLABLE = "apps.core.http.client_ip"
+AXES_LOCKOUT_TEMPLATE = "accounts/panel_locked.html"
+
+# Content-Security-Policy: the browser runs only this site's own files. Inline style
+# attributes stay allowed (video embed wrappers use one); they cannot run code.
+VIDEO_FRAME_SOURCES = [
+    "https://www.aparat.com",
+    "https://www.youtube-nocookie.com",
+    "https://www.youtube.com",
+]
+# The enamad seal pasted in the panel (footer) loads its image from enamad's server
+TRUST_SEAL_SOURCES = ["https://trustseal.enamad.ir"]
+CONTENT_SECURITY_POLICY = {
+    "DIRECTIVES": {
+        "default-src": [SELF],
+        "script-src": [SELF],
+        "style-src": [SELF],
+        "style-src-attr": [UNSAFE_INLINE],
+        "img-src": [SELF, "data:", *TRUST_SEAL_SOURCES],
+        "font-src": [SELF],
+        "connect-src": [SELF],
+        "media-src": [SELF],
+        "frame-src": VIDEO_FRAME_SOURCES,
+        "object-src": [NONE],
+        "base-uri": [SELF],
+        "form-action": [SELF],
+        "frame-ancestors": [NONE],
+    }
+}
+# The Wagtail panel's page editor and settings forms run inline scripts and styles
+# (checked in a browser, REPORT #052), so the panel gets its own, looser policy
+PANEL_CONTENT_SECURITY_POLICY = {
+    "default-src": [SELF],
+    "script-src": [SELF, UNSAFE_INLINE],
+    "style-src": [SELF, UNSAFE_INLINE],
+    "img-src": [SELF, "data:", "blob:"],
+    "font-src": [SELF, "data:"],
+    "connect-src": [SELF],
+    "media-src": [SELF],
+    "frame-src": [SELF, *VIDEO_FRAME_SOURCES],
+    "object-src": [NONE],
+    "base-uri": [SELF],
+    "form-action": [SELF],
+    "frame-ancestors": [SELF],  # page previews open inside the panel
+}
+
 # Wagtail
 WAGTAIL_SITE_NAME = env("SITE_NAME", default="Arezoo")
 WAGTAILADMIN_BASE_URL = env("WAGTAILADMIN_BASE_URL", default="http://localhost:8100")
 WAGTAIL_ADMIN_PATH = env("WAGTAIL_ADMIN_PATH", default="panel/")
+# The panel would ask wagtail.org for new versions from the owner's browser
+WAGTAIL_ENABLE_UPDATE_CHECK = False
 DJANGO_ADMIN_PATH = env("DJANGO_ADMIN_PATH", default="django-admin/")
 # "simple": no English stemming/stop words, so Persian text is indexed as-is
 WAGTAILSEARCH_BACKENDS = {

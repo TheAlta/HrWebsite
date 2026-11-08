@@ -6,3 +6,6 @@ DEBUG = False
 PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
 EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 Q_CLUSTER = {**Q_CLUSTER, "sync": True}  # noqa: F405 — run tasks inline in tests
+# Tests log in with force_login; the panel-hardening tests switch these back on
+PANEL_2FA_REQUIRED = False
+AXES_ENABLED = False

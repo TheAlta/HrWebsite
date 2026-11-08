@@ -78,6 +78,7 @@ class ProFormaActionView(ActionFormView):
 
 class SendProFormaView(ProFormaActionView):
     page_title = "ارسال پیش‌فاکتور"
+    log_action = "hrweb.send_proforma"
     submit_label = "ارسال پیامک"
     warning = "سفارش ساخته و لینک پرداخت به موبایل رابط پیامک می‌شود. بعد از این، ویرایش ممکن نیست."
     success_message = "پیش‌فاکتور ارسال شد."
@@ -88,6 +89,7 @@ class SendProFormaView(ProFormaActionView):
 
 class CancelProFormaView(ProFormaActionView):
     page_title = "لغو پیش‌فاکتور"
+    log_action = "hrweb.cancel_proforma"
     submit_label = "لغو پیش‌فاکتور"
     success_message = "پیش‌فاکتور لغو شد."
 

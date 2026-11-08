@@ -3,12 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="htmx-config" content='{"includeIndicatorStyles": false}'>
   <title>{% block title %}{% firstof page.seo_title page.title %} | {{ settings.content.SiteSettings.brand_name }}{% endblock %}</title>
   {% block meta %}{% include "includes/seo_meta.html" %}{% endblock %}
   <link rel="preload" href="{% static 'fonts/vazirmatn/Vazirmatn-Variable.woff2' %}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{% static 'css/main.css' %}">
   <script src="{% static 'vendor/htmx-2.0.11.min.js' %}" defer></script>
-  <script src="{% static 'vendor/alpine-3.17.5.min.js' %}" defer></script>
+  <script src="{% static 'js/site.js' %}" defer></script>
+  <script src="{% static 'vendor/alpine-csp-3.17.5.min.js' %}" defer></script>
   {% block extra_head %}{% endblock %}
 </head>
 <body class="flex min-h-screen flex-col font-sans {% block body_class %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>

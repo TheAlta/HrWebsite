@@ -18,7 +18,7 @@
     {% if registration.status == "paid" and registration.event.recording_url and registration.event.has_ended %}<a href="{{ registration.event.recording_url }}" target="_blank" rel="noopener" class="font-semibold text-brand-600 hover:underline">مشاهده ضبط</a>{% endif %}
     {% if registration.status == "pending" and registration.order %}<a href="{% url 'orders:detail' registration.order.number %}" class="btn btn-primary btn-sm self-start">تکمیل پرداخت</a>{% endif %}
     {% if not registration.event.has_started %}{% if registration.status == "pending" or registration.status == "waitlist" or registration.status == "paid" and not registration.order %}
-    <form method="post" action="{% url 'events:cancel' registration.pk %}" class="mt-1" x-data @submit="if (!confirm('این ثبت‌نام لغو شود؟')) $event.preventDefault()">{% csrf_token %}<button type="submit" class="btn btn-ghost btn-sm">لغو ثبت‌نام</button></form>
+    <form method="post" action="{% url 'events:cancel' registration.pk %}" class="mt-1" x-data="confirmSubmit" data-confirm="این ثبت‌نام لغو شود؟" @submit="check">{% csrf_token %}<button type="submit" class="btn btn-ghost btn-sm">لغو ثبت‌نام</button></form>
     {% endif %}{% endif %}
   </div></li>
   {% endfor %}

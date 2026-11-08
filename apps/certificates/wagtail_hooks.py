@@ -45,6 +45,7 @@ class IssueView(ActionFormView):
     model = EventPage
     permission = ISSUE_PERMISSION
     page_title = "صدور گواهی حضور"
+    log_action = "hrweb.issue_certificates"
     submit_label = "صدور گواهی"
     form_class = IssueForm
     error_class = services.CertificateError
@@ -80,6 +81,7 @@ class RevokeView(ActionFormView):
     model = Certificate
     permission = REVOKE_PERMISSION
     page_title = "ابطال گواهی"
+    log_action = "hrweb.revoke_certificate"
     submit_label = "ابطال گواهی"
     warning = "صفحه استعلام از این به بعد «باطل شده» نشان می‌دهد. این کار برنمی‌گردد."
     success_message = "گواهی باطل شد."

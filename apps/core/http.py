@@ -24,3 +24,8 @@ def absolute_url(path: str) -> str:
     """A site path with the default site's address in front, for SMS, email and PDFs."""
     site = Site.objects.filter(is_default_site=True).first()
     return f"{site.root_url}{path}" if site else path
+
+
+def is_panel_path(path: str) -> bool:
+    """The Wagtail panel or the Django admin, wherever their addresses are set."""
+    return path.startswith((f"/{settings.WAGTAIL_ADMIN_PATH}", f"/{settings.DJANGO_ADMIN_PATH}"))

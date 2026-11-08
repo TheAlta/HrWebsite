@@ -34,6 +34,21 @@ class CodeForm(forms.Form):
         return code
 
 
+class TwoFactorForm(forms.Form):
+    """The authenticator app's 6 digits, or one 8-character backup code."""
+
+    code = forms.CharField(
+        label="کد",
+        max_length=20,
+        widget=forms.TextInput(
+            attrs={"inputmode": "text", "autocomplete": "one-time-code", "dir": "ltr"}
+        ),
+    )
+
+    def clean_code(self):
+        return "".join(to_en_digits(self.cleaned_data["code"]).lower().split())
+
+
 class ProfileForm(forms.ModelForm):
     """Name and email appear on invoices. The mobile is the login, so it is not editable here."""
 
