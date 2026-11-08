@@ -21,6 +21,8 @@
   </nav>
   {% if active.tag %}<p class="muted mt-4">برچسب: <span class="badge">{{ active.tag }}</span></p>{% endif %}
 
+  {# Cards use h3; this keeps the heading levels in order for screen readers #}
+  <h2 class="sr-only">فهرست مطالب</h2>
   <div id="article-list" class="mt-8">{% include "content/includes/article_list.html" %}</div>
 </div>
 {% endblock %}
