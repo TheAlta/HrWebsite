@@ -16,7 +16,7 @@ After a server error the first step containing an error is opened.{% endcomment 
     {% for title, fields in form.steps %}
     <li class="flex flex-1 flex-col gap-1.5">
       <span class="h-1.5 rounded-full transition-colors" :class="step >= {{ forloop.counter0 }} ? 'bg-brand-600' : 'bg-slate-200'"></span>
-      <span class="text-xs font-semibold" :class="step === {{ forloop.counter0 }} ? 'text-brand-700' : 'text-slate-400'">{{ forloop.counter|fa_digits }}. {{ title }}</span>
+      <span class="text-xs font-semibold" :class="step === {{ forloop.counter0 }} ? 'text-brand-700' : 'text-slate-500'">{{ forloop.counter|fa_digits }}. {{ title }}</span>
     </li>
     {% endfor %}
   </ol>
