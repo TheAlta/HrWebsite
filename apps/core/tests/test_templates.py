@@ -14,3 +14,19 @@ def test_no_comment_tag_spans_lines():
         if "{#" in line and "#}" not in line.split("{#", 1)[1]
     ]
     assert broken == []
+
+
+def test_the_web_font_covers_every_character_in_the_templates():
+    """The font is cut to Persian and Latin (static/vendor/README.md); others fall back."""
+    from fontTools.ttLib import TTFont
+
+    from apps.core.pdf import FONT
+
+    covered = set(TTFont(Path(settings.BASE_DIR) / "static" / FONT).getBestCmap())
+    missing = {
+        f"U+{ord(char):04X} {path.name}"
+        for path in TEMPLATES.rglob("*.html")
+        for char in path.read_text(encoding="utf-8")
+        if ord(char) > 0x7F and ord(char) not in covered
+    }
+    assert missing == set()

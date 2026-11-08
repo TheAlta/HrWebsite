@@ -7,4 +7,12 @@ The version is in the file name; update by replacing the file and the reference 
 |---|---|
 | `htmx-2.0.11.min.js` | npm `htmx.org@2.0.11` → `dist/htmx.min.js` |
 | `alpine-csp-3.17.5.min.js` | npm `@alpinejs/csp@3.17.5` → `dist/cdn.min.js`. The CSP build: no `eval`, so the site's Content-Security-Policy needs no `unsafe-eval` (REPORT #051). Expressions cannot call globals such as `confirm()`; those go in `static/js/site.js`. |
-| `../fonts/vazirmatn/Vazirmatn-Variable.woff2` | npm `vazirmatn@33.0.3` → `fonts/webfonts/Vazirmatn[wght].woff2` (OFL licence) |
+| `../fonts/vazirmatn/Vazirmatn-Variable-fa.woff2` | npm `vazirmatn@33.0.3` → `fonts/webfonts/Vazirmatn[wght].woff2` (OFL licence), cut to Persian, Arabic, Latin-1 and punctuation: 111 KB → 76 KB, so text shows sooner on a slow line (REPORT #052). Command below. |
+
+## Regenerating the font subset
+
+```bash
+pyftsubset "Vazirmatn[wght].woff2" --flavor=woff2 --layout-features="*"   --output-file=Vazirmatn-Variable-fa.woff2   --unicodes="U+0000-00FF,U+0300-036F,U+060C,U+061B,U+061F,U+0621-0655,U+0660-066D,U+0670,U+067E,U+0686,U+0698,U+06A9,U+06AF,U+06C0,U+06CC,U+06F0-06F9,U+200C-200F,U+2010-2027,U+2030-205E,U+2066-2069,U+20AC,U+2116,U+2122,U+2212,U+FDFC,U+FEFF"
+```
+
+Letters outside the subset (for example Urdu) still show, in the device's own font.

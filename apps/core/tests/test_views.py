@@ -33,3 +33,9 @@ def test_background_task_runs():
     # Q_CLUSTER runs synchronously in test settings
     task_id = async_task("apps.core.tasks.ping", "hello")
     assert result(task_id) == "hello"
+
+
+def test_favicon_ico_points_to_the_svg_icon(client):
+    response = client.get("/favicon.ico")
+    assert response.status_code == 301
+    assert response.url.endswith(".svg")

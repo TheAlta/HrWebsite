@@ -9,7 +9,7 @@
 /* Font URL is relative to the built file static/css/main.css */
 @font-face {
   font-family: "Vazirmatn";
-  src: url("../fonts/vazirmatn/Vazirmatn-Variable.woff2") format("woff2");
+  src: url("../fonts/vazirmatn/Vazirmatn-Variable-fa.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;

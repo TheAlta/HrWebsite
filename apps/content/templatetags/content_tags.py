@@ -3,10 +3,32 @@
 import json
 
 from django import template
-from django.utils.html import format_html
+from django.utils.html import format_html, strip_tags
 from django.utils.safestring import mark_safe
+from django.utils.text import Truncator
 
 register = template.Library()
+
+
+@register.simple_tag(takes_context=True)
+def meta_description(context, page):
+    """The page's own description, else its intro or summary, else the site's own words.
+
+    Search engines show this under the title; a page without one gets a guess.
+    """
+    for value in (
+        page.search_description,
+        getattr(page, "intro", ""),
+        getattr(page, "summary", ""),
+    ):
+        text = " ".join(strip_tags(str(value or "")).split())
+        if text:
+            return Truncator(text).chars(160)
+    site_settings = context.get("settings")
+    if not site_settings:
+        return ""
+    site = site_settings["content"]["SiteSettings"]
+    return " ".join(f"{site.tagline}. {site.footer_text}".strip(". ").split())[:160]
 
 
 @register.simple_tag(takes_context=True)

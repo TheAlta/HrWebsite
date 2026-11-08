@@ -7,10 +7,11 @@ from wagtail.contrib.sitemaps.views import sitemap
 from wagtail.documents import urls as wagtaildocs_urls
 
 from apps.content import views as content_views
-from apps.core.views import healthz
+from apps.core.views import favicon, healthz
 
 urlpatterns = [
     path("healthz", healthz, name="healthz"),
+    path("favicon.ico", favicon),
     path(settings.DJANGO_ADMIN_PATH, admin.site.urls),
     path(settings.WAGTAIL_ADMIN_PATH, include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
