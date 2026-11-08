@@ -18,6 +18,7 @@
 <div class="container-page py-10">
   {% if query %}
     {% if page_obj and page_obj.paginator.count %}
+      <h2 class="sr-only">نتیجه‌ها</h2>
       <p class="muted mb-6">{{ page_obj.paginator.count|fa_digits }} نتیجه برای «{{ query }}»</p>
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{% for article in page_obj.object_list %}{% include "components/card_article.html" with article=article.specific %}{% endfor %}</div>
       {% with q="q="|add:query %}{% include "components/pagination.html" with query=q %}{% endwith %}

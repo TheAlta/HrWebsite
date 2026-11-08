@@ -18,7 +18,7 @@
     {% if booking.changeable %}
     <div class="mt-2 flex flex-wrap gap-2">
       <a href="{% url 'booking:reschedule' booking.pk %}" class="btn btn-secondary btn-sm">تغییر زمان</a>
-      <form method="post" action="{% url 'booking:cancel' booking.pk %}" x-data @submit="if (!confirm('این جلسه لغو شود؟')) $event.preventDefault()">{% csrf_token %}<button type="submit" class="btn btn-ghost btn-sm">لغو جلسه</button></form>
+      <form method="post" action="{% url 'booking:cancel' booking.pk %}" x-data="confirmSubmit" data-confirm="این جلسه لغو شود؟" @submit="check">{% csrf_token %}<button type="submit" class="btn btn-ghost btn-sm">لغو جلسه</button></form>
     </div>
     {% endif %}
   </div></li>

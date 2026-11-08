@@ -9,6 +9,7 @@
 | [`docs/spec.html`](docs/spec.html) | سند توسعه (مرجع نیازمندی‌ها و معماری) |
 | [`docs/SPRINTS.md`](docs/SPRINTS.md) | اسپرینت‌بندی تأییدشده |
 | [`docs/DEPLOY.md`](docs/DEPLOY.md) | راهنمای استقرار روی سرور |
+| [`docs/LAUNCH.md`](docs/LAUNCH.md) | چک‌لیست راه‌اندازی و وضعیت هر بند |
 | [`CLAUDE.md`](CLAUDE.md) | قرارداد کاری و راهنمای توسعه |
 | [`REPORT.md`](REPORT.md) | دفتر گزارش ترتیبی پروژه |
 
@@ -91,6 +92,19 @@ docker compose build
 # پاک کردن کامل داده‌های محلی (پایگاه داده هم پاک می‌شود)
 docker compose down -v
 ```
+
+### تست در مرورگر واقعی (E2E)
+
+چهار مسیر سند (فرم مشاوره، رزرو جلسه، خرید کتاب دیجیتال، ثبت‌نام دوره) در موبایل و دسکتاپ، با بررسی دسترس‌پذیری. جدا از تست‌های معمولی اجرا می‌شوند و در CI روی هر PR.
+
+```bash
+# یک بار: نصب مرورگر داخل کانتینر (حدود ۱۲۰ مگابایت)
+docker compose exec web playwright install --with-deps chromium
+# اجرا
+docker compose exec -e DJANGO_SETTINGS_MODULE=config.settings.test web pytest -m e2e e2e/
+```
+
+مرورگر با ساختن دوباره کانتینر پاک می‌شود و باید دوباره نصب شود.
 
 ### افزودن پکیج پایتون
 

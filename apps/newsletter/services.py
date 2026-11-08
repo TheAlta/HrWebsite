@@ -8,13 +8,12 @@ from django.utils import timezone
 from django_q.tasks import async_task
 from wagtail.models import Site
 
-from apps.notifications.services import send_email, send_sms
+from apps.notifications.services import send_email, send_sms, sms_words
 
 from .models import Campaign, Delivery, Subscriber
 
 RATE_WINDOW = timedelta(minutes=10)
 MAX_PER_IP = 5
-SMS_WORDS = 8  # Kavenegar limits the spaces in token20
 
 
 class RateLimited(Exception):
@@ -110,8 +109,7 @@ def _send(campaign, subscriber, base_url):
             },
         )
     else:
-        text = " ".join(campaign.body.split()[:SMS_WORDS])
-        send_sms(subscriber.mobile, "newsletter", {"token20": text})
+        send_sms(subscriber.mobile, "newsletter", {"token20": sms_words(campaign.body)})
 
 
 def _base_url():

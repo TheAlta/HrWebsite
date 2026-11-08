@@ -4,6 +4,8 @@ on:
   pull_request:
   push:
     branches: [main]
+  schedule:
+    - cron: "30 3 * * 1"  # Mondays: a new advisory can hit code that has not changed
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -20,6 +22,26 @@ jobs:
       - run: pip install "ruff==0.17.2"
       - run: ruff check .
       - run: ruff format --check .
+
+  audit:
+    # Known vulnerabilities in the locked dependencies (spec section 11)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "pip-audit==2.10.1"
+      - run: pip-audit -r requirements/base.txt -r requirements/dev.txt --no-deps --disable-pip
+      # Django's own production checklist (HTTPS, cookies, HSTS, DEBUG)
+      - run: pip install -r requirements/base.txt
+      - run: python manage.py check --deploy --fail-level WARNING
+        env:
+          DJANGO_SETTINGS_MODULE: config.settings.prod
+          SECRET_KEY: ci-only-not-a-secret-but-long-enough-for-the-deploy-check-0123456789
+          ALLOWED_HOSTS: example.com
+          DATABASE_URL: postgres://unused:unused@localhost:5432/unused
+          PAYMENT_GATEWAY_ORDER: zarinpal
 
   test:
     runs-on: ubuntu-latest
@@ -46,6 +68,42 @@ jobs:
       - run: pip install -r requirements/dev.txt
       - run: python manage.py makemigrations --check --dry-run
       - run: pytest --create-db --cov --cov-report=term
+
+  e2e:
+    # The four customer journeys in a real browser, phone and desktop (spec section 14)
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: hrweb
+          POSTGRES_USER: hrweb
+          POSTGRES_PASSWORD: hrweb
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U hrweb" --health-interval 3s --health-timeout 3s --health-retries 20
+    env:
+      DJANGO_SETTINGS_MODULE: config.settings.test
+      SECRET_KEY: ci-only-not-secret
+      DATABASE_URL: postgres://hrweb:hrweb@localhost:5432/hrweb
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci --no-audit --no-fund && npm run build:css
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: sudo apt-get update && sudo apt-get install -y libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0
+      - run: pip install -r requirements/dev.txt
+      - run: playwright install --with-deps chromium
+      - run: pytest -m e2e e2e/ --create-db --screenshot only-on-failure
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: e2e-screenshots
+          path: test-results/
 
   docker:
     runs-on: ubuntu-latest

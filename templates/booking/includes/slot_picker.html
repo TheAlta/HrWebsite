@@ -5,16 +5,18 @@
   {% if method == "post" %}{% csrf_token %}{% endif %}
   <div class="flex gap-2 overflow-x-auto pb-3" role="tablist" aria-label="انتخاب روز">
     {% for day in days %}
-    <button type="button" role="tab" class="btn btn-sm shrink-0" :class="open === {{ forloop.counter0 }} ? 'btn-primary' : 'btn-secondary'" :aria-selected="(open === {{ forloop.counter0 }}).toString()" @click="open = {{ forloop.counter0 }}">{{ day.date|jdate:"weekday" }}</button>
+    <button type="button" role="tab" id="day-tab-{{ forloop.counter0 }}" aria-controls="day-panel-{{ forloop.counter0 }}" class="btn btn-sm shrink-0" :class="open === {{ forloop.counter0 }} ? 'btn-primary' : 'btn-secondary'" :aria-selected="(open === {{ forloop.counter0 }}).toString()" @click="open = {{ forloop.counter0 }}">{{ day.date|jdate:"weekday" }}</button>
     {% endfor %}
   </div>
   {% for day in days %}
-  <fieldset class="mt-4" x-show="open === {{ forloop.counter0 }}" {% if not forloop.first %}x-cloak{% endif %}>
+  <div id="day-panel-{{ forloop.counter0 }}" role="tabpanel" aria-labelledby="day-tab-{{ forloop.counter0 }}" x-show="open === {{ forloop.counter0 }}" {% if not forloop.first %}x-cloak{% endif %}>
+  <fieldset class="mt-4">
     <legend class="field-label">زمان‌های آزاد {{ day.date|jdate }}</legend>
     <div class="grid grid-cols-3 gap-2 sm:grid-cols-5 lg:grid-cols-6">
       {% for slot in day.slots %}<button type="submit" name="start" value="{{ slot|unix }}" class="btn btn-secondary">{{ slot|jtime }}</button>{% endfor %}
     </div>
   </fieldset>
+  </div>
   {% endfor %}
 </form>
 {% else %}

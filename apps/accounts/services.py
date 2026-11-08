@@ -98,3 +98,17 @@ def verify_code(mobile: str, code: str):
     if not user.is_active:
         raise OTPError("این حساب غیرفعال است.")
     return user
+
+
+LOGIN_LOG_DAYS = 90  # how long login records are kept (privacy page, docs/LAUNCH.md)
+
+
+def trim_login_logs(now=None) -> int:
+    """Daily: drop login and failed-login records older than LOGIN_LOG_DAYS."""
+    from axes.models import AccessFailureLog, AccessLog
+
+    before = (now or timezone.now()) - timedelta(days=LOGIN_LOG_DAYS)
+    deleted = 0
+    for model in (AccessLog, AccessFailureLog):
+        deleted += model.objects.filter(attempt_time__lt=before).delete()[0]
+    return deleted

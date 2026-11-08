@@ -48,4 +48,7 @@ RUN SECRET_KEY=build-only DATABASE_URL=sqlite:////tmp/build.db ALLOWED_HOSTS=loc
  && mkdir -p /app/media /app/private && chown -R app:app /app/media /app/private
 USER app
 EXPOSE 8000
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3", "--access-logfile", "-", "--no-control-socket"]
+# Gunicorn reads its worker count from WEB_CONCURRENCY: set it in .env to
+# 2 × CPU cores + 1 for the server (docs/DEPLOY.md). 3 suits one core.
+ENV WEB_CONCURRENCY=3
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000", "--access-logfile", "-", "--no-control-socket"]

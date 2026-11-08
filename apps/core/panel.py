@@ -6,12 +6,18 @@ from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import FormView
 from wagtail.admin.views.generic.base import WagtailAdminTemplateMixin
+from wagtail.log_actions import log
+
+# (action, label) of every panel action, for the panel's history (spec section 11)
+LOG_ACTIONS: dict[str, str] = {}
 
 
 class ActionFormView(WagtailAdminTemplateMixin, FormView):
     """Subclasses set the model and permission, and do the work in `perform`.
 
     `perform` raises `error_class` with a Persian message when the action is refused.
+    A done action is written to the panel's history as `log_action`, labelled
+    with the page title.
     """
 
     template_name = "panel/action_form.html"
@@ -23,6 +29,12 @@ class ActionFormView(WagtailAdminTemplateMixin, FormView):
     warning = ""
     success_message = ""
     error_class = Exception
+    log_action = ""
+
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        if cls.log_action:
+            LOG_ACTIONS[cls.log_action] = cls.page_title
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.has_perm(self.permission):
@@ -61,5 +73,7 @@ class ActionFormView(WagtailAdminTemplateMixin, FormView):
         except self.error_class as exc:
             messages.error(self.request, str(exc))
         else:
+            if self.log_action:
+                log(instance=self.object, action=self.log_action, user=self.request.user)
             messages.success(self.request, self.success_message)
         return redirect(self.get_success_url())

@@ -152,6 +152,40 @@ class BookingAdminForm(WagtailAdminModelForm):
         return booking
 
 
+class CalendarBusy(models.Model):
+    """A busy time copied from the owner's own calendar (BOOK-6).
+
+    The whole table is rewritten on every successful read. Only times are kept,
+    never what the appointment was.
+    """
+
+    start = models.DateTimeField("از")
+    end = models.DateTimeField("تا")
+
+    class Meta:
+        verbose_name = "زمان اشغال تقویم"
+        verbose_name_plural = "زمان‌های اشغال تقویم"
+        ordering = ["start"]
+
+    def __str__(self):
+        return f"{jalali.format_datetime(self.start)} تا {jalali.format_datetime(self.end)}"
+
+
+class CalendarSync(models.Model):
+    """How the last reads of the owner's calendars went. A single row."""
+
+    last_attempt_at = models.DateTimeField(null=True, blank=True)
+    last_success_at = models.DateTimeField(null=True, blank=True)
+    failures = models.PositiveIntegerField(default=0)  # in a row
+    last_error = models.CharField(max_length=200, blank=True)
+
+    class Meta:
+        verbose_name = "وضعیت خواندن تقویم"
+
+    def __str__(self):
+        return f"{self.failures} failed read(s) in a row"
+
+
 class Booking(models.Model):
     class Status(models.TextChoices):
         HELD = "held", "قفل موقت تا پرداخت"

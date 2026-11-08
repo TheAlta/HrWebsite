@@ -3,7 +3,7 @@ from pathlib import Path
 from django.contrib.staticfiles import finders
 from django.template.loader import render_to_string
 
-FONT = "fonts/vazirmatn/Vazirmatn-Variable.woff2"
+FONT = "fonts/vazirmatn/Vazirmatn-Variable-fa.woff2"
 
 
 def render_pdf(template: str, context: dict) -> bytes:

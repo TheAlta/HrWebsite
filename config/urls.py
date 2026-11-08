@@ -7,10 +7,11 @@ from wagtail.contrib.sitemaps.views import sitemap
 from wagtail.documents import urls as wagtaildocs_urls
 
 from apps.content import views as content_views
-from apps.core.views import healthz
+from apps.core.views import favicon, healthz
 
 urlpatterns = [
     path("healthz", healthz, name="healthz"),
+    path("favicon.ico", favicon),
     path(settings.DJANGO_ADMIN_PATH, admin.site.urls),
     path(settings.WAGTAIL_ADMIN_PATH, include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
@@ -24,6 +25,7 @@ urlpatterns = [
     path("leads/", include("apps.crm.urls")),
     path("newsletter/", include("apps.newsletter.urls")),
     path("", include("apps.shop.urls")),
+    path("", include("apps.certificates.urls")),
     path("sitemap.xml", sitemap, name="sitemap"),
     path("robots.txt", content_views.robots_txt, name="robots_txt"),
     path("styleguide/", content_views.styleguide, name="styleguide"),

@@ -21,6 +21,13 @@ from .providers import SMSError, get_sms_provider
 
 logger = logging.getLogger(__name__)
 
+SMS_TOKEN20_WORDS = 8  # Kavenegar limits the spaces in token20
+
+
+def sms_words(text: str) -> str:
+    """Free text cut to what fits in a token20 parameter."""
+    return " ".join(text.split()[:SMS_TOKEN20_WORDS])
+
 
 def send_sms(to: str, template_key: str, params: dict | None = None) -> Notification:
     """Queue a template SMS. `template_key` is a key of settings.SMS_TEMPLATES."""

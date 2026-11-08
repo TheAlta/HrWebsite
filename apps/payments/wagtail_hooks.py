@@ -56,6 +56,7 @@ class RefundForm(forms.Form):
 
 class RefundView(OrderActionView):
     page_title = "ثبت بازگشت وجه"
+    log_action = "hrweb.refund"
     submit_label = "ثبت بازگشت وجه"
     warning = (
         "این صفحه پول را برنمی‌گرداند. اول مبلغ را از پنل درگاه یا بانک برگردانید، بعد اینجا ثبت "
@@ -70,6 +71,7 @@ class RefundView(OrderActionView):
 
 class CancelView(OrderActionView):
     page_title = "لغو سفارش"
+    log_action = "hrweb.cancel_order"
     submit_label = "لغو سفارش"
     warning = "جلسه، صندلی یا موجودی نگه‌داشته‌شده برای این سفارش آزاد می‌شود."
     success_message = "سفارش لغو شد."
@@ -88,6 +90,7 @@ class ManualPaymentForm(forms.Form):
 
 class ManualPaymentView(OrderActionView):
     page_title = "ثبت پرداخت دستی"
+    log_action = "hrweb.manual_payment"
     submit_label = "ثبت پرداخت"
     warning = "بعد از ثبت، سفارش پرداخت‌شده حساب و تحویل و فاکتور انجام می‌شود."
     form_class = ManualPaymentForm

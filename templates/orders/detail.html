@@ -9,6 +9,7 @@
   <div class="card" role="status">
     <div class="card-body items-center gap-3 py-10 text-center">
       {% if order.status == "paid" %}
+        <span hidden data-conversion="purchase" data-conversion-id="{{ order.number }}" data-conversion-value="{{ order.total }}"></span>
         <span class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">{% include "components/icon.html" with name="check" size="28" %}</span>
         <h1 class="card-title">{% if order.total %}پرداخت با موفقیت انجام شد{% else %}ثبت شد{% endif %}</h1>
         <p class="muted">پیامک تأیید برایتان ارسال می‌شود.</p>

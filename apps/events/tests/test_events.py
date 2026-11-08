@@ -15,6 +15,7 @@ from apps.core import jalali
 from apps.crm.models import Lead
 from apps.events import services
 from apps.events.models import EventPage, EventSession, Registration, SpeakingPage
+from apps.notifications.services import SMS_TOKEN20_WORDS
 from apps.notifications.testing import CapturingSMS
 from apps.orders import services as orders
 from apps.orders.models import Order
@@ -296,6 +297,15 @@ def test_owner_cancelling_a_paid_seat_tells_the_customer(paid_event, customer):
     assert last_sms(customer)["template"] == "event-cancelled"
 
 
+def test_customer_cannot_leave_once_the_event_started(free_event, customer):
+    registration = services.register(customer, free_event)
+    past = timezone.now() - timedelta(minutes=5)
+    EventPage.objects.filter(pk=free_event.pk).update(start_at=past)
+    with pytest.raises(services.RegistrationError, match="شروع شده"):
+        services.cancel(registration)
+    assert services.cancel(registration, by_owner=True).status == Status.CANCELLED
+
+
 def test_cancelling_twice_changes_nothing(free_event, customer):
     registration = services.register(customer, free_event)
     services.cancel(registration)
@@ -362,7 +372,7 @@ def test_republishing_an_old_revision_does_not_resend_the_recording(make_event, 
 
 def test_long_title_is_cut_for_the_sms_token(make_event):
     event = make_event(title=" ".join(["کلمه"] * 12))
-    assert len(services._title(event).split()) == services.SMS_TITLE_WORDS
+    assert len(services._title(event).split()) == SMS_TOKEN20_WORDS
 
 
 # --- pages ------------------------------------------------------------------------------
@@ -374,7 +384,10 @@ def test_join_link_is_hidden_until_the_seat_is_confirmed(client, paid_event, cus
     client.force_login(customer)
     assert "room.test" not in client.get(paid_event.url).content.decode()
     pay(registration)
-    assert "room.test" in client.get(paid_event.url).content.decode()
+    content = client.get(paid_event.url).content.decode()
+    # The page links the class entrance, which hands the room address only to this seat
+    assert reverse("events:join", args=[registration.pk]) in content
+    assert "room.test" not in content
 
 
 def test_recording_is_hidden_from_visitors(client, make_event, customer):

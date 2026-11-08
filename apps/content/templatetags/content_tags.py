@@ -3,10 +3,32 @@
 import json
 
 from django import template
-from django.utils.html import format_html
+from django.utils.html import format_html, strip_tags
 from django.utils.safestring import mark_safe
+from django.utils.text import Truncator
 
 register = template.Library()
+
+
+@register.simple_tag(takes_context=True)
+def meta_description(context, page):
+    """The page's own description, else its intro or summary, else the site's own words.
+
+    Search engines show this under the title; a page without one gets a guess.
+    """
+    for value in (
+        page.search_description,
+        getattr(page, "intro", ""),
+        getattr(page, "summary", ""),
+    ):
+        text = " ".join(strip_tags(str(value or "")).split())
+        if text:
+            return Truncator(text).chars(160)
+    site_settings = context.get("settings")
+    if not site_settings:
+        return ""
+    site = site_settings["content"]["SiteSettings"]
+    return " ".join(f"{site.tagline}. {site.footer_text}".strip(". ").split())[:160]
 
 
 @register.simple_tag(takes_context=True)
@@ -39,7 +61,10 @@ def is_active(context, href):
 def _jsonld(data):
     # Escape "<" so content can never close the <script> element
     payload = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c")
-    return format_html('<script type="application/ld+json">{}</script>', mark_safe(payload))
+    return format_html(
+        '<script type="application/ld+json">{}</script>',
+        mark_safe(payload),  # noqa: S308 — JSON with "<" escaped above
+    )
 
 
 @register.simple_tag(takes_context=True)
@@ -104,4 +129,4 @@ def page_jsonld(context, page):
     if hasattr(page, "extra_jsonld"):
         blocks.append(page.extra_jsonld(url))
 
-    return mark_safe("".join(_jsonld(b) for b in blocks))
+    return mark_safe("".join(_jsonld(b) for b in blocks))  # noqa: S308 — each is built safe above

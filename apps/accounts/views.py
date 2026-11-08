@@ -6,12 +6,15 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_http_methods, require_POST
+from django_otp import login as otp_login
+from django_otp import match_token
 
 from apps.core.http import hashed_ip
 
-from . import services
-from .forms import CodeForm, MobileForm, ProfileForm
+from . import services, two_factor
+from .forms import CodeForm, MobileForm, ProfileForm, TwoFactorForm
 
 PER_PAGE = 10
 
@@ -154,7 +157,7 @@ def courses_view(request):
 
     rows = Registration.objects.filter(
         user=request.user, status__in=Registration.ACTIVE_STATUSES
-    ).select_related("event", "order")
+    ).select_related("event", "order", "certificate")
     context = {"page_obj": _page(request, rows), "section": "courses"}
     return render(request, "accounts/courses.html", context)
 
@@ -182,3 +185,48 @@ def profile_view(request):
 def _template(request, step):
     # HTMX swaps only the card; a normal request gets the full page
     return f"accounts/includes/{step}.html" if request.htmx else "accounts/login.html"
+
+
+def _panel_next(request):
+    url = request.POST.get("next") or request.GET.get("next") or ""
+    if url_has_allowed_host_and_scheme(url, {request.get_host()}, request.is_secure()):
+        return url
+    return reverse("wagtailadmin_home")
+
+
+@never_cache  # the backup codes are shown on this page
+@login_required
+@require_http_methods(["GET", "POST"])
+def two_factor_view(request):
+    """The panel's second step: set up the app once, then type its code each login."""
+    if not two_factor.can_open_panel(request.user):
+        return redirect("accounts:account")
+    next_url = _panel_next(request)
+    if request.user.is_verified():
+        return redirect(next_url)
+    form = TwoFactorForm(request.POST or None)
+    context = {"form": form, "next": next_url}
+
+    if two_factor.is_set_up(request.user):
+        if form.is_valid():
+            device = match_token(request.user, form.cleaned_data["code"])
+            if device:
+                otp_login(request, device)
+                return redirect(next_url)
+            form.add_error("code", "کد درست نیست یا منقضی شده است.")
+        return render(request, "accounts/two_factor.html", {**context, "mode": "verify"})
+
+    device = two_factor.pending_app_device(request.user)
+    if form.is_valid():
+        codes = two_factor.confirm_app(device, form.cleaned_data["code"])
+        if codes:
+            otp_login(request, device)
+            context["codes"] = codes
+            return render(request, "accounts/two_factor.html", {**context, "mode": "codes"})
+        form.add_error("code", "کد درست نیست. ساعت گوشی را هم بررسی کنید.")
+    context |= {
+        "mode": "setup",
+        "qr": two_factor.qr_code(device),
+        "secret": two_factor.secret_for_typing(device),
+    }
+    return render(request, "accounts/two_factor.html", context)

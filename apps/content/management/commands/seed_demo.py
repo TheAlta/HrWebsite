@@ -26,6 +26,7 @@ from wagtail.rich_text import RichText
 from apps.accounts.models import Organization
 from apps.billing.models import Invoice, ProForma
 from apps.booking.models import Availability, Booking, BookingPage, SessionType
+from apps.certificates.models import Certificate
 from apps.content.models import (
     AboutPage,
     ArticleKind,
@@ -62,7 +63,7 @@ PALETTE = [
 
 def make_image(title, size=(1200, 800), seed=0):
     """A simple generated picture (gradient + circles) — no network or stock photos needed."""
-    rnd = random.Random(seed)
+    rnd = random.Random(seed)  # noqa: S311 — sample pictures, not secrets
     start, end = PALETTE[seed % len(PALETTE)]
     img = PILImage.new("RGB", size, start)
     draw = ImageDraw.Draw(img)
@@ -677,8 +678,10 @@ class Command(BaseCommand):
         )
 
     def _reset(self, home):
-        # Invoices, pre-invoices and refunds protect their orders, so they go first
+        # Invoices, pre-invoices and refunds protect their orders, and certificates
+        # their registrations, so they go first
         for model in (
+            Certificate,
             Invoice,
             ProForma,
             Refund,

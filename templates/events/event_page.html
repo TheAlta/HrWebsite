@@ -33,6 +33,7 @@
         <div><dt class="muted">زمان شروع</dt><dd class="font-semibold text-slate-900">{{ page.start_at|jdate:"weekday" }}، ساعت {{ page.start_at|jtime }}</dd></div>
         {% if page.instructor %}<div><dt class="muted">مدرس</dt><dd class="font-semibold text-slate-900">{{ page.instructor }}</dd></div>{% endif %}
         <div><dt class="muted">محل برگزاری</dt><dd class="font-semibold text-slate-900">{% firstof page.venue 'آنلاین' %}</dd></div>
+        {% if page.issues_certificate %}<div><dt class="muted">گواهی</dt><dd class="font-semibold text-slate-900">گواهی حضور با کد استعلام</dd></div>{% endif %}
         {% if page.kind != "talk" %}
         <div><dt class="muted">هزینه</dt><dd class="font-semibold text-slate-900">{% if page.price %}{{ page.price|toman }}{% else %}رایگان{% endif %}</dd></div>
         {% if seats_left is not None and page.registration_open %}<div><dt class="muted">ظرفیت باقی‌مانده</dt><dd class="font-semibold text-slate-900">{% if seats_left %}{{ seats_left|fa_digits }} نفر{% else %}تکمیل{% endif %}</dd></div>{% endif %}

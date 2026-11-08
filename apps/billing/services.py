@@ -6,16 +6,16 @@ from django.db import connection, transaction
 from django.db.models import Max
 from django.urls import reverse
 from django.utils import timezone
-from wagtail.models import Site
 
 from apps.content.models import SiteSettings
+from apps.core.http import absolute_url
+from apps.core.pdf import render_pdf
 from apps.notifications.services import send_email, send_sms
 from apps.orders import services as orders
 from apps.orders.models import Order
 from apps.orders.services import OrderLine
 
 from .models import Invoice, ProForma
-from .pdf import render_pdf
 
 INVOICE_LOCK_ID = 7_140_502  # any fixed number unique to this lock
 
@@ -87,11 +87,6 @@ def _notify(invoice: Invoice) -> None:
 
 def invoice_url(invoice: Invoice) -> str:
     return reverse("billing:invoice", args=[invoice.number])
-
-
-def absolute_url(path: str) -> str:
-    site = Site.objects.filter(is_default_site=True).first()
-    return f"{site.root_url}{path}" if site else path
 
 
 def void_invoice(order: Order) -> None:

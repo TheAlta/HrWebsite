@@ -5,6 +5,7 @@ from django.urls import reverse
 
 from apps.newsletter import services
 from apps.newsletter.models import Campaign, Delivery, Subscriber
+from apps.notifications.services import SMS_TOKEN20_WORDS
 from apps.notifications.testing import CapturingSMS
 
 pytestmark = pytest.mark.django_db
@@ -123,7 +124,7 @@ def test_sms_campaign_sends_a_short_token():
     services.queue(campaign)
     message = CapturingSMS.outbox[-1]
     assert message["template"] == "newsletter"
-    assert len(message["params"]["token20"].split()) == services.SMS_WORDS
+    assert len(message["params"]["token20"].split()) == SMS_TOKEN20_WORDS
 
 
 def test_a_campaign_is_sent_once_even_if_the_task_runs_again():

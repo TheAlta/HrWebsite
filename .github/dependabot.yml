@@ -1,0 +1,10 @@
+# Monthly update PRs for the actions CI uses (spec section 11).
+# Python packages are checked by pip-audit in CI every week instead: their lock
+# files are made by `uv pip compile` with hashes (README), which Dependabot does
+# not regenerate correctly.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
