@@ -1,0 +1,10 @@
+{% load core_tags %}
+{% comment %}Where the visitor is in a flow of pages, as in the demo's booking.
+Usage: {% include "components/steps.html" with steps="نوع جلسه|روز و ساعت|ورود و تأیید|پرداخت" current=2 label="مراحل رزرو" %}{% endcomment %}
+<ol class="steps" aria-label="{{ label|default:'مراحل' }}">
+  {% for step in steps|split %}
+  <li class="{% if forloop.counter <= current %}is-done{% endif %}" {% if forloop.counter == current %}aria-current="step"{% endif %}>
+    <span class="steps-bar" aria-hidden="true"></span>{{ forloop.counter|fa_digits }}. {{ step }}
+  </li>
+  {% endfor %}
+</ol>

@@ -1,14 +1,18 @@
-{% load wagtailcore_tags wagtailimages_tags core_tags %}
-{# Usage: {% include "components/card_service.html" with service=service %} #}
-<article class="card">
-  {% if service.cover_image %}{% image service.cover_image fill-640x360 format-webp class="aspect-[16/9] w-full object-cover" loading="lazy" alt="" %}{% endif %}
-  <div class="card-body">
-    <span class="badge self-start">{{ service.get_audience_display }}</span>
-    <h3 class="card-title"><a href="{% pageurl service %}" class="hover:text-brand-700">{{ service.title }}</a></h3>
-    <p class="text-[0.95rem] leading-7 text-slate-600">{{ service.summary }}</p>
-    <div class="mt-auto flex items-center justify-between pt-3">
-      <span class="text-sm font-semibold text-slate-700">{% if service.price %}{{ service.price|toman }}{% else %}استعلام قیمت{% endif %}</span>
-      <a href="{% pageurl service %}" class="btn btn-ghost btn-sm">جزئیات {% include "components/icon.html" with name="arrow" size="16" %}</a>
+{% load wagtailcore_tags core_tags %}
+{# Usage: {% include "components/card_service.html" with service=service compact=True %} — compact drops the price row. #}
+<article class="card transition duration-300 hover:-translate-y-1 hover:shadow-lift">
+  <div class="card-body gap-3 p-5 sm:p-7">
+    {# Phones: the icon beside the title; wider: above it, as in the demo #}
+    <div class="flex items-center gap-4 sm:flex-col sm:items-start sm:gap-5">
+      <span class="icon-disc size-12 sm:size-14">{% include "components/icon.html" with name=service.icon|default:"briefcase" size="24" %}</span>
+      <h3 class="font-display text-[1.5rem] leading-snug font-medium text-ink sm:text-[1.6rem]"><a href="{% pageurl service %}" class="after:absolute after:inset-0 after:z-10 after:rounded-[inherit]">{{ service.title }}</a></h3>
     </div>
+    <p class="leading-8 text-ink-3">{{ service.summary }}</p>
+    {% if not compact %}
+    <div class="mt-auto flex items-center justify-between pt-3">
+      <span class="text-sm font-semibold text-ink">{% if service.price %}از {{ service.price|toman }}{% else %}استعلام قیمت{% endif %}</span>
+      {% include "components/icon.html" with name="arrow" size="18" class="text-ink-3" %}
+    </div>
+    {% endif %}
   </div>
 </article>

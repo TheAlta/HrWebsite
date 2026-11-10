@@ -1,6 +1,9 @@
-{# Usage: {% include "components/section_header.html" with eyebrow="..." title="..." intro="..." %} #}
-<div class="mb-8 max-w-2xl">
-  {% if eyebrow %}<p class="eyebrow">{{ eyebrow }}</p>{% endif %}
-  {% if title %}<h2 class="heading-2 mt-1">{{ title }}</h2>{% endif %}
-  {% if intro %}<p class="lead mt-3">{{ intro }}</p>{% endif %}
+{# Usage: {% include "components/section_header.html" with eyebrow="..." title="..." intro="..." link=page.url link_label="..." %} #}
+<div class="mb-8 flex items-end justify-between gap-4">
+  <div class="max-w-2xl">
+    {% if eyebrow %}<p class="eyebrow">{{ eyebrow }}</p>{% endif %}
+    {% if title %}<h2 class="heading-2 mt-1">{{ title }}</h2>{% endif %}
+    {% if intro %}<p class="lead mt-3">{{ intro }}</p>{% endif %}
+  </div>
+  {% if link %}<a href="{{ link }}" class="link shrink-0">{{ link_label|default:"مشاهدهٔ همه" }} {% include "components/icon.html" with name="arrow" size="16" %}</a>{% endif %}
 </div>

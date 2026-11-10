@@ -8,6 +8,81 @@ document.addEventListener("alpine:init", () => {
       if (!window.confirm(this.$el.dataset.confirm)) event.preventDefault();
     },
   }));
+
+  // A button that shows and hides the element named in its aria-controls
+  Alpine.data("disclosure", () => ({
+    open: false,
+    toggle() {
+      this.open = !this.open;
+    },
+    close() {
+      this.open = false;
+    },
+  }));
+
+  // The header: frosted once the page scrolls; the mobile menu moves focus in and back
+  Alpine.data("siteHeader", () => ({
+    open: false,
+    scrolled: false,
+    init() {
+      const update = () => {
+        this.scrolled = window.scrollY > 24;
+      };
+      update();
+      window.addEventListener("scroll", update, { passive: true });
+    },
+    get headerClass() {
+      return this.scrolled || this.open ? "is-solid" : "";
+    },
+    openMenu() {
+      this.open = true;
+      this.$nextTick(() => this.$refs.closeButton.focus());
+    },
+    closeMenu() {
+      if (!this.open) return;
+      this.open = false;
+      this.$nextTick(() => this.$refs.burger.focus());
+    },
+  }));
+
+  // Days, hours and minutes until data-until (an ISO date), in Persian digits.
+  // Once a minute is enough: the smallest unit shown is the minute.
+  Alpine.data("countdown", () => ({
+    days: "—",
+    hours: "—",
+    minutes: "—",
+    init() {
+      const until = Date.parse(this.$el.dataset.until);
+      const digits = new Intl.NumberFormat("fa-IR", { useGrouping: false });
+      const tick = () => {
+        const left = Math.max(0, Math.floor((until - Date.now()) / 60000));
+        this.days = digits.format(Math.floor(left / 1440));
+        this.hours = digits.format(Math.floor(left / 60) % 24);
+        this.minutes = digits.format(left % 60);
+      };
+      tick();
+      this.timer = setInterval(tick, 60000);
+    },
+    destroy() {
+      clearInterval(this.timer);
+    },
+  }));
+
+  // Light or dark. The choice is kept in a cookie so the server can put it on
+  // <html> before the page paints; without one the device setting decides.
+  Alpine.data("themeSwitch", () => ({
+    dark: false,
+    init() {
+      const chosen = document.documentElement.dataset.theme;
+      this.dark = chosen ? chosen === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    },
+    toggle() {
+      this.dark = !this.dark;
+      const theme = this.dark ? "dark" : "light";
+      document.documentElement.dataset.theme = theme;
+      document.cookie = `theme=${theme}; path=/; max-age=31536000; samesite=lax`;
+    },
+  }));
 });
 
 // Conversions (spec section 14) for whichever analytics tool is chosen later: an
