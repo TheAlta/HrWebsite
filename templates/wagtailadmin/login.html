@@ -1,0 +1,4 @@
+{% extends "wagtailadmin/login.html" %}
+{# The panel's sign-in page names the site and shows its logo (REPORT #055) #}
+{% block branding_login %}ورود به پنل {{ settings.content.SiteSettings.brand_name }}{% endblock %}
+{% block branding_logo %}<div class="login-logo"><span class="panel-brand">{% include "components/brand_mark.html" with class="size-16" %}</span></div>{% endblock %}

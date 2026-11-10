@@ -147,7 +147,7 @@ def certificate_pdf(certificate: Certificate) -> bytes:
         {
             "certificate": certificate,
             "verify_url": url,
-            "qr": segno.make(url, error="m").svg_data_uri(scale=4, border=0, dark="#1c3970"),
+            "qr": segno.make(url, error="m").svg_data_uri(scale=4, border=0, dark="#4f4462"),
             "brand_name": site_settings.brand_name if site_settings else "",
         },
     )

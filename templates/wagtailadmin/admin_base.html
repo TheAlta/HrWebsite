@@ -1,0 +1,5 @@
+{% extends "wagtailadmin/admin_base.html" %}
+{% load static %}
+{# The panel's tab icon is the site's (REPORT #055) #}
+{% block branding_favicon %}<link rel="icon" href="{% static 'favicon.svg' %}" type="image/svg+xml">{% endblock %}
+{% block branding_title %}پنل {{ settings.content.SiteSettings.brand_name|default:"مدیریت" }}{% endblock %}
