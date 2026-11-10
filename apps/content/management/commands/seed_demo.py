@@ -53,11 +53,12 @@ from apps.shop.models import Coupon, CouponUse, DownloadToken, Product, Shipment
 
 DEMO_TAG = "[demo]"  # marks sample images/documents so --reset can remove them
 
+# The site's own colours (frontend/main.css), so sample pictures sit well in the design
 PALETTE = [
-    ("#1c3970", "#2f5aa8"),
-    ("#172e59", "#839fd9"),
-    ("#a5650b", "#e59a1a"),
-    ("#22468a", "#b3c6ea"),
+    ("#5b5167", "#a98bd2"),
+    ("#4f4462", "#d8c4f6"),
+    ("#386858", "#8fd0b4"),
+    ("#7f561c", "#e8bf7a"),
 ]
 
 
@@ -93,7 +94,7 @@ def make_logo(name, seed):
     color = PALETTE[seed % len(PALETTE)][0]
     draw.rounded_rectangle([10, 20, 100, 100], radius=18, fill=color)
     draw.rectangle([120, 45, 300, 60], fill=color)
-    draw.rectangle([120, 72, 240, 82], fill="#94a3b8")
+    draw.rectangle([120, 72, 240, 82], fill="#a39aa3")
     buffer = io.BytesIO()
     img.save(buffer, format="PNG")
     return get_image_model().objects.create(
@@ -103,7 +104,7 @@ def make_logo(name, seed):
 
 def make_pdf(title):
     img = PILImage.new("RGB", (595, 842), "white")
-    ImageDraw.Draw(img).rectangle([40, 40, 555, 120], fill="#1c3970")
+    ImageDraw.Draw(img).rectangle([40, 40, 555, 120], fill="#4f4462")
     buffer = io.BytesIO()
     img.save(buffer, format="PDF")
     return get_document_model().objects.create(
@@ -280,31 +281,35 @@ class Command(BaseCommand):
             home, ServiceIndexPage(title="خدمات", slug="services", intro=p("خدمات فردی و سازمانی."))
         )
         services = []
-        for i, (title, audience, summary, price) in enumerate(
+        for i, (title, audience, summary, price, icon) in enumerate(
             [
                 (
                     "ارزیابی عملکرد",
                     Audience.CORPORATE,
                     "طراحی و استقرار نظام ارزیابی عملکرد منصفانه و قابل اجرا.",
                     None,
+                    "gauge",
                 ),
                 (
                     "طراحی ساختار سازمانی",
                     Audience.CORPORATE,
                     "چارت، شرح شغل و جریان تصمیم‌گیری متناسب با استراتژی.",
                     None,
+                    "network",
                 ),
                 (
                     "جذب و استخدام",
                     Audience.CORPORATE,
                     "فرایند جذب از شرح شغل تا مصاحبه ساختاریافته.",
                     None,
+                    "shield",
                 ),
                 (
                     "مشاوره مسیر شغلی",
                     Audience.INDIVIDUAL,
                     "جلسه فردی برای انتخاب مسیر، رزومه و آمادگی مصاحبه.",
                     25_000_000,
+                    "route",
                 ),
             ]
         ):
@@ -316,6 +321,7 @@ class Command(BaseCommand):
                         slug=f"service-{i + 1}",
                         audience=audience,
                         summary=summary,
+                        icon=icon,
                         cover_image=images[i],
                         price=price,
                         duration="۴ جلسه ۹۰ دقیقه‌ای",
@@ -331,7 +337,7 @@ class Command(BaseCommand):
                     ),
                 )
             )
-        publish(
+        corporate = publish(
             services_index,
             CorporateServicesPage(
                 title="خدمات سازمانی",
@@ -385,7 +391,6 @@ class Command(BaseCommand):
                 slug=f"post-{i + 1}",
                 kind=kind,
                 category=categories[i % 3],
-                cover_image=images[(i + 2) % len(images)],
                 intro=LOREM[:180],
                 body=[
                     ("paragraph", p(LOREM)),
@@ -506,7 +511,6 @@ class Command(BaseCommand):
                     title=title,
                     slug=f"event-{i + 1}",
                     kind=kind,
-                    cover_image=images[i % len(images)],
                     summary="این متن نمونه است و از پنل مدیریت قابل تغییر است.",
                     body=p(LOREM),
                     instructor="مدرس نمونه",
@@ -518,7 +522,7 @@ class Command(BaseCommand):
                     join_link="https://example.com/room",
                 ),
             )
-        publish(
+        speaking = publish(
             home,
             SpeakingPage(
                 title="سخنرانی‌ها",
@@ -574,64 +578,77 @@ class Command(BaseCommand):
             (
                 "hero",
                 {
-                    "title": "منابع انسانی را به مزیت رقابتی سازمانتان تبدیل کنید",
-                    "subtitle": "مشاوره، آموزش و همراهی در ارزیابی عملکرد، ساختار سازمانی و جذب استعدادها.",
-                    "image": portrait,
+                    "eyebrow": "منابع انسانی",
+                    "title": "آدم‌ها.\nفرایندها.\nسازمان‌های بهتر.",
+                    "subtitle": (
+                        "من آرزو هستم، مشاور منابع انسانی. کمک می‌کنم سازمان‌ها آدم‌محور بمانند،"
+                        " استعدادها رشد کنند و تیم‌ها پایدار شوند."
+                    ),
+                    "image": None,
                     "buttons": [
-                        {
-                            "label": "درخواست مشاوره",
-                            "page": consultation,
-                            "url": "",
-                            "style": "primary",
-                        },
-                        {
-                            "label": "آشنایی با خدمات",
-                            "page": services_index,
-                            "url": "",
-                            "style": "secondary",
-                        },
+                        {"label": "درباره من", "page": about, "url": "", "style": "primary"},
+                        {"label": "تماس با من", "page": contact, "url": "", "style": "secondary"},
                     ],
+                    "quote": (
+                        "«شرکت‌های بزرگ فقط با استراتژی ساخته نمی‌شوند؛"
+                        " آدم‌هایی آن‌ها را می‌سازند که استراتژی را واقعی می‌کنند.»"
+                    ),
                 },
             ),
-            ("client_logos", {"title": "سازمان‌هایی که با آن‌ها کار کرده‌ام"}),
+            ("services", {"title": "", "intro": "", "services": []}),
             (
-                "services",
-                {"title": "خدمات", "intro": "از تشخیص مسئله تا استقرار راه‌حل.", "services": []},
+                "about",
+                {
+                    "title": "درباره من",
+                    "text": (
+                        "مشاور منابع انسانی با سابقه در مدیریت استعداد، روابط کار و توسعهٔ سازمانی."
+                        " دوست دارم محیط‌های کاری‌ای بسازم که آدم‌ها در آن رشد کنند"
+                        " و بهترین کارشان را انجام دهند."
+                    ),
+                    "button": [
+                        {"label": "بیشتر دربارهٔ من", "page": about, "url": "", "style": "secondary"}
+                    ],
+                    "traits": [
+                        {"label": "همدلی", "icon": "heart"},
+                        {"label": "ارتباط مؤثر", "icon": "message"},
+                        {"label": "حل مسئله", "icon": "bulb"},
+                        {"label": "رهبری", "icon": "crown"},
+                    ],
+                    "image": None,
+                },
             ),
+            ("latest_articles", {"title": "تازه‌ترین نوشته‌ها", "count": 3}),
+            ("client_logos", {"title": ""}),
             (
                 "stats",
                 {
                     "title": "",
                     "items": [
-                        {"value": "۱۵+", "label": "سال تجربه"},
-                        {"value": "۶۰+", "label": "سازمان"},
-                        {"value": "۳٬۰۰۰+", "label": "ساعت آموزش"},
-                        {"value": "۵٬۰۰۰+", "label": "شرکت‌کننده"},
+                        {"value": "۱۵+", "label": "سال تجربه در منابع انسانی"},
+                        {"value": "۶۰+", "label": "سازمان همکار"},
+                        {"value": "۳٬۰۰۰+", "label": "ساعت آموزش سازمانی"},
+                        {"value": "۵٬۰۰۰+", "label": "شرکت‌کننده در دوره‌ها"},
                     ],
+                },
+            ),
+            ("upcoming_event", {"title": "رویداد پیش رو"}),
+            (
+                "products",
+                {
+                    "title": "از فروشگاه",
+                    "intro": "کتاب‌ها و ابزارهای کاربردی منابع انسانی.",
+                    "count": 4,
                 },
             ),
             ("testimonials", {"title": "نظر مشتریان", "testimonials": []}),
-            ("latest_articles", {"title": "از مجله", "count": 3}),
             (
-                "callback_form",
+                "contact_band",
                 {
-                    "title": "با من تماس بگیرید",
-                    "text": "نام و شماره‌تان را بگذارید؛ در اولین فرصت تماس می‌گیرم.",
-                },
-            ),
-            (
-                "cta",
-                {
-                    "title": "آماده‌اید شروع کنیم؟",
-                    "text": "یک جلسه کوتاه برای شناخت نیاز سازمان شما.",
-                    "buttons": [
-                        {
-                            "label": "درخواست مشاوره",
-                            "page": consultation,
-                            "url": "",
-                            "style": "primary",
-                        },
-                    ],
+                    "callback_title": "با من تماس بگیرید",
+                    "callback_text": "نام و شماره‌تان را بگذارید؛ در اولین فرصت تماس می‌گیرم.",
+                    "document": resume,
+                    "document_title": "دریافت رزومهٔ کامل",
+                    "document_text": "رزومه و فهرست پروژه‌ها را دریافت کنید.",
                 },
             ),
         ]
@@ -640,7 +657,7 @@ class Command(BaseCommand):
         # --- site settings --------------------------------------------------
         site = Site.objects.get(is_default_site=True)
         settings = SiteSettings.for_site(site)
-        settings.brand_name = "Arezoo"
+        settings.brand_name = "آرزو زحمت‌بران"
         settings.tagline = "مشاور منابع انسانی"
         settings.phone = "021 1234 5678"
         settings.email = "info@example.com"
@@ -657,19 +674,50 @@ class Command(BaseCommand):
         settings.cta_label = "درخواست مشاوره"
         settings.cta_page = consultation
         settings.default_og_image = images[0]
+
+        def link(label, page, description="", icon=""):
+            return {
+                "label": label,
+                "page": page,
+                "url": "",
+                "description": description,
+                "icon": icon,
+            }
+
+        # The demo's menu: two dropdown groups (REPORT #055)
         settings.main_menu = [
-            ("link", {"label": label, "page": page, "url": ""})
-            for label, page in [
-                ("خانه", home),
-                ("درباره من", about),
-                ("خدمات", services_index),
-                ("رزرو جلسه", booking_page),
-                ("رویدادها", events_page),
-                ("فروشگاه", shop_page),
-                ("مجله", blog),
-                ("نمونه‌کارها", portfolio),
-                ("تماس", contact),
-            ]
+            ("link", {"label": "خانه", "page": home, "url": ""}),
+            ("link", {"label": "درباره من", "page": about, "url": ""}),
+            (
+                "group",
+                {
+                    "label": "خدمات",
+                    "links": [
+                        link("همهٔ خدمات", services_index, "خدمات فردی و سازمانی", "briefcase"),
+                        link("خدمات سازمانی", corporate, "ساختار، جذب، ارزیابی و آموزش", "users"),
+                        link(
+                            "رزرو جلسهٔ مشاوره",
+                            booking_page,
+                            "انتخاب زمان و پرداخت آنلاین",
+                            "calendar",
+                        ),
+                    ],
+                },
+            ),
+            ("link", {"label": "آموزش و رویدادها", "page": events_page, "url": ""}),
+            (
+                "group",
+                {
+                    "label": "منابع",
+                    "links": [
+                        link("مجله", blog, "مقاله، پادکست و ویدئو", "newspaper"),
+                        link("کتاب‌ها و محصولات", shop_page, "کتاب چاپی و فایل آموزشی", "book"),
+                        link("نمونه‌کارها", portfolio, "پروژه‌ها و نظر مشتریان", "award"),
+                        link("سخنرانی‌ها", speaking, "سوابق و دعوت به سخنرانی", "mic"),
+                    ],
+                },
+            ),
+            ("link", {"label": "تماس", "page": contact, "url": ""}),
         ]
         settings.save()
 

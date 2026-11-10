@@ -1,11 +1,11 @@
-<section class="section bg-brand-800 text-white">
+<section class="pt-4 pb-14 sm:pb-20">
   <div class="container-page">
-    {% if value.title %}<h2 class="mb-8 text-center text-2xl font-extrabold">{{ value.title }}</h2>{% endif %}
-    <dl class="grid grid-cols-2 gap-8 text-center lg:flex lg:justify-around">
+    {% if value.title %}<h2 class="heading-2 mb-6">{{ value.title }}</h2>{% endif %}
+    <dl class="grid grid-cols-2 gap-4 lg:grid-cols-4">
       {% for item in value.items %}
-      <div class="flex flex-col-reverse">
-        <dt class="mt-1 text-brand-200">{{ item.label }}</dt>
-        <dd class="text-4xl font-extrabold text-accent-500">{{ item.value }}</dd>
+      <div class="tile stat-tile flex-col-reverse">
+        <dt class="text-sm text-ink-3">{{ item.label }}</dt>
+        <dd><b>{{ item.value }}</b></dd>
       </div>
       {% endfor %}
     </dl>

@@ -39,7 +39,7 @@ def test_every_page_renders(client, demo_site, url):
     assert response.status_code == 200
     html = response.content.decode()
     assert 'dir="rtl"' in html
-    assert "Arezoo" in html  # brand from Site Settings in header/footer
+    assert SiteSettings.objects.get().brand_name in html  # header/footer read Site Settings
 
 
 def test_seed_is_idempotent_and_resettable(demo_site):
@@ -216,3 +216,30 @@ def test_podcast_feed(client, blog):
 def test_styleguide_only_in_debug(client, settings):
     settings.DEBUG = False
     assert client.get("/styleguide/").status_code == 404
+
+
+def test_home_has_the_demo_sections(client, demo_site):
+    """Hero with a coloured last line, services tray, about, next event, products, contact band."""
+    html = client.get("/").content.decode()
+    assert 'class="block accent-text">سازمان‌های بهتر.</span>' in html
+    assert "services-tray" in html
+    assert "ارتباط مؤثر" in html  # a trait on the about picture
+    assert 'x-data="countdown"' in html
+    assert "کتاب مبانی منابع انسانی" in html
+    assert 'id="callback-form"' in html
+    assert 'id="download-form-' in html
+
+
+def test_menu_groups_open_as_dropdowns_and_fill_the_footer(client, demo_site):
+    html = client.get("/").content.decode()
+    assert 'aria-controls="menu-' in html
+    assert '<h2 class="footer-heading">خدمات</h2>' in html
+    assert 'href="/terms/"' in html  # legal pages in the footer
+
+
+def test_cards_without_a_photo_get_a_drawn_scene(client, demo_site):
+    from apps.content.templatetags.content_tags import scene_class
+
+    article = ArticlePage.objects.live().first()
+    assert scene_class(article) == scene_class(article)  # the same picture every time
+    assert f"scene {scene_class(article)}" in client.get("/blog/").content.decode()

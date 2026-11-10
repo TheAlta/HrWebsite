@@ -1,9 +1,10 @@
 {% if services %}
-<section class="section">
+{# On the home page the cards sit on a light tray, as in the demo. #}
+<section class="relative z-10 {% if value.title %}section{% else %}-mt-4 pb-14{% endif %}">
   <div class="container-page">
-    {% include "components/section_header.html" with title=value.title intro=value.intro %}
-    <div class="grid gap-6 sm:grid-cols-2 {% if services|length >= 4 %}lg:grid-cols-4{% else %}lg:grid-cols-3{% endif %}">
-      {% for service in services %}{% include "components/card_service.html" with service=service %}{% endfor %}
+    {% if value.title %}{% include "components/section_header.html" with title=value.title intro=value.intro %}{% endif %}
+    <div class="services-tray grid gap-6 sm:grid-cols-2 {% if services|length >= 4 %}lg:grid-cols-4{% else %}lg:grid-cols-3{% endif %}">
+      {% for service in services %}{% include "components/card_service.html" with service=service compact=True %}{% endfor %}
     </div>
   </div>
 </section>

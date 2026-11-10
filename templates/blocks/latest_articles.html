@@ -1,7 +1,7 @@
 {% if articles %}
 <section class="section">
   <div class="container-page">
-    {% include "components/section_header.html" with title=value.title %}
+    {% include "components/section_header.html" with title=value.title link=blog.url %}
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {% for article in articles %}{% include "components/card_article.html" with article=article %}{% endfor %}
     </div>

@@ -46,6 +46,42 @@ class LinkBlock(blocks.StructBlock):
         label = "لینک"
 
 
+# Icons the header's dropdown can show beside a link (templates/components/icon.html)
+MENU_ICONS = [
+    ("", "بدون آیکن"),
+    ("briefcase", "کیف کار"),
+    ("users", "افراد"),
+    ("calendar", "تقویم"),
+    ("newspaper", "مجله"),
+    ("book", "کتاب"),
+    ("award", "نشان"),
+    ("mic", "میکروفون"),
+    ("compass", "قطب‌نما"),
+    ("route", "مسیر"),
+]
+
+
+class MenuItemBlock(LinkBlock):
+    description = blocks.CharBlock(required=False, label="توضیح کوتاه", max_length=80)
+    icon = blocks.ChoiceBlock(choices=MENU_ICONS, required=False, default="", label="آیکن")
+
+    class Meta:
+        icon = "link"
+        value_class = LinkValue
+        label = "لینک"
+
+
+class MenuGroupBlock(blocks.StructBlock):
+    """A menu entry that opens a short list of links, as in the owner's demo (REPORT #055)."""
+
+    label = blocks.CharBlock(label="عنوان")
+    links = blocks.ListBlock(MenuItemBlock(), min_num=1, label="لینک‌ها")
+
+    class Meta:
+        icon = "list-ul"
+        label = "گروه کشویی"
+
+
 class ButtonBlock(LinkBlock):
     style = blocks.ChoiceBlock(
         choices=[("primary", "اصلی"), ("secondary", "ثانویه")],
@@ -187,10 +223,20 @@ class BodyBlock(blocks.StreamBlock):
 
 
 class HeroBlock(blocks.StructBlock):
-    title = blocks.CharBlock(label="عنوان", help_text="یک جمله ارزش: چه مشکلی را حل می‌کنید")
+    eyebrow = blocks.CharBlock(required=False, label="برچسب بالای عنوان")
+    title = blocks.TextBlock(
+        label="عنوان",
+        rows=3,
+        help_text="یک جمله ارزش. هر خط جدا نمایش داده می‌شود و خط آخر رنگی است.",
+    )
     subtitle = blocks.TextBlock(required=False, label="زیرعنوان")
-    image = ImageChooserBlock(required=False, label="عکس")
+    image = ImageChooserBlock(
+        required=False,
+        label="تصویر پس‌زمینه",
+        help_text="خالی بگذارید تا تصویر نقاشی‌شده پیش‌فرض نمایش داده شود.",
+    )
     buttons = blocks.ListBlock(ButtonBlock(), max_num=2, label="دکمه‌ها")
+    quote = blocks.TextBlock(required=False, label="جمله کنار تصویر")
 
     class Meta:
         icon = "pick"
@@ -217,7 +263,12 @@ class ClientLogosBlock(blocks.StructBlock):
 
 
 class ServicesBlock(blocks.StructBlock):
-    title = blocks.CharBlock(default="خدمات", label="عنوان")
+    title = blocks.CharBlock(
+        required=False,
+        default="خدمات",
+        label="عنوان",
+        help_text="بدون عنوان، کارت‌ها روی لبهٔ پایین بخش اول می‌نشینند.",
+    )
     intro = blocks.TextBlock(required=False, label="مقدمه")
     services = blocks.ListBlock(
         blocks.PageChooserBlock(page_type="content.ServicePage"),
@@ -291,7 +342,7 @@ class LatestArticlesBlock(blocks.StructBlock):
     count = blocks.IntegerBlock(default=3, min_value=1, max_value=12, label="تعداد")
 
     def get_context(self, value, parent_context=None):
-        from .models import ArticlePage
+        from .models import ArticlePage, BlogIndexPage
 
         context = super().get_context(value, parent_context)
         context["articles"] = (
@@ -299,6 +350,7 @@ class LatestArticlesBlock(blocks.StructBlock):
             .order_by("-first_published_at")
             .select_related("cover_image", "category")[: value["count"]]
         )
+        context["blog"] = BlogIndexPage.objects.live().first()
         return context
 
     class Meta:
@@ -336,8 +388,135 @@ class RichTextSectionBlock(blocks.StructBlock):
         label = "بخش متنی"
 
 
+# Icons for the short traits beside the "about" picture (templates/components/icon.html)
+TRAIT_ICONS = [
+    ("heart", "دل"),
+    ("message", "گفت‌وگو"),
+    ("bulb", "ایده"),
+    ("crown", "تاج"),
+    ("users", "افراد"),
+    ("award", "نشان"),
+    ("compass", "قطب‌نما"),
+    ("sprout", "رشد"),
+]
+
+
+class AboutBlock(blocks.StructBlock):
+    """Short introduction beside a picture with a few traits, as in the owner's demo."""
+
+    title = blocks.CharBlock(default="درباره من", label="عنوان")
+    text = blocks.TextBlock(label="متن")
+    button = blocks.ListBlock(ButtonBlock(), max_num=1, label="دکمه", required=False)
+    traits = blocks.ListBlock(
+        blocks.StructBlock(
+            [
+                ("label", blocks.CharBlock(label="عنوان", max_length=30)),
+                ("icon", blocks.ChoiceBlock(choices=TRAIT_ICONS, default="heart", label="آیکن")),
+            ]
+        ),
+        max_num=5,
+        required=False,
+        label="ویژگی‌ها",
+        help_text="کلمه‌های کوتاه روی تصویر، مثل «همدلی».",
+    )
+    image = ImageChooserBlock(
+        required=False,
+        label="تصویر",
+        help_text="خالی بگذارید تا تصویر نقاشی‌شده پیش‌فرض نمایش داده شود.",
+    )
+
+    class Meta:
+        icon = "user"
+        template = "blocks/about.html"
+        label = "معرفی کوتاه"
+
+
+class UpcomingEventBlock(blocks.StructBlock):
+    """The next course or webinar with a countdown; hidden when none is ahead."""
+
+    title = blocks.CharBlock(default="رویداد پیش رو", label="عنوان")
+
+    def get_context(self, value, parent_context=None):
+        from django.utils import timezone
+
+        from apps.events import services as events
+        from apps.events.models import EventIndexPage, EventPage
+
+        context = super().get_context(value, parent_context)
+        event = (
+            EventPage.objects.live()
+            .public()
+            .exclude(kind=EventPage.Kind.TALK)
+            .filter(start_at__gt=timezone.now())
+            .order_by("start_at")
+            .first()
+        )
+        context["event"] = event
+        context["seats_left"] = events.seats_left(event) if event else None
+        context["events_index"] = EventIndexPage.objects.live().first()
+        return context
+
+    class Meta:
+        icon = "date"
+        template = "blocks/upcoming_event.html"
+        label = "رویداد پیش رو"
+
+
+class ProductsBlock(blocks.StructBlock):
+    """A row of books and files from the shop."""
+
+    title = blocks.CharBlock(default="کتاب‌ها و منابع آموزشی", label="عنوان")
+    intro = blocks.TextBlock(required=False, label="مقدمه")
+    count = blocks.IntegerBlock(default=4, min_value=1, max_value=8, label="تعداد")
+
+    def get_context(self, value, parent_context=None):
+        from apps.shop.models import Product, ShopPage
+
+        context = super().get_context(value, parent_context)
+        context["shop"] = ShopPage.objects.live().first()
+        context["products"] = (
+            Product.objects.on_sale().select_related("cover_image")[: value["count"]]
+            if context["shop"]
+            else []
+        )
+        return context
+
+    class Meta:
+        icon = "doc-full-inverse"
+        template = "blocks/products.html"
+        label = "کتاب‌ها و محصولات"
+
+
+class ContactBandBlock(blocks.StructBlock):
+    """Two cards side by side: the call-back form and, optionally, a file to download."""
+
+    callback_title = blocks.CharBlock(default="با من تماس بگیرید", label="عنوان فرم تماس")
+    callback_text = blocks.TextBlock(required=False, label="متن فرم تماس")
+    document = DocumentChooserBlock(required=False, label="فایل کنار فرم")
+    document_title = blocks.CharBlock(default="کاتالوگ خدمات سازمانی", label="عنوان فایل")
+    document_text = blocks.TextBlock(required=False, label="متن فایل")
+
+    def get_context(self, value, parent_context=None):
+        from apps.crm.forms import CallbackForm, DownloadForm
+
+        context = super().get_context(value, parent_context)
+        context["callback_form"] = CallbackForm()
+        if value["document"]:
+            context["download_form"] = DownloadForm(initial={"document": value["document"].pk})
+        return context
+
+    class Meta:
+        icon = "mail"
+        template = "blocks/contact_band.html"
+        label = "فرم تماس و فایل"
+
+
 class HomeBlock(blocks.StreamBlock):
     hero = HeroBlock()
+    about = AboutBlock()
+    upcoming_event = UpcomingEventBlock()
+    products = ProductsBlock()
+    contact_band = ContactBandBlock()
     client_logos = ClientLogosBlock()
     services = ServicesBlock()
     stats = StatsBlock()

@@ -1,19 +1,26 @@
 {% load wagtailimages_tags %}
-<section class="relative overflow-hidden bg-gradient-to-b from-brand-50 to-white">
-  <div class="container-page grid items-center gap-10 py-14 sm:py-20 lg:grid-cols-2">
+{# The demo's hero: a drawn scene (or the panel's picture), the title on the start side, a quote card on the other. #}
+<section class="under-header relative isolate overflow-hidden {% if not value.image %}scene scene-hero{% endif %}">
+  {% if value.image %}{% picture value.image format-{avif,webp,jpeg} fill-1920x1150 sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover" alt="" fetchpriority="high" %}{% endif %}
+  <div class="veil-hero absolute inset-0 -z-10" aria-hidden="true"></div>
+  <div class="container-page grid min-h-[40rem] content-center gap-10 py-16 lg:min-h-[50rem] lg:grid-cols-[minmax(0,40rem)_1fr]">
     <div>
-      <h1 class="heading-1 text-4xl sm:text-5xl">{{ value.title }}</h1>
-      {% if value.subtitle %}<p class="lead mt-5 max-w-xl">{{ value.subtitle }}</p>{% endif %}
+      {% if value.eyebrow %}<p class="eyebrow">{{ value.eyebrow }}</p>{% endif %}
+      <h1 class="mt-3 font-display text-[2.9rem] leading-[1.2] font-medium text-ink sm:text-[3.6rem] lg:text-[4.25rem]">
+        {% for line in value.title.splitlines %}{% if line.strip %}<span class="block{% if forloop.last and not forloop.first %} accent-text{% endif %}">{{ line }}</span>{% endif %}{% endfor %}
+      </h1>
+      {% if value.subtitle %}<p class="mt-6 max-w-xl text-[1.08rem] leading-9 text-ink-2">{{ value.subtitle }}</p>{% endif %}
       {% if value.buttons %}
-      <div class="mt-8 flex flex-wrap gap-3">
-        {% for button in value.buttons %}<a href="{{ button.href }}" class="btn {% if button.style == 'secondary' %}btn-secondary{% else %}btn-primary{% endif %}">{{ button.label }}</a>{% endfor %}
+      <div class="mt-9 flex flex-wrap gap-4">
+        {% for button in value.buttons %}<a href="{{ button.href }}" class="btn min-w-36 {% if button.style == 'secondary' %}btn-secondary{% else %}btn-primary{% endif %}">{{ button.label }}{% if button.style == 'secondary' %} {% include "components/icon.html" with name="arrow" size="16" %}{% endif %}</a>{% endfor %}
       </div>
       {% endif %}
     </div>
-    {% if value.image %}
-    <div class="justify-self-center lg:justify-self-end">
-      {% picture value.image format-{avif,webp,jpeg} fill-560x640 sizes="(min-width: 1024px) 480px, 90vw" class="aspect-[7/8] w-full max-w-md rounded-[2rem] object-cover shadow-xl" alt="" fetchpriority="high" %}
-    </div>
+    {% if value.quote %}
+    <figure class="surface glass max-w-sm self-start p-8 lg:mt-24 lg:justify-self-end">
+      <blockquote class="text-[1.04rem] leading-8 text-ink">{{ value.quote }}</blockquote>
+      <span class="mt-7 block h-0.5 w-10 rounded-full bg-ink-3/60" aria-hidden="true"></span>
+    </figure>
     {% endif %}
   </div>
 </section>

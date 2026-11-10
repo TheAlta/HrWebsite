@@ -1,0 +1,6 @@
+<section class="section">
+  <div class="container-page grid gap-6 {% if download_form %}lg:grid-cols-2{% else %}max-w-xl{% endif %}">
+    {% include "crm/includes/callback_form.html" with form=callback_form title=value.callback_title text=value.callback_text %}
+    {% if download_form %}{% include "crm/includes/download_form.html" with form=download_form title=value.document_title text=value.document_text %}{% endif %}
+  </div>
+</section>
