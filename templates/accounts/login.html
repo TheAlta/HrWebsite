@@ -3,9 +3,13 @@
 {% block meta %}<meta name="robots" content="noindex">{% endblock %}
 
 {% block content %}
-<section class="container-page flex min-h-[60vh] items-center justify-center py-12">
-  <div id="login-card" class="card w-full max-w-sm">
-    {% if mobile %}{% include "accounts/includes/code_step.html" %}{% else %}{% include "accounts/includes/mobile_step.html" %}{% endif %}
+<section class="under-header scene scene-hero relative isolate">
+  <div class="veil-page absolute inset-0 -z-10" aria-hidden="true"></div>
+  <div class="container-page flex min-h-[70vh] flex-col items-center justify-center gap-6 py-14">
+    {% include "components/brand_mark.html" with class="size-12 text-ink" %}
+    <div id="login-card" class="panel-box w-full max-w-sm">
+      {% if mobile %}{% include "accounts/includes/code_step.html" %}{% else %}{% include "accounts/includes/mobile_step.html" %}{% endif %}
+    </div>
   </div>
 </section>
 {% endblock %}

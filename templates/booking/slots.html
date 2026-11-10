@@ -6,12 +6,15 @@
 {% block content %}
 {% include "components/page_header.html" with title=session_type.title intro=session_type.description %}
 <div class="container-page py-12">
-  <p class="mb-6 flex flex-wrap items-center gap-3 text-slate-600">
+  {% include "components/steps.html" with steps="نوع جلسه|روز و ساعت|ورود و تأیید|پرداخت" current=2 label="مراحل رزرو" %}
+  <div class="panel-box mt-8 p-5 sm:p-6">
+  <p class="mb-6 flex flex-wrap items-center gap-3 text-ink-3">
     <span class="badge">{{ session_type.get_mode_display }}</span>
     <span>{{ session_type.duration_min|fa_digits }} دقیقه</span>
-    <span class="font-semibold text-slate-800">{% if session_type.price %}{{ session_type.price|toman }}{% else %}رایگان{% endif %}</span>
+    <span class="font-semibold text-ink">{% if session_type.price %}{{ session_type.price|toman }}{% else %}رایگان{% endif %}</span>
   </p>
   {% routablepageurl page "confirm" session_type.pk as confirm_url %}
   {% include "booking/includes/slot_picker.html" with days=days action=confirm_url method="get" %}
+  </div>
 </div>
 {% endblock %}

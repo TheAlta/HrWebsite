@@ -3,17 +3,17 @@
 {% block title %}سفارش‌ها | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
 
 {% block account_content %}
-<h1 class="heading-1">سفارش‌ها</h1>
+<h1 class="heading-2">سفارش‌ها</h1>
 {% if page_obj.object_list %}
-<ul class="card mt-6 divide-y divide-slate-200">
+<ul class="panel-box mt-6 divide-y divide-line">
   {% for order in page_obj %}
-  <li><a href="{% url 'orders:detail' order.number %}" class="flex flex-wrap items-center justify-between gap-3 px-5 py-4 hover:bg-slate-50">
+  <li><a href="{% url 'orders:detail' order.number %}" class="flex flex-wrap items-center justify-between gap-3 px-5 py-4 hover:bg-page-2">
     <span class="min-w-0">
-      <span class="block font-semibold text-slate-900">{{ order.items_display }}</span>
+      <span class="block font-semibold text-ink">{{ order.items_display }}</span>
       <span class="muted">سفارش {{ order.number|fa_digits }} · {{ order.created_at|jdate }}</span>
     </span>
     <span class="flex items-center gap-3">
-      <span class="text-sm font-semibold text-slate-700">{% if order.total %}{{ order.total|toman }}{% else %}رایگان{% endif %}</span>
+      <span class="text-sm font-semibold text-ink-2">{% if order.total %}{{ order.total|toman }}{% else %}رایگان{% endif %}</span>
       <span class="badge">{{ order.get_status_display }}</span>
     </span>
   </a></li>

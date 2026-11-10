@@ -15,18 +15,18 @@
   {% if searched and form.is_valid %}
   <div class="mt-8" aria-live="polite">
     {% if certificate %}
-    <div class="card"><div class="card-body gap-4">
+    <div class="panel-box"><div class="card-body gap-4">
       {% if certificate.is_valid %}
       {% include "components/alert.html" with level="success" text="این گواهی معتبر است." %}
       {% else %}
       {% include "components/alert.html" with level="error" text="این گواهی باطل شده است." %}
       {% endif %}
       <dl class="grid gap-3">
-        <div><dt class="muted">نام</dt><dd class="font-semibold text-slate-900">{{ certificate.full_name|default:"—" }}</dd></div>
-        <div><dt class="muted">{{ certificate.event_kind }}</dt><dd class="font-semibold text-slate-900">{{ certificate.event_title }}</dd></div>
-        <div><dt class="muted">تاریخ برگزاری</dt><dd class="font-semibold text-slate-900">{{ certificate.event_start|jdate }}</dd></div>
-        {% if certificate.instructor %}<div><dt class="muted">مدرس</dt><dd class="font-semibold text-slate-900">{{ certificate.instructor }}</dd></div>{% endif %}
-        <div><dt class="muted">کد</dt><dd class="font-semibold text-slate-900" dir="ltr">{{ certificate.code }}</dd></div>
+        <div><dt class="muted">نام</dt><dd class="font-semibold text-ink">{{ certificate.full_name|default:"—" }}</dd></div>
+        <div><dt class="muted">{{ certificate.event_kind }}</dt><dd class="font-semibold text-ink">{{ certificate.event_title }}</dd></div>
+        <div><dt class="muted">تاریخ برگزاری</dt><dd class="font-semibold text-ink">{{ certificate.event_start|jdate }}</dd></div>
+        {% if certificate.instructor %}<div><dt class="muted">مدرس</dt><dd class="font-semibold text-ink">{{ certificate.instructor }}</dd></div>{% endif %}
+        <div><dt class="muted">کد</dt><dd class="font-semibold text-ink" dir="ltr">{{ certificate.code }}</dd></div>
       </dl>
     </div></div>
     {% else %}

@@ -3,17 +3,17 @@
 {% block title %}حساب کاربری | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
 
 {% block account_content %}
-<h1 class="heading-1">{% if user.first_name %}سلام {{ user.first_name }}{% else %}حساب کاربری{% endif %}</h1>
+<h1 class="heading-2">{% if user.first_name %}سلام {{ user.first_name }}{% else %}حساب کاربری{% endif %}</h1>
 <p class="muted mt-2">شماره موبایل: <span dir="ltr">{{ user.mobile|fa_digits }}</span></p>
 {% if not user.first_name %}<div class="mt-4">{% include "components/alert.html" with level="info" text="نام خود را در «مشخصات من» کامل کنید تا روی فاکتورها درج شود." %}</div>{% endif %}
 
 {% if unpaid %}
 <section class="mt-8" aria-labelledby="unpaid-heading">
-  <h2 id="unpaid-heading" class="heading-2">در انتظار پرداخت</h2>
-  <ul class="card mt-4 divide-y divide-slate-200">
+  <h2 id="unpaid-heading" class="card-title">در انتظار پرداخت</h2>
+  <ul class="panel-box mt-4 divide-y divide-line">
     {% for order in unpaid %}
     <li class="flex flex-wrap items-center justify-between gap-3 px-5 py-3">
-      <span class="min-w-0"><span class="block font-semibold text-slate-900">{{ order.items_display }}</span><span class="muted">{{ order.total|toman }}</span></span>
+      <span class="min-w-0"><span class="block font-semibold text-ink">{{ order.items_display }}</span><span class="muted">{{ order.total|toman }}</span></span>
       <a href="{% url 'orders:detail' order.number %}" class="btn btn-primary btn-sm">پرداخت</a>
     </li>
     {% endfor %}
@@ -24,11 +24,11 @@
 <div class="mt-8 grid gap-6 sm:grid-cols-2">
   <section class="card" aria-labelledby="next-session-heading">
     <div class="card-body">
-      <h2 id="next-session-heading" class="card-title">جلسه بعدی</h2>
+      <h2 id="next-session-heading" class="card-title flex items-center gap-3"><span class="icon-disc size-10">{% include "components/icon.html" with name="calendar" size="18" %}</span>جلسه بعدی</h2>
       {% if next_session %}
-      <p class="font-semibold text-slate-900">{{ next_session.session_type.title }}</p>
+      <p class="font-semibold text-ink">{{ next_session.session_type.title }}</p>
       <p>{{ next_session.start_at|jdatetime }}</p>
-      {% if next_session.meeting_link %}<a href="{{ next_session.meeting_link }}" target="_blank" rel="noopener" class="font-semibold text-brand-600 hover:underline">ورود به جلسه آنلاین</a>{% endif %}
+      {% if next_session.meeting_link %}<a href="{{ next_session.meeting_link }}" target="_blank" rel="noopener" class="link-accent">ورود به جلسه آنلاین</a>{% endif %}
       {% else %}
       <p class="muted">جلسه‌ای در پیش ندارید.</p>
       {% endif %}
@@ -36,11 +36,11 @@
   </section>
   <section class="card" aria-labelledby="next-course-heading">
     <div class="card-body">
-      <h2 id="next-course-heading" class="card-title">دوره بعدی</h2>
+      <h2 id="next-course-heading" class="card-title flex items-center gap-3"><span class="icon-disc size-10">{% include "components/icon.html" with name="graduation" size="18" %}</span>دوره بعدی</h2>
       {% if next_course %}
-      <a href="{% pageurl next_course.event %}" class="font-semibold text-slate-900 hover:text-brand-700">{{ next_course.event.title }}</a>
+      <a href="{% pageurl next_course.event %}" class="font-semibold text-ink hover:text-accent-ink">{{ next_course.event.title }}</a>
       <p>{{ next_course.event.start_at|jdatetime }}</p>
-      {% if next_course.event.join_link %}<a href="{{ next_course.event.join_link }}" target="_blank" rel="noopener" class="font-semibold text-brand-600 hover:underline">ورود به کلاس</a>{% endif %}
+      {% if next_course.event.join_link %}<a href="{{ next_course.event.join_link }}" target="_blank" rel="noopener" class="link-accent">ورود به کلاس</a>{% endif %}
       {% else %}
       <p class="muted">در دوره‌ای ثبت‌نام نکرده‌اید.</p>
       {% endif %}
