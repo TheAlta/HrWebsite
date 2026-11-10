@@ -1,39 +1,81 @@
-{% load wagtailcore_tags wagtailimages_tags content_tags %}{% with site=settings.content.SiteSettings %}
-<header class="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur" x-data="{ open: false }" @keydown.escape.window="open = false">
-  <div class="container-page flex h-16 items-center justify-between gap-4">
-    <a href="/" class="flex items-center gap-2 text-lg font-extrabold text-brand-800">
-      {% if site.logo %}{% image site.logo height-40 class="h-10 w-auto" alt=site.brand_name %}{% else %}{{ site.brand_name }}{% endif %}
+{% load wagtailcore_tags wagtailimages_tags content_tags core_tags %}{% with site=settings.content.SiteSettings %}
+{# The demo's header: transparent over the page top, frosted once the page scrolls (REPORT #055). #}
+<header class="site-header" x-data="siteHeader" :class="headerClass" @keydown.escape.window="closeMenu">
+  <div class="container-page flex h-20 items-center justify-between gap-6 lg:grid lg:grid-cols-[1fr_auto_1fr]">
+    <a href="/" class="flex items-center gap-3 text-[1.05rem] font-medium text-ink" aria-label="{{ site.brand_name }}، صفحه اصلی">
+      {% if site.logo %}{% image site.logo height-40 class="h-10 w-auto" alt="" %}{% else %}{% include "components/brand_mark.html" %}{% endif %}
+      <span>{{ site.brand_name }}</span>
     </a>
 
     <nav aria-label="منوی اصلی" class="hidden lg:block">
       <ul class="flex items-center gap-1">
         {% for item in site.main_menu %}
-          {% is_active item.value.href as active %}
-          <li><a href="{{ item.value.href }}" class="rounded-lg px-3 py-2 text-[0.95rem] font-medium text-slate-700 hover:bg-slate-100 hover:text-brand-700 aria-[current=page]:text-brand-700" {% if active %}aria-current="page"{% endif %}>{{ item.value.label }}</a></li>
+          {% if item.block_type == "group" %}
+            {% group_active item.value as active %}
+            <li class="relative" x-data="disclosure" @click.outside="close" @keydown.escape="close">
+              <button type="button" class="nav-link {% if active %}is-active{% endif %}" @click="toggle" :aria-expanded="open.toString()" aria-expanded="false" aria-controls="menu-{{ forloop.counter }}">
+                {{ item.value.label }} {% include "components/icon.html" with name="chevron" size="14" class="opacity-70" %}
+              </button>
+              <div id="menu-{{ forloop.counter }}" class="popover absolute start-0 top-full mt-2 w-80 p-2" x-show="open" x-cloak x-transition.opacity>
+                <ul>
+                  {% for link in item.value.links %}
+                  <li><a href="{{ link.href }}" class="menu-link" {% is_active link.href as here %}{% if here %}aria-current="page"{% endif %}>
+                    {% if link.icon %}{% include "components/icon.html" with name=link.icon size="18" class="mt-1 text-ink-3" %}{% endif %}
+                    <span>{{ link.label }}{% if link.description %}<small class="block text-xs leading-6 text-ink-3">{{ link.description }}</small>{% endif %}</span>
+                  </a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </li>
+          {% else %}
+            {% is_active item.value.href as active %}
+            <li><a href="{{ item.value.href }}" class="nav-link" {% if active %}aria-current="page"{% endif %}>{{ item.value.label }}</a></li>
+          {% endif %}
         {% endfor %}
       </ul>
     </nav>
 
-    <div class="flex items-center gap-2">
-      <a href="{% url 'search' %}" class="btn btn-ghost btn-sm" aria-label="جست‌وجو">{% include "components/icon.html" with name="search" %}</a>
-      {% if cart_count %}<a href="{% url 'shop:cart' %}" class="btn btn-ghost btn-sm" aria-label="سبد خرید، {{ cart_count|fa_digits }} قلم">{% include "components/icon.html" with name="cart" %}<span class="badge">{{ cart_count|fa_digits }}</span></a>{% endif %}
-      <a href="{% if user.is_authenticated %}{% url 'accounts:account' %}{% else %}{% url 'accounts:login' %}{% endif %}" class="btn btn-ghost btn-sm" aria-label="{% if user.is_authenticated %}حساب کاربری{% else %}ورود{% endif %}">{% include "components/icon.html" with name="user" %}</a>
-      {% if site.cta_page %}<a href="{% pageurl site.cta_page %}" class="btn btn-primary btn-sm hidden sm:inline-flex">{{ site.cta_label }}</a>{% endif %}
-      <button type="button" class="btn btn-ghost btn-sm lg:hidden" @click="open = !open" :aria-expanded="open.toString()" aria-controls="mobile-menu" aria-label="منو">
-        <span x-show="!open">{% include "components/icon.html" with name="menu" %}</span>
-        <span x-show="open" x-cloak>{% include "components/icon.html" with name="close" %}</span>
+    <div class="flex items-center gap-2 justify-self-end">
+      <button type="button" class="btn btn-secondary btn-sm btn-icon" x-data="themeSwitch" @click="toggle" :aria-pressed="dark.toString()" aria-label="حالت تیره" title="حالت تیره">
+        <span x-show="!dark">{% include "components/icon.html" with name="moon" size="18" %}</span>
+        <span x-show="dark" x-cloak>{% include "components/icon.html" with name="sun" size="18" %}</span>
       </button>
+      <a href="{% url 'search' %}" class="btn btn-secondary btn-sm btn-icon hidden sm:inline-flex" aria-label="جست‌وجو" title="جست‌وجو">{% include "components/icon.html" with name="search" size="18" %}</a>
+      <a href="{% url 'shop:cart' %}" class="btn btn-secondary btn-sm btn-icon" aria-label="سبد خرید{% if cart_count %}، {{ cart_count|fa_digits }} قلم{% endif %}" title="سبد خرید">
+        {% include "components/icon.html" with name="cart" size="18" %}
+        {% if cart_count %}<span class="count-dot" aria-hidden="true">{{ cart_count|fa_digits }}</span>{% endif %}
+      </a>
+      <a href="{% if user.is_authenticated %}{% url 'accounts:account' %}{% else %}{% url 'accounts:login' %}{% endif %}" class="btn btn-secondary btn-sm btn-icon hidden sm:inline-flex" aria-label="{% if user.is_authenticated %}حساب کاربری{% else %}ورود{% endif %}" title="{% if user.is_authenticated %}حساب کاربری{% else %}ورود{% endif %}">{% include "components/icon.html" with name="user" size="18" %}</a>
+      {% if site.cta_page %}<a href="{% pageurl site.cta_page %}" class="btn btn-secondary hidden lg:inline-flex">{{ site.cta_label }}</a>{% endif %}
+      <button type="button" class="btn btn-secondary btn-sm btn-icon lg:hidden" x-ref="burger" @click="openMenu" :aria-expanded="open.toString()" aria-expanded="false" aria-controls="mobile-menu" aria-label="منو">{% include "components/icon.html" with name="menu" size="18" %}</button>
     </div>
   </div>
 
-  <nav id="mobile-menu" aria-label="منوی موبایل" class="border-t border-slate-200 bg-white lg:hidden" x-show="open" x-cloak x-transition.opacity>
-    <ul class="container-page flex flex-col py-3">
-      {% for item in site.main_menu %}
-        {% is_active item.value.href as active %}
-        <li><a href="{{ item.value.href }}" class="block rounded-lg px-3 py-3 font-medium text-slate-700 hover:bg-slate-100 aria-[current=page]:text-brand-700" {% if active %}aria-current="page"{% endif %}>{{ item.value.label }}</a></li>
-      {% endfor %}
-      {% if site.cta_page %}<li class="pt-2"><a href="{% pageurl site.cta_page %}" class="btn btn-primary w-full">{{ site.cta_label }}</a></li>{% endif %}
-    </ul>
-  </nav>
+  {# Mobile menu: a panel from the start side, as in the demo #}
+  <div class="fixed inset-0 z-50 bg-(--scrim) lg:hidden" x-show="open" x-cloak x-transition.opacity @click.self="closeMenu">
+    <nav id="mobile-menu" aria-label="منوی موبایل" class="popover flex h-full w-80 max-w-[86vw] flex-col gap-1 overflow-y-auto rounded-none p-5">
+      <div class="mb-3 flex items-center justify-between">
+        <span class="flex items-center gap-3 font-medium text-ink">{% include "components/brand_mark.html" with class="size-9" %}{{ site.brand_name }}</span>
+        <button type="button" class="btn btn-ghost btn-sm btn-icon" x-ref="closeButton" @click="closeMenu" aria-label="بستن منو">{% include "components/icon.html" with name="close" size="18" %}</button>
+      </div>
+      <ul class="flex flex-col gap-1">
+        {% for item in site.main_menu %}
+          {% if item.block_type == "group" %}
+            <li class="mt-3 px-3 text-xs text-ink-3">{{ item.value.label }}</li>
+            {% for link in item.value.links %}
+            <li><a href="{{ link.href }}" class="menu-link" {% is_active link.href as here %}{% if here %}aria-current="page"{% endif %}>{% if link.icon %}{% include "components/icon.html" with name=link.icon size="18" class="mt-1 text-ink-3" %}{% endif %}<span>{{ link.label }}</span></a></li>
+            {% endfor %}
+          {% else %}
+            {% is_active item.value.href as active %}
+            <li><a href="{{ item.value.href }}" class="menu-link" {% if active %}aria-current="page"{% endif %}>{{ item.value.label }}</a></li>
+          {% endif %}
+        {% endfor %}
+        <li><a href="{% url 'search' %}" class="menu-link">{% include "components/icon.html" with name="search" size="18" class="mt-1 text-ink-3" %}<span>جست‌وجو در مجله</span></a></li>
+        <li class="mt-3 px-3 text-xs text-ink-3">حساب</li>
+        <li><a href="{% if user.is_authenticated %}{% url 'accounts:account' %}{% else %}{% url 'accounts:login' %}{% endif %}" class="menu-link">{% include "components/icon.html" with name="user" size="18" class="mt-1 text-ink-3" %}<span>{% if user.is_authenticated %}حساب کاربری{% else %}ورود با موبایل{% endif %}</span></a></li>
+      </ul>
+      {% if site.cta_page %}<a href="{% pageurl site.cta_page %}" class="btn btn-primary mt-auto w-full">{{ site.cta_label }}</a>{% endif %}
+    </nav>
+  </div>
 </header>
 {% endwith %}

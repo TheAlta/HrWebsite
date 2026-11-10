@@ -8,7 +8,7 @@ from wagtail.models import Site
 
 from apps.core.fields import MobileField
 
-from ..blocks import LinkBlock
+from ..blocks import LinkBlock, MenuGroupBlock
 
 SOCIAL_NETWORKS = [
     # (field, label)
@@ -57,7 +57,12 @@ class SiteSettings(BaseSiteSetting):
     youtube_url = models.URLField("یوتیوب", blank=True)
 
     # Navigation
-    main_menu = StreamField([("link", LinkBlock())], blank=True, verbose_name="منوی اصلی")
+    main_menu = StreamField(
+        [("link", LinkBlock()), ("group", MenuGroupBlock())],
+        blank=True,
+        verbose_name="منوی اصلی",
+        help_text="«گروه کشویی» در هدر یک فهرست کوتاه باز می‌کند و در فوتر یک ستون می‌شود.",
+    )
     cta_label = models.CharField("متن دکمه برجسته", max_length=50, default="درخواست مشاوره")
     cta_page = models.ForeignKey(
         "wagtailcore.Page",
