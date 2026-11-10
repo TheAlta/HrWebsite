@@ -77,9 +77,11 @@
 
   --accent: #9b7fc7;
   --accent-2: #b49bd9;
-  --accent-ink: #725a9e; /* AA, demo #7a60a6 */
+  --accent-ink: #6b5396; /* AA on accent-soft too, demo #7a60a6 */
   --accent-soft: #e6ddf0;
   --accent-grad: linear-gradient(100deg, #8f74bd 0%, #a98bd2 55%, #bfa4de 100%);
+  /* A coloured title line: ends at the demo gradient's first stop, the palest that keeps 3:1 */
+  --accent-text: linear-gradient(100deg, var(--accent-ink), #8f74bd);
   --plum: #5b5167;
   --plum-grad: linear-gradient(180deg, #6b6176 0%, #554b62 100%);
 
@@ -134,6 +136,7 @@
     --accent-ink: #cbb6f3;
     --accent-soft: rgb(185 160 230 / 0.16);
     --accent-grad: linear-gradient(100deg, #a68ad9 0%, #c0a6ec 60%, #d8c4f6 100%);
+    --accent-text: var(--accent-grad);
     --plum: #d8cce6;
     --plum-grad: linear-gradient(180deg, #e6dcef 0%, #cdbfde 100%);
 
@@ -735,16 +738,12 @@
    countdown, product covers (REPORT #055)
    ========================================================================== */
 @layer components {
-  /* The coloured last line of a title. Starts at accent-ink so large text stays
-     above 3:1 on the light page; the demo's paler end is used only in dark. */
+  /* The coloured last line of a title (--accent-text keeps it readable in each theme) */
   .accent-text {
-    background: linear-gradient(100deg, var(--accent-ink), var(--accent));
+    background: var(--accent-text);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    @variant dark {
-      background-image: var(--accent-grad);
-    }
   }
   /* The services lie in a frosted tray that overlaps the hero's lower edge */
   .services-tray {
