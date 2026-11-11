@@ -20,7 +20,8 @@ document.addEventListener("alpine:init", () => {
     },
   }));
 
-  // The header: frosted once the page scrolls; the mobile menu moves focus in and back
+  // The header: stronger glass once the page scrolls. The mobile menu is a dialog:
+  // focus moves into it, stays in it while it is open, and returns to the button.
   Alpine.data("siteHeader", () => ({
     open: false,
     scrolled: false,
@@ -42,6 +43,21 @@ document.addEventListener("alpine:init", () => {
       if (!this.open) return;
       this.open = false;
       this.$nextTick(() => this.$refs.burger.focus());
+    },
+    // Tab from the last control wraps to the first, Shift+Tab from the first to the last,
+    // so focus never reaches the page hidden under the menu
+    trapFocus(event) {
+      const items = [...this.$refs.menuPanel.querySelectorAll("a[href], button:not([disabled])")];
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     },
   }));
 

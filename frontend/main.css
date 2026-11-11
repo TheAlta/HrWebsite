@@ -736,14 +736,17 @@
    SITE FRAME — header, menus, footer, floating chat
    ========================================================================== */
 @layer components {
+  /* The header floats as a glass pill (with .surface for the edge and blur) */
   .site-header {
-    @apply sticky top-0 z-40 transition-[background,box-shadow] duration-300;
+    @apply sticky top-0 z-40 py-3;
   }
-  .site-header.is-solid {
-    background: color-mix(in srgb, var(--page) 78%, transparent);
-    -webkit-backdrop-filter: blur(20px) saturate(1.2);
-    backdrop-filter: blur(20px) saturate(1.2);
-    box-shadow: inset 0 -1px 0 var(--line), var(--sh-1);
+  .header-bar {
+    box-shadow: 0 8px 26px -10px rgb(16 28 60 / 0.3), inset 0 0 0 1px var(--line);
+    @apply flex h-14 items-center justify-between gap-3 rounded-full ps-4 pe-1.5 transition-[background] duration-300;
+  }
+  /* Once the page scrolls under it, a denser glass keeps the menu readable */
+  .site-header.is-solid .header-bar {
+    background: var(--panel);
   }
   /* Pages whose top is a picture slide it under the header */
   .under-header {
@@ -774,7 +777,7 @@
     @apply absolute -top-1 -end-1 grid h-5 min-w-5 place-items-center rounded-full px-1 text-[0.68rem] leading-none font-bold text-on-accent;
   }
   .site-footer {
-    @apply mt-24 border-t border-line;
+    @apply mt-20;
   }
   .footer-heading {
     @apply mb-3 text-sm font-semibold text-ink;

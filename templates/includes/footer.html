@@ -1,9 +1,10 @@
 {% load wagtailcore_tags wagtailimages_tags core_tags content_tags %}{% with site=settings.content.SiteSettings %}
-{# The demo's footer: about, one column per menu group, contact, trust seal (REPORT #055). #}
+{# The demo's footer: one glass card with about, one column per menu group, contact, trust seal (REPORT #058). #}
 <footer class="site-footer">
-  <div class="container-page grid gap-10 py-14 sm:grid-cols-2 lg:auto-cols-fr lg:grid-flow-col lg:grid-cols-[1.5fr]">
+  <div class="container-page">
+  <div class="surface grid gap-10 rounded-[1.75rem] p-7 sm:grid-cols-2 sm:p-9 lg:auto-cols-fr lg:grid-flow-col lg:grid-cols-[1.5fr]">
     <div class="sm:col-span-2 lg:col-span-1">
-      <a href="/" class="flex items-center gap-3 font-medium text-ink">
+      <a href="/" class="flex items-center gap-2.5 font-semibold text-ink">
         {% if site.logo %}{% image site.logo height-40 class="h-10 w-auto" alt="" %}{% else %}{% include "components/brand_mark.html" %}{% endif %}
         {{ site.brand_name }}
       </a>
@@ -53,8 +54,9 @@
       {% include "newsletter/includes/subscribe_form.html" %}
     </div>
   </div>
-  <div class="container-page flex flex-col gap-2 border-t border-line py-5 text-xs text-ink-3 sm:flex-row sm:items-center sm:justify-between">
+  <div class="flex flex-col gap-2 px-2 py-5 text-xs text-ink-3 sm:flex-row sm:items-center sm:justify-between">
     <p>همهٔ حقوق برای {{ site.brand_name }} محفوظ است · {% now_jalali_year %}</p>
+  </div>
   </div>
 </footer>
 {% endwith %}
