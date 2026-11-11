@@ -1,13 +1,11 @@
 <section class="my-10">
-  <div class="panel-box scene scene-desk overflow-hidden">
-    <div class="veil-page px-6 py-12 text-center sm:px-12">
-      <h2 class="heading-2">{{ value.title }}</h2>
-      {% if value.text %}<p class="lead mx-auto mt-3 max-w-2xl">{{ value.text }}</p>{% endif %}
-      {% if value.buttons %}
-      <div class="mt-6 flex flex-wrap justify-center gap-3">
-        {% for button in value.buttons %}<a href="{{ button.href }}" class="btn {% if button.style == 'secondary' %}btn-secondary{% else %}btn-primary{% endif %}">{{ button.label }}</a>{% endfor %}
-      </div>
-      {% endif %}
+  <div class="panel-box overflow-hidden px-6 py-12 text-center sm:px-12">
+    <h2 class="heading-2">{{ value.title }}</h2>
+    {% if value.text %}<p class="lead mx-auto mt-3 max-w-2xl">{{ value.text }}</p>{% endif %}
+    {% if value.buttons %}
+    <div class="mt-6 flex flex-wrap justify-center gap-3">
+      {% for button in value.buttons %}<a href="{{ button.href }}" class="btn {% if button.style == 'secondary' %}btn-secondary{% else %}btn-primary{% endif %}">{{ button.label }}</a>{% endfor %}
     </div>
+    {% endif %}
   </div>
 </section>

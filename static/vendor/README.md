@@ -8,7 +8,6 @@ The version is in the file name; update by replacing the file and the reference 
 | `htmx-2.0.11.min.js` | npm `htmx.org@2.0.11` → `dist/htmx.min.js` |
 | `alpine-csp-3.17.5.min.js` | npm `@alpinejs/csp@3.17.5` → `dist/cdn.min.js`. The CSP build: no `eval`, so the site's Content-Security-Policy needs no `unsafe-eval` (REPORT #051). Expressions cannot call globals such as `confirm()`; those go in `static/js/site.js`. |
 | `../fonts/vazirmatn/Vazirmatn-Variable-fa.woff2` | npm `vazirmatn@33.0.3` → `fonts/webfonts/Vazirmatn[wght].woff2` (OFL licence), cut to Persian, Arabic, Latin-1 and punctuation: 111 KB → 76 KB, so text shows sooner on a slow line (REPORT #052). Command below. |
-| `../fonts/markazi/Markazi-{500,600}-{arabic,latin}.woff2` | Markazi Text (OFL licence), the display font of the owner's demo (`docs/design/demo.html`, REPORT #055). Taken from the demo's own embedded files, which are the Google Fonts subsets: Arabic script and Latin, weights 500 and 600, about 24 KB and 16 KB each. Headings only. |
 
 ## Regenerating the font subset
 
