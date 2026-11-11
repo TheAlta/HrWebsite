@@ -1,17 +1,18 @@
 {% load wagtailcore_tags core_tags %}
 {# Usage: {% include "components/card_service.html" with service=service compact=True %} — compact drops the price row. #}
-<article class="card transition duration-300 hover:-translate-y-1 hover:shadow-lift">
-  <div class="card-body gap-3 p-5 sm:p-7">
+{# The demo's service card: the icon in a disc, the title, the short line, and the price row under a rule #}
+<article class="card group transition duration-300 hover:-translate-y-1 hover:shadow-lift">
+  <div class="card-body gap-3 p-6 sm:p-7">
     {# Phones: the icon beside the title; wider: above it, as in the demo #}
     <div class="flex items-center gap-4 sm:flex-col sm:items-start sm:gap-5">
       <span class="icon-disc size-12 sm:size-14">{% include "components/icon.html" with name=service.icon|default:"briefcase" size="24" %}</span>
-      <h3 class="font-display text-[1.5rem] leading-snug font-medium text-ink sm:text-[1.6rem]"><a href="{% pageurl service %}" class="after:absolute after:inset-0 after:z-10 after:rounded-[inherit]">{{ service.title }}</a></h3>
+      <h3 class="text-[1.35rem] leading-snug font-bold text-ink sm:text-[1.45rem]"><a href="{% pageurl service %}" class="after:absolute after:inset-0 after:z-10 after:rounded-[inherit]">{{ service.title }}</a></h3>
     </div>
-    <p class="leading-8 text-ink-3">{{ service.summary }}</p>
+    <p class="text-[0.95rem] leading-8 text-ink-3">{{ service.summary }}</p>
     {% if not compact %}
-    <div class="mt-auto flex items-center justify-between pt-3">
-      <span class="text-sm font-semibold text-ink">{% if service.price %}از {{ service.price|toman }}{% else %}استعلام قیمت{% endif %}</span>
-      {% include "components/icon.html" with name="arrow" size="18" class="text-ink-3" %}
+    <div class="mt-auto flex items-center justify-between border-t border-line pt-3">
+      <span class="text-sm font-semibold text-ink">{% if service.price %}از {{ service.price|toman }}{% else %}استعلام پس از جلسهٔ تشخیص{% endif %}</span>
+      {% include "components/icon.html" with name="arrow" size="18" class="text-ink-3 transition-transform group-hover:-translate-x-1" %}
     </div>
     {% endif %}
   </div>

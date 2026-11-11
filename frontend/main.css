@@ -441,6 +441,11 @@
     content: "";
     @apply size-1.5 shrink-0 rounded-full bg-current;
   }
+  /* On a picture: a solid backing, since the translucent tint vanished on the navy art */
+  .badge-on-image {
+    background: var(--panel);
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.18);
+  }
   .badge-ok {
     @apply bg-ok-soft text-ok;
   }
@@ -472,11 +477,24 @@
   .steps > li {
     @apply flex flex-col gap-2;
   }
+  /* A bar that fills: whole for a step done, about half for the current one */
   .steps-bar {
-    @apply h-1 rounded-full bg-line;
+    @apply relative h-1 overflow-hidden rounded-full bg-line;
   }
-  .steps > .is-done .steps-bar {
+  .steps-bar::after {
+    content: "";
     background: var(--accent-line);
+    @apply absolute inset-y-0 start-0 w-0 rounded-full transition-[width] duration-500;
+  }
+  .steps > .is-done .steps-bar::after {
+    @apply w-full;
+  }
+  .steps > [aria-current="step"] .steps-bar::after {
+    @apply w-[55%];
+  }
+  .steps > .is-done,
+  .steps > [aria-current="step"] {
+    @apply text-ink-2;
   }
   .steps > [aria-current="step"] {
     @apply font-medium text-ink;
@@ -503,6 +521,15 @@
   /* A page's title */
   .heading-1 {
     @apply font-display text-[2.4rem] leading-[1.35] font-extrabold text-ink sm:text-[3rem] lg:text-[3.5rem];
+  }
+  /* The short gradient rule under a page's title */
+  .title-rule {
+    background: var(--accent-line);
+    @apply mt-3 block h-2 w-22 rounded-full opacity-80;
+  }
+  /* A home or landing section's title: the demo's larger section heading */
+  .heading-section {
+    @apply font-display text-[2rem] leading-[1.35] font-extrabold text-ink sm:text-[2.5rem] lg:text-[2.9rem];
   }
   /* A section's title */
   .heading-2 {
@@ -806,6 +833,56 @@
   .product-cover-img {
     box-shadow: var(--sh-2);
     @apply h-full max-h-full w-auto max-w-full rounded-md object-contain transition-transform duration-300 group-hover:-translate-y-1;
+  }
+  /* A person's initial where there is no photo */
+  .avatar {
+    background: linear-gradient(150deg, color-mix(in srgb, var(--gold) 45%, var(--panel)), color-mix(in srgb, var(--accent) 35%, var(--panel)));
+    box-shadow: 0 0 0 2px var(--panel);
+    @apply inline-grid size-11 shrink-0 place-items-center rounded-full font-semibold text-ink;
+  }
+  /* The large opening quote mark of a quote card */
+  .quote-mark {
+    @apply block h-9 font-display text-[5rem] leading-[0.75] font-extrabold text-gold;
+  }
+  /* A date in a tile: the day large, the month under it */
+  .date-tile {
+    background: var(--field);
+    box-shadow: var(--field-ring);
+    @apply grid shrink-0 content-center rounded-2xl px-1 py-2 text-center;
+  }
+  .date-tile b {
+    @apply font-display text-[1.9rem] leading-tight font-extrabold text-ink;
+  }
+  .date-tile span {
+    @apply text-xs text-ink-3;
+  }
+  /* A book's drawn cover where no cover image was uploaded: tilted, in one of
+     five colours (the cover_class filter picks one per product) */
+  .book-cover {
+    box-shadow: 0 14px 28px -8px rgb(16 28 60 / 0.35), inset 6px 0 8px -4px rgb(0 0 0 / 0.25);
+    transform: perspective(600px) rotateY(-12deg);
+    @apply flex aspect-[0.7] w-28 max-w-full flex-col justify-between rounded-[4px_8px_8px_4px] px-3 py-3.5 text-white transition-transform duration-300 group-hover:-translate-y-1;
+  }
+  .book-cover b {
+    @apply text-[1.05rem] leading-snug font-extrabold;
+  }
+  .book-cover small {
+    @apply text-[0.65rem] opacity-90;
+  }
+  .book-cover-1 {
+    background: linear-gradient(160deg, #2e4a7d, #14213d);
+  }
+  .book-cover-2 {
+    background: linear-gradient(160deg, #6a5294, #3b2c5c);
+  }
+  .book-cover-3 {
+    background: linear-gradient(160deg, #3d6f8f, #1e3d55);
+  }
+  .book-cover-4 {
+    background: linear-gradient(160deg, #3f7a63, #214636);
+  }
+  .book-cover-5 {
+    background: linear-gradient(160deg, #96693a, #5a3a1c);
   }
   .stat-tile {
     @apply flex flex-col gap-1 p-6;

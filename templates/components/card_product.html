@@ -1,17 +1,19 @@
-{% load wagtailimages_tags wagtailroutablepage_tags core_tags %}
+{% load wagtailimages_tags wagtailroutablepage_tags core_tags content_tags %}
 {# Usage: {% include "components/card_product.html" with product=product %} — needs `page` (the ShopPage). heading="h3" inside a section that has its own h2. #}
+{# The demo's book card: the cover on a lit floor (a drawn cover when none was uploaded), the kind, title, summary, price #}
 {% routablepageurl page "product" product.slug as product_url %}
 <article class="card group transition duration-300 hover:-translate-y-1">
-  <div class="flex flex-1 flex-col gap-3 p-3 sm:p-4">
+  <div class="flex flex-1 flex-col gap-3 p-4">
     <div class="product-cover">
-      {% if product.cover_image %}{% image product.cover_image max-320x440 format-webp class="product-cover-img" loading="lazy" alt="" %}{% else %}{% include "components/icon.html" with name="book" size="48" class="text-ink-4" %}{% endif %}
+      {% if product.cover_image %}{% image product.cover_image max-320x440 format-webp class="product-cover-img" loading="lazy" alt="" %}
+      {% else %}<div class="book-cover {{ product|cover_class }}" aria-hidden="true"><b>{{ product.title }}</b><small>{{ product.get_kind_display }}</small></div>{% endif %}
     </div>
     <span class="badge {% if product.is_digital %}badge-info{% else %}badge-neutral{% endif %} self-start">{{ product.get_kind_display }}</span>
-    {% if heading == "h3" %}<h3{% else %}<h2{% endif %} class="text-[0.95rem] leading-7 font-semibold text-ink"><a href="{{ product_url }}" class="after:absolute after:inset-0 after:z-10 after:rounded-[inherit]">{{ product.title }}</a>{% if heading == "h3" %}</h3>{% else %}</h2>{% endif %}
+    {% if heading == "h3" %}<h3{% else %}<h2{% endif %} class="leading-7 font-semibold text-ink"><a href="{{ product_url }}" class="after:absolute after:inset-0 after:z-10 after:rounded-[inherit]">{{ product.title }}</a>{% if heading == "h3" %}</h3>{% else %}</h2>{% endif %}
     {% if product.summary %}<p class="line-clamp-2 text-xs leading-6 text-ink-3">{{ product.summary }}</p>{% endif %}
     <div class="mt-auto flex items-center justify-between gap-2 pt-1">
-      <span class="text-sm font-semibold whitespace-nowrap text-ink">{% if not product.in_stock %}<span class="text-warn">ناموجود</span>{% elif product.price %}{{ product.price|toman }}{% else %}رایگان{% endif %}</span>
-      {% include "components/icon.html" with name="arrow" size="18" class="text-ink-3" %}
+      <span class="font-semibold whitespace-nowrap text-ink">{% if not product.in_stock %}<span class="badge badge-warn">ناموجود</span>{% elif product.price %}{{ product.price|toman }}{% else %}رایگان{% endif %}</span>
+      {% include "components/icon.html" with name="arrow" size="18" class="text-ink-3 transition-transform group-hover:-translate-x-1" %}
     </div>
   </div>
 </article>

@@ -78,6 +78,15 @@ def scene_class(obj):
     return SCENES[(obj.pk or 0) % len(SCENES)]
 
 
+BOOK_COVERS = 5
+
+
+@register.filter
+def cover_class(obj):
+    """A drawn cover colour for a product without a cover image; the same one every time."""
+    return f"book-cover-{(obj.pk or 0) % BOOK_COVERS + 1}"
+
+
 @register.simple_tag(takes_context=True)
 def legal_pages(context):
     """Live legal pages of this site, linked from the footer."""

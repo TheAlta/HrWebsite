@@ -8,7 +8,7 @@
   <header>
     <p class="eyebrow">فقط محیط توسعه</p>
     <h1 class="heading-1">راهنمای طراحی</h1>
-    <p class="lead mt-2">توکن‌ها و اجزای مشترک، از روی دموی مالک محصول (REPORT #055). رنگ‌ها در frontend/main.css تعریف شده‌اند.</p>
+    <p class="lead mt-2">توکن‌ها و اجزای مشترک، از روی دموی دوم مالک محصول (REPORT #058). رنگ‌ها در frontend/main.css تعریف شده‌اند.</p>
   </header>
 
   <section>
@@ -21,6 +21,7 @@
       <div><div class="h-16 rounded-lg bg-ink ring-1 ring-line ring-inset"></div><p class="muted mt-1" dir="ltr">ink</p></div>
       <div><div class="h-16 rounded-lg bg-ink-3 ring-1 ring-line ring-inset"></div><p class="muted mt-1" dir="ltr">ink-3</p></div>
       <div><div class="h-16 rounded-lg bg-plum ring-1 ring-line ring-inset"></div><p class="muted mt-1" dir="ltr">plum</p></div>
+      <div><div class="h-16 rounded-lg bg-gold ring-1 ring-line ring-inset"></div><p class="muted mt-1" dir="ltr">gold (only lines)</p></div>
       <div><div class="h-16 rounded-lg bg-accent ring-1 ring-line ring-inset"></div><p class="muted mt-1" dir="ltr">accent</p></div>
       <div><div class="h-16 rounded-lg bg-accent-ink ring-1 ring-line ring-inset"></div><p class="muted mt-1" dir="ltr">accent-ink</p></div>
       <div><div class="h-16 rounded-lg bg-accent-soft ring-1 ring-line ring-inset"></div><p class="muted mt-1" dir="ltr">accent-soft</p></div>
@@ -35,6 +36,8 @@
     <h2 class="heading-2 mb-4">تایپوگرافی</h2>
     <p class="eyebrow">برچسب بالای تیتر</p>
     <p class="heading-1">تیتر اصلی صفحه</p>
+    <span class="title-rule" aria-hidden="true"></span>
+    <p class="heading-section mt-4">تیتر بخش صفحه اصلی</p>
     <p class="heading-2 mt-2">تیتر بخش</p>
     <p class="heading-3 mt-2">تیتر کارت یا نتیجه</p>
     <p class="price-lg mt-2">{{ 25000000|toman }}</p>
@@ -48,6 +51,7 @@
     <div class="flex flex-wrap items-center gap-3">
       <button class="btn btn-primary">اصلی</button>
       <button class="btn btn-secondary">ثانویه</button>
+      <button class="btn btn-accent">ویژه</button>
       <button class="btn btn-ghost">ساده</button>
       <button class="btn btn-primary btn-sm">کوچک</button>
       <button class="btn btn-primary" disabled>غیرفعال</button>
@@ -75,6 +79,20 @@
     <h2 class="heading-2 mb-4">کارت و نشان</h2>
     <div class="grid gap-6 sm:grid-cols-3">
       <div class="card"><div class="card-body"><span class="badge self-start">نشان</span><p class="card-title">عنوان کارت</p><p class="muted">متن کوتاه کارت برای معرفی یک مورد.</p></div></div>
+      <figure class="card"><div class="card-body gap-4 p-7"><span class="quote-mark" dir="ltr" aria-hidden="true">“</span><blockquote class="leading-8 text-ink">نقل‌قول نمونه از یک مشتری.</blockquote><figcaption class="flex items-center gap-3"><span class="avatar" aria-hidden="true">س</span><span class="text-sm font-semibold text-ink">سینا کاظمی</span></figcaption></div></figure>
+      <div class="card"><div class="card-body flex-row items-center gap-4"><div class="date-tile size-20" aria-hidden="true"><b>۲۶</b><span>آبان</span></div><p class="card-title">کاشی تاریخ</p></div></div>
+    </div>
+    <div class="mt-6 flex flex-wrap gap-2"><span class="badge">عادی</span><span class="badge badge-ok">ثبت‌نام باز است</span><span class="badge badge-warn">۴ جای خالی</span><span class="badge badge-bad">ناموفق</span><span class="badge badge-info">دیجیتال</span><span class="badge badge-neutral">برگزار شد</span></div>
+    <div class="mt-6 max-w-xl">{% include "components/steps.html" with steps="نوع جلسه|روز و ساعت|ورود و تأیید|پرداخت" current=2 %}</div>
+  </section>
+
+  <section>
+    <h2 class="heading-2 mb-4">تصویر بدون عکس و جلد کتاب</h2>
+    <div class="grid gap-4 sm:grid-cols-4">
+      <div class="scene scene-window aspect-[16/7] rounded-2xl"></div><div class="scene scene-window-1 aspect-[16/7] rounded-2xl"></div><div class="scene scene-window-2 aspect-[16/7] rounded-2xl"></div><div class="scene scene-desk aspect-[16/7] rounded-2xl"></div>
+    </div>
+    <div class="mt-6 flex flex-wrap gap-6">
+      {% for n in "12345" %}<div class="product-cover w-36"><div class="book-cover book-cover-{{ n }}"><b>آدم‌ها پیش از فرایندها</b><small>کتاب چاپی</small></div></div>{% endfor %}
     </div>
   </section>
 

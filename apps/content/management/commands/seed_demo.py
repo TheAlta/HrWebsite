@@ -55,10 +55,10 @@ DEMO_TAG = "[demo]"  # marks sample images/documents so --reset can remove them
 
 # The site's own colours (frontend/main.css), so sample pictures sit well in the design
 PALETTE = [
-    ("#5b5167", "#a98bd2"),
-    ("#4f4462", "#d8c4f6"),
-    ("#386858", "#8fd0b4"),
-    ("#7f561c", "#e8bf7a"),
+    ("#14213d", "#2e4a7d"),
+    ("#1d3461", "#a9c1f0"),
+    ("#2e4a7d", "#c8a048"),
+    ("#5a3a1c", "#c8a048"),
 ]
 
 
@@ -550,7 +550,7 @@ class Command(BaseCommand):
                 title=title,
                 slug=f"product-{i + 1}",
                 kind=kind,
-                cover_image=images[i % len(images)],
+                # No cover, so the drawn book cover shows (REPORT #058)
                 summary="این متن نمونه است و از پنل مدیریت قابل تغییر است.",
                 description=p(LOREM),
                 contents=p("فصل اول، فصل دوم، فصل سوم"),

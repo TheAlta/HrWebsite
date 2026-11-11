@@ -1,9 +1,9 @@
 {% load wagtailcore_tags core_tags %}
 {# One row per event, the date in a tile, as in the demo. Usage: {% include "components/card_event.html" with event=event is_past=True %} #}
 <article class="card group flex-row items-center gap-4 p-4 transition duration-300 hover:shadow-lift sm:gap-5 sm:p-5">
-  <div class="tile grid size-16 shrink-0 content-center text-center sm:size-20" aria-hidden="true">
-    <b class="font-display text-[1.7rem] leading-none font-semibold text-ink">{{ event.start_at|jdate_day }}</b>
-    <span class="mt-1 text-xs text-ink-3">{{ event.start_at|jmonth }}</span>
+  <div class="date-tile size-16 sm:size-20" aria-hidden="true">
+    <b>{{ event.start_at|jdate_day }}</b>
+    <span>{{ event.start_at|jmonth }}</span>
   </div>
   <div class="min-w-0 flex-1">
     <div class="flex flex-wrap gap-2">
