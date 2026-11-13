@@ -98,6 +98,7 @@
   --on-gold: #3d2a12; /* text on the gold sticker */
   --promo-bg: linear-gradient(90deg, #0e1830, #1d3461 60%, #8c6d2c); /* the event bar, white text */
   --promo-btn: #f6ecd4;
+  --pod-bg: linear-gradient(150deg, #0e1830, #24407a 58%, #8c6d2c); /* white text, AA */
   --promo-ink: #14213d; /* navy on the light button, in both themes */
   --mark-gold: color-mix(in srgb, #c8a048 50%, transparent);
   --mark-blue: color-mix(in srgb, #5a74a8 45%, transparent);
@@ -1124,6 +1125,73 @@
   .quiz-progress {
     background: var(--accent-line);
     @apply block h-full w-0 rounded-full transition-[width] duration-500;
+  }
+
+  /* --- Free resources (blocks/free_resources.html) --- */
+  .topic-tile {
+    @apply flex flex-col items-center gap-2 rounded-[1.3rem] px-3 py-5 text-center transition-transform hover:-translate-y-0.5;
+  }
+  .topic-tile b {
+    @apply text-[0.95rem] text-ink;
+  }
+  .topic-tile[aria-pressed="true"] {
+    box-shadow: inset 0 0 0 1.5px var(--accent), var(--sh-2);
+  }
+  /* Two sheets of paper on a tinted floor: the file's picture */
+  .resource-mock {
+    background: radial-gradient(80% 80% at 50% 30%, var(--accent-soft), transparent);
+    @apply relative mb-2 grid h-36 place-items-center overflow-hidden rounded-2xl;
+  }
+  .paper {
+    background: linear-gradient(var(--accent) 0 0) 12% 14% / 60% 8% no-repeat, linear-gradient(var(--line) 0 0) 12% 32% / 76% 4% no-repeat, linear-gradient(var(--line) 0 0) 12% 44% / 76% 4% no-repeat, linear-gradient(var(--line) 0 0) 12% 56% / 60% 4% no-repeat, #fffdfb;
+    box-shadow: 0 18px 30px -12px rgb(16 28 60 / 0.35);
+    @apply block aspect-[0.72] w-24 -rotate-5 rounded-md;
+  }
+  .paper-back {
+    @apply absolute translate-x-6 translate-y-1 rotate-7 opacity-75;
+  }
+
+  /* --- Podcast (blocks/podcast.html) --- */
+  .podcover {
+    background: radial-gradient(70% 60% at 25% 20%, rgb(255 255 255 / 0.25), transparent 60%), var(--pod-bg);
+    box-shadow: var(--sh-3);
+    @apply flex aspect-square flex-col justify-between rounded-[1.6rem] p-7 text-white;
+  }
+  .podcover b {
+    @apply max-w-[12ch] text-[2.2rem] leading-[1.3] font-extrabold sm:text-[2.8rem];
+  }
+
+  /* --- Featured book (blocks/featured_book.html) --- */
+  .book-cover-lg {
+    transform: perspective(900px) rotateY(-18deg) rotateZ(-2deg);
+    @apply w-52 px-5 py-6;
+  }
+  .book-cover-lg b {
+    @apply text-[1.8rem];
+  }
+  .burst {
+    clip-path: polygon(50% 0, 61% 13%, 77% 6%, 80% 23%, 96% 26%, 90% 42%, 100% 55%, 87% 65%, 91% 82%, 74% 83%, 66% 99%, 52% 89%, 37% 99%, 30% 83%, 12% 84%, 15% 66%, 0 56%, 10% 42%, 4% 26%, 21% 23%, 24% 6%, 39% 13%);
+    @apply absolute -end-8 -top-5 z-10 grid size-24 -rotate-14 place-items-center bg-gold p-3 text-center text-[0.8rem] leading-snug font-bold text-(--on-gold);
+  }
+
+  /* --- Library (blocks/library.html) --- */
+  .library-card {
+    @apply min-h-64 gap-2 p-6 transition-transform hover:-translate-y-1;
+  }
+  .library-no {
+    @apply font-display text-[3.4rem] leading-none font-extrabold;
+  }
+  .library-card-1 .library-no {
+    color: var(--accent);
+  }
+  .library-card-2 .library-no {
+    color: var(--gold);
+  }
+  .library-card-3 .library-no {
+    color: var(--ok);
+  }
+  .library-card-4 .library-no {
+    color: var(--envelope-dot);
   }
 
   /* --- The stat band (blocks/stats.html) --- */

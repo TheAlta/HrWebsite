@@ -722,6 +722,35 @@ class Command(BaseCommand):
                 },
             ),
             (
+                "free_resources",
+                {
+                    "eyebrow": "هدیه‌ای از من",
+                    "title": "منابع رایگان",
+                    "intro": "قالب‌ها و چک‌لیست‌هایی که در پروژه‌ها واقعاً استفاده می‌کنم.",
+                    "topics": [
+                        {"label": "جذب و استخدام", "icon": "shield"},
+                        {"label": "ارزیابی عملکرد", "icon": "gauge"},
+                        {"label": "رهبری تیم", "icon": "spark"},
+                        {"label": "مسیر شغلی", "icon": "compass"},
+                    ],
+                    "resources": [
+                        {
+                            "topic": topic,
+                            "title": title,
+                            "format": fmt,
+                            "document": make_pdf(title),
+                            "button_label": "دانلود رایگان",
+                        }
+                        for topic, title, fmt in [
+                            ("جذب و استخدام", "چک‌لیست مصاحبهٔ ساختاریافته", "PDF · ۶ صفحه"),
+                            ("ارزیابی عملکرد", "قالب فرم ارزیابی عملکرد", "PDF · ۳ صفحه"),
+                            ("رهبری تیم", "۲۰ سؤال برای جلسهٔ بازخورد", "PDF · ۳ صفحه"),
+                            ("مسیر شغلی", "کاربرگ «تصمیم شغلی بعدی»", "PDF · ۴ صفحه"),
+                        ]
+                    ],
+                },
+            ),
+            (
                 "stats",
                 {
                     "title": "",
@@ -733,6 +762,7 @@ class Command(BaseCommand):
                     ],
                 },
             ),
+            ("podcast", {"eyebrow": "پادکست هفتگی", "title": "گوش کنید، در راه کار", "count": 4}),
             (
                 "latest_articles",
                 {
@@ -748,11 +778,36 @@ class Command(BaseCommand):
                 {"title": "رویداد پیش رو", "button_label": "بله! جای من را نگه دار"},
             ),
             (
-                "products",
+                "featured_book",
                 {
-                    "title": "از فروشگاه",
-                    "intro": "کتاب‌ها و ابزارهای کاربردی منابع انسانی.",
-                    "count": 4,
+                    "eyebrow": "کتاب تازه",
+                    "product": str(Product.objects.order_by("pk").first().pk),
+                    "second": str(Product.objects.filter(kind=Product.Kind.DIGITAL).first().pk),
+                    "text": "این متن نمونه است و از پنل مدیریت قابل تغییر است.",
+                    "badge": "پرفروش",
+                    "quote": "کتابی که دوست داشتم روز اول مدیریتم داشته باشم.",
+                    "quote_by": "یک خوانندهٔ کتاب",
+                },
+            ),
+            (
+                "library",
+                {
+                    "eyebrow": "کتابخانهٔ آموزشی",
+                    "title": "یاد بگیرید، با سرعت خودتان",
+                    "items": [
+                        {
+                            "kind": kind,
+                            "title": title,
+                            "meta": meta,
+                            "link": {"label": title, "page": target, "url": ""},
+                        }
+                        for kind, title, meta, target in [
+                            ("دوره", "طراحی نظام ارزیابی عملکرد", "۴ جلسه · آنلاین", events_page),
+                            ("وبینار رایگان", "اشتباه‌های رایج مصاحبه", "۷۵ دقیقه", events_page),
+                            ("بستهٔ آموزشی", "قالب‌های ارزیابی عملکرد", "فایل دیجیتال", shop_page),
+                            ("کوچینگ", "از متخصص خوب به مدیر خوب", "جلسهٔ فردی", booking_page),
+                        ]
+                    ],
                 },
             ),
             (

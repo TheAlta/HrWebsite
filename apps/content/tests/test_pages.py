@@ -266,3 +266,12 @@ def test_quiz_renders_and_its_result_fills_the_consultation_form(client, demo_si
     assert 'id_topics_1" checked' in page  # «ساختار سازمانی», the second topic
     assert "نتیجهٔ آزمون" in page
     assert "<script>" not in client.get("/consultation/?note=<script>").content.decode()
+
+
+def test_home_has_free_files_podcast_featured_book_and_library(client, demo_site):
+    html = client.get("/").content.decode()
+    assert html.count("data-resource=") == 4
+    assert 'name="marketing_consent"' in html  # the newsletter stays a separate choice
+    assert "<audio controls" in html
+    assert "/cart/add/" in html  # the featured book goes straight to the cart
+    assert html.count("library-card-") == 4

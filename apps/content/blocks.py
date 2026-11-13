@@ -410,6 +410,161 @@ class QuizBlock(blocks.StructBlock):
         label = "آزمون کوتاه"
 
 
+RESOURCE_ICONS = [
+    ("shield", "سپر"),
+    ("gauge", "سنجه"),
+    ("spark", "جرقه"),
+    ("compass", "قطب‌نما"),
+    ("route", "مسیر"),
+    ("users", "افراد"),
+    ("book", "کتاب"),
+]
+
+
+class FreeResourcesBlock(blocks.StructBlock):
+    """Free files for contact details (LEAD-4), filtered by topic (REPORT #058).
+
+    Each file's form has its own consent box for the newsletter (LEAD-6)."""
+
+    eyebrow = blocks.CharBlock(required=False, default="هدیه‌ای از من", label="برچسب بالای عنوان")
+    title = blocks.CharBlock(default="منابع رایگان", label="عنوان")
+    intro = blocks.TextBlock(required=False, label="مقدمه")
+    topics = blocks.ListBlock(
+        blocks.StructBlock(
+            [
+                ("label", blocks.CharBlock(label="عنوان", max_length=30)),
+                (
+                    "icon",
+                    blocks.ChoiceBlock(choices=RESOURCE_ICONS, default="shield", label="آیکن"),
+                ),
+            ]
+        ),
+        max_num=6,
+        required=False,
+        label="موضوع‌ها",
+    )
+    resources = blocks.ListBlock(
+        blocks.StructBlock(
+            [
+                ("topic", blocks.CharBlock(label="موضوع", help_text="همان عنوان یکی از موضوع‌ها")),
+                ("title", blocks.CharBlock(label="عنوان فایل")),
+                (
+                    "format",
+                    blocks.CharBlock(required=False, label="قالب", help_text="مثل PDF · ۶ صفحه"),
+                ),
+                ("document", DocumentChooserBlock(label="فایل")),
+                ("button_label", blocks.CharBlock(default="دانلود رایگان", label="متن دکمه")),
+            ]
+        ),
+        label="فایل‌ها",
+    )
+
+    def get_context(self, value, parent_context=None):
+        from apps.crm.forms import DownloadForm
+
+        context = super().get_context(value, parent_context)
+        context["items"] = [
+            (resource, DownloadForm(initial={"document": resource["document"].pk}))
+            for resource in value["resources"]
+        ]
+        return context
+
+    class Meta:
+        icon = "download"
+        template = "blocks/free_resources.html"
+        label = "منابع رایگان"
+
+
+class PodcastBlock(blocks.StructBlock):
+    """The podcast's cover beside its newest episodes, each with a player."""
+
+    eyebrow = blocks.CharBlock(required=False, default="پادکست هفتگی", label="برچسب")
+    title = blocks.CharBlock(default="گوش کنید، در راه کار", label="عنوان")
+    count = blocks.IntegerBlock(default=4, min_value=1, max_value=8, label="تعداد اپیزود")
+
+    def get_context(self, value, parent_context=None):
+        from .models import ArticleKind, ArticlePage, BlogIndexPage
+
+        context = super().get_context(value, parent_context)
+        context["episodes"] = (
+            ArticlePage.objects.live()
+            .filter(kind=ArticleKind.PODCAST)
+            .order_by("-first_published_at")[: value["count"]]
+        )
+        context["blog"] = BlogIndexPage.objects.live().first()
+        return context
+
+    class Meta:
+        icon = "media"
+        template = "blocks/podcast.html"
+        label = "پادکست"
+
+
+def products_on_sale():
+    """Choices read when the panel's form is built, so new products appear at once."""
+    from apps.shop.models import Product
+
+    return [(str(product.pk), product.title) for product in Product.objects.on_sale()]
+
+
+class FeaturedBookBlock(blocks.StructBlock):
+    """One book on a wide band, with buttons that put it straight in the cart."""
+
+    eyebrow = blocks.CharBlock(required=False, default="کتاب تازه", label="برچسب")
+    product = blocks.ChoiceBlock(choices=products_on_sale, label="کتاب")
+    second = blocks.ChoiceBlock(
+        choices=products_on_sale,
+        required=False,
+        label="نسخهٔ دیگر",
+        help_text="مثلاً نسخهٔ الکترونیکی همین کتاب، با دکمهٔ دوم",
+    )
+    text = blocks.TextBlock(required=False, label="متن")
+    badge = blocks.CharBlock(
+        required=False, label="برچسب ستاره‌ای", max_length=20, help_text="مثل «پرفروش»"
+    )
+    quote = blocks.TextBlock(required=False, label="نقل‌قول")
+    quote_by = blocks.CharBlock(required=False, label="گوینده")
+
+    def get_context(self, value, parent_context=None):
+        from apps.shop.models import Product
+
+        context = super().get_context(value, parent_context)
+        on_sale = Product.objects.on_sale().select_related("cover_image")
+        context["book"] = on_sale.filter(pk=value["product"] or 0).first()
+        context["second"] = on_sale.filter(pk=value["second"] or 0).first()
+        context["books"] = [b for b in (context["book"], context["second"]) if b]
+        return context
+
+    class Meta:
+        icon = "doc-full-inverse"
+        template = "blocks/featured_book.html"
+        label = "کتاب ویژه"
+
+
+class LibraryBlock(blocks.StructBlock):
+    """Up to four numbered cards pointing at courses, files or sessions."""
+
+    eyebrow = blocks.CharBlock(required=False, default="کتابخانهٔ آموزشی", label="برچسب")
+    title = blocks.CharBlock(default="یاد بگیرید، با سرعت خودتان", label="عنوان")
+    items = blocks.ListBlock(
+        blocks.StructBlock(
+            [
+                ("kind", blocks.CharBlock(label="نوع", help_text="مثل «دوره · ۴ جلسه»")),
+                ("title", blocks.CharBlock(label="عنوان")),
+                ("meta", blocks.CharBlock(required=False, label="توضیح کوتاه")),
+                ("link", LinkBlock(label="لینک")),
+            ]
+        ),
+        max_num=4,
+        label="کارت‌ها",
+    )
+
+    class Meta:
+        icon = "list-ol"
+        template = "blocks/library.html"
+        label = "کتابخانهٔ آموزشی"
+
+
 class NewsletterBlock(blocks.StructBlock):
     """The newsletter form as a page section, beside a turning badge."""
 
@@ -685,6 +840,10 @@ class HomeBlock(blocks.StreamBlock):
     hero = HeroBlock()
     intro = IntroBlock()
     quiz = QuizBlock()
+    free_resources = FreeResourcesBlock()
+    podcast = PodcastBlock()
+    featured_book = FeaturedBookBlock()
+    library = LibraryBlock()
     newsletter = NewsletterBlock()
     about = AboutBlock()
     upcoming_event = UpcomingEventBlock()

@@ -172,6 +172,20 @@ document.addEventListener("alpine:init", () => {
     },
   }));
 
+  // Free resources (blocks/free_resources.html): a topic button shows only its files;
+  // pressing it again shows them all
+  Alpine.data("resourceFilter", () => ({
+    pick(event) {
+      const button = event.currentTarget;
+      const on = button.getAttribute("aria-pressed") !== "true";
+      this.$root.querySelectorAll("[data-topic]").forEach((el) => el.setAttribute("aria-pressed", "false"));
+      button.setAttribute("aria-pressed", String(on));
+      this.$root.querySelectorAll("[data-resource]").forEach((card) => {
+        card.hidden = on && card.dataset.resource !== button.dataset.topic;
+      });
+    },
+  }));
+
   // The free-event bar above the header: closing it is remembered for this visit,
   // in a cookie the server reads, so later pages arrive without it (no jump on load)
   Alpine.data("eventBar", () => ({
