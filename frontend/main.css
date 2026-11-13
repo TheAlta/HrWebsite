@@ -92,6 +92,16 @@
   --hero-veil: transparent;
   --page-veil: transparent;
 
+  /* Home sections (REPORT #058) */
+  --ph-bg: linear-gradient(165deg, #c9d5ea, #e9e2cf 58%, #f5ecd8); /* behind the hero's cut-out photo */
+  --band-bg: linear-gradient(120deg, #0e1830, #1d3461, #2e4a7d, #8c6d2c, #0e1830); /* AA under white text, demo gold #a8843a */
+  --on-gold: #3d2a12; /* text on the gold sticker */
+  --mark-gold: color-mix(in srgb, #c8a048 50%, transparent);
+  --mark-blue: color-mix(in srgb, #5a74a8 45%, transparent);
+  --mark-peach: color-mix(in srgb, #d3a26a 50%, transparent);
+  --envelope: #d3a26a;
+  --envelope-dot: #8a5a5a;
+
   /* The page's shapes, behind everything */
   --shape-a: #e2e8f3;
   --shape-b: #d3ddec;
@@ -895,5 +905,263 @@
   }
   .logo-strip {
     @apply flex flex-wrap items-center justify-around gap-x-10 gap-y-4 px-6 py-5;
+  }
+
+  /* --- The hero (blocks/hero.html) --- */
+  .hero-grid {
+    @apply grid items-center gap-12 pt-8 pb-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-14 lg:pt-12 lg:pb-14;
+  }
+  .kicker {
+    @apply inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[0.82rem] font-semibold text-ink-2;
+  }
+  .kicker-star {
+    animation: turn 14s linear infinite;
+    @apply inline-block text-gold;
+  }
+  .hero-title {
+    @apply mt-4 font-display text-[2.4rem] leading-[1.35] font-extrabold text-ink sm:text-[3.1rem] lg:text-[3.9rem];
+  }
+  /* One word underlined by a gold hand-drawn stroke */
+  .scrib {
+    @apply relative inline-block whitespace-nowrap;
+  }
+  .scrib svg {
+    position: absolute;
+    inset-inline: -4%;
+    bottom: -0.28em;
+    width: 108%;
+    height: 0.5em;
+    overflow: visible;
+  }
+  .scrib path {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 4.5;
+    stroke-linecap: round;
+  }
+  .hero-after {
+    @apply mt-1 text-[1.3rem] leading-relaxed font-semibold text-accent-ink sm:text-[1.55rem];
+  }
+  /* The photo collage: a tilted glass frame the cut-out photo rises out of */
+  .collage {
+    @apply relative mx-auto aspect-[0.92] w-full max-w-[22rem] sm:max-w-[28rem] lg:max-w-[30rem];
+  }
+  .polaroid {
+    @apply absolute inset-[6%_10%_10%_6%] m-0 rotate-3 rounded-[1.4rem] p-3 pb-12;
+  }
+  .polaroid-photo {
+    background: radial-gradient(90% 70% at 50% 100%, color-mix(in srgb, var(--accent) 35%, transparent), transparent 70%), var(--ph-bg);
+    @apply relative h-full w-full overflow-hidden rounded-2xl;
+  }
+  .polaroid-sun {
+    background: radial-gradient(circle, #fff6ea, #fbe3cf 60%, transparent 72%);
+    @apply absolute start-[8%] top-[12%] aspect-square w-[58%] rounded-full opacity-95;
+  }
+  .hero-cutout {
+    filter: drop-shadow(0 18px 22px rgb(10 17 32 / 0.28));
+    @apply pointer-events-none absolute bottom-12 left-1/2 h-[calc(100%-4rem+14%)] w-auto max-w-none -translate-x-1/2;
+  }
+  .polaroid-caption {
+    @apply absolute inset-x-4 bottom-2.5 text-center text-[1.02rem] font-semibold text-ink-2;
+  }
+  .sticker-hello {
+    box-shadow: 0 10px 24px -8px rgb(160 110 30 / 0.5);
+    @apply absolute -end-[4%] -top-[2%] -rotate-12 rounded-2xl bg-gold px-5 pt-0.5 pb-1.5 text-[1.5rem] font-extrabold text-(--on-gold);
+  }
+  .spin-badge {
+    @apply absolute -start-[4%] -bottom-[1%] size-28 sm:size-34;
+  }
+  .spin-badge-fill {
+    @apply absolute inset-0;
+  }
+  .spin-badge-svg {
+    @apply block h-full w-full;
+  }
+  .spin-face {
+    fill: var(--panel);
+    stroke: var(--line);
+  }
+  .spin-text {
+    fill: var(--ink-2);
+    font-size: 15.5px;
+    font-weight: 600;
+  }
+  .spin-center {
+    fill: var(--accent-ink);
+    font-size: 44px;
+    font-weight: 800;
+  }
+  .spin-ring {
+    transform-origin: 100px 100px;
+    animation: turn 22s linear infinite;
+  }
+  .podcast-sticker {
+    @apply absolute -end-[8%] bottom-[26%] hidden max-w-56 items-center gap-3 rounded-[1.1rem] px-4 py-3 transition-transform hover:-translate-y-0.5 sm:flex;
+  }
+  /* A small equaliser: the podcast is playing */
+  .eq {
+    @apply flex h-5 shrink-0 items-end gap-0.5;
+  }
+  .eq i {
+    background: var(--accent-line);
+    animation: eq 1s ease-in-out infinite;
+    @apply block h-1/4 w-[3px] rounded-sm;
+  }
+  .eq i:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  .eq i:nth-child(3) {
+    animation-delay: -0.6s;
+  }
+  .eq i:nth-child(4) {
+    animation-delay: -0.15s;
+  }
+
+  /* --- Client names moving sideways (blocks/client_logos.html) --- */
+  .seen {
+    @apply flex items-center gap-4 rounded-full ps-6 pe-2;
+  }
+  .seen-label {
+    @apply hidden shrink-0 text-[0.78rem] font-medium text-ink-3 sm:block;
+  }
+  .marquee {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    @apply min-w-0 flex-1 overflow-hidden py-4;
+  }
+  .marquee-track {
+    animation: marquee 38s linear infinite;
+    @apply flex w-max;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  .marquee-list {
+    @apply flex;
+  }
+  .marquee-list li {
+    @apply inline-flex items-center gap-9 pe-9 text-[1.3rem] font-bold whitespace-nowrap text-ink-3;
+  }
+  /* The demo's ✳ between names, drawn (the web font has no such character) */
+  .marquee-list li::after {
+    content: "";
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4'/%3E%3C/svg%3E") center / contain no-repeat;
+    @apply size-4 bg-gold;
+  }
+
+  /* --- «سلام، من …» (blocks/intro.html) --- */
+  .hello-title {
+    @apply font-display text-[2.5rem] leading-[1.35] font-extrabold text-ink sm:text-[3.5rem] lg:text-[4.4rem];
+  }
+  .hello-text {
+    @apply mt-4 text-[1.12rem] leading-9 text-ink-2;
+  }
+  /* Highlighter marks: the title's word in gold, the text's bold words in blue and peach */
+  .mark-gold,
+  .hello-text b {
+    color: inherit;
+    border-radius: 0.2em;
+    padding-inline: 0.15em;
+  }
+  .mark-gold {
+    background: linear-gradient(transparent 58%, var(--mark-gold) 58% 90%, transparent 90%);
+  }
+  .hello-text b {
+    font-weight: 500;
+    background: linear-gradient(transparent 58%, var(--mark-blue) 58% 90%, transparent 90%);
+  }
+  .hello-text b:nth-of-type(even) {
+    background: linear-gradient(transparent 58%, var(--mark-peach) 58% 90%, transparent 90%);
+  }
+  .path-pill {
+    @apply inline-flex items-center gap-2 rounded-full px-5 py-3 font-medium text-ink transition-transform hover:-translate-y-0.5;
+  }
+  .path-pill small {
+    @apply text-xs font-normal text-ink-3;
+  }
+
+  /* --- The stat band (blocks/stats.html) --- */
+  .statband {
+    background: var(--band-bg);
+    background-size: 300% 300%;
+    animation: band 16s ease infinite;
+    @apply relative overflow-hidden rounded-[2rem] px-5 py-10 text-white sm:px-8 sm:py-11;
+  }
+  .statband::after {
+    content: "";
+    background: radial-gradient(60% 120% at 80% 0%, rgb(255 255 255 / 0.22), transparent 60%);
+    @apply pointer-events-none absolute inset-0;
+  }
+  .statband-number {
+    @apply block text-[2.3rem] leading-tight font-extrabold tabular-nums sm:text-[3.2rem];
+  }
+
+  /* --- The magazine's stacked heading (blocks/latest_articles.html) --- */
+  .stackhead {
+    @apply font-display leading-[1.2] text-ink;
+  }
+  .stackhead small {
+    @apply block text-[1.6rem] font-bold text-ink-3;
+  }
+  .stackhead span {
+    @apply block text-[3.6rem] font-extrabold sm:text-[4.6rem];
+  }
+  .stackhead em {
+    @apply block text-[1.4rem] font-semibold text-accent-ink not-italic;
+  }
+
+  /* --- The featured event's date on its picture (blocks/upcoming_event.html) --- */
+  .ev-date {
+    @apply absolute inset-0 m-auto flex h-48 w-44 -rotate-4 flex-col items-center justify-center rounded-(--radius-card) text-center;
+  }
+  .ev-date b {
+    @apply font-display text-[4.2rem] leading-[1.15] font-extrabold text-ink;
+  }
+
+  /* --- The newsletter band's envelope (blocks/newsletter.html) --- */
+  .newsletter-envelope {
+    @apply absolute top-1/2 left-1/2 w-16 -translate-x-1/2 -translate-y-1/2;
+  }
+  .env-paper {
+    fill: var(--envelope);
+  }
+  .env-fold {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 3;
+  }
+  .env-dot {
+    fill: var(--envelope-dot);
+  }
+}
+
+/* The home sections' motion; prefers-reduced-motion stops all of it (base layer) */
+@keyframes turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes eq {
+  0%,
+  100% {
+    height: 25%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(50%);
+  }
+}
+@keyframes band {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }

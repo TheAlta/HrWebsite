@@ -1,26 +1,36 @@
 {% load wagtailcore_tags wagtailimages_tags core_tags %}
 {% if event %}
+{# The demo's featured event: the date in a tilted glass tile on the picture, then badges, the title and a countdown #}
 <section class="section">
   <div class="container-page">
-    {% include "components/section_header.html" with title=value.title link=events_index.url link_label="تقویم رویدادها" %}
-    <article class="card grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)]">
-      <div class="flex flex-col items-center gap-4 p-7 text-center sm:p-9">
-        <div class="flex flex-wrap justify-center gap-2">
-          <span class="badge">{{ event.get_kind_display }}</span>
-          <span class="badge {% if event.price %}badge-info{% else %}badge-ok{% endif %}">{% if event.price %}{{ event.price|toman }}{% else %}رایگان{% endif %}</span>
+    <h2 class="sr-only">{{ value.title }}</h2>
+    <article class="card grid lg:grid-cols-2">
+      <div class="relative min-h-72 {% if not event.cover_image %}scene scene-desk{% endif %}">
+        {% if event.cover_image %}{% image event.cover_image fill-960x620 format-webp class="absolute inset-0 h-full w-full object-cover" loading="lazy" alt="" %}{% endif %}
+        <div class="ev-date panel-box" aria-hidden="true">
+          <span class="text-[1.1rem] font-semibold text-accent-ink">ثبتش کنید</span>
+          <b>{{ event.start_at|jdate_day }}</b>
+          <span class="text-sm text-ink-3">{{ event.start_at|jmonth }} · {{ event.start_at|jweekday }}</span>
+        </div>
+      </div>
+      <div class="flex flex-col gap-4 p-7 sm:p-9">
+        <div class="flex flex-wrap gap-2">
+          <span class="badge">{{ event.get_kind_display }} پیش رو</span>
+          <span class="badge {% if event.price %}badge-neutral{% else %}badge-ok{% endif %}">{% if event.price %}{{ event.price|toman }}{% else %}رایگان{% endif %}</span>
           {% if seats_left is not None %}<span class="badge {% if seats_left > 5 %}badge-ok{% else %}badge-warn{% endif %}">{% if seats_left %}{{ seats_left|fa_digits }} جای خالی{% else %}ظرفیت تکمیل · فهرست انتظار{% endif %}</span>{% endif %}
         </div>
-        <h3 class="font-display text-[1.8rem] leading-snug font-medium text-ink">{{ event.title }}</h3>
-        <p class="flex items-center justify-center gap-2 text-sm text-ink-3">{% include "components/icon.html" with name="calendar" size="16" %}{{ event.start_at|jdatetime }}{% if event.venue %} · {{ event.venue }}{% endif %}</p>
-        <div class="flex gap-2" x-data="countdown" data-until="{{ event.start_at.isoformat }}" role="timer" aria-label="زمان مانده تا شروع">
+        <h3 class="text-[1.75rem] leading-snug font-bold text-ink sm:text-[2rem]">{{ event.title }}</h3>
+        <p class="flex items-center gap-2 text-sm text-ink-3">{% include "components/icon.html" with name="calendar" size="16" %}<time datetime="{{ event.start_at|date:'c' }}">{{ event.start_at|jdate }}، {{ event.start_at|jweekday }} ساعت {{ event.start_at|jtime }}</time>{% if event.venue %} · {{ event.venue }}{% endif %}</p>
+        <div class="flex flex-wrap gap-2" x-data="countdown" data-until="{{ event.start_at.isoformat }}" role="timer" aria-label="زمان مانده تا شروع">
           <div class="count-tile"><b x-text="days">—</b><span>روز</span></div>
           <div class="count-tile"><b x-text="hours">—</b><span>ساعت</span></div>
           <div class="count-tile"><b x-text="minutes">—</b><span>دقیقه</span></div>
+          <div class="count-tile"><b x-text="seconds">—</b><span>ثانیه</span></div>
         </div>
-        <div><a href="{% pageurl event %}" class="btn btn-primary">ثبت‌نام {% include "components/icon.html" with name="arrow" size="16" %}</a></div>
-      </div>
-      <div class="relative order-first min-h-60 lg:order-none {% if not event.cover_image %}scene scene-desk scene-wide{% endif %}">
-        {% if event.cover_image %}{% image event.cover_image fill-960x620 format-webp class="absolute inset-0 h-full w-full object-cover" loading="lazy" alt="" %}{% endif %}
+        <div class="mt-auto flex flex-wrap items-center gap-4 pt-2">
+          <a href="{% pageurl event %}" class="btn btn-accent">{{ value.button_label }}</a>
+          {% if events_index %}<a href="{{ events_index.url }}" class="link-accent inline-flex items-center gap-1.5 text-sm">تقویم رویدادها {% include "components/icon.html" with name="arrow" size="16" %}</a>{% endif %}
+        </div>
       </div>
     </article>
   </div>

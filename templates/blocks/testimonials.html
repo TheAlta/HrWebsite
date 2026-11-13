@@ -1,7 +1,7 @@
 {% if testimonials %}
 <section class="section">
   <div class="container-page">
-    {% include "components/section_header.html" with title=value.title %}
+    {% include "components/section_header.html" with eyebrow=value.eyebrow title=value.title %}
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {% for testimonial in testimonials %}{% include "components/testimonial.html" with testimonial=testimonial %}{% endfor %}
     </div>

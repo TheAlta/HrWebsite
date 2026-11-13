@@ -1,26 +1,35 @@
-{% load wagtailimages_tags %}
-{# The demo's hero: a drawn scene (or the panel's picture), the title on the start side, a quote card on the other. #}
-<section class="under-header relative isolate overflow-hidden {% if not value.image %}scene scene-hero{% endif %}">
-  {% if value.image %}{% picture value.image format-{avif,webp,jpeg} fill-1920x1150 sizes="100vw" class="absolute inset-0 -z-20 h-full w-full object-cover" alt="" fetchpriority="high" %}{% endif %}
-  <div class="veil-hero absolute inset-0 -z-10" aria-hidden="true"></div>
-  <div class="container-page grid min-h-[40rem] content-center gap-10 py-16 lg:min-h-[50rem] lg:grid-cols-[minmax(0,40rem)_1fr]">
+{% load wagtailcore_tags wagtailimages_tags content_tags %}
+{# The demo's first section (REPORT #058): a kicker, the title with one underlined word and a coloured #}
+{# line after it, then a photo collage — a tilted glass frame, a sticker, a turning badge, the newest podcast. #}
+{% split_highlight value.title value.highlight as parts %}
+<section class="under-header relative">
+  <div class="container-page hero-grid">
     <div>
-      {% if value.eyebrow %}<p class="eyebrow">{{ value.eyebrow }}</p>{% endif %}
-      <h1 class="mt-3 font-display text-[2.9rem] leading-[1.2] font-medium text-ink sm:text-[3.6rem] lg:text-[4.25rem]">
-        {% for line in value.title.splitlines %}{% if line.strip %}<span class="block{% if forloop.last and not forloop.first %} accent-text{% endif %}">{{ line }}</span>{% endif %}{% endfor %}
-      </h1>
-      {% if value.subtitle %}<p class="mt-6 max-w-xl text-[1.08rem] leading-9 text-ink-2">{{ value.subtitle }}</p>{% endif %}
+      {% if value.eyebrow %}<p class="kicker surface">{% include "components/icon.html" with name="asterisk" size="14" class="kicker-star" %}{{ value.eyebrow }}</p>{% endif %}
+      <h1 class="hero-title">{% if parts %}{{ parts.0 }}<span class="scrib">{{ parts.1 }}{% include "components/scribble.html" %}</span>{{ parts.2 }}{% else %}{{ value.title }}{% endif %}</h1>
+      {% if value.quote %}<p class="hero-after">{{ value.quote }}</p>{% endif %}
+      {% if value.subtitle %}<p class="lead mt-4 max-w-[33rem]">{{ value.subtitle }}</p>{% endif %}
       {% if value.buttons %}
-      <div class="mt-9 flex flex-wrap gap-4">
-        {% for button in value.buttons %}<a href="{{ button.href }}" class="btn min-w-36 {% if button.style == 'secondary' %}btn-secondary{% else %}btn-primary{% endif %}">{{ button.label }}{% if button.style == 'secondary' %} {% include "components/icon.html" with name="arrow" size="16" %}{% endif %}</a>{% endfor %}
+      <div class="mt-8 flex flex-wrap gap-3">
+        {% for button in value.buttons %}<a href="{{ button.href }}" class="btn {% if button.style == 'secondary' %}btn-secondary{% else %}btn-primary{% endif %}">{{ button.label }}{% if button.style == 'secondary' %} {% include "components/icon.html" with name="arrow" size="16" %}{% endif %}</a>{% endfor %}
       </div>
       {% endif %}
     </div>
-    {% if value.quote %}
-    <figure class="surface glass max-w-sm self-start p-8 lg:mt-24 lg:justify-self-end">
-      <blockquote class="text-[1.04rem] leading-8 text-ink">{{ value.quote }}</blockquote>
-      <span class="mt-7 block h-0.5 w-10 rounded-full bg-ink-3/60" aria-hidden="true"></span>
-    </figure>
-    {% endif %}
+
+    <div class="collage">
+      <figure class="polaroid surface">
+        <div class="polaroid-photo {% if not value.image %}scene scene-window{% endif %}">{% if value.image %}<span class="polaroid-sun" aria-hidden="true"></span>{% endif %}</div>
+        {% if value.image %}{% image value.image height-760 format-webp class="hero-cutout" alt=value.photo_caption|default:"" fetchpriority="high" %}{% endif %}
+        {% if value.photo_caption %}<figcaption class="polaroid-caption">{{ value.photo_caption }}</figcaption>{% endif %}
+      </figure>
+      {% if value.sticker %}<p class="sticker-hello" aria-hidden="true">{{ value.sticker }}</p>{% endif %}
+      {% if value.badge_text %}<div class="spin-badge">{% include "components/spin_badge.html" with uid="hero" text=value.badge_text center=settings.content.SiteSettings.brand_name|first %}</div>{% endif %}
+      {% if episode %}
+      <a href="{% pageurl episode %}" class="podcast-sticker surface">
+        <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="min-w-0"><b class="block text-[0.82rem] leading-6 text-ink">اپیزود تازهٔ پادکست</b><span class="line-clamp-1 text-xs text-ink-3">{{ episode.title }}</span></span>
+      </a>
+      {% endif %}
+    </div>
   </div>
 </section>

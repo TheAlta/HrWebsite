@@ -223,20 +223,58 @@ class BodyBlock(blocks.StreamBlock):
 
 
 class HeroBlock(blocks.StructBlock):
-    eyebrow = blocks.CharBlock(required=False, label="برچسب بالای عنوان")
-    title = blocks.TextBlock(
-        label="عنوان",
-        rows=3,
-        help_text="یک جمله ارزش. هر خط جدا نمایش داده می‌شود و خط آخر رنگی است.",
+    """The demo's first section: the title with one underlined word, and a photo
+    collage — a tilted frame, a sticker, a turning badge and the latest podcast."""
+
+    eyebrow = blocks.CharBlock(
+        required=False,
+        label="برچسب بالای عنوان",
+        help_text="مثل «مشاور منابع انسانی، مدرس و نویسنده»",
+    )
+    title = blocks.TextBlock(label="عنوان", rows=2, help_text="یک جمله ارزش.")
+    highlight = blocks.CharBlock(
+        required=False,
+        label="کلمهٔ خط‌دار",
+        help_text="یک کلمه از عنوان که زیرش خط طلایی می‌آید، مثل «آدم‌ها».",
+    )
+    quote = blocks.CharBlock(
+        required=False,
+        label="ادامهٔ رنگی عنوان",
+        help_text="یک خط کوتاه زیر عنوان، به رنگ تأکید.",
     )
     subtitle = blocks.TextBlock(required=False, label="زیرعنوان")
+    buttons = blocks.ListBlock(ButtonBlock(), max_num=2, label="دکمه‌ها")
     image = ImageChooserBlock(
         required=False,
-        label="تصویر پس‌زمینه",
-        help_text="خالی بگذارید تا تصویر نقاشی‌شده پیش‌فرض نمایش داده شود.",
+        label="عکس دوربری‌شده",
+        help_text=(
+            "عکس با پس‌زمینهٔ شفاف (PNG یا WebP) که از قاب بیرون می‌زند."
+            " خالی بگذارید تا تصویر هندسی نمایش داده شود."
+        ),
     )
-    buttons = blocks.ListBlock(ButtonBlock(), max_num=2, label="دکمه‌ها")
-    quote = blocks.TextBlock(required=False, label="جمله کنار تصویر")
+    photo_caption = blocks.CharBlock(required=False, label="زیرنویس عکس", max_length=60)
+    sticker = blocks.CharBlock(
+        required=False, default="سلام!", label="برچسب کنار عکس", max_length=12
+    )
+    badge_text = blocks.CharBlock(
+        required=False,
+        label="متن نشان چرخان",
+        max_length=80,
+        help_text="دور یک دایره می‌چرخد، مثل «چهارده سال تجربه ✳ مشاور ✳ مدرس ✳ نویسنده ✳»",
+    )
+
+    def get_context(self, value, parent_context=None):
+        from .models import ArticleKind, ArticlePage
+
+        context = super().get_context(value, parent_context)
+        # The newest podcast episode, as a small card beside the photo
+        context["episode"] = (
+            ArticlePage.objects.live()
+            .filter(kind=ArticleKind.PODCAST)
+            .order_by("-first_published_at")
+            .first()
+        )
+        return context
 
     class Meta:
         icon = "pick"
@@ -245,21 +283,65 @@ class HeroBlock(blocks.StructBlock):
 
 
 class ClientLogosBlock(blocks.StructBlock):
-    title = blocks.CharBlock(
-        required=False, default="سازمان‌هایی که با آن‌ها کار کرده‌ام", label="عنوان"
-    )
+    """The demo's strip of client names, moving slowly sideways."""
+
+    title = blocks.CharBlock(required=False, default="همکاری با", label="عنوان کوتاه")
 
     def get_context(self, value, parent_context=None):
         from apps.portfolio.models import Client
 
         context = super().get_context(value, parent_context)
-        context["clients"] = Client.objects.filter(show_logo=True).exclude(logo=None)
+        context["clients"] = Client.objects.filter(show_logo=True)
         return context
 
     class Meta:
         icon = "group"
         template = "blocks/client_logos.html"
-        label = "لوگوی مشتریان"
+        label = "نام مشتریان"
+
+
+class PathLinkBlock(LinkBlock):
+    note = blocks.CharBlock(required=False, label="توضیح کوتاه", max_length=40)
+
+    class Meta:
+        icon = "link"
+        value_class = LinkValue
+        label = "مسیر"
+
+
+class IntroBlock(blocks.StructBlock):
+    """«سلام، من … هستم»: a large greeting, a sentence whose bold words show as
+    highlighter marks, and the paths a visitor can take (REPORT #058)."""
+
+    title = blocks.CharBlock(label="عنوان", help_text="مثل «سلام، من آرزو هستم.»")
+    highlight = blocks.CharBlock(
+        required=False, label="کلمهٔ علامت‌دار", help_text="یک کلمه از عنوان با ماژیک طلایی."
+    )
+    text = blocks.RichTextBlock(
+        features=["bold"],
+        required=False,
+        label="متن",
+        help_text="بخش‌های پررنگ با ماژیک رنگی نمایش داده می‌شوند.",
+    )
+    paths = blocks.ListBlock(PathLinkBlock(), max_num=4, required=False, label="مسیرها")
+
+    class Meta:
+        icon = "user"
+        template = "blocks/intro.html"
+        label = "معرفی و مسیرها"
+
+
+class NewsletterBlock(blocks.StructBlock):
+    """The newsletter form as a page section, beside a turning badge."""
+
+    title = blocks.CharBlock(default="نامه‌ای کوتاه، هر دو هفته یک بار", label="عنوان")
+    text = blocks.TextBlock(required=False, label="متن")
+    badge_text = blocks.CharBlock(required=False, label="متن نشان چرخان", max_length=80)
+
+    class Meta:
+        icon = "mail"
+        template = "blocks/newsletter.html"
+        label = "خبرنامه"
 
 
 class ServicesBlock(blocks.StructBlock):
@@ -313,6 +395,7 @@ class StatsBlock(blocks.StructBlock):
 
 
 class TestimonialsBlock(blocks.StructBlock):
+    eyebrow = blocks.CharBlock(required=False, label="برچسب بالای عنوان")
     title = blocks.CharBlock(default="نظر مشتریان", label="عنوان")
     testimonials = blocks.ListBlock(
         SnippetChooserBlock("portfolio.Testimonial"),
@@ -338,7 +421,14 @@ class TestimonialsBlock(blocks.StructBlock):
 
 
 class LatestArticlesBlock(blocks.StructBlock):
+    """The newest articles beside a stacked heading: a small line, the title, a coloured line."""
+
+    eyebrow = blocks.CharBlock(required=False, label="خط کوچک بالای عنوان", help_text="مثل «نه یک»")
     title = blocks.CharBlock(default="از مجله", label="عنوان")
+    tagline = blocks.CharBlock(
+        required=False, label="خط رنگی زیر عنوان", help_text="مثل «معمولی منابع انسانی»"
+    )
+    intro = blocks.TextBlock(required=False, label="مقدمه")
     count = blocks.IntegerBlock(default=3, min_value=1, max_value=12, label="تعداد")
 
     def get_context(self, value, parent_context=None):
@@ -435,6 +525,7 @@ class UpcomingEventBlock(blocks.StructBlock):
     """The next course or webinar with a countdown; hidden when none is ahead."""
 
     title = blocks.CharBlock(default="رویداد پیش رو", label="عنوان")
+    button_label = blocks.CharBlock(default="ثبت‌نام", label="متن دکمه", max_length=40)
 
     def get_context(self, value, parent_context=None):
         from django.utils import timezone
@@ -513,6 +604,8 @@ class ContactBandBlock(blocks.StructBlock):
 
 class HomeBlock(blocks.StreamBlock):
     hero = HeroBlock()
+    intro = IntroBlock()
+    newsletter = NewsletterBlock()
     about = AboutBlock()
     upcoming_event = UpcomingEventBlock()
     products = ProductsBlock()

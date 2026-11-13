@@ -1,13 +1,16 @@
-{% load wagtailimages_tags %}
 {% if clients %}
-<section class="pt-6 pb-4" aria-label="{{ value.title|default:'مشتریان' }}">
+{# The demo's strip of client names moving slowly sideways; it stops under the pointer and for reduced motion. #}
+<section class="pt-2 pb-4" aria-label="مشتریان">
   <div class="container-page">
-    {% if value.title %}<p class="muted mb-3 text-center">{{ value.title }}</p>{% endif %}
-    <ul class="surface logo-strip">
-      {% for client in clients %}
-      <li>{% if client.logo %}{% image client.logo height-48 format-webp class="h-8 w-auto opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0 dark:invert" loading="lazy" alt=client.name %}{% else %}<span class="text-sm font-medium text-ink-3">{{ client.name }}</span>{% endif %}</li>
-      {% endfor %}
-    </ul>
+    <div class="seen surface">
+      {% if value.title %}<p class="seen-label">{{ value.title }}</p>{% endif %}
+      <div class="marquee">
+        <div class="marquee-track">
+          <ul class="marquee-list">{% for client in clients %}<li>{{ client.name }}</li>{% endfor %}</ul>
+          <ul class="marquee-list" aria-hidden="true">{% for client in clients %}<li>{{ client.name }}</li>{% endfor %}</ul>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 {% endif %}

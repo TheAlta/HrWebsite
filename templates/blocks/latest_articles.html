@@ -1,7 +1,12 @@
 {% if articles %}
+{# The demo's magazine section: a stacked heading on the start side — a small line, the title, a coloured line — beside the newest cards #}
 <section class="section">
-  <div class="container-page">
-    {% include "components/section_header.html" with title=value.title link=blog.url %}
+  <div class="container-page grid gap-8 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-10">
+    <div>
+      <h2 class="stackhead">{% if value.eyebrow %}<small>{{ value.eyebrow }}</small>{% endif %}<span>{{ value.title }}</span>{% if value.tagline %}<em>{{ value.tagline }}</em>{% endif %}</h2>
+      {% if value.intro %}<p class="mt-4 text-[0.95rem] leading-8 text-ink-3">{{ value.intro }}</p>{% endif %}
+      {% if blog %}<a href="{{ blog.url }}" class="btn btn-secondary btn-sm mt-5">همهٔ نوشته‌ها {% include "components/icon.html" with name="arrow" size="16" %}</a>{% endif %}
+    </div>
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {% for article in articles %}{% include "components/card_article.html" with article=article %}{% endfor %}
     </div>

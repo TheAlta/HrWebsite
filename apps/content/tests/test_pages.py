@@ -219,15 +219,29 @@ def test_styleguide_only_in_debug(client, settings):
 
 
 def test_home_has_the_demo_sections(client, demo_site):
-    """Hero with a coloured last line, services tray, about, next event, products, contact band."""
+    """The second demo's home (REPORT #058): hero with an underlined word, client names,
+    the greeting with paths, stat band, magazine, next event, quotes, newsletter, contact."""
     html = client.get("/").content.decode()
-    assert 'class="block accent-text">سازمان‌های بهتر.</span>' in html
-    assert "services-tray" in html
-    assert "ارتباط مؤثر" in html  # a trait on the about picture
-    assert 'x-data="countdown"' in html
-    assert "کتاب مبانی منابع انسانی" in html
+    assert '<span class="scrib">آدم‌ها<svg' in html  # the hero's underlined word
+    assert "…بی‌آنکه خودتان در شلوغی‌اش گم شوید." in html
+    assert 'class="marquee-list" aria-hidden="true"' in html  # names, the copy hidden from readers
+    assert '<mark class="mark-gold">آرزو</mark>' in html
+    assert "<b>آدم‌محور</b>" in html  # a bold word becomes a highlighter mark
+    assert "statband" in html
+    assert "<small>نه یک</small><span>وبلاگ</span><em>معمولی منابع انسانی</em>" in html
+    assert 'x-text="seconds"' in html  # the event countdown has seconds
+    assert "همکاران چه می‌گویند" in html
+    assert 'id="newsletter-band"' in html and 'name="place" value="home"' in html
     assert 'id="callback-form"' in html
     assert 'id="download-form-' in html
+
+
+def test_highlight_marks_only_a_word_of_the_title():
+    from apps.content.templatetags.content_tags import split_highlight
+
+    assert split_highlight("سلام، من آرزو هستم.", "آرزو") == ("سلام، من ", "آرزو", " هستم.")
+    assert split_highlight("سلام", "") is None
+    assert split_highlight("سلام", "خداحافظ") is None  # a word not in the title marks nothing
 
 
 def test_menu_groups_open_as_dropdowns_and_fill_the_footer(client, demo_site):

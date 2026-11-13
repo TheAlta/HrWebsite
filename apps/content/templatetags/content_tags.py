@@ -78,6 +78,18 @@ def scene_class(obj):
     return SCENES[(obj.pk or 0) % len(SCENES)]
 
 
+@register.simple_tag
+def split_highlight(text, word):
+    """(before, word, after) around the first place `word` appears in `text`, or None.
+
+    For a title with one marked word; the template escapes each part.
+    """
+    if not word or word not in (text or ""):
+        return None
+    before, _, after = text.partition(word)
+    return (before, word, after)
+
+
 BOOK_COVERS = 5
 
 

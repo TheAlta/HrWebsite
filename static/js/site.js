@@ -61,23 +61,25 @@ document.addEventListener("alpine:init", () => {
     },
   }));
 
-  // Days, hours and minutes until data-until (an ISO date), in Persian digits.
-  // Once a minute is enough: the smallest unit shown is the minute.
+  // Days, hours, minutes and seconds until data-until (an ISO date), in Persian
+  // digits, as in the demo. role="timer" keeps screen readers from announcing each tick.
   Alpine.data("countdown", () => ({
     days: "—",
     hours: "—",
     minutes: "—",
+    seconds: "—",
     init() {
       const until = Date.parse(this.$el.dataset.until);
       const digits = new Intl.NumberFormat("fa-IR", { useGrouping: false });
       const tick = () => {
-        const left = Math.max(0, Math.floor((until - Date.now()) / 60000));
-        this.days = digits.format(Math.floor(left / 1440));
-        this.hours = digits.format(Math.floor(left / 60) % 24);
-        this.minutes = digits.format(left % 60);
+        const left = Math.max(0, Math.floor((until - Date.now()) / 1000));
+        this.days = digits.format(Math.floor(left / 86400));
+        this.hours = digits.format(Math.floor(left / 3600) % 24);
+        this.minutes = digits.format(Math.floor(left / 60) % 60);
+        this.seconds = digits.format(left % 60);
       };
       tick();
-      this.timer = setInterval(tick, 60000);
+      this.timer = setInterval(tick, 1000);
     },
     destroy() {
       clearInterval(this.timer);

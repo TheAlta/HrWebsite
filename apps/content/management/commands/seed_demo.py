@@ -573,52 +573,71 @@ class Command(BaseCommand):
 
         TeamMember.objects.create(name="عضو نمونه تیم", role="کارشناس", is_active=True)
 
-        # --- home sections (spec section 10 order) -------------------------
+        # --- home sections, in the order of the owner's second demo (REPORT #058) ---
         home.body = [
             (
                 "hero",
                 {
-                    "eyebrow": "منابع انسانی",
-                    "title": "آدم‌ها.\nفرایندها.\nسازمان‌های بهتر.",
+                    "eyebrow": "مشاور منابع انسانی، مدرس و نویسنده",
+                    "title": "سازمانی بسازید که آدم‌ها در آن رشد کنند…",
+                    "highlight": "آدم‌ها",
+                    "quote": "…بی‌آنکه خودتان در شلوغی‌اش گم شوید.",
                     "subtitle": (
-                        "من آرزو هستم، مشاور منابع انسانی. کمک می‌کنم سازمان‌ها آدم‌محور بمانند،"
-                        " استعدادها رشد کنند و تیم‌ها پایدار شوند."
+                        "سال‌هاست کنار مدیرها و تیم‌های منابع انسانی کار می‌کنم تا استخدام،"
+                        " ارزیابی و رشد آدم‌ها ساده‌تر، منصفانه‌تر و انسانی‌تر شود."
                     ),
-                    "image": None,
                     "buttons": [
-                        {"label": "درباره من", "page": about, "url": "", "style": "primary"},
-                        {"label": "تماس با من", "page": contact, "url": "", "style": "secondary"},
-                    ],
-                    "quote": (
-                        "«شرکت‌های بزرگ فقط با استراتژی ساخته نمی‌شوند؛"
-                        " آدم‌هایی آن‌ها را می‌سازند که استراتژی را واقعی می‌کنند.»"
-                    ),
-                },
-            ),
-            ("services", {"title": "", "intro": "", "services": []}),
-            (
-                "about",
-                {
-                    "title": "درباره من",
-                    "text": (
-                        "مشاور منابع انسانی با سابقه در مدیریت استعداد، روابط کار و توسعهٔ سازمانی."
-                        " دوست دارم محیط‌های کاری‌ای بسازم که آدم‌ها در آن رشد کنند"
-                        " و بهترین کارشان را انجام دهند."
-                    ),
-                    "button": [
-                        {"label": "بیشتر دربارهٔ من", "page": about, "url": "", "style": "secondary"}
-                    ],
-                    "traits": [
-                        {"label": "همدلی", "icon": "heart"},
-                        {"label": "ارتباط مؤثر", "icon": "message"},
-                        {"label": "حل مسئله", "icon": "bulb"},
-                        {"label": "رهبری", "icon": "crown"},
+                        {
+                            "label": "درخواست مشاورهٔ سازمانی",
+                            "page": consultation,
+                            "url": "",
+                            "style": "primary",
+                        },
+                        {
+                            "label": "رزرو جلسهٔ فردی",
+                            "page": booking_page,
+                            "url": "",
+                            "style": "secondary",
+                        },
                     ],
                     "image": None,
+                    "photo_caption": "روی صحنه، در حال سخنرانی",
+                    "sticker": "سلام!",
+                    "badge_text": "سال‌ها تجربه ✳ مشاور منابع انسانی ✳ مدرس ✳ نویسنده ✳",
                 },
             ),
-            ("latest_articles", {"title": "تازه‌ترین نوشته‌ها", "count": 3}),
-            ("client_logos", {"title": ""}),
+            ("client_logos", {"title": "همکاری با"}),
+            (
+                "intro",
+                {
+                    "title": "سلام، من آرزو هستم.",
+                    "highlight": "آرزو",
+                    "text": RichText(
+                        "<p>کمک می‌کنم سازمان‌ها <b>آدم‌محور</b> بمانند، مدیرها <b>بازخورد خوب</b>"
+                        " بدهند و کارجوها تصمیم شغلی بعدی‌شان را آگاهانه بگیرند. از کجا شروع کنیم؟</p>"
+                    ),
+                    "paths": [
+                        {
+                            "label": "مدیر سازمانم",
+                            "note": "مشاورهٔ سازمانی",
+                            "page": consultation,
+                            "url": "",
+                        },
+                        {
+                            "label": "در تیم منابع انسانی کار می‌کنم",
+                            "note": "دوره‌ها",
+                            "page": events_page,
+                            "url": "",
+                        },
+                        {
+                            "label": "دنبال مسیر شغلی‌ام",
+                            "note": "جلسهٔ فردی",
+                            "page": booking_page,
+                            "url": "",
+                        },
+                    ],
+                },
+            ),
             (
                 "stats",
                 {
@@ -631,7 +650,20 @@ class Command(BaseCommand):
                     ],
                 },
             ),
-            ("upcoming_event", {"title": "رویداد پیش رو"}),
+            (
+                "latest_articles",
+                {
+                    "eyebrow": "نه یک",
+                    "title": "وبلاگ",
+                    "tagline": "معمولی منابع انسانی",
+                    "intro": "یادداشت‌های کوتاه و کاربردی، بدون اصطلاحات قلمبه.",
+                    "count": 3,
+                },
+            ),
+            (
+                "upcoming_event",
+                {"title": "رویداد پیش رو", "button_label": "بله! جای من را نگه دار"},
+            ),
             (
                 "products",
                 {
@@ -640,12 +672,29 @@ class Command(BaseCommand):
                     "count": 4,
                 },
             ),
-            ("testimonials", {"title": "نظر مشتریان", "testimonials": []}),
+            (
+                "testimonials",
+                {"eyebrow": "از زبان خودشان", "title": "همکاران چه می‌گویند", "testimonials": []},
+            ),
+            (
+                "newsletter",
+                {
+                    "title": "نامه‌ای کوتاه، هر دو هفته یک بار",
+                    "text": (
+                        "یک ایده، یک قالب و یک سؤال برای جلسهٔ بعدی تیم‌تان."
+                        " بدون تبلیغ؛ هر وقت خواستید لغو کنید."
+                    ),
+                    "badge_text": "خبرنامه‌ای واقعی ✳ برای صندوق شما ✳ هر دو هفته ✳",
+                },
+            ),
             (
                 "contact_band",
                 {
-                    "callback_title": "با من تماس بگیرید",
-                    "callback_text": "نام و شماره‌تان را بگذارید؛ در اولین فرصت تماس می‌گیرم.",
+                    "callback_title": "پروژهٔ سازمانی دارید؟",
+                    "callback_text": (
+                        "نام و شماره‌تان را بگذارید؛ برای یک گفت‌وگوی ۲۰ دقیقه‌ای"
+                        " و بدون هزینه تماس می‌گیرم."
+                    ),
                     "document": resume,
                     "document_title": "دریافت رزومهٔ کامل",
                     "document_text": "رزومه و فهرست پروژه‌ها را دریافت کنید.",
