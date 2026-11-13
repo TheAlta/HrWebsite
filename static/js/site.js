@@ -1,6 +1,27 @@
 // Alpine components the page markup refers to by name. Under the site's CSP the
 // Alpine build cannot run free JavaScript or reach globals such as confirm(), so
 // anything beyond a simple expression lives here. Loaded before Alpine.
+
+// Keeps Tab inside an open dialog: from the last control it wraps to the first,
+// and Shift+Tab from the first to the last, so focus never reaches the page under it
+function trapFocus(container, event) {
+  const items = [...container.querySelectorAll("a[href], button:not([disabled])")].filter(
+    (el) => el.offsetParent !== null,
+  );
+  if (!items.length) return;
+  const first = items[0];
+  const last = items[items.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
+const faDigits = new Intl.NumberFormat("fa-IR", { useGrouping: false });
+
 document.addEventListener("alpine:init", () => {
   // <form x-data="confirmSubmit" data-confirm="..." @submit="check">
   Alpine.data("confirmSubmit", () => ({
@@ -44,20 +65,85 @@ document.addEventListener("alpine:init", () => {
       this.open = false;
       this.$nextTick(() => this.$refs.burger.focus());
     },
-    // Tab from the last control wraps to the first, Shift+Tab from the first to the last,
-    // so focus never reaches the page hidden under the menu
     trapFocus(event) {
-      const items = [...this.$refs.menuPanel.querySelectorAll("a[href], button:not([disabled])")];
-      if (!items.length) return;
-      const first = items[0];
-      const last = items[items.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
+      trapFocus(this.$refs.menuPanel, event);
+    },
+  }));
+
+  // The home page quiz (blocks/quiz.html): one question at a time in a dialog; the
+  // answers are worth 0, 1 and 2, and the total opens the first result whose
+  // data-up-to is not below it. Its button fills the consultation form's topic and note.
+  Alpine.data("quiz", () => ({
+    open: false,
+    step: 0,
+    scores: [],
+    start() {
+      this.open = true;
+      this.restart();
+    },
+    restart() {
+      this.step = 0;
+      this.scores = [];
+      this.show();
+    },
+    close() {
+      if (!this.open) return;
+      this.open = false;
+      this.$nextTick(() => this.$refs.opener.focus());
+    },
+    choose(event) {
+      this.scores[this.step] = Number(event.currentTarget.dataset.score);
+      this.step += 1;
+      this.show();
+    },
+    back() {
+      this.step = Math.max(0, this.step - 1);
+      this.show();
+    },
+    trapFocus(event) {
+      trapFocus(this.$refs.dialog, event);
+    },
+    show() {
+      const dialog = this.$refs.dialog;
+      const questions = [...dialog.querySelectorAll("[data-question]")];
+      const total = questions.length;
+      const done = this.step >= total;
+      questions.forEach((question, index) => {
+        question.hidden = index !== this.step;
+      });
+      dialog.querySelector("[data-quiz-back]").hidden = done || this.step === 0;
+      dialog.querySelector("[data-quiz-counter]").textContent = done
+        ? "نتیجهٔ شما"
+        : `سؤال ${faDigits.format(this.step + 1)} از ${faDigits.format(total)}`;
+      dialog.querySelector("[data-quiz-progress]").style.width = `${(Math.min(this.step, total) / total) * 100}%`;
+
+      const results = [...dialog.querySelectorAll("[data-result]")];
+      results.forEach((result) => {
+        result.hidden = true;
+      });
+      if (!done) {
+        this.$nextTick(() => questions[this.step].querySelector("button").focus());
+        return;
       }
+      const score = this.scores.reduce((sum, value) => sum + value, 0);
+      const max = total * 2;
+      const result =
+        results.find((item) => score <= Number(item.dataset.upTo)) || results[results.length - 1];
+      result.hidden = false;
+      result.querySelector("[data-result-bar]").style.width = `${(score / max) * 100}%`;
+      result.querySelector("[data-result-score]").textContent =
+        `امتیاز ${faDigits.format(score)} از ${faDigits.format(max)}`;
+      const link = result.querySelector("[data-result-link]");
+      if (link) {
+        const url = new URL(link.getAttribute("href"), window.location.origin);
+        if (result.dataset.topic) url.searchParams.set("topic", result.dataset.topic);
+        url.searchParams.set(
+          "note",
+          `نتیجهٔ آزمون: ${result.dataset.name} (امتیاز ${faDigits.format(score)} از ${faDigits.format(max)})`,
+        );
+        link.href = url.pathname + url.search;
+      }
+      this.$nextTick(() => result.querySelector("[data-result-heading]").focus());
     },
   }));
 

@@ -257,3 +257,12 @@ def test_cards_without_a_photo_get_a_drawn_scene(client, demo_site):
     article = ArticlePage.objects.live().first()
     assert scene_class(article) == scene_class(article)  # the same picture every time
     assert f"scene {scene_class(article)}" in client.get("/blog/").content.decode()
+
+
+def test_quiz_renders_and_its_result_fills_the_consultation_form(client, demo_site):
+    html = client.get("/").content.decode()
+    assert html.count("data-question") == 5 and 'data-up-to="3"' in html
+    page = client.get("/consultation/?topic=structure&note=نتیجهٔ آزمون").content.decode()
+    assert 'id_topics_1" checked' in page  # «ساختار سازمانی», the second topic
+    assert "نتیجهٔ آزمون" in page
+    assert "<script>" not in client.get("/consultation/?note=<script>").content.decode()

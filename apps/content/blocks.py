@@ -331,6 +331,85 @@ class IntroBlock(blocks.StructBlock):
         label = "معرفی و مسیرها"
 
 
+def consultation_topics():
+    """The consultation form's topics, read late: crm's models import content."""
+    from apps.crm.forms import TOPICS
+
+    return TOPICS
+
+
+class QuizQuestionBlock(blocks.StructBlock):
+    question = blocks.CharBlock(label="سؤال")
+    answers = blocks.ListBlock(
+        blocks.CharBlock(label="پاسخ"),
+        min_num=3,
+        max_num=3,
+        label="پاسخ‌ها",
+        help_text="از ضعیف به قوی: پاسخ اول صفر امتیاز، دوم یک و سوم دو امتیاز.",
+    )
+
+    class Meta:
+        icon = "help"
+        label = "سؤال"
+
+
+class QuizResultBlock(blocks.StructBlock):
+    up_to = blocks.IntegerBlock(
+        min_value=0,
+        label="تا امتیاز",
+        help_text="برای امتیازهای تا این عدد. بیشترین امتیاز دو برابر تعداد سؤال‌هاست.",
+    )
+    name = blocks.CharBlock(label="نام مرحله", help_text="مثل «مرحلهٔ نظم‌دهی»")
+    text = blocks.TextBlock(label="توضیح")
+    service = blocks.PageChooserBlock(
+        page_type="content.ServicePage", required=False, label="خدمت پیشنهادی"
+    )
+    topic = blocks.ChoiceBlock(
+        choices=consultation_topics,
+        required=False,
+        label="موضوع در فرم مشاوره",
+        help_text="دکمهٔ نتیجه فرم مشاوره را با این موضوع باز می‌کند.",
+    )
+
+    class Meta:
+        icon = "tick"
+        label = "نتیجه"
+
+
+class QuizBlock(blocks.StructBlock):
+    """A short self-assessment: one question at a time, then a stage and a suggested
+    service, and a button to the consultation form filled with it (REPORT #058)."""
+
+    eyebrow = blocks.CharBlock(default="آماده‌اید برای", label="خط کوچک")
+    big = blocks.CharBlock(default="سطح بعدی؟", label="کلمه‌های بزرگ")
+    title = blocks.CharBlock(default="منابع انسانی سازمان شما در کدام مرحله است؟", label="عنوان")
+    text = blocks.TextBlock(required=False, label="متن")
+    button_label = blocks.CharBlock(
+        default="کنجکاوید؟ آزمون را شروع کنید", label="متن دکمه", max_length=50
+    )
+    questions = blocks.ListBlock(QuizQuestionBlock(), min_num=1, max_num=10, label="سؤال‌ها")
+    results = blocks.ListBlock(
+        QuizResultBlock(),
+        min_num=1,
+        label="نتیجه‌ها",
+        help_text="هر امتیاز به اولین نتیجه‌ای می‌رسد که «تا امتیاز» آن کمتر نباشد.",
+    )
+
+    def get_context(self, value, parent_context=None):
+        from apps.crm.models import ConsultationPage
+
+        context = super().get_context(value, parent_context)
+        context["consultation"] = ConsultationPage.objects.live().first()
+        context["results"] = sorted(value["results"], key=lambda result: result["up_to"])
+        context["max_score"] = 2 * len(value["questions"])
+        return context
+
+    class Meta:
+        icon = "help"
+        template = "blocks/quiz.html"
+        label = "آزمون کوتاه"
+
+
 class NewsletterBlock(blocks.StructBlock):
     """The newsletter form as a page section, beside a turning badge."""
 
@@ -605,6 +684,7 @@ class ContactBandBlock(blocks.StructBlock):
 class HomeBlock(blocks.StreamBlock):
     hero = HeroBlock()
     intro = IntroBlock()
+    quiz = QuizBlock()
     newsletter = NewsletterBlock()
     about = AboutBlock()
     upcoming_event = UpcomingEventBlock()

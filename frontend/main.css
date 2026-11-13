@@ -1098,6 +1098,34 @@
     @apply text-xs font-normal text-ink-3;
   }
 
+  /* --- The quiz (blocks/quiz.html) --- */
+  .quizband {
+    @apply grid items-center gap-6 p-7 text-center sm:p-10 md:grid-cols-[auto_minmax(0,1fr)_auto] md:gap-10 md:text-start;
+  }
+  .quiz-big {
+    @apply font-display leading-[1.25] font-extrabold text-ink;
+  }
+  .quiz-big small {
+    @apply block text-[1.3rem] font-semibold text-accent-ink;
+  }
+  .quiz-big span {
+    @apply block text-[2.8rem] sm:text-[3.6rem] lg:text-[4.4rem];
+  }
+  /* The large outlined question mark at the end of the band */
+  .quiz-mark {
+    color: transparent;
+    -webkit-text-stroke: 1.5px color-mix(in srgb, var(--accent) 60%, transparent);
+    @apply hidden font-display text-[5rem] leading-none font-extrabold md:block;
+  }
+  .quiz-answer {
+    background: var(--tile);
+    @apply rounded-2xl px-4 py-3.5 text-start text-[0.98rem] leading-7 text-ink ring-1 ring-line ring-inset transition-shadow hover:ring-accent focus-visible:ring-2 focus-visible:ring-accent;
+  }
+  .quiz-progress {
+    background: var(--accent-line);
+    @apply block h-full w-0 rounded-full transition-[width] duration-500;
+  }
+
   /* --- The stat band (blocks/stats.html) --- */
   .statband {
     background: var(--band-bg);
