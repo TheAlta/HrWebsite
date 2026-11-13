@@ -3,19 +3,19 @@
 {% block title %}دوره‌ها | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
 
 {% block account_content %}
-<h1 class="heading-1">دوره‌ها</h1>
+<h1 class="heading-2">دوره‌ها</h1>
 {% if page_obj.object_list %}
 <ul class="mt-6 space-y-4">
   {% for registration in page_obj %}
   <li class="card"><div class="card-body">
     <div class="flex flex-wrap items-center justify-between gap-2">
-      <a href="{% pageurl registration.event %}" class="card-title hover:text-brand-700">{{ registration.event.title }}</a>
+      <a href="{% pageurl registration.event %}" class="card-title hover:text-accent-ink">{{ registration.event.title }}</a>
       <span class="badge">{{ registration.get_status_display }}</span>
     </div>
     <p>{{ registration.event.start_at|jdatetime }}</p>
-    {% if registration.status == "paid" and registration.event.has_class_room and not registration.event.has_ended %}<a href="{% url 'events:join' registration.pk %}" target="_blank" rel="noopener" class="font-semibold text-brand-600 hover:underline">ورود به کلاس</a>{% endif %}
-    {% with certificate=registration.certificate %}{% if registration.status == "paid" and certificate.is_valid %}<a href="{% url 'certificates:download' certificate.code %}" class="font-semibold text-brand-600 hover:underline">دریافت گواهی حضور</a>{% endif %}{% endwith %}
-    {% if registration.status == "paid" and registration.event.recording_url and registration.event.has_ended %}<a href="{{ registration.event.recording_url }}" target="_blank" rel="noopener" class="font-semibold text-brand-600 hover:underline">مشاهده ضبط</a>{% endif %}
+    {% if registration.status == "paid" and registration.event.has_class_room and not registration.event.has_ended %}<a href="{% url 'events:join' registration.pk %}" target="_blank" rel="noopener" class="font-semibold text-accent-ink hover:underline">ورود به کلاس</a>{% endif %}
+    {% with certificate=registration.certificate %}{% if registration.status == "paid" and certificate.is_valid %}<a href="{% url 'certificates:download' certificate.code %}" class="font-semibold text-accent-ink hover:underline">دریافت گواهی حضور</a>{% endif %}{% endwith %}
+    {% if registration.status == "paid" and registration.event.recording_url and registration.event.has_ended %}<a href="{{ registration.event.recording_url }}" target="_blank" rel="noopener" class="font-semibold text-accent-ink hover:underline">مشاهده ضبط</a>{% endif %}
     {% if registration.status == "pending" and registration.order %}<a href="{% url 'orders:detail' registration.order.number %}" class="btn btn-primary btn-sm self-start">تکمیل پرداخت</a>{% endif %}
     {% if not registration.event.has_started %}{% if registration.status == "pending" or registration.status == "waitlist" or registration.status == "paid" and not registration.order %}
     <form method="post" action="{% url 'events:cancel' registration.pk %}" class="mt-1" x-data="confirmSubmit" data-confirm="این ثبت‌نام لغو شود؟" @submit="check">{% csrf_token %}<button type="submit" class="btn btn-ghost btn-sm">لغو ثبت‌نام</button></form>

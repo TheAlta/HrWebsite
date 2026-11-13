@@ -46,6 +46,42 @@ class LinkBlock(blocks.StructBlock):
         label = "لینک"
 
 
+# Icons the header's dropdown can show beside a link (templates/components/icon.html)
+MENU_ICONS = [
+    ("", "بدون آیکن"),
+    ("briefcase", "کیف کار"),
+    ("users", "افراد"),
+    ("calendar", "تقویم"),
+    ("newspaper", "مجله"),
+    ("book", "کتاب"),
+    ("award", "نشان"),
+    ("mic", "میکروفون"),
+    ("compass", "قطب‌نما"),
+    ("route", "مسیر"),
+]
+
+
+class MenuItemBlock(LinkBlock):
+    description = blocks.CharBlock(required=False, label="توضیح کوتاه", max_length=80)
+    icon = blocks.ChoiceBlock(choices=MENU_ICONS, required=False, default="", label="آیکن")
+
+    class Meta:
+        icon = "link"
+        value_class = LinkValue
+        label = "لینک"
+
+
+class MenuGroupBlock(blocks.StructBlock):
+    """A menu entry that opens a short list of links, as in the owner's demo (REPORT #055)."""
+
+    label = blocks.CharBlock(label="عنوان")
+    links = blocks.ListBlock(MenuItemBlock(), min_num=1, label="لینک‌ها")
+
+    class Meta:
+        icon = "list-ul"
+        label = "گروه کشویی"
+
+
 class ButtonBlock(LinkBlock):
     style = blocks.ChoiceBlock(
         choices=[("primary", "اصلی"), ("secondary", "ثانویه")],
@@ -187,10 +223,58 @@ class BodyBlock(blocks.StreamBlock):
 
 
 class HeroBlock(blocks.StructBlock):
-    title = blocks.CharBlock(label="عنوان", help_text="یک جمله ارزش: چه مشکلی را حل می‌کنید")
+    """The demo's first section: the title with one underlined word, and a photo
+    collage — a tilted frame, a sticker, a turning badge and the latest podcast."""
+
+    eyebrow = blocks.CharBlock(
+        required=False,
+        label="برچسب بالای عنوان",
+        help_text="مثل «مشاور منابع انسانی، مدرس و نویسنده»",
+    )
+    title = blocks.TextBlock(label="عنوان", rows=2, help_text="یک جمله ارزش.")
+    highlight = blocks.CharBlock(
+        required=False,
+        label="کلمهٔ خط‌دار",
+        help_text="یک کلمه از عنوان که زیرش خط طلایی می‌آید، مثل «آدم‌ها».",
+    )
+    quote = blocks.CharBlock(
+        required=False,
+        label="ادامهٔ رنگی عنوان",
+        help_text="یک خط کوتاه زیر عنوان، به رنگ تأکید.",
+    )
     subtitle = blocks.TextBlock(required=False, label="زیرعنوان")
-    image = ImageChooserBlock(required=False, label="عکس")
     buttons = blocks.ListBlock(ButtonBlock(), max_num=2, label="دکمه‌ها")
+    image = ImageChooserBlock(
+        required=False,
+        label="عکس دوربری‌شده",
+        help_text=(
+            "عکس با پس‌زمینهٔ شفاف (PNG یا WebP) که از قاب بیرون می‌زند."
+            " خالی بگذارید تا تصویر هندسی نمایش داده شود."
+        ),
+    )
+    photo_caption = blocks.CharBlock(required=False, label="زیرنویس عکس", max_length=60)
+    sticker = blocks.CharBlock(
+        required=False, default="سلام!", label="برچسب کنار عکس", max_length=12
+    )
+    badge_text = blocks.CharBlock(
+        required=False,
+        label="متن نشان چرخان",
+        max_length=80,
+        help_text="دور یک دایره می‌چرخد، مثل «چهارده سال تجربه ✳ مشاور ✳ مدرس ✳ نویسنده ✳»",
+    )
+
+    def get_context(self, value, parent_context=None):
+        from .models import ArticleKind, ArticlePage
+
+        context = super().get_context(value, parent_context)
+        # The newest podcast episode, as a small card beside the photo
+        context["episode"] = (
+            ArticlePage.objects.live()
+            .filter(kind=ArticleKind.PODCAST)
+            .order_by("-first_published_at")
+            .first()
+        )
+        return context
 
     class Meta:
         icon = "pick"
@@ -199,25 +283,308 @@ class HeroBlock(blocks.StructBlock):
 
 
 class ClientLogosBlock(blocks.StructBlock):
-    title = blocks.CharBlock(
-        required=False, default="سازمان‌هایی که با آن‌ها کار کرده‌ام", label="عنوان"
-    )
+    """The demo's strip of client names, moving slowly sideways."""
+
+    title = blocks.CharBlock(required=False, default="همکاری با", label="عنوان کوتاه")
 
     def get_context(self, value, parent_context=None):
         from apps.portfolio.models import Client
 
         context = super().get_context(value, parent_context)
-        context["clients"] = Client.objects.filter(show_logo=True).exclude(logo=None)
+        context["clients"] = Client.objects.filter(show_logo=True)
         return context
 
     class Meta:
         icon = "group"
         template = "blocks/client_logos.html"
-        label = "لوگوی مشتریان"
+        label = "نام مشتریان"
+
+
+class PathLinkBlock(LinkBlock):
+    note = blocks.CharBlock(required=False, label="توضیح کوتاه", max_length=40)
+
+    class Meta:
+        icon = "link"
+        value_class = LinkValue
+        label = "مسیر"
+
+
+class IntroBlock(blocks.StructBlock):
+    """«سلام، من … هستم»: a large greeting, a sentence whose bold words show as
+    highlighter marks, and the paths a visitor can take (REPORT #058)."""
+
+    title = blocks.CharBlock(label="عنوان", help_text="مثل «سلام، من آرزو هستم.»")
+    highlight = blocks.CharBlock(
+        required=False, label="کلمهٔ علامت‌دار", help_text="یک کلمه از عنوان با ماژیک طلایی."
+    )
+    text = blocks.RichTextBlock(
+        features=["bold"],
+        required=False,
+        label="متن",
+        help_text="بخش‌های پررنگ با ماژیک رنگی نمایش داده می‌شوند.",
+    )
+    paths = blocks.ListBlock(PathLinkBlock(), max_num=4, required=False, label="مسیرها")
+
+    class Meta:
+        icon = "user"
+        template = "blocks/intro.html"
+        label = "معرفی و مسیرها"
+
+
+def consultation_topics():
+    """The consultation form's topics, read late: crm's models import content."""
+    from apps.crm.forms import TOPICS
+
+    return TOPICS
+
+
+class QuizQuestionBlock(blocks.StructBlock):
+    question = blocks.CharBlock(label="سؤال")
+    answers = blocks.ListBlock(
+        blocks.CharBlock(label="پاسخ"),
+        min_num=3,
+        max_num=3,
+        label="پاسخ‌ها",
+        help_text="از ضعیف به قوی: پاسخ اول صفر امتیاز، دوم یک و سوم دو امتیاز.",
+    )
+
+    class Meta:
+        icon = "help"
+        label = "سؤال"
+
+
+class QuizResultBlock(blocks.StructBlock):
+    up_to = blocks.IntegerBlock(
+        min_value=0,
+        label="تا امتیاز",
+        help_text="برای امتیازهای تا این عدد. بیشترین امتیاز دو برابر تعداد سؤال‌هاست.",
+    )
+    name = blocks.CharBlock(label="نام مرحله", help_text="مثل «مرحلهٔ نظم‌دهی»")
+    text = blocks.TextBlock(label="توضیح")
+    service = blocks.PageChooserBlock(
+        page_type="content.ServicePage", required=False, label="خدمت پیشنهادی"
+    )
+    topic = blocks.ChoiceBlock(
+        choices=consultation_topics,
+        required=False,
+        label="موضوع در فرم مشاوره",
+        help_text="دکمهٔ نتیجه فرم مشاوره را با این موضوع باز می‌کند.",
+    )
+
+    class Meta:
+        icon = "tick"
+        label = "نتیجه"
+
+
+class QuizBlock(blocks.StructBlock):
+    """A short self-assessment: one question at a time, then a stage and a suggested
+    service, and a button to the consultation form filled with it (REPORT #058)."""
+
+    eyebrow = blocks.CharBlock(default="آماده‌اید برای", label="خط کوچک")
+    big = blocks.CharBlock(default="سطح بعدی؟", label="کلمه‌های بزرگ")
+    title = blocks.CharBlock(default="منابع انسانی سازمان شما در کدام مرحله است؟", label="عنوان")
+    text = blocks.TextBlock(required=False, label="متن")
+    button_label = blocks.CharBlock(
+        default="کنجکاوید؟ آزمون را شروع کنید", label="متن دکمه", max_length=50
+    )
+    questions = blocks.ListBlock(QuizQuestionBlock(), min_num=1, max_num=10, label="سؤال‌ها")
+    results = blocks.ListBlock(
+        QuizResultBlock(),
+        min_num=1,
+        label="نتیجه‌ها",
+        help_text="هر امتیاز به اولین نتیجه‌ای می‌رسد که «تا امتیاز» آن کمتر نباشد.",
+    )
+
+    def get_context(self, value, parent_context=None):
+        from apps.crm.models import ConsultationPage
+
+        context = super().get_context(value, parent_context)
+        context["consultation"] = ConsultationPage.objects.live().first()
+        context["results"] = sorted(value["results"], key=lambda result: result["up_to"])
+        context["max_score"] = 2 * len(value["questions"])
+        return context
+
+    class Meta:
+        icon = "help"
+        template = "blocks/quiz.html"
+        label = "آزمون کوتاه"
+
+
+RESOURCE_ICONS = [
+    ("shield", "سپر"),
+    ("gauge", "سنجه"),
+    ("spark", "جرقه"),
+    ("compass", "قطب‌نما"),
+    ("route", "مسیر"),
+    ("users", "افراد"),
+    ("book", "کتاب"),
+]
+
+
+class FreeResourcesBlock(blocks.StructBlock):
+    """Free files for contact details (LEAD-4), filtered by topic (REPORT #058).
+
+    Each file's form has its own consent box for the newsletter (LEAD-6)."""
+
+    eyebrow = blocks.CharBlock(required=False, default="هدیه‌ای از من", label="برچسب بالای عنوان")
+    title = blocks.CharBlock(default="منابع رایگان", label="عنوان")
+    intro = blocks.TextBlock(required=False, label="مقدمه")
+    topics = blocks.ListBlock(
+        blocks.StructBlock(
+            [
+                ("label", blocks.CharBlock(label="عنوان", max_length=30)),
+                (
+                    "icon",
+                    blocks.ChoiceBlock(choices=RESOURCE_ICONS, default="shield", label="آیکن"),
+                ),
+            ]
+        ),
+        max_num=6,
+        required=False,
+        label="موضوع‌ها",
+    )
+    resources = blocks.ListBlock(
+        blocks.StructBlock(
+            [
+                ("topic", blocks.CharBlock(label="موضوع", help_text="همان عنوان یکی از موضوع‌ها")),
+                ("title", blocks.CharBlock(label="عنوان فایل")),
+                (
+                    "format",
+                    blocks.CharBlock(required=False, label="قالب", help_text="مثل PDF · ۶ صفحه"),
+                ),
+                ("document", DocumentChooserBlock(label="فایل")),
+                ("button_label", blocks.CharBlock(default="دانلود رایگان", label="متن دکمه")),
+            ]
+        ),
+        label="فایل‌ها",
+    )
+
+    def get_context(self, value, parent_context=None):
+        from apps.crm.forms import DownloadForm
+
+        context = super().get_context(value, parent_context)
+        context["items"] = [
+            (resource, DownloadForm(initial={"document": resource["document"].pk}))
+            for resource in value["resources"]
+        ]
+        return context
+
+    class Meta:
+        icon = "download"
+        template = "blocks/free_resources.html"
+        label = "منابع رایگان"
+
+
+class PodcastBlock(blocks.StructBlock):
+    """The podcast's cover beside its newest episodes, each with a player."""
+
+    eyebrow = blocks.CharBlock(required=False, default="پادکست هفتگی", label="برچسب")
+    title = blocks.CharBlock(default="گوش کنید، در راه کار", label="عنوان")
+    count = blocks.IntegerBlock(default=4, min_value=1, max_value=8, label="تعداد اپیزود")
+
+    def get_context(self, value, parent_context=None):
+        from .models import ArticleKind, ArticlePage, BlogIndexPage
+
+        context = super().get_context(value, parent_context)
+        context["episodes"] = (
+            ArticlePage.objects.live()
+            .filter(kind=ArticleKind.PODCAST)
+            .order_by("-first_published_at")[: value["count"]]
+        )
+        context["blog"] = BlogIndexPage.objects.live().first()
+        return context
+
+    class Meta:
+        icon = "media"
+        template = "blocks/podcast.html"
+        label = "پادکست"
+
+
+def products_on_sale():
+    """Choices read when the panel's form is built, so new products appear at once."""
+    from apps.shop.models import Product
+
+    return [(str(product.pk), product.title) for product in Product.objects.on_sale()]
+
+
+class FeaturedBookBlock(blocks.StructBlock):
+    """One book on a wide band, with buttons that put it straight in the cart."""
+
+    eyebrow = blocks.CharBlock(required=False, default="کتاب تازه", label="برچسب")
+    product = blocks.ChoiceBlock(choices=products_on_sale, label="کتاب")
+    second = blocks.ChoiceBlock(
+        choices=products_on_sale,
+        required=False,
+        label="نسخهٔ دیگر",
+        help_text="مثلاً نسخهٔ الکترونیکی همین کتاب، با دکمهٔ دوم",
+    )
+    text = blocks.TextBlock(required=False, label="متن")
+    badge = blocks.CharBlock(
+        required=False, label="برچسب ستاره‌ای", max_length=20, help_text="مثل «پرفروش»"
+    )
+    quote = blocks.TextBlock(required=False, label="نقل‌قول")
+    quote_by = blocks.CharBlock(required=False, label="گوینده")
+
+    def get_context(self, value, parent_context=None):
+        from apps.shop.models import Product
+
+        context = super().get_context(value, parent_context)
+        on_sale = Product.objects.on_sale().select_related("cover_image")
+        context["book"] = on_sale.filter(pk=value["product"] or 0).first()
+        context["second"] = on_sale.filter(pk=value["second"] or 0).first()
+        context["books"] = [b for b in (context["book"], context["second"]) if b]
+        return context
+
+    class Meta:
+        icon = "doc-full-inverse"
+        template = "blocks/featured_book.html"
+        label = "کتاب ویژه"
+
+
+class LibraryBlock(blocks.StructBlock):
+    """Up to four numbered cards pointing at courses, files or sessions."""
+
+    eyebrow = blocks.CharBlock(required=False, default="کتابخانهٔ آموزشی", label="برچسب")
+    title = blocks.CharBlock(default="یاد بگیرید، با سرعت خودتان", label="عنوان")
+    items = blocks.ListBlock(
+        blocks.StructBlock(
+            [
+                ("kind", blocks.CharBlock(label="نوع", help_text="مثل «دوره · ۴ جلسه»")),
+                ("title", blocks.CharBlock(label="عنوان")),
+                ("meta", blocks.CharBlock(required=False, label="توضیح کوتاه")),
+                ("link", LinkBlock(label="لینک")),
+            ]
+        ),
+        max_num=4,
+        label="کارت‌ها",
+    )
+
+    class Meta:
+        icon = "list-ol"
+        template = "blocks/library.html"
+        label = "کتابخانهٔ آموزشی"
+
+
+class NewsletterBlock(blocks.StructBlock):
+    """The newsletter form as a page section, beside a turning badge."""
+
+    title = blocks.CharBlock(default="نامه‌ای کوتاه، هر دو هفته یک بار", label="عنوان")
+    text = blocks.TextBlock(required=False, label="متن")
+    badge_text = blocks.CharBlock(required=False, label="متن نشان چرخان", max_length=80)
+
+    class Meta:
+        icon = "mail"
+        template = "blocks/newsletter.html"
+        label = "خبرنامه"
 
 
 class ServicesBlock(blocks.StructBlock):
-    title = blocks.CharBlock(default="خدمات", label="عنوان")
+    title = blocks.CharBlock(
+        required=False,
+        default="خدمات",
+        label="عنوان",
+        help_text="بدون عنوان، کارت‌ها روی لبهٔ پایین بخش اول می‌نشینند.",
+    )
     intro = blocks.TextBlock(required=False, label="مقدمه")
     services = blocks.ListBlock(
         blocks.PageChooserBlock(page_type="content.ServicePage"),
@@ -262,6 +629,7 @@ class StatsBlock(blocks.StructBlock):
 
 
 class TestimonialsBlock(blocks.StructBlock):
+    eyebrow = blocks.CharBlock(required=False, label="برچسب بالای عنوان")
     title = blocks.CharBlock(default="نظر مشتریان", label="عنوان")
     testimonials = blocks.ListBlock(
         SnippetChooserBlock("portfolio.Testimonial"),
@@ -287,11 +655,18 @@ class TestimonialsBlock(blocks.StructBlock):
 
 
 class LatestArticlesBlock(blocks.StructBlock):
+    """The newest articles beside a stacked heading: a small line, the title, a coloured line."""
+
+    eyebrow = blocks.CharBlock(required=False, label="خط کوچک بالای عنوان", help_text="مثل «نه یک»")
     title = blocks.CharBlock(default="از مجله", label="عنوان")
+    tagline = blocks.CharBlock(
+        required=False, label="خط رنگی زیر عنوان", help_text="مثل «معمولی منابع انسانی»"
+    )
+    intro = blocks.TextBlock(required=False, label="مقدمه")
     count = blocks.IntegerBlock(default=3, min_value=1, max_value=12, label="تعداد")
 
     def get_context(self, value, parent_context=None):
-        from .models import ArticlePage
+        from .models import ArticlePage, BlogIndexPage
 
         context = super().get_context(value, parent_context)
         context["articles"] = (
@@ -299,6 +674,7 @@ class LatestArticlesBlock(blocks.StructBlock):
             .order_by("-first_published_at")
             .select_related("cover_image", "category")[: value["count"]]
         )
+        context["blog"] = BlogIndexPage.objects.live().first()
         return context
 
     class Meta:
@@ -336,8 +712,143 @@ class RichTextSectionBlock(blocks.StructBlock):
         label = "بخش متنی"
 
 
+# Icons for the short traits beside the "about" picture (templates/components/icon.html)
+TRAIT_ICONS = [
+    ("heart", "دل"),
+    ("message", "گفت‌وگو"),
+    ("bulb", "ایده"),
+    ("crown", "تاج"),
+    ("users", "افراد"),
+    ("award", "نشان"),
+    ("compass", "قطب‌نما"),
+    ("sprout", "رشد"),
+]
+
+
+class AboutBlock(blocks.StructBlock):
+    """Short introduction beside a picture with a few traits, as in the owner's demo."""
+
+    title = blocks.CharBlock(default="درباره من", label="عنوان")
+    text = blocks.TextBlock(label="متن")
+    button = blocks.ListBlock(ButtonBlock(), max_num=1, label="دکمه", required=False)
+    traits = blocks.ListBlock(
+        blocks.StructBlock(
+            [
+                ("label", blocks.CharBlock(label="عنوان", max_length=30)),
+                ("icon", blocks.ChoiceBlock(choices=TRAIT_ICONS, default="heart", label="آیکن")),
+            ]
+        ),
+        max_num=5,
+        required=False,
+        label="ویژگی‌ها",
+        help_text="کلمه‌های کوتاه روی تصویر، مثل «همدلی».",
+    )
+    image = ImageChooserBlock(
+        required=False,
+        label="تصویر",
+        help_text="خالی بگذارید تا تصویر نقاشی‌شده پیش‌فرض نمایش داده شود.",
+    )
+
+    class Meta:
+        icon = "user"
+        template = "blocks/about.html"
+        label = "معرفی کوتاه"
+
+
+class UpcomingEventBlock(blocks.StructBlock):
+    """The next course or webinar with a countdown; hidden when none is ahead."""
+
+    title = blocks.CharBlock(default="رویداد پیش رو", label="عنوان")
+    button_label = blocks.CharBlock(default="ثبت‌نام", label="متن دکمه", max_length=40)
+
+    def get_context(self, value, parent_context=None):
+        from django.utils import timezone
+
+        from apps.events import services as events
+        from apps.events.models import EventIndexPage, EventPage
+
+        context = super().get_context(value, parent_context)
+        event = (
+            EventPage.objects.live()
+            .public()
+            .exclude(kind=EventPage.Kind.TALK)
+            .filter(start_at__gt=timezone.now())
+            .order_by("start_at")
+            .first()
+        )
+        context["event"] = event
+        context["seats_left"] = events.seats_left(event) if event else None
+        context["events_index"] = EventIndexPage.objects.live().first()
+        return context
+
+    class Meta:
+        icon = "date"
+        template = "blocks/upcoming_event.html"
+        label = "رویداد پیش رو"
+
+
+class ProductsBlock(blocks.StructBlock):
+    """A row of books and files from the shop."""
+
+    title = blocks.CharBlock(default="کتاب‌ها و منابع آموزشی", label="عنوان")
+    intro = blocks.TextBlock(required=False, label="مقدمه")
+    count = blocks.IntegerBlock(default=4, min_value=1, max_value=8, label="تعداد")
+
+    def get_context(self, value, parent_context=None):
+        from apps.shop.models import Product, ShopPage
+
+        context = super().get_context(value, parent_context)
+        context["shop"] = ShopPage.objects.live().first()
+        context["products"] = (
+            Product.objects.on_sale().select_related("cover_image")[: value["count"]]
+            if context["shop"]
+            else []
+        )
+        return context
+
+    class Meta:
+        icon = "doc-full-inverse"
+        template = "blocks/products.html"
+        label = "کتاب‌ها و محصولات"
+
+
+class ContactBandBlock(blocks.StructBlock):
+    """Two cards side by side: the call-back form and, optionally, a file to download."""
+
+    callback_title = blocks.CharBlock(default="با من تماس بگیرید", label="عنوان فرم تماس")
+    callback_text = blocks.TextBlock(required=False, label="متن فرم تماس")
+    document = DocumentChooserBlock(required=False, label="فایل کنار فرم")
+    document_title = blocks.CharBlock(default="کاتالوگ خدمات سازمانی", label="عنوان فایل")
+    document_text = blocks.TextBlock(required=False, label="متن فایل")
+
+    def get_context(self, value, parent_context=None):
+        from apps.crm.forms import CallbackForm, DownloadForm
+
+        context = super().get_context(value, parent_context)
+        context["callback_form"] = CallbackForm()
+        if value["document"]:
+            context["download_form"] = DownloadForm(initial={"document": value["document"].pk})
+        return context
+
+    class Meta:
+        icon = "mail"
+        template = "blocks/contact_band.html"
+        label = "فرم تماس و فایل"
+
+
 class HomeBlock(blocks.StreamBlock):
     hero = HeroBlock()
+    intro = IntroBlock()
+    quiz = QuizBlock()
+    free_resources = FreeResourcesBlock()
+    podcast = PodcastBlock()
+    featured_book = FeaturedBookBlock()
+    library = LibraryBlock()
+    newsletter = NewsletterBlock()
+    about = AboutBlock()
+    upcoming_event = UpcomingEventBlock()
+    products = ProductsBlock()
+    contact_band = ContactBandBlock()
     client_logos = ClientLogosBlock()
     services = ServicesBlock()
     stats = StatsBlock()

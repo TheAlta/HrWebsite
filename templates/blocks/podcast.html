@@ -1,0 +1,27 @@
+{% load wagtailcore_tags core_tags %}
+{# The demo's podcast section: the show's cover beside its newest episodes, each with a native player #}
+{% if episodes %}
+<section class="section">
+  <div class="container-page grid items-center gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+    <div class="podcover" aria-hidden="true">
+      <span class="text-sm opacity-90">{{ value.eyebrow }}</span>
+      <b>{% firstof blog.podcast_title "پادکست" %}</b>
+      {% include "components/icon.html" with name="mic" size="64" class="opacity-80" %}
+    </div>
+    <div>
+      {% if value.eyebrow %}<p class="eyebrow">{{ value.eyebrow }}</p>{% endif %}
+      <h2 class="heading-section mt-1">{{ value.title }}</h2>
+      <ol class="mt-5 grid gap-3">
+        {% for episode in episodes %}
+        <li class="tile grid gap-2 p-4">
+          <a href="{% pageurl episode %}" class="font-semibold text-ink hover:text-accent-ink">{{ episode.title }}</a>
+          {% if episode.duration %}<span class="text-xs text-ink-3">{{ episode.duration|fa_digits }}</span>{% endif %}
+          {% if episode.audio_src %}<audio controls preload="none" src="{{ episode.audio_src }}" class="w-full" aria-label="پخش {{ episode.title }}"></audio>{% endif %}
+        </li>
+        {% endfor %}
+      </ol>
+      {% if blog %}<a href="{{ blog.url }}?kind=podcast" class="link-accent mt-4 inline-flex items-center gap-1.5 text-sm">همهٔ اپیزودها {% include "components/icon.html" with name="arrow" size="16" %}</a>{% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}

@@ -1,8 +1,10 @@
 {% load static wagtailcore_tags content_tags %}<!doctype html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl"{% if theme %} data-theme="{{ theme }}"{% endif %}>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0a1120" media="(prefers-color-scheme: dark)">
   <meta name="htmx-config" content='{"includeIndicatorStyles": false}'>
   <title>{% block title %}{% firstof page.seo_title page.title %} | {{ settings.content.SiteSettings.brand_name }}{% endblock %}</title>
   {% block meta %}{% include "includes/seo_meta.html" %}{% endblock %}
@@ -15,7 +17,9 @@
   {% block extra_head %}{% endblock %}
 </head>
 <body class="flex min-h-screen flex-col font-sans {% block body_class %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
-  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:shadow">رفتن به محتوای اصلی</a>
+  {% block world %}{% include "includes/world.html" with world_class="world-inner" %}{% endblock %}
+  <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-surface focus:px-4 focus:py-2 focus:text-ink focus:shadow-lift">رفتن به محتوای اصلی</a>
+  {% block event_bar %}{% include "includes/event_bar.html" %}{% endblock %}
   {% block header %}{% include "includes/header.html" %}{% endblock %}
   <main id="main" class="flex-1">
     {% if messages %}

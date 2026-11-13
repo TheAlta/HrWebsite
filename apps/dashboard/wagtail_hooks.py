@@ -6,8 +6,10 @@ Each block checks its own permission, so a support user never sees leads or sale
 import datetime as dt
 
 from django.db.models import Sum
+from django.templatetags.static import static
 from django.urls import path, reverse
 from django.utils import timezone
+from django.utils.html import format_html
 from wagtail import hooks
 from wagtail.admin.menu import MenuItem
 from wagtail.admin.site_summary import SummaryItem
@@ -136,6 +138,12 @@ class LeadsPanel(ListPanel):
 
     def rows(self):
         return stats.new_leads().order_by("-created_at")[:5]
+
+
+@hooks.register("insert_global_admin_css")
+def panel_colours():
+    """The panel in the site's colours, font and logo (REPORT #055)."""
+    return format_html('<link rel="stylesheet" href="{}">', static("panel/panel.css"))
 
 
 @hooks.register("construct_homepage_summary_items")

@@ -39,7 +39,7 @@ def test_every_page_renders(client, demo_site, url):
     assert response.status_code == 200
     html = response.content.decode()
     assert 'dir="rtl"' in html
-    assert "Arezoo" in html  # brand from Site Settings in header/footer
+    assert SiteSettings.objects.get().brand_name in html  # header/footer read Site Settings
 
 
 def test_seed_is_idempotent_and_resettable(demo_site):
@@ -216,3 +216,62 @@ def test_podcast_feed(client, blog):
 def test_styleguide_only_in_debug(client, settings):
     settings.DEBUG = False
     assert client.get("/styleguide/").status_code == 404
+
+
+def test_home_has_the_demo_sections(client, demo_site):
+    """The second demo's home (REPORT #058): hero with an underlined word, client names,
+    the greeting with paths, stat band, magazine, next event, quotes, newsletter, contact."""
+    html = client.get("/").content.decode()
+    assert '<span class="scrib">آدم‌ها<svg' in html  # the hero's underlined word
+    assert "…بی‌آنکه خودتان در شلوغی‌اش گم شوید." in html
+    assert 'class="marquee-list" aria-hidden="true"' in html  # names, the copy hidden from readers
+    assert '<mark class="mark-gold">آرزو</mark>' in html
+    assert "<b>آدم‌محور</b>" in html  # a bold word becomes a highlighter mark
+    assert "statband" in html
+    assert "<small>نه یک</small><span>وبلاگ</span><em>معمولی منابع انسانی</em>" in html
+    assert 'x-text="seconds"' in html  # the event countdown has seconds
+    assert "همکاران چه می‌گویند" in html
+    assert 'id="newsletter-band"' in html and 'name="place" value="home"' in html
+    assert 'id="callback-form"' in html
+    assert 'id="download-form-' in html
+
+
+def test_highlight_marks_only_a_word_of_the_title():
+    from apps.content.templatetags.content_tags import split_highlight
+
+    assert split_highlight("سلام، من آرزو هستم.", "آرزو") == ("سلام، من ", "آرزو", " هستم.")
+    assert split_highlight("سلام", "") is None
+    assert split_highlight("سلام", "خداحافظ") is None  # a word not in the title marks nothing
+
+
+def test_menu_groups_open_as_dropdowns_and_fill_the_footer(client, demo_site):
+    html = client.get("/").content.decode()
+    assert 'aria-controls="menu-' in html
+    assert '<h2 class="footer-heading">خدمات</h2>' in html
+    assert 'href="/terms/"' in html  # legal pages in the footer
+
+
+def test_cards_without_a_photo_get_a_drawn_scene(client, demo_site):
+    from apps.content.templatetags.content_tags import scene_class
+
+    article = ArticlePage.objects.live().first()
+    assert scene_class(article) == scene_class(article)  # the same picture every time
+    assert f"scene {scene_class(article)}" in client.get("/blog/").content.decode()
+
+
+def test_quiz_renders_and_its_result_fills_the_consultation_form(client, demo_site):
+    html = client.get("/").content.decode()
+    assert html.count("data-question") == 5 and 'data-up-to="3"' in html
+    page = client.get("/consultation/?topic=structure&note=نتیجهٔ آزمون").content.decode()
+    assert 'id_topics_1" checked' in page  # «ساختار سازمانی», the second topic
+    assert "نتیجهٔ آزمون" in page
+    assert "<script>" not in client.get("/consultation/?note=<script>").content.decode()
+
+
+def test_home_has_free_files_podcast_featured_book_and_library(client, demo_site):
+    html = client.get("/").content.decode()
+    assert html.count("data-resource=") == 4
+    assert 'name="marketing_consent"' in html  # the newsletter stays a separate choice
+    assert "<audio controls" in html
+    assert "/cart/add/" in html  # the featured book goes straight to the cart
+    assert html.count("library-card-") == 4

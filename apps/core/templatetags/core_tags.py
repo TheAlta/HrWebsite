@@ -43,6 +43,18 @@ def jdate_day(value):
 
 
 @register.filter
+def jmonth(value):
+    """Only the Jalali month's name: 'آبان'."""
+    return jalali.MONTHS[jalali.to_jalali(value).month - 1]
+
+
+@register.filter
+def jweekday(value):
+    """Only the weekday's name: 'شنبه'."""
+    return jalali.WEEKDAYS[jalali.to_jalali(value).weekday()]
+
+
+@register.filter
 def unix(value):
     """Whole-second Unix timestamp, for passing a moment through a URL or form."""
     return int(value.timestamp())
@@ -67,6 +79,12 @@ def fa_digits(value):
     if value is None:
         return ""
     return text.to_fa_digits(value)
+
+
+@register.filter
+def split(value, sep="|"):
+    """'a|b|c' -> ['a', 'b', 'c'], for short fixed lists written in a template."""
+    return str(value).split(sep)
 
 
 @register.simple_tag

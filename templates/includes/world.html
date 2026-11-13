@@ -1,0 +1,24 @@
+{# The page's shapes from the owner's demo (REPORT #058), behind every page. #}
+{# Drawn here rather than by script, which the site's CSP does not allow. Colours come from main.css (.world). #}
+<div class="world {{ world_class }}" aria-hidden="true">
+  <svg class="world-wide" viewBox="0 0 1440 860" preserveAspectRatio="xMidYMid slice" focusable="false">
+    <defs><pattern id="world-dots-wide" width="22" height="22" patternUnits="userSpaceOnUse"><circle class="w-dot" cx="2" cy="2" r="1.6"/></pattern></defs>
+    <circle class="w-a" cx="1296" cy="138" r="430"/>
+    <circle class="w-b" cx="144" cy="843" r="361"/>
+    <rect x="617" y="52" width="189" height="189" fill="url(#world-dots-wide)" opacity=".45"/>
+    <circle class="w-ring" cx="288" cy="172" r="103"/>
+    <circle class="w-g" cx="950" cy="757" r="28"/>
+    <circle class="w-n" cx="65" cy="447" r="43"/>
+    <path class="w-line" d="M576 860 524 774"/>
+  </svg>
+  <svg class="world-tall" viewBox="0 0 400 860" preserveAspectRatio="xMidYMid slice" focusable="false">
+    <defs><pattern id="world-dots-tall" width="22" height="22" patternUnits="userSpaceOnUse"><circle class="w-dot" cx="2" cy="2" r="1.6"/></pattern></defs>
+    <circle class="w-a" cx="360" cy="138" r="200"/>
+    <circle class="w-b" cx="40" cy="843" r="168"/>
+    <rect x="136" y="52" width="88" height="88" fill="url(#world-dots-tall)" opacity=".45"/>
+    <circle class="w-ring" cx="80" cy="172" r="48"/>
+    <circle class="w-g" cx="264" cy="757" r="13"/>
+    <circle class="w-n" cx="18" cy="447" r="20"/>
+    <path class="w-line" d="M160 860 136 820"/>
+  </svg>
+</div>

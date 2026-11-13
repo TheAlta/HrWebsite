@@ -1,21 +1,24 @@
-{% load core_tags %}
+{% load wagtailimages_tags core_tags %}
 {# The part of the cart HTMX replaces after a change (quantity, removal, discount code). #}
 <div id="cart-body">
   {% if quote.lines %}
-  <div class="grid gap-10 lg:grid-cols-[1fr_20rem]">
-    <ul class="card divide-y divide-slate-200">
+  <div class="grid gap-6 lg:grid-cols-[1fr_20rem]">
+    <ul class="panel-box divide-y divide-line">
       {% for line in quote.lines %}
       <li class="flex flex-wrap items-center justify-between gap-3 p-5">
-        <div class="min-w-0">
-          <p class="font-semibold text-slate-900">{{ line.product.title }}</p>
+        <div class="flex min-w-0 items-center gap-4">
+          <span class="grid h-16 w-12 shrink-0 place-items-center overflow-hidden rounded-md bg-accent-soft" aria-hidden="true">{% if line.product.cover_image %}{% image line.product.cover_image fill-96x128 format-webp class="h-full w-full object-cover" alt="" %}{% else %}{% include "components/icon.html" with name="book" size="20" class="text-ink-3" %}{% endif %}</span>
+          <div class="min-w-0">
+          <p class="font-semibold text-ink">{{ line.product.title }}</p>
           <p class="muted">{{ line.product.get_kind_display }} · {% if line.product.price %}{{ line.product.price|toman }}{% else %}رایگان{% endif %}</p>
+          </div>
         </div>
         <div class="flex items-center gap-2">
           {% if not line.product.is_digital %}
           <form method="post" action="{% url 'shop:cart_update' line.product.pk %}" hx-post="{% url 'shop:cart_update' line.product.pk %}" hx-target="#cart-body" hx-swap="outerHTML" class="flex items-center gap-2">
             {% csrf_token %}
             <label for="qty-{{ line.product.pk }}" class="sr-only">تعداد {{ line.product.title }}</label>
-            <input id="qty-{{ line.product.pk }}" type="number" name="qty" min="1" max="10" value="{{ line.qty }}" class="field-input w-20 py-1.5" dir="ltr" hx-post="{% url 'shop:cart_update' line.product.pk %}" hx-trigger="change" hx-target="#cart-body" hx-swap="outerHTML" hx-include="closest form">
+            <input id="qty-{{ line.product.pk }}" type="number" name="qty" min="1" max="10" value="{{ line.qty }}" class="field-input h-10 w-20 py-1.5" dir="ltr" hx-post="{% url 'shop:cart_update' line.product.pk %}" hx-trigger="change" hx-target="#cart-body" hx-swap="outerHTML" hx-include="closest form">
             <noscript><button type="submit" class="btn btn-secondary btn-sm">به‌روزرسانی</button></noscript>
           </form>
           {% endif %}
@@ -28,18 +31,18 @@
       {% endfor %}
     </ul>
 
-    <aside class="card self-start">
+    <aside class="panel-box self-start lg:sticky lg:top-28">
       <div class="card-body gap-4">
         <form method="post" action="{% url 'shop:cart_coupon' %}" hx-post="{% url 'shop:cart_coupon' %}" hx-target="#cart-body" hx-swap="outerHTML" class="flex items-end gap-2">
           {% csrf_token %}
           {% if quote.coupon %}
-          <p class="flex-1 text-sm text-emerald-800">کد <span dir="ltr" class="font-semibold">{{ quote.coupon.code }}</span> اعمال شد.</p>
+          <p class="flex-1 text-sm text-ok">کد <span dir="ltr" class="font-semibold">{{ quote.coupon.code }}</span> اعمال شد.</p>
           <input type="hidden" name="code" value="">
           <button type="submit" class="btn btn-ghost btn-sm">حذف کد</button>
           {% else %}
           <div class="flex-1">
             <label for="coupon-code" class="field-label">کد تخفیف</label>
-            <input id="coupon-code" type="text" name="code" value="{{ cart.coupon_code }}" maxlength="40" class="field-input py-1.5" dir="ltr" autocomplete="off" {% if coupon_error %}aria-invalid="true" aria-describedby="coupon-error"{% endif %}>
+            <input id="coupon-code" type="text" name="code" value="{{ cart.coupon_code }}" maxlength="40" class="field-input h-10 py-1.5" dir="ltr" autocomplete="off" {% if coupon_error %}aria-invalid="true" aria-describedby="coupon-error"{% endif %}>
           </div>
           <button type="submit" class="btn btn-secondary btn-sm">اعمال</button>
           {% endif %}

@@ -18,3 +18,4 @@ repos:
       - id: detect-private-key
       - id: check-added-large-files
         args: [--maxkb=600]
+        exclude: ^docs/design/demo\.html$  # the owner's design demo, one bundled file (REPORT #055)

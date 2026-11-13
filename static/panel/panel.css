@@ -1,0 +1,49 @@
+/* The panel in the site's colours and font (REPORT #055). Wagtail reads these
+   variables for its sidebar, buttons and links; values come from frontend/main.css. */
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("../fonts/vazirmatn/Vazirmatn-Variable-fa.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  --w-font-sans: "Vazirmatn", system-ui, sans-serif;
+
+  /* Sidebar: the site's deep plum */
+  --w-color-primary: #3a3348;
+  --w-color-primary-200: #5b5167;
+
+  /* Buttons and links: the site's accent, dark enough for white text (AA) */
+  --w-color-secondary: #725a9e;
+  --w-color-secondary-600: #5f4a86;
+  --w-color-secondary-400: #8f74bd;
+  --w-color-secondary-100: #d8c9ee;
+  --w-color-secondary-75: #e6ddf0;
+  --w-color-secondary-50: #f3eef8;
+
+  --w-color-focus: #8f74bd;
+}
+
+/* The site's logo in the sidebar, in place of Wagtail's bird */
+.panel-brand {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  color: #faf5f2;
+}
+.panel-brand svg {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.login-logo .panel-brand {
+  color: #3a3348;
+}
+.w-theme-dark .login-logo .panel-brand {
+  color: #f1e9ef;
+}
+.login-logo .panel-brand svg {
+  width: 4rem;
+  height: 4rem;
+}

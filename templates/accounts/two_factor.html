@@ -9,12 +9,12 @@
     {% if mode == "codes" %}
     <div class="card-body gap-4">
       <div>
-        <h1 class="text-xl font-extrabold text-slate-900">کدهای پشتیبان</h1>
+        <h1 class="text-xl font-extrabold text-ink">کدهای پشتیبان</h1>
         <p class="muted mt-1">ورود دومرحله‌ای فعال شد.</p>
       </div>
       {% include "components/alert.html" with level="info" text="این کدها فقط همین یک بار نشان داده می‌شوند. آن‌ها را بنویسید یا جای امنی نگه دارید. اگر گوشی در دسترس نبود، هر کد یک بار به‌جای کد اپ کار می‌کند." %}
-      <ol class="grid grid-cols-2 gap-2 font-mono text-lg font-semibold text-slate-900" dir="ltr">
-        {% for code in codes %}<li class="rounded-(--radius-control) border border-slate-200 px-3 py-2 text-center">{{ code }}</li>{% endfor %}
+      <ol class="grid grid-cols-2 gap-2 font-mono text-lg font-semibold text-ink" dir="ltr">
+        {% for code in codes %}<li class="rounded-(--radius-control) border border-line px-3 py-2 text-center">{{ code }}</li>{% endfor %}
       </ol>
       <a href="{{ next }}" class="btn btn-primary w-full">ادامه به پنل</a>
     </div>
@@ -24,21 +24,21 @@
       <input type="hidden" name="next" value="{{ next }}">
       {% if mode == "setup" %}
       <div>
-        <h1 class="text-xl font-extrabold text-slate-900">فعال کردن ورود دومرحله‌ای</h1>
+        <h1 class="text-xl font-extrabold text-ink">فعال کردن ورود دومرحله‌ای</h1>
         <p class="muted mt-1">برای ورود به پنل، علاوه بر رمز، کدی از گوشی‌تان لازم است. این کار یک بار انجام می‌شود.</p>
       </div>
-      <ol class="list-decimal space-y-3 ps-5 text-[0.95rem] leading-7 text-slate-700">
+      <ol class="list-decimal space-y-3 ps-5 text-[0.95rem] leading-7 text-ink-2">
         <li>اپ Google Authenticator یا Microsoft Authenticator را روی گوشی نصب کنید.</li>
         <li>در اپ، گزینه افزودن حساب را بزنید و این تصویر را اسکن کنید:
           <img src="{{ qr }}" alt="کد QR برای افزودن حساب در اپ" class="mx-auto mt-3 h-48 w-48">
           <span class="mt-2 block muted">اگر اسکن نشد، این کلید را دستی وارد کنید:</span>
-          <code class="mt-1 block break-all text-center font-mono text-base font-semibold text-slate-900" dir="ltr">{{ secret }}</code>
+          <code class="mt-1 block break-all text-center font-mono text-base font-semibold text-ink" dir="ltr">{{ secret }}</code>
         </li>
         <li>کد ۶ رقمی‌ای را که اپ نشان می‌دهد اینجا وارد کنید.</li>
       </ol>
       {% else %}
       <div>
-        <h1 class="text-xl font-extrabold text-slate-900">ورود دومرحله‌ای</h1>
+        <h1 class="text-xl font-extrabold text-ink">ورود دومرحله‌ای</h1>
         <p class="muted mt-1">کد ۶ رقمی اپ Authenticator را وارد کنید. اگر گوشی در دسترس نیست، یکی از کدهای پشتیبان را وارد کنید.</p>
       </div>
       {% endif %}

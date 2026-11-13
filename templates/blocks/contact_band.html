@@ -1,0 +1,13 @@
+{# The demo's closing band: a heading and a line on the start side, the call-back form on the other; an optional file below #}
+<section class="section">
+  <div class="container-page">
+    <div class="panel-box grid items-center gap-8 p-7 sm:p-10 lg:grid-cols-2 lg:gap-12">
+      <div>
+        <h2 class="heading-section">{{ value.callback_title }}</h2>
+        {% if value.callback_text %}<p class="lead mt-3">{{ value.callback_text }}</p>{% endif %}
+      </div>
+      {% include "crm/includes/callback_form.html" with form=callback_form title=value.callback_title compact=True %}
+    </div>
+    {% if download_form %}<div class="mt-6 max-w-2xl">{% include "crm/includes/download_form.html" with form=download_form title=value.document_title text=value.document_text %}</div>{% endif %}
+  </div>
+</section>

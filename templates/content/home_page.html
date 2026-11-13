@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags %}
 
+{# The home page shows its shapes at full strength; inner pages dim them a little #}
+{% block world %}{% include "includes/world.html" with world_class="" %}{% endblock %}
+
 {% block title %}{% firstof page.seo_title settings.content.SiteSettings.brand_name %}{% if settings.content.SiteSettings.tagline %} | {{ settings.content.SiteSettings.tagline }}{% endif %}{% endblock %}
 
 {% block content %}

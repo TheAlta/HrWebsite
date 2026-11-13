@@ -53,11 +53,12 @@ from apps.shop.models import Coupon, CouponUse, DownloadToken, Product, Shipment
 
 DEMO_TAG = "[demo]"  # marks sample images/documents so --reset can remove them
 
+# The site's own colours (frontend/main.css), so sample pictures sit well in the design
 PALETTE = [
-    ("#1c3970", "#2f5aa8"),
-    ("#172e59", "#839fd9"),
-    ("#a5650b", "#e59a1a"),
-    ("#22468a", "#b3c6ea"),
+    ("#14213d", "#2e4a7d"),
+    ("#1d3461", "#a9c1f0"),
+    ("#2e4a7d", "#c8a048"),
+    ("#5a3a1c", "#c8a048"),
 ]
 
 
@@ -93,7 +94,7 @@ def make_logo(name, seed):
     color = PALETTE[seed % len(PALETTE)][0]
     draw.rounded_rectangle([10, 20, 100, 100], radius=18, fill=color)
     draw.rectangle([120, 45, 300, 60], fill=color)
-    draw.rectangle([120, 72, 240, 82], fill="#94a3b8")
+    draw.rectangle([120, 72, 240, 82], fill="#a39aa3")
     buffer = io.BytesIO()
     img.save(buffer, format="PNG")
     return get_image_model().objects.create(
@@ -103,7 +104,7 @@ def make_logo(name, seed):
 
 def make_pdf(title):
     img = PILImage.new("RGB", (595, 842), "white")
-    ImageDraw.Draw(img).rectangle([40, 40, 555, 120], fill="#1c3970")
+    ImageDraw.Draw(img).rectangle([40, 40, 555, 120], fill="#4f4462")
     buffer = io.BytesIO()
     img.save(buffer, format="PDF")
     return get_document_model().objects.create(
@@ -280,31 +281,35 @@ class Command(BaseCommand):
             home, ServiceIndexPage(title="خدمات", slug="services", intro=p("خدمات فردی و سازمانی."))
         )
         services = []
-        for i, (title, audience, summary, price) in enumerate(
+        for i, (title, audience, summary, price, icon) in enumerate(
             [
                 (
                     "ارزیابی عملکرد",
                     Audience.CORPORATE,
                     "طراحی و استقرار نظام ارزیابی عملکرد منصفانه و قابل اجرا.",
                     None,
+                    "gauge",
                 ),
                 (
                     "طراحی ساختار سازمانی",
                     Audience.CORPORATE,
                     "چارت، شرح شغل و جریان تصمیم‌گیری متناسب با استراتژی.",
                     None,
+                    "network",
                 ),
                 (
                     "جذب و استخدام",
                     Audience.CORPORATE,
                     "فرایند جذب از شرح شغل تا مصاحبه ساختاریافته.",
                     None,
+                    "shield",
                 ),
                 (
                     "مشاوره مسیر شغلی",
                     Audience.INDIVIDUAL,
                     "جلسه فردی برای انتخاب مسیر، رزومه و آمادگی مصاحبه.",
                     25_000_000,
+                    "route",
                 ),
             ]
         ):
@@ -316,6 +321,7 @@ class Command(BaseCommand):
                         slug=f"service-{i + 1}",
                         audience=audience,
                         summary=summary,
+                        icon=icon,
                         cover_image=images[i],
                         price=price,
                         duration="۴ جلسه ۹۰ دقیقه‌ای",
@@ -331,7 +337,7 @@ class Command(BaseCommand):
                     ),
                 )
             )
-        publish(
+        corporate = publish(
             services_index,
             CorporateServicesPage(
                 title="خدمات سازمانی",
@@ -385,7 +391,6 @@ class Command(BaseCommand):
                 slug=f"post-{i + 1}",
                 kind=kind,
                 category=categories[i % 3],
-                cover_image=images[(i + 2) % len(images)],
                 intro=LOREM[:180],
                 body=[
                     ("paragraph", p(LOREM)),
@@ -506,7 +511,6 @@ class Command(BaseCommand):
                     title=title,
                     slug=f"event-{i + 1}",
                     kind=kind,
-                    cover_image=images[i % len(images)],
                     summary="این متن نمونه است و از پنل مدیریت قابل تغییر است.",
                     body=p(LOREM),
                     instructor="مدرس نمونه",
@@ -518,7 +522,7 @@ class Command(BaseCommand):
                     join_link="https://example.com/room",
                 ),
             )
-        publish(
+        speaking = publish(
             home,
             SpeakingPage(
                 title="سخنرانی‌ها",
@@ -546,7 +550,7 @@ class Command(BaseCommand):
                 title=title,
                 slug=f"product-{i + 1}",
                 kind=kind,
-                cover_image=images[i % len(images)],
+                # No cover, so the drawn book cover shows (REPORT #058)
                 summary="این متن نمونه است و از پنل مدیریت قابل تغییر است.",
                 description=p(LOREM),
                 contents=p("فصل اول، فصل دوم، فصل سوم"),
@@ -569,69 +573,269 @@ class Command(BaseCommand):
 
         TeamMember.objects.create(name="عضو نمونه تیم", role="کارشناس", is_active=True)
 
-        # --- home sections (spec section 10 order) -------------------------
+        # --- home sections, in the order of the owner's second demo (REPORT #058) ---
         home.body = [
             (
                 "hero",
                 {
-                    "title": "منابع انسانی را به مزیت رقابتی سازمانتان تبدیل کنید",
-                    "subtitle": "مشاوره، آموزش و همراهی در ارزیابی عملکرد، ساختار سازمانی و جذب استعدادها.",
-                    "image": portrait,
+                    "eyebrow": "مشاور منابع انسانی، مدرس و نویسنده",
+                    "title": "سازمانی بسازید که آدم‌ها در آن رشد کنند…",
+                    "highlight": "آدم‌ها",
+                    "quote": "…بی‌آنکه خودتان در شلوغی‌اش گم شوید.",
+                    "subtitle": (
+                        "سال‌هاست کنار مدیرها و تیم‌های منابع انسانی کار می‌کنم تا استخدام،"
+                        " ارزیابی و رشد آدم‌ها ساده‌تر، منصفانه‌تر و انسانی‌تر شود."
+                    ),
                     "buttons": [
                         {
-                            "label": "درخواست مشاوره",
+                            "label": "درخواست مشاورهٔ سازمانی",
                             "page": consultation,
                             "url": "",
                             "style": "primary",
                         },
                         {
-                            "label": "آشنایی با خدمات",
-                            "page": services_index,
+                            "label": "رزرو جلسهٔ فردی",
+                            "page": booking_page,
                             "url": "",
                             "style": "secondary",
                         },
                     ],
+                    "image": None,
+                    "photo_caption": "روی صحنه، در حال سخنرانی",
+                    "sticker": "سلام!",
+                    "badge_text": "سال‌ها تجربه ✳ مشاور منابع انسانی ✳ مدرس ✳ نویسنده ✳",
                 },
             ),
-            ("client_logos", {"title": "سازمان‌هایی که با آن‌ها کار کرده‌ام"}),
+            ("client_logos", {"title": "همکاری با"}),
             (
-                "services",
-                {"title": "خدمات", "intro": "از تشخیص مسئله تا استقرار راه‌حل.", "services": []},
+                "intro",
+                {
+                    "title": "سلام، من آرزو هستم.",
+                    "highlight": "آرزو",
+                    "text": RichText(
+                        "<p>کمک می‌کنم سازمان‌ها <b>آدم‌محور</b> بمانند، مدیرها <b>بازخورد خوب</b>"
+                        " بدهند و کارجوها تصمیم شغلی بعدی‌شان را آگاهانه بگیرند. از کجا شروع کنیم؟</p>"
+                    ),
+                    "paths": [
+                        {
+                            "label": "مدیر سازمانم",
+                            "note": "مشاورهٔ سازمانی",
+                            "page": consultation,
+                            "url": "",
+                        },
+                        {
+                            "label": "در تیم منابع انسانی کار می‌کنم",
+                            "note": "دوره‌ها",
+                            "page": events_page,
+                            "url": "",
+                        },
+                        {
+                            "label": "دنبال مسیر شغلی‌ام",
+                            "note": "جلسهٔ فردی",
+                            "page": booking_page,
+                            "url": "",
+                        },
+                    ],
+                },
+            ),
+            (
+                "quiz",
+                {
+                    "eyebrow": "آماده‌اید برای",
+                    "big": "سطح بعدی؟",
+                    "title": "منابع انسانی سازمان شما در کدام مرحله است؟",
+                    "text": "پنج سؤال، دو دقیقه. در پایان می‌گویم بیشترین اثر را کدام قدم دارد.",
+                    "button_label": "کنجکاوید؟ آزمون را شروع کنید",
+                    "questions": [
+                        {"question": question, "answers": answers}
+                        for question, answers in [
+                            (
+                                "وقتی نیروی جدید لازم دارید، استخدام چطور پیش می‌رود؟",
+                                [
+                                    "هر بار یک‌جور؛ آگهی و گپ آزاد",
+                                    "فرم مصاحبه داریم، ولی همه از آن استفاده نمی‌کنند",
+                                    "شایستگی‌ها تعریف شده و مصاحبه ساختاریافته است",
+                                ],
+                            ),
+                            (
+                                "ارزیابی عملکرد در سازمان شما…",
+                                [
+                                    "نداریم یا فقط روی کاغذ است",
+                                    "سالی یک بار فرمی پر می‌شود",
+                                    "چرخهٔ منظم دارد و به جلسهٔ بازخورد ختم می‌شود",
+                                ],
+                            ),
+                            (
+                                "شرح وظایف نقش‌ها…",
+                                ["مکتوب نیست", "هست، ولی قدیمی است", "به‌روز و روشن است"],
+                            ),
+                            (
+                                "آموزش کارکنان…",
+                                [
+                                    "پراکنده و موردی",
+                                    "تقویم آموزشی داریم",
+                                    "بر اساس نیازسنجی است و اثرش را می‌سنجیم",
+                                ],
+                            ),
+                            (
+                                "وقتی کسی استعفا می‌دهد…",
+                                [
+                                    "واقعاً نمی‌دانیم چرا رفت",
+                                    "حدس‌هایی داریم",
+                                    "مصاحبهٔ خروج داریم و داده‌اش را مرور می‌کنیم",
+                                ],
+                            ),
+                        ]
+                    ],
+                    "results": [
+                        {
+                            "up_to": 3,
+                            "name": "مرحلهٔ بنیان",
+                            "text": (
+                                "سازمان شما با انرژی آدم‌ها جلو می‌رود، نه با سیستم."
+                                " اولین قدم: روشن کردن نقش‌ها و یک فرایند استخدام ساده."
+                            ),
+                            "service": services[1],
+                            "topic": "structure",
+                        },
+                        {
+                            "up_to": 7,
+                            "name": "مرحلهٔ نظم‌دهی",
+                            "text": (
+                                "پایه‌ها را دارید ولی یکدست اجرا نمی‌شوند. بیشترین اثر را"
+                                " یک نظام ارزیابی عملکرد گفت‌وگومحور می‌گذارد."
+                            ),
+                            "service": services[0],
+                            "topic": "performance",
+                        },
+                        {
+                            "up_to": 10,
+                            "name": "مرحلهٔ رشد",
+                            "text": (
+                                "منابع انسانی شما بالغ است. وقت آن است که آن را به استراتژی"
+                                " کسب‌وکار وصل کنید و رهبران آینده را بسازید."
+                            ),
+                            "service": None,
+                            "topic": "training",
+                        },
+                    ],
+                },
+            ),
+            (
+                "free_resources",
+                {
+                    "eyebrow": "هدیه‌ای از من",
+                    "title": "منابع رایگان",
+                    "intro": "قالب‌ها و چک‌لیست‌هایی که در پروژه‌ها واقعاً استفاده می‌کنم.",
+                    "topics": [
+                        {"label": "جذب و استخدام", "icon": "shield"},
+                        {"label": "ارزیابی عملکرد", "icon": "gauge"},
+                        {"label": "رهبری تیم", "icon": "spark"},
+                        {"label": "مسیر شغلی", "icon": "compass"},
+                    ],
+                    "resources": [
+                        {
+                            "topic": topic,
+                            "title": title,
+                            "format": fmt,
+                            "document": make_pdf(title),
+                            "button_label": "دانلود رایگان",
+                        }
+                        for topic, title, fmt in [
+                            ("جذب و استخدام", "چک‌لیست مصاحبهٔ ساختاریافته", "PDF · ۶ صفحه"),
+                            ("ارزیابی عملکرد", "قالب فرم ارزیابی عملکرد", "PDF · ۳ صفحه"),
+                            ("رهبری تیم", "۲۰ سؤال برای جلسهٔ بازخورد", "PDF · ۳ صفحه"),
+                            ("مسیر شغلی", "کاربرگ «تصمیم شغلی بعدی»", "PDF · ۴ صفحه"),
+                        ]
+                    ],
+                },
             ),
             (
                 "stats",
                 {
                     "title": "",
                     "items": [
-                        {"value": "۱۵+", "label": "سال تجربه"},
-                        {"value": "۶۰+", "label": "سازمان"},
-                        {"value": "۳٬۰۰۰+", "label": "ساعت آموزش"},
-                        {"value": "۵٬۰۰۰+", "label": "شرکت‌کننده"},
+                        {"value": "۱۵+", "label": "سال تجربه در منابع انسانی"},
+                        {"value": "۶۰+", "label": "سازمان همکار"},
+                        {"value": "۳٬۰۰۰+", "label": "ساعت آموزش سازمانی"},
+                        {"value": "۵٬۰۰۰+", "label": "شرکت‌کننده در دوره‌ها"},
                     ],
                 },
             ),
-            ("testimonials", {"title": "نظر مشتریان", "testimonials": []}),
-            ("latest_articles", {"title": "از مجله", "count": 3}),
+            ("podcast", {"eyebrow": "پادکست هفتگی", "title": "گوش کنید، در راه کار", "count": 4}),
             (
-                "callback_form",
+                "latest_articles",
                 {
-                    "title": "با من تماس بگیرید",
-                    "text": "نام و شماره‌تان را بگذارید؛ در اولین فرصت تماس می‌گیرم.",
+                    "eyebrow": "نه یک",
+                    "title": "وبلاگ",
+                    "tagline": "معمولی منابع انسانی",
+                    "intro": "یادداشت‌های کوتاه و کاربردی، بدون اصطلاحات قلمبه.",
+                    "count": 3,
                 },
             ),
             (
-                "cta",
+                "upcoming_event",
+                {"title": "رویداد پیش رو", "button_label": "بله! جای من را نگه دار"},
+            ),
+            (
+                "featured_book",
                 {
-                    "title": "آماده‌اید شروع کنیم؟",
-                    "text": "یک جلسه کوتاه برای شناخت نیاز سازمان شما.",
-                    "buttons": [
+                    "eyebrow": "کتاب تازه",
+                    "product": str(Product.objects.order_by("pk").first().pk),
+                    "second": str(Product.objects.filter(kind=Product.Kind.DIGITAL).first().pk),
+                    "text": "این متن نمونه است و از پنل مدیریت قابل تغییر است.",
+                    "badge": "پرفروش",
+                    "quote": "کتابی که دوست داشتم روز اول مدیریتم داشته باشم.",
+                    "quote_by": "یک خوانندهٔ کتاب",
+                },
+            ),
+            (
+                "library",
+                {
+                    "eyebrow": "کتابخانهٔ آموزشی",
+                    "title": "یاد بگیرید، با سرعت خودتان",
+                    "items": [
                         {
-                            "label": "درخواست مشاوره",
-                            "page": consultation,
-                            "url": "",
-                            "style": "primary",
-                        },
+                            "kind": kind,
+                            "title": title,
+                            "meta": meta,
+                            "link": {"label": title, "page": target, "url": ""},
+                        }
+                        for kind, title, meta, target in [
+                            ("دوره", "طراحی نظام ارزیابی عملکرد", "۴ جلسه · آنلاین", events_page),
+                            ("وبینار رایگان", "اشتباه‌های رایج مصاحبه", "۷۵ دقیقه", events_page),
+                            ("بستهٔ آموزشی", "قالب‌های ارزیابی عملکرد", "فایل دیجیتال", shop_page),
+                            ("کوچینگ", "از متخصص خوب به مدیر خوب", "جلسهٔ فردی", booking_page),
+                        ]
                     ],
+                },
+            ),
+            (
+                "testimonials",
+                {"eyebrow": "از زبان خودشان", "title": "همکاران چه می‌گویند", "testimonials": []},
+            ),
+            (
+                "newsletter",
+                {
+                    "title": "نامه‌ای کوتاه، هر دو هفته یک بار",
+                    "text": (
+                        "یک ایده، یک قالب و یک سؤال برای جلسهٔ بعدی تیم‌تان."
+                        " بدون تبلیغ؛ هر وقت خواستید لغو کنید."
+                    ),
+                    "badge_text": "خبرنامه‌ای واقعی ✳ برای صندوق شما ✳ هر دو هفته ✳",
+                },
+            ),
+            (
+                "contact_band",
+                {
+                    "callback_title": "پروژهٔ سازمانی دارید؟",
+                    "callback_text": (
+                        "نام و شماره‌تان را بگذارید؛ برای یک گفت‌وگوی ۲۰ دقیقه‌ای"
+                        " و بدون هزینه تماس می‌گیرم."
+                    ),
+                    "document": resume,
+                    "document_title": "دریافت رزومهٔ کامل",
+                    "document_text": "رزومه و فهرست پروژه‌ها را دریافت کنید.",
                 },
             ),
         ]
@@ -640,7 +844,7 @@ class Command(BaseCommand):
         # --- site settings --------------------------------------------------
         site = Site.objects.get(is_default_site=True)
         settings = SiteSettings.for_site(site)
-        settings.brand_name = "Arezoo"
+        settings.brand_name = "آرزو زحمت‌بران"
         settings.tagline = "مشاور منابع انسانی"
         settings.phone = "021 1234 5678"
         settings.email = "info@example.com"
@@ -657,19 +861,50 @@ class Command(BaseCommand):
         settings.cta_label = "درخواست مشاوره"
         settings.cta_page = consultation
         settings.default_og_image = images[0]
+
+        def link(label, page, description="", icon=""):
+            return {
+                "label": label,
+                "page": page,
+                "url": "",
+                "description": description,
+                "icon": icon,
+            }
+
+        # The demo's menu: two dropdown groups (REPORT #055)
         settings.main_menu = [
-            ("link", {"label": label, "page": page, "url": ""})
-            for label, page in [
-                ("خانه", home),
-                ("درباره من", about),
-                ("خدمات", services_index),
-                ("رزرو جلسه", booking_page),
-                ("رویدادها", events_page),
-                ("فروشگاه", shop_page),
-                ("مجله", blog),
-                ("نمونه‌کارها", portfolio),
-                ("تماس", contact),
-            ]
+            ("link", {"label": "خانه", "page": home, "url": ""}),
+            ("link", {"label": "درباره من", "page": about, "url": ""}),
+            (
+                "group",
+                {
+                    "label": "خدمات",
+                    "links": [
+                        link("همهٔ خدمات", services_index, "خدمات فردی و سازمانی", "briefcase"),
+                        link("خدمات سازمانی", corporate, "ساختار، جذب، ارزیابی و آموزش", "users"),
+                        link(
+                            "رزرو جلسهٔ مشاوره",
+                            booking_page,
+                            "انتخاب زمان و پرداخت آنلاین",
+                            "calendar",
+                        ),
+                    ],
+                },
+            ),
+            ("link", {"label": "آموزش و رویدادها", "page": events_page, "url": ""}),
+            (
+                "group",
+                {
+                    "label": "منابع",
+                    "links": [
+                        link("مجله", blog, "مقاله، پادکست و ویدئو", "newspaper"),
+                        link("کتاب‌ها و محصولات", shop_page, "کتاب چاپی و فایل آموزشی", "book"),
+                        link("نمونه‌کارها", portfolio, "پروژه‌ها و نظر مشتریان", "award"),
+                        link("سخنرانی‌ها", speaking, "سوابق و دعوت به سخنرانی", "mic"),
+                    ],
+                },
+            ),
+            ("link", {"label": "تماس", "page": contact, "url": ""}),
         ]
         settings.save()
 

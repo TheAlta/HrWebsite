@@ -1,15 +1,21 @@
-{% load wagtailcore_tags wagtailimages_tags core_tags %}
-{# Usage: {% include "components/card_event.html" with event=event %} #}
-<article class="card">
-  {% if event.cover_image %}{% image event.cover_image fill-640x360 format-webp class="aspect-[16/9] w-full object-cover" loading="lazy" alt="" %}{% endif %}
-  <div class="card-body">
-    <span class="badge self-start">{{ event.get_kind_display }}</span>
-    <h3 class="card-title"><a href="{% pageurl event %}" class="hover:text-brand-700">{{ event.title }}</a></h3>
-    <p class="flex items-center gap-2 text-sm text-slate-600">{% include "components/icon.html" with name="calendar" size="16" class="text-brand-600" %}{{ event.start_at|jdatetime }}</p>
-    {% if event.summary %}<p class="text-[0.95rem] leading-7 text-slate-600">{{ event.summary }}</p>{% endif %}
-    <div class="mt-auto flex items-center justify-between pt-3">
-      <span class="text-sm font-semibold text-slate-700">{% if event.kind == "talk" %}{{ event.venue }}{% elif event.price %}{{ event.price|toman }}{% else %}رایگان{% endif %}</span>
-      <a href="{% pageurl event %}" class="btn btn-ghost btn-sm">جزئیات {% include "components/icon.html" with name="arrow" size="16" %}</a>
+{% load wagtailcore_tags core_tags %}
+{# One row per event, the date in a tile, as in the demo. Usage: {% include "components/card_event.html" with event=event is_past=True %} #}
+<article class="card group flex-row items-center gap-4 p-4 transition duration-300 hover:shadow-lift sm:gap-5 sm:p-5">
+  <div class="date-tile size-16 sm:size-20" aria-hidden="true">
+    <b>{{ event.start_at|jdate_day }}</b>
+    <span>{{ event.start_at|jmonth }}</span>
+  </div>
+  <div class="min-w-0 flex-1">
+    <div class="flex flex-wrap gap-2">
+      <span class="badge">{{ event.get_kind_display }}</span>
+      {% if is_past %}<span class="badge badge-neutral">برگزار شد</span>{% endif %}
     </div>
+    <h3 class="mt-2 font-semibold leading-7 text-ink"><a href="{% pageurl event %}" class="after:absolute after:inset-0 after:z-10 after:rounded-[inherit]">{{ event.title }}</a></h3>
+    <p class="mt-1 text-sm text-ink-3"><time datetime="{{ event.start_at|date:'c' }}">{{ event.start_at|jdate }}، {{ event.start_at|jweekday }} ساعت {{ event.start_at|jtime }}</time>{% if event.venue %} · {{ event.venue }}{% else %} · آنلاین{% endif %}</p>
+    {% if event.kind != "talk" %}<p class="mt-1 text-sm font-semibold text-ink sm:hidden">{% if event.price %}{{ event.price|toman }}{% else %}رایگان{% endif %}</p>{% endif %}
+  </div>
+  <div class="hidden shrink-0 flex-col items-end gap-2 sm:flex">
+    <span class="font-semibold whitespace-nowrap text-ink">{% if event.kind == "talk" %}{% elif event.price %}{{ event.price|toman }}{% else %}رایگان{% endif %}</span>
+    <span class="link">جزئیات {% include "components/icon.html" with name="arrow" size="16" class="transition-transform group-hover:-translate-x-1" %}</span>
   </div>
 </article>

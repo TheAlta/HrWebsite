@@ -1,0 +1,16 @@
+{% load wagtailcore_tags content_tags %}
+{# «سلام، من … هستم»: one word of the greeting under a gold marker, bold words of the text under coloured ones, then the paths (REPORT #058). #}
+{% split_highlight value.title value.highlight as parts %}
+<section class="section">
+  <div class="container-page mx-auto max-w-4xl text-center">
+    <h2 class="hello-title">{% if parts %}{{ parts.0 }}<mark class="mark-gold">{{ parts.1 }}</mark>{{ parts.2 }}{% else %}{{ value.title }}{% endif %}</h2>
+    {% if value.text %}<div class="hello-text">{{ value.text|richtext }}</div>{% endif %}
+    {% if value.paths %}
+    <ul class="mt-8 flex flex-wrap justify-center gap-3">
+      {% for path in value.paths %}
+      <li><a href="{{ path.href }}" class="path-pill surface">{{ path.label }}{% if path.note %} <small>{{ path.note }}</small>{% endif %} {% include "components/icon.html" with name="arrow" size="16" %}</a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
+</section>

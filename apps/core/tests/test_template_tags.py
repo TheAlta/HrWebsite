@@ -24,3 +24,13 @@ def test_filters_are_empty_for_missing_values():
 def test_site_name_tag(settings):
     settings.WAGTAIL_SITE_NAME = "سایت تست"
     assert render("{% site_name %}") == "سایت تست"
+
+
+def test_jalali_parts_for_the_date_tile():
+    value = dt.datetime(2026, 10, 25, 10, 0, tzinfo=dt.UTC)
+    assert render("{{ v|jdate_day }} {{ v|jmonth }} {{ v|jweekday }}", v=value) == "۳ آبان یکشنبه"
+
+
+def test_split_filter_for_fixed_lists():
+    source = "{% for s in 'سبد|پرداخت'|split %}[{{ s }}]{% endfor %}"
+    assert render(source) == "[سبد][پرداخت]"

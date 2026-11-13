@@ -1,6 +1,10 @@
-{# Usage: {% include "components/section_header.html" with eyebrow="..." title="..." intro="..." %} #}
-<div class="mb-8 max-w-2xl">
-  {% if eyebrow %}<p class="eyebrow">{{ eyebrow }}</p>{% endif %}
-  {% if title %}<h2 class="heading-2 mt-1">{{ title }}</h2>{% endif %}
-  {% if intro %}<p class="lead mt-3">{{ intro }}</p>{% endif %}
+{# Usage: {% include "components/section_header.html" with eyebrow="..." title="..." intro="..." link=page.url link_label="..." %} #}
+{# The demo's section head: eyebrow and the large title on the start side, the link to all on the other #}
+<div class="mb-8 flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+  <div class="max-w-2xl">
+    {% if eyebrow %}<p class="eyebrow">{{ eyebrow }}</p>{% endif %}
+    {% if title %}<h2 class="heading-section mt-1">{{ title }}</h2>{% endif %}
+    {% if intro %}<p class="lead mt-3">{{ intro }}</p>{% endif %}
+  </div>
+  {% if link %}<a href="{{ link }}" class="link-accent inline-flex shrink-0 items-center gap-1.5 text-sm">{{ link_label|default:"مشاهدهٔ همه" }} {% include "components/icon.html" with name="arrow" size="16" %}</a>{% endif %}
 </div>

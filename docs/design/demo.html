@@ -1,0 +1,1175 @@
+<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>آرزو زحمت‌بران</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap">
+<style>
+/* Layout: one dusk-valley world behind every page; floating glass header, glass cards by role, plum CTA + iridescent accent used sparingly */
+:root{
+  --bg:#f5f1e8; --sky-a:#f3e2c2; --sky-b:#e3e8d8; --sky-c:#c6dbcf; --sun:#fff6e0;
+  --m1:#b6cdbf; --m2:#8baf9d; --m3:#5b8c77; --m4:#2a5848; --city:#84a796; --lights:#ffe7a8;
+  --ink:#0e2a23; --ink-2:#2b433b; --ink-3:#5b6e67; --ink-4:#93a199; --ink-inv:#fbf8f1;
+  --plum:#0f3d33; --plum-2:#1d5a4a;
+  --acc-1:#17624b; --acc-2:#2a8f6c; --acc-3:#c9a45c; --acc-ink:#17664e; --acc-soft:rgba(31,122,92,.11);
+  --acc-grad:linear-gradient(105deg,var(--acc-1),var(--acc-2) 55%,var(--acc-3));
+  --g-card:rgba(255,253,247,.52); --g-strong:rgba(253,251,245,.8); --g-field:rgba(243,238,226,.64);
+  --g-edge-hi:rgba(255,255,255,.95); --g-edge-lo:rgba(170,150,95,.45); --g-sheen:rgba(255,255,255,.6);
+  --sh:rgba(18,52,42,.13); --sh-2:rgba(18,52,42,.23);
+  --ok:#2e7d4f; --ok-bg:rgba(46,125,79,.13); --warn:#94650f; --warn-bg:rgba(201,164,92,.24); --bad:#a8323e; --bad-bg:rgba(168,50,62,.11);
+  --f-body:"Vazirmatn",Tahoma,system-ui,sans-serif; --f-disp:var(--f-body);
+  --r:1.3rem; --gutter:max(16px,4vw);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#08140f; --sky-a:#3a3522; --sky-b:#1f3a30; --sky-c:#0c201b; --sun:#e2b66a;
+  --m1:#1c3a31; --m2:#153029; --m3:#10261f; --m4:#0a1a15; --city:#14302a; --lights:#f1cf86;
+  --ink:#f4efe3; --ink-2:#d5dccf; --ink-3:#9fb0a6; --ink-4:#6d8077; --ink-inv:#0b1a15;
+  --plum:#f1e6c8; --plum-2:#d9c08a; --acc-ink:#8fd3b6; --acc-soft:rgba(80,180,140,.15);
+  --g-card:rgba(22,52,44,.46); --g-strong:rgba(12,32,27,.8); --g-field:rgba(4,14,11,.5);
+  --g-edge-hi:rgba(225,235,215,.4); --g-edge-lo:rgba(201,164,92,.42); --g-sheen:rgba(230,240,220,.1);
+  --sh:rgba(0,8,6,.45); --sh-2:rgba(0,8,6,.6);
+  --ok:#6fd3a0; --ok-bg:rgba(111,211,160,.14); --warn:#f0c46a; --warn-bg:rgba(240,196,106,.14); --bad:#f08b8f; --bad-bg:rgba(240,139,143,.14);
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#08140f; --sky-a:#3a3522; --sky-b:#1f3a30; --sky-c:#0c201b; --sun:#e2b66a;
+  --m1:#1c3a31; --m2:#153029; --m3:#10261f; --m4:#0a1a15; --city:#14302a; --lights:#f1cf86;
+  --ink:#f4efe3; --ink-2:#d5dccf; --ink-3:#9fb0a6; --ink-4:#6d8077; --ink-inv:#0b1a15;
+  --plum:#f1e6c8; --plum-2:#d9c08a; --acc-ink:#8fd3b6; --acc-soft:rgba(80,180,140,.15);
+  --g-card:rgba(22,52,44,.46); --g-strong:rgba(12,32,27,.8); --g-field:rgba(4,14,11,.5);
+  --g-edge-hi:rgba(225,235,215,.4); --g-edge-lo:rgba(201,164,92,.42); --g-sheen:rgba(230,240,220,.1);
+  --sh:rgba(0,8,6,.45); --sh-2:rgba(0,8,6,.6);
+  --ok:#6fd3a0; --ok-bg:rgba(111,211,160,.14); --warn:#f0c46a; --warn-bg:rgba(240,196,106,.14); --bad:#f08b8f; --bad-bg:rgba(240,139,143,.14);
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+html{font-size:clamp(14px,calc(100vw / 92),18px)}
+body{background:var(--bg);color:var(--ink-2);font-family:var(--f-body);line-height:1.85;font-size:1rem;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+h1,h2,h3,h4{color:var(--ink);margin:0;line-height:1.4;font-weight:600;text-wrap:balance}
+p{margin:0} a{color:inherit;text-decoration:none} button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer}
+ul{margin:0;padding:0;list-style:none} ol{list-style-type:persian;margin:0;padding-inline-start:1.3rem}
+:focus-visible{outline:2px solid var(--acc-1);outline-offset:3px;border-radius:.5rem}
+.ltr{direction:ltr;unicode-bidi:isolate}
+.disp{font-family:var(--f-disp);font-weight:600;letter-spacing:0}
+.muted{color:var(--ink-3)} .faint{color:var(--ink-4)}
+.grad-text{background:var(--acc-grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* world */
+#world{position:fixed;inset:0;z-index:-2;overflow:hidden;transition:filter .6s}
+#world svg{width:100%;height:100%;transform:scaleX(-1)}
+body.inner #world{filter:none}
+#veil{position:fixed;inset:0;z-index:-1;pointer-events:none;background:transparent;transition:background .4s}
+body.inner #veil{background:color-mix(in srgb,var(--bg) 22%,transparent)}
+
+/* glass materials */
+.glass,.glass-strong,.glass-pill{position:relative;isolation:isolate}
+.glass{background:var(--g-card);-webkit-backdrop-filter:blur(18px) saturate(1.25) brightness(1.04);backdrop-filter:blur(18px) saturate(1.25) brightness(1.04);border-radius:var(--r);box-shadow:0 1px 2px var(--sh),0 18px 44px -12px var(--sh)}
+.glass-strong{background:var(--g-strong);-webkit-backdrop-filter:blur(26px) saturate(1.15);backdrop-filter:blur(26px) saturate(1.15);border-radius:var(--r);box-shadow:0 2px 6px var(--sh),0 24px 60px -18px var(--sh-2)}
+.glass-pill{background:var(--g-card);-webkit-backdrop-filter:blur(16px) saturate(1.3);backdrop-filter:blur(16px) saturate(1.3);border-radius:999px;box-shadow:0 8px 26px -10px var(--sh)}
+.glass::before,.glass-strong::before,.glass-pill::before,.btn-glass::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:2;
+  background:linear-gradient(210deg,var(--g-edge-hi),transparent 30%,transparent 62%,var(--g-edge-lo));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0)}
+.glass::after,.glass-strong::after{content:"";position:absolute;inset:0 0 auto;height:55%;border-radius:inherit;pointer-events:none;z-index:-1;background:radial-gradient(120% 70% at 75% -15%,var(--g-sheen),transparent 62%)}
+.field-well{background:var(--g-field);border-radius:.85rem;box-shadow:inset 0 1px 2px var(--sh),inset 0 0 0 1px color-mix(in srgb,var(--ink-4) 22%,transparent)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;height:3rem;padding-inline:1.5rem;border-radius:999px;font-weight:500;font-size:.95rem;white-space:nowrap;transition:transform .2s,box-shadow .2s,background .2s;position:relative}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn-sm{height:2.4rem;padding-inline:1rem;font-size:.85rem}
+.btn-xs{height:2rem;padding-inline:.8rem;font-size:.78rem}
+.btn-block{width:100%}
+.btn-primary{background:linear-gradient(180deg,var(--plum-2),var(--plum));color:var(--ink-inv);box-shadow:0 8px 22px -6px var(--sh-2),inset 0 1px 0 rgba(255,255,255,.22)}
+.btn-accent{background:var(--acc-grad);color:#fff;box-shadow:0 10px 26px -8px var(--acc-shadow),inset 0 1px 0 rgba(255,255,255,.35)}
+.btn-glass{background:var(--g-card);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:var(--ink);box-shadow:0 6px 18px -8px var(--sh)}
+.btn-ghost{color:var(--ink-2)} .btn-ghost:hover{background:var(--acc-soft)}
+.btn-danger{background:var(--bad-bg);color:var(--bad)}
+.btn-icon{width:2.7rem;height:2.7rem;padding:0;border-radius:50%}
+.arrow{display:inline-block;transition:transform .2s} a:hover .arrow,button:hover .arrow{transform:translateX(-4px)}
+.link{color:var(--acc-ink);font-weight:500;font-size:.88rem;display:inline-flex;gap:.3rem;align-items:center}
+
+.chip{display:inline-flex;align-items:center;gap:.35rem;height:2.1rem;padding-inline:.95rem;border-radius:999px;font-size:.84rem;background:var(--g-card);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink-4) 30%,transparent);color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--acc-soft);color:var(--acc-ink);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--acc-1) 45%,transparent)}
+.badge{display:inline-flex;align-items:center;gap:.3rem;height:1.55rem;padding-inline:.65rem;border-radius:999px;font-size:.74rem;font-weight:500;white-space:nowrap}
+.badge::before{content:"";width:.38rem;height:.38rem;border-radius:50%;background:currentColor}
+.b-ok{background:var(--ok-bg);color:var(--ok)} .b-warn{background:var(--warn-bg);color:var(--warn)} .b-bad{background:var(--bad-bg);color:var(--bad)} .b-acc{background:var(--acc-soft);color:var(--acc-ink)} .b-neu{background:color-mix(in srgb,var(--ink-4) 20%,transparent);color:var(--ink-3)}
+.sim{font-size:.68rem;padding:.05rem .5rem;border-radius:999px;border:1px dashed color-mix(in srgb,var(--acc-1) 55%,transparent);color:var(--acc-ink);white-space:nowrap}
+
+.seg{display:inline-flex;gap:.2rem;padding:.25rem;border-radius:999px;max-width:100%;overflow-x:auto}
+.seg button{height:2.2rem;padding-inline:1rem;border-radius:999px;font-size:.85rem;color:var(--ink-3);white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--g-strong);color:var(--ink);font-weight:600;box-shadow:0 3px 10px -4px var(--sh-2)}
+
+.field{display:flex;flex-direction:column;gap:.35rem;min-width:0}
+.field label{font-size:.85rem;font-weight:500;color:var(--ink-2)}
+.input,.select,.textarea{width:100%;min-height:2.95rem;padding:.65rem 1rem;border:0;border-radius:.85rem;background:var(--g-field);box-shadow:inset 0 1px 2px var(--sh),inset 0 0 0 1px color-mix(in srgb,var(--ink-4) 25%,transparent);color:var(--ink)}
+.textarea{min-height:6rem;resize:vertical}
+.input:focus,.select:focus,.textarea:focus{outline:none;box-shadow:inset 0 0 0 2px var(--acc-1),0 0 0 4px var(--acc-soft)}
+.input::placeholder,.textarea::placeholder{color:var(--ink-4)}
+.input[aria-invalid="true"],.select[aria-invalid="true"],.textarea[aria-invalid="true"]{box-shadow:inset 0 0 0 1.5px var(--bad),0 0 0 4px var(--bad-bg)}
+.err{font-size:.76rem;color:var(--bad)}
+.help{font-size:.76rem;color:var(--ink-3)}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem 1.1rem}
+.form-grid .full{grid-column:1/-1}
+
+/* header */
+.site-header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;padding-block:1rem;padding-left:var(--gutter);padding-right:var(--gutter)}
+.hdr{display:flex;align-items:center;gap:1rem;padding:.45rem .55rem .45rem .55rem;padding-inline-start:1.1rem}
+.brand{display:flex;align-items:center;gap:.65rem;color:var(--ink);font-weight:600;white-space:nowrap}
+.brand svg{width:2.1rem;height:2.1rem}
+.nav{display:flex;gap:.15rem;margin-inline:auto}
+.nav a{padding:.45rem .9rem;border-radius:999px;font-size:.92rem;color:var(--ink-2);position:relative}
+.nav a:hover{background:var(--acc-soft)}
+.nav a[aria-current="page"]{color:var(--ink);background:var(--g-strong);box-shadow:0 3px 10px -5px var(--sh-2)}
+.hdr-actions{display:flex;gap:.4rem;align-items:center}
+.cart-dot{position:absolute;top:-.15rem;inset-inline-end:-.15rem;min-width:1.15rem;height:1.15rem;border-radius:999px;background:var(--acc-grad);color:#fff;font-size:.66rem;display:grid;place-items:center;font-weight:700}
+.burger{display:none}
+
+main{padding-left:var(--gutter);padding-right:var(--gutter);padding-block:0 4rem;max-width:88rem;margin-inline:auto;min-height:70vh}
+.section{margin-top:5rem}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:1.4rem;flex-wrap:wrap}
+.sec-title{font-family:var(--f-disp);font-size:2.2rem;font-weight:600;color:var(--ink);line-height:1.25}
+.eyebrow{font-size:.8rem;letter-spacing:.04em;color:var(--acc-ink);font-weight:600}
+.pad{padding:1.6rem}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.4rem}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.2rem}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.4rem}
+.grid3>*,.grid4>*,.grid2>*{min-width:0}
+.two-col{display:grid;grid-template-columns:minmax(0,1fr) 23rem;gap:1.6rem;align-items:start}
+.two-col>*{min-width:0}
+.sticky{position:sticky;top:6.5rem}
+.row{display:flex;gap:.7rem;align-items:center;flex-wrap:wrap}
+.between{justify-content:space-between}
+.stack{display:flex;flex-direction:column;gap:1rem}
+
+/* hero */
+.hero{position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:3rem;align-items:center;padding-block:4rem 2rem;min-height:34rem}
+.hero h1{font-family:var(--f-disp);font-size:clamp(2.8rem,5.4vw,4.7rem);font-weight:600;line-height:1.08;margin-top:.8rem}
+.hero h1 span{display:block}
+.hero .lead{margin-top:1.4rem;font-size:1.08rem;max-width:32rem;color:var(--ink-2)}
+.hero-cta{display:flex;gap:.8rem;margin-top:2rem;flex-wrap:wrap}
+.hero-trust{display:flex;gap:1.4rem;margin-top:2.2rem;flex-wrap:wrap;font-size:.85rem;color:var(--ink-3)}
+.hero-trust b{display:block;font-family:var(--f-disp);font-size:1.7rem;color:var(--ink);line-height:1.1}
+
+/* prism orb (hero motif) */
+.orb-stage{position:relative;aspect-ratio:1;max-width:28rem;width:100%;justify-self:center}
+.orb{position:absolute;border-radius:50%}
+.orb.ring{inset:2%;border:1px solid color-mix(in srgb,var(--g-edge-hi) 70%,transparent);opacity:.7;animation:spin 60s linear infinite;
+  background:conic-gradient(from 0deg,transparent 0 70%,color-mix(in srgb,var(--acc-2) 40%,transparent) 80%,transparent 92%);-webkit-mask:radial-gradient(circle,transparent 69.6%,#000 70%);mask:radial-gradient(circle,transparent 69.6%,#000 70%)}
+.orb.ring2{inset:12%;border:1px dashed color-mix(in srgb,var(--ink-4) 45%,transparent);animation:spin 90s linear infinite reverse}
+.orb.core{inset:19%;background:
+  radial-gradient(38% 30% at 32% 24%,rgba(255,255,255,.95),rgba(255,255,255,0) 70%),
+  radial-gradient(60% 60% at 70% 78%,color-mix(in srgb,var(--acc-3) 65%,transparent),transparent 70%),
+  radial-gradient(55% 55% at 20% 70%,color-mix(in srgb,var(--acc-1) 55%,transparent),transparent 72%),
+  radial-gradient(circle at 50% 50%,rgba(255,255,255,.04) 58%,color-mix(in srgb,var(--acc-2) 45%,transparent) 100%);
+  -webkit-backdrop-filter:blur(6px) saturate(1.4);backdrop-filter:blur(6px) saturate(1.4);
+  box-shadow:inset 0 -18px 40px color-mix(in srgb,var(--acc-1) 35%,transparent),inset 0 12px 30px rgba(255,255,255,.55),0 40px 80px -30px var(--sh-2)}
+.orb.glint{inset:19%;background:conic-gradient(from 210deg,transparent 0 20%,rgba(255,255,255,.55) 26%,transparent 34%,transparent 70%,rgba(255,255,255,.25) 76%,transparent 84%);mix-blend-mode:screen;animation:spin 24s linear infinite}
+.orb-card{position:absolute;padding:1rem 1.15rem;border-radius:1.1rem;max-width:15rem;font-size:.86rem}
+.orb-card b{color:var(--ink);display:block;font-size:.95rem}
+@keyframes spin{to{transform:rotate(360deg)}}
+.mini-orb{display:inline-block;width:1.6rem;height:1.6rem;border-radius:50%;flex:none;background:radial-gradient(40% 32% at 32% 26%,#fff,transparent 70%),radial-gradient(circle at 70% 75%,var(--acc-3),transparent 65%),radial-gradient(circle at 25% 70%,var(--acc-1),transparent 70%),var(--acc-2);box-shadow:inset 0 -4px 8px rgba(80,50,140,.35),0 4px 10px -3px var(--sh-2)}
+
+/* service cards */
+.svc{display:flex;flex-direction:column;gap:.7rem;padding:1.7rem;min-height:15rem;transition:transform .3s}
+.svc:hover{transform:translateY(-4px)}
+.icon-disc{width:3.4rem;height:3.4rem;border-radius:50%;display:grid;place-items:center;background:var(--g-strong);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 6px 16px -6px var(--sh-2);color:var(--acc-ink)}
+.icon-disc svg{width:1.5rem;height:1.5rem}
+.svc h3{font-family:var(--f-disp);font-size:1.55rem;font-weight:600;margin-top:.6rem}
+.svc .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding-top:.8rem;border-top:1px solid color-mix(in srgb,var(--ink-4) 22%,transparent)}
+.price{font-weight:600;color:var(--ink);white-space:nowrap}
+.price del{color:var(--ink-4);font-weight:400;margin-inline-end:.4rem;font-size:.85em}
+
+.stat-tile{padding:1.3rem 1.4rem}
+.stat-tile b{display:block;font-family:var(--f-disp);font-size:2.4rem;color:var(--ink);line-height:1.15}
+.stat-tile span{font-size:.85rem;color:var(--ink-3)}
+
+/* event feature */
+.ev-feature{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);overflow:hidden}
+.ev-art{position:relative;min-height:17rem;background:linear-gradient(160deg,var(--sky-a),var(--sky-c));overflow:hidden}
+.ev-art svg{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1)}
+.ev-body{padding:2rem 2.2rem;display:flex;flex-direction:column;gap:.9rem}
+.countdown{display:flex;gap:.6rem}
+.countdown div{min-width:4.2rem;text-align:center;padding:.5rem}
+.countdown b{display:block;font-size:1.5rem;color:var(--ink);line-height:1.3}
+.countdown span{font-size:.72rem;color:var(--ink-3)}
+
+.quote{padding:1.7rem;display:flex;flex-direction:column;gap:1rem}
+.quote blockquote{margin:0;color:var(--ink);line-height:1.95}
+.avatar{width:2.6rem;height:2.6rem;border-radius:50%;display:grid;place-items:center;font-weight:600;color:var(--ink);flex:none;background:linear-gradient(150deg,color-mix(in srgb,var(--acc-3) 45%,var(--g-strong)),color-mix(in srgb,var(--acc-1) 35%,var(--g-strong)));box-shadow:0 0 0 2px var(--g-strong)}
+
+/* books */
+.book{padding:1.1rem;display:flex;flex-direction:column;gap:.8rem}
+.cover-wrap{display:grid;place-items:center;padding:1.2rem 0;border-radius:1rem;background:radial-gradient(70% 70% at 50% 40%,var(--g-sheen),transparent)}
+.cover{width:7rem;aspect-ratio:.7;border-radius:4px 8px 8px 4px;padding:.9rem .7rem;display:flex;flex-direction:column;justify-content:space-between;color:#fff;box-shadow:0 14px 28px -8px var(--sh-2),inset 6px 0 8px -4px rgba(0,0,0,.25);transform:perspective(600px) rotateY(-12deg);max-width:100%}
+.cover b{font-family:var(--f-disp);font-size:1.15rem;line-height:1.25}
+.cover small{font-size:.62rem;opacity:.85}
+.book h3{font-size:.98rem}
+.book .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap}
+.book .price{white-space:normal}
+
+.post{display:flex;flex-direction:column;overflow:hidden}
+.post .thumb{height:8.5rem;position:relative;overflow:hidden}
+.post .thumb svg{width:100%;height:100%;transform:scaleX(-1)}
+.post .thumb .badge{position:absolute;top:.7rem;inset-inline-start:.7rem;backdrop-filter:blur(8px)}
+.post .body{padding:1.1rem 1.3rem 1.2rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+.post h3{font-size:1rem;line-height:1.7}
+.post .meta{margin-top:auto;font-size:.8rem;color:var(--ink-3);display:flex;justify-content:space-between}
+
+/* page hero (inner) */
+.page-hero{padding-block:3rem 2rem}
+.page-hero h1{font-family:var(--f-disp);font-size:clamp(2.2rem,4vw,3.3rem);font-weight:600;margin-top:.3rem}
+.page-hero p{margin-top:.6rem;max-width:42rem;font-size:1.04rem}
+.crumbs{font-size:.8rem;color:var(--ink-3);display:flex;gap:.4rem}
+
+/* booking */
+.steps{display:flex;gap:.5rem;margin-bottom:1.4rem}
+.steps li{flex:1;min-width:0}
+.steps i{display:block;height:.3rem;border-radius:9px;background:color-mix(in srgb,var(--ink-4) 25%,transparent);overflow:hidden}
+.steps i::after{content:"";display:block;height:100%;width:0;background:var(--acc-grad);transition:width .4s}
+.steps li.done i::after{width:100%} .steps li.cur i::after{width:55%}
+.steps span{display:block;font-size:.75rem;color:var(--ink-4);margin-top:.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.steps li.cur span,.steps li.done span{color:var(--ink-2)}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+.opt{display:flex;gap:.8rem;align-items:flex-start;text-align:start;padding:1rem 1.1rem;border-radius:1rem;background:var(--g-card);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink-4) 28%,transparent);transition:box-shadow .2s,background .2s}
+.opt:hover{box-shadow:inset 0 0 0 1px var(--acc-1)}
+.opt[aria-checked="true"]{background:var(--acc-soft);box-shadow:inset 0 0 0 1.5px var(--acc-1)}
+.opt b{display:block;color:var(--ink)} .opt span{display:block;font-size:.8rem;color:var(--ink-3);line-height:1.7}
+.opt .p{margin-inline-start:auto;white-space:nowrap;font-weight:600;color:var(--ink)}
+.days{display:flex;gap:.5rem;overflow-x:auto;padding-bottom:.4rem}
+.day{flex:none;width:4.5rem;padding:.55rem .2rem;border-radius:1rem;text-align:center;background:var(--g-card);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink-4) 25%,transparent)}
+.day small{display:block;font-size:.7rem;color:var(--ink-3)} .day b{display:block;font-size:1.3rem;color:var(--ink);line-height:1.35}
+.day[aria-pressed="true"]{background:linear-gradient(180deg,var(--plum-2),var(--plum))} .day[aria-pressed="true"] small,.day[aria-pressed="true"] b{color:var(--ink-inv)}
+.day:disabled{opacity:.35;cursor:not-allowed}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.8rem,1fr));gap:.55rem}
+.slot{height:2.8rem;border-radius:.8rem;background:var(--g-card);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink-4) 30%,transparent);color:var(--ink);font-weight:500}
+.slot:hover{box-shadow:inset 0 0 0 1px var(--acc-1)}
+.slot[aria-pressed="true"]{background:var(--acc-grad);color:#fff;box-shadow:none}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:.45rem 1rem;font-size:.88rem}
+.kv dt{color:var(--ink-3)} .kv dd{margin:0;text-align:end;color:var(--ink)}
+.lines{display:grid;gap:.45rem;font-size:.88rem}
+.lines .ln{display:flex;justify-content:space-between;gap:1rem}
+.lines .ln span:first-child{color:var(--ink-3)}
+.lines .total{padding-top:.6rem;border-top:1px dashed color-mix(in srgb,var(--ink-4) 45%,transparent);font-size:1rem}
+.lines .total span{color:var(--ink)!important;font-weight:700}
+.code{direction:ltr;text-align:left;white-space:pre;overflow-x:auto;font-family:ui-monospace,Consolas,monospace;font-size:.74rem;line-height:1.7;padding:.9rem;border-radius:.8rem;background:color-mix(in srgb,var(--ink) 88%,transparent);color:var(--ink-inv)}
+.notice{display:flex;gap:.6rem;padding:.85rem 1rem;border-radius:1rem;font-size:.86rem;line-height:1.8}
+.n-info{background:var(--acc-soft)} .n-ok{background:var(--ok-bg)} .n-warn{background:var(--warn-bg)} .n-bad{background:var(--bad-bg)}
+.hold{font-weight:600;color:var(--warn)}
+
+.cap{height:.4rem;border-radius:9px;background:color-mix(in srgb,var(--ink-4) 22%,transparent);overflow:hidden;margin-top:.5rem}
+.cap i{display:block;height:100%;background:var(--acc-grad);border-radius:inherit}
+.ev-row{display:grid;grid-template-columns:5.5rem minmax(0,1fr) auto;gap:1.3rem;align-items:center;padding:1.2rem 1.4rem}
+.date-tile{text-align:center;padding:.6rem .3rem;border-radius:1rem}
+.date-tile b{display:block;font-family:var(--f-disp);font-size:2rem;color:var(--ink);line-height:1.1}
+.date-tile span{font-size:.75rem;color:var(--ink-3)}
+
+.cart-line{display:grid;grid-template-columns:3.6rem minmax(0,1fr) auto auto;gap:1rem;align-items:center;padding:1rem 0;border-bottom:1px solid color-mix(in srgb,var(--ink-4) 18%,transparent)}
+.cart-line:last-child{border-bottom:0}
+.cart-line .cover{width:3.6rem;padding:.3rem;transform:none}
+.cart-line .cover b{font-size:.55rem}
+.qty{display:inline-flex;align-items:center;gap:.2rem;padding:.2rem;border-radius:999px}
+.qty button{width:1.9rem;height:1.9rem;border-radius:50%}
+.qty button:hover{background:var(--acc-soft)}
+
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+th{text-align:start;font-weight:500;color:var(--ink-3);font-size:.76rem;padding:.6rem .8rem;border-bottom:1px solid color-mix(in srgb,var(--ink-4) 28%,transparent);white-space:nowrap}
+td{padding:.7rem .8rem;border-bottom:1px solid color-mix(in srgb,var(--ink-4) 14%,transparent);color:var(--ink-2)}
+tr:last-child td{border-bottom:0}
+td.strong{color:var(--ink);font-weight:500}
+
+.tabs{display:flex;gap:.2rem;overflow-x:auto;border-bottom:1px solid color-mix(in srgb,var(--ink-4) 25%,transparent);margin-bottom:1rem}
+.tabs button{padding:.6rem 1rem;font-size:.86rem;color:var(--ink-3);white-space:nowrap;position:relative}
+.tabs button[aria-selected="true"]{color:var(--ink);font-weight:600}
+.tabs button[aria-selected="true"]::after{content:"";position:absolute;inset-inline:.7rem;bottom:-1px;height:2px;border-radius:2px;background:var(--acc-grad)}
+
+/* admin */
+.admin{display:grid;grid-template-columns:15rem minmax(0,1fr);gap:1.4rem;align-items:start;padding-top:1.5rem}
+.side{padding:1.3rem .8rem;position:sticky;top:6.5rem}
+.side .me{display:flex;gap:.7rem;align-items:center;padding:0 .6rem 1.2rem}
+.side nav{display:flex;flex-direction:column;gap:.3rem}
+.side nav button{display:flex;align-items:center;gap:.8rem;height:2.8rem;padding-inline:.9rem;border-radius:.9rem;font-size:.92rem;color:var(--ink-2);text-align:start}
+.side nav button svg{width:1.15rem;height:1.15rem}
+.side nav button[aria-current="page"]{background:var(--g-strong);color:var(--ink);box-shadow:0 4px 14px -6px var(--sh-2)}
+.side nav .cnt{margin-inline-start:auto;font-size:.7rem;min-width:1.4rem;height:1.4rem;border-radius:999px;display:grid;place-items:center;background:var(--acc-grad);color:#fff}
+.kanban{display:grid;grid-template-columns:repeat(6,minmax(11rem,1fr));gap:.8rem;overflow-x:auto;padding-bottom:.5rem}
+.kcol{padding:.8rem;border-radius:1rem;min-width:0}
+.kcol h4{font-size:.85rem;display:flex;justify-content:space-between;margin-bottom:.6rem}
+.kcard{padding:.8rem;border-radius:.9rem;margin-bottom:.55rem;font-size:.82rem}
+.kcard b{display:block;color:var(--ink)} .kcard small{display:block;color:var(--ink-3)}
+.bars{display:flex;align-items:flex-end;gap:.35rem;height:10rem}
+.bars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:.3rem;min-width:0}
+.bars i{display:block;width:100%;max-width:1.6rem;border-radius:.45rem .45rem .15rem .15rem;background:var(--acc-grad);min-height:2px}
+.bars span{font-size:.6rem;color:var(--ink-4)}
+.ai{display:flex;gap:.8rem;align-items:flex-start}
+.aibar{display:flex;flex-wrap:wrap;gap:.3rem .8rem;font-size:.72rem;color:var(--ink-3);padding:.4rem .7rem;border-radius:.7rem;background:var(--acc-soft);margin-bottom:.5rem}
+
+/* modal, toast, dock */
+.scrim{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:1rem;background:color-mix(in srgb,var(--plum) 25%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.modal{width:min(31rem,100%);max-height:88vh;overflow:auto;padding:1.7rem}
+.modal.wide{width:min(44rem,100%)}
+.toasts{position:fixed;z-index:95;bottom:max(1.2rem,env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:.5rem;width:min(28rem,calc(100vw - 2rem))}
+.toast{display:flex;gap:.7rem;padding:.8rem 1rem;font-size:.85rem;animation:rise .3s}
+.toast b{color:var(--ink);display:block}
+.toast .code-big{font-size:1.25rem;letter-spacing:.3em;color:var(--acc-ink);font-weight:700}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
+.dock{position:fixed;z-index:85;bottom:max(1.2rem,env(safe-area-inset-bottom,0px));right:max(1.2rem,env(safe-area-inset-right,0px))}
+.dock>.btn{height:2.9rem;padding-inline:1rem 1.2rem;gap:.55rem;font-weight:600;box-shadow:0 12px 30px -10px var(--sh-2),inset 0 0 0 1px color-mix(in srgb,var(--acc-1) 40%,transparent)}
+.dock .menu{position:absolute;bottom:calc(100% + .6rem);right:0;width:min(19rem,calc(100vw - 2.4rem));padding:.5rem}
+.dock .menu-h{font-size:.74rem;color:var(--ink-3);padding:.4rem .8rem .5rem}
+.dock .menu button{display:flex;gap:.7rem;align-items:center}
+.dock .menu .avatar{width:2.2rem;height:2.2rem;font-size:.85rem}
+.dock .menu button[aria-checked="true"]{background:var(--acc-soft)}
+.dock .menu .ck{margin-inline-start:auto;color:var(--acc-ink);font-weight:700}
+.dock .menu hr{border:0;height:1px;background:color-mix(in srgb,var(--ink-4) 25%,transparent);margin:.35rem .4rem}
+.role-chip{display:inline-flex;align-items:center;gap:.4rem;font-size:.76rem;padding:.25rem .7rem;border-radius:999px;background:var(--acc-soft);color:var(--acc-ink);font-weight:600}
+.menu button{display:block;width:100%;text-align:start;padding:.55rem .8rem;border-radius:.7rem;font-size:.86rem}
+.menu button:hover{background:var(--acc-soft)}
+.menu small{display:block;font-size:.72rem;color:var(--ink-3)}
+.wa{position:fixed;z-index:80;bottom:max(1.2rem,env(safe-area-inset-bottom,0px));left:max(1.2rem,env(safe-area-inset-left,0px));width:3.3rem;height:3.3rem;border-radius:50%;display:grid;place-items:center;color:#fff;background:linear-gradient(160deg,#6fb59a,#468f75);box-shadow:0 10px 24px -6px rgba(60,120,100,.5)}
+
+footer.site{margin-top:5rem;padding:3rem var(--gutter) 2rem;padding-left:var(--gutter);padding-right:var(--gutter)}
+.foot-grid{max-width:88rem;margin:auto;display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:2rem;padding:2rem}
+.foot-grid h4{font-size:.88rem;margin-bottom:.6rem}
+.foot-grid li{font-size:.85rem;color:var(--ink-3);margin-bottom:.35rem}
+.foot-grid a:hover{color:var(--ink)}
+.prose p{font-size:1.04rem;line-height:2.05}
+.prose p+p{margin-top:1rem}
+.empty{text-align:center;padding:2.5rem 1rem;display:flex;flex-direction:column;gap:.5rem;align-items:center}
+
+/* ===== editorial personal-brand layer ===== */
+:root{--gold:#c9a45c;--lav:#4f9a82;--peach:#d6a473;--rose:#9a6b4f;--sage:#1f7a5c;--ph-bg:linear-gradient(165deg,#c9ded2,#ece4cc 58%,#f6ecd8);--pod-bg:linear-gradient(150deg,#0a2b23,#17624b 58%,#a8833e);--band-bg:linear-gradient(120deg,#0a2b23,#17624b,#1f7a5c,#a8833e,#0a2b23);--promo-bg:linear-gradient(90deg,#0a2b23,#17624b 60%,#8c6d32);--promo-ink:#0f3d33;--acc-shadow:rgba(23,98,75,.42);--f-script:var(--f-body)}
+.sec-title,.page-hero h1,.hero h1{font-family:var(--f-disp);font-weight:800!important}.disp,.svc h3,.stat-tile b,.date-tile b,.countdown b{font-family:var(--f-disp);font-weight:700!important}
+.script{font-family:var(--f-script);font-weight:600;line-height:1.6;letter-spacing:0}
+.hl{background:linear-gradient(transparent 58%,color-mix(in srgb,var(--gold) 50%,transparent) 58% 90%,transparent 90%);padding-inline:.15em;border-radius:.2em}
+.hl-lav{background:linear-gradient(transparent 58%,color-mix(in srgb,var(--lav) 45%,transparent) 58% 90%,transparent 90%)}
+.hl-peach{background:linear-gradient(transparent 58%,color-mix(in srgb,var(--peach) 50%,transparent) 58% 90%,transparent 90%)}
+.scrib{position:relative;display:inline-block;white-space:nowrap}
+.scrib svg{position:absolute;inset-inline:-4%;bottom:-.28em;width:108%;height:.5em;overflow:visible}
+.ast{display:inline-block;color:var(--gold);animation:spin 14s linear infinite}
+.page-hero h1{font-size:clamp(2.6rem,5vw,4rem);line-height:1.35}
+.page-hero h1::after{content:"";display:block;width:5.5rem;height:.55rem;margin-top:.6rem;border-radius:9px;background:var(--acc-grad);opacity:.8}
+.sec-title{font-size:clamp(2.2rem,3.8vw,3.1rem);line-height:1.35}
+
+.promo{position:relative;z-index:51;display:flex;align-items:center;justify-content:center;gap:.4rem 1.1rem;flex-wrap:wrap;padding-block:.55rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  background:var(--promo-bg);color:#fff;font-size:.84rem;text-align:center}
+.promo b{font-weight:600}
+.promo .btn{height:2rem;background:#f6ecd4;color:var(--promo-ink);font-size:.78rem;padding-inline:.9rem}
+.promo .x{position:absolute;inset-inline-end:max(12px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);width:1.7rem;height:1.7rem;border-radius:50%;color:#fff}
+.promo .x:hover{background:rgba(255,255,255,.2)}
+
+/* hero */
+.jhero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:3.5rem;align-items:center;padding-block:3rem 2.5rem}
+.jhero>*{min-width:0}
+.jhero h1{font-family:var(--f-disp);font-size:clamp(2.4rem,4.4vw,4.1rem);line-height:1.35;color:var(--ink);margin-top:.6rem;font-weight:800}
+.jhero .after{font-size:clamp(1.25rem,2.1vw,1.75rem);color:var(--acc-ink);margin-top:.3rem}
+.jhero .lead{margin-top:1rem;font-size:1.05rem;max-width:33rem}
+.kicker{display:inline-flex;align-items:center;gap:.5rem;font-size:.82rem;font-weight:600;color:var(--ink-2);padding:.35rem .9rem;border-radius:999px}
+.collage{position:relative;aspect-ratio:.92;width:100%;max-width:30rem;justify-self:center}
+.polaroid{position:absolute;inset:6% 10% 10% 6%;padding:.8rem .8rem 3.2rem;transform:rotate(3deg);border-radius:1.4rem}
+.polaroid .ph{position:relative;width:100%;height:100%;border-radius:1rem;overflow:hidden}
+.polaroid .ph{background:radial-gradient(90% 70% at 50% 100%,color-mix(in srgb,var(--sage) 35%,transparent),transparent 70%),var(--ph-bg)}
+.ph-sun{position:absolute;width:58%;aspect-ratio:1;border-radius:50%;top:12%;inset-inline-start:8%;background:radial-gradient(circle,#fff6ea,#fbe3cf 60%,transparent 72%);opacity:.95}
+.polaroid .cutout{position:absolute;bottom:3.2rem;left:50%;transform:translateX(-50%);height:calc(100% - 4rem + 14%);width:auto;max-width:none;filter:drop-shadow(0 18px 22px rgba(40,20,40,.28));pointer-events:none}
+.polaroid .cap{position:absolute;bottom:.55rem;inset-inline:1rem;text-align:center;font-size:1.05rem;color:var(--ink-2)}
+.sticker{position:absolute;display:grid;place-items:center;text-align:center}
+.st-hello{top:-2%;inset-inline-end:-4%;transform:rotate(-12deg);padding:.15rem 1.2rem .5rem;border-radius:1rem;background:var(--gold);color:#3d2a12;font-size:1.6rem;box-shadow:0 10px 24px -8px rgba(160,110,30,.5)}
+.spin-badge{position:absolute;width:8.5rem;height:8.5rem;bottom:-1%;inset-inline-start:-4%}
+.spin-badge .ring-t{animation:spin 22s linear infinite;transform-origin:50% 50%}
+.st-ep{bottom:16%;inset-inline-end:-8%;padding:.8rem 1rem;border-radius:1.1rem;max-width:13rem;text-align:start;display:flex;gap:.7rem;align-items:center}
+.st-ep b{display:block;color:var(--ink);font-size:.85rem;line-height:1.5}
+.st-ep span{font-size:.72rem;color:var(--ink-3)}
+.eq{display:flex;gap:2px;align-items:flex-end;height:1.3rem}
+.eq i{width:3px;border-radius:2px;background:var(--acc-grad);animation:eq 1s ease-in-out infinite}
+.eq i:nth-child(2){animation-delay:-.3s}.eq i:nth-child(3){animation-delay:-.6s}.eq i:nth-child(4){animation-delay:-.15s}
+@keyframes eq{0%,100%{height:25%}50%{height:100%}}
+
+.marquee{overflow:hidden;padding-block:1.1rem;-webkit-mask:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
+.marquee .track{display:flex;width:max-content;animation:marq 38s linear infinite}
+.marquee .track span{display:inline-flex;align-items:center;gap:2.2rem;padding-inline-end:2.2rem;font-family:var(--f-disp);font-weight:700;font-size:1.45rem;color:var(--ink-3);white-space:nowrap}
+.marquee .track span::after{content:"✳";color:var(--gold);font-size:1rem}
+@keyframes marq{to{transform:translateX(50%)}}
+.seen{display:flex;align-items:center;gap:1rem;border-radius:999px;padding-inline:1.4rem}
+.seen>b{flex:none;font-size:.78rem;color:var(--ink-3);font-weight:500}
+
+.hello{text-align:center;max-width:56rem;margin-inline:auto}
+.hello h2{font-family:var(--f-disp);font-size:clamp(2.6rem,6vw,5.2rem);font-weight:800;line-height:1.35}
+.hello p{font-size:1.15rem;margin-top:1rem;color:var(--ink-2)}
+.paths{display:flex;flex-wrap:wrap;justify-content:center;gap:.7rem;margin-top:1.8rem}
+.paths a{display:inline-flex;align-items:center;gap:.6rem;padding:.75rem 1.3rem;border-radius:999px;font-weight:500;color:var(--ink)}
+.paths a small{color:var(--ink-3);font-weight:400}
+
+.quizband{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:2rem;align-items:center;padding:2.2rem 2.6rem;overflow:hidden}
+.quizband .big{font-family:var(--f-disp);line-height:1.25;color:var(--ink);font-weight:800}
+.quizband .big small{display:block;font-size:1.4rem;color:var(--acc-ink)}
+.quizband .big span{display:block;font-size:clamp(3rem,6vw,5rem)}
+.quizband .big em{font-style:normal;display:block;font-size:2rem;text-align:end}
+.qnum{font-family:var(--f-disp);font-size:5rem;line-height:1;color:transparent;-webkit-text-stroke:1.5px color-mix(in srgb,var(--acc-1) 60%,transparent)}
+
+.topics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem}
+.topic{display:flex;flex-direction:column;align-items:center;gap:.6rem;padding:1.3rem .8rem;border-radius:1.3rem;text-align:center;transition:transform .25s}
+.topic:hover{transform:translateY(-3px)}
+.topic .icon-disc{width:3.8rem;height:3.8rem}
+.topic b{color:var(--ink);font-size:.95rem}
+.topic[aria-pressed="true"]{box-shadow:inset 0 0 0 1.5px var(--acc-1),0 14px 30px -14px var(--sh-2)}
+.freebies{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.3rem;margin-top:1.3rem}
+.freebies>*{min-width:0}
+.free{display:flex;flex-direction:column;gap:.7rem;padding:1.2rem}
+.mock{height:11rem;border-radius:1rem;display:grid;place-items:center;position:relative;overflow:hidden}
+.paper{width:6.6rem;aspect-ratio:.72;border-radius:6px;background:#fffdfb;box-shadow:0 18px 30px -12px var(--sh-2);padding:.6rem;display:flex;flex-direction:column;gap:.3rem;transform:rotate(-5deg)}
+.paper i{display:block;height:.28rem;border-radius:3px;background:#e4e6dc}
+.paper i.t{height:.5rem;width:70%}
+.paper.back{position:absolute;transform:rotate(7deg) translate(-1.6rem,.4rem);opacity:.75}
+.free h3{font-size:1.02rem;line-height:1.7}
+.tag{font-size:.7rem;font-weight:600;color:var(--acc-ink);letter-spacing:.02em}
+
+.statband{position:relative;overflow:hidden;border-radius:2rem;padding:2.6rem 2rem;color:#fff;
+  background:var(--band-bg);background-size:300% 300%;animation:grad 16s ease infinite}
+@keyframes grad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.statband::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 120% at 80% 0%,rgba(255,255,255,.35),transparent 60%);pointer-events:none}
+.statband .grid4{position:relative;z-index:1;text-align:center}
+.statband b{display:block;font-family:var(--f-disp);font-size:clamp(2.4rem,4.4vw,3.6rem);line-height:1.3;font-weight:800}
+.statband span{font-size:.9rem;opacity:.92}
+
+.pod{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:2rem;align-items:center}
+.pod>*{min-width:0}
+.podcover{aspect-ratio:1;border-radius:1.6rem;position:relative;overflow:hidden;padding:1.6rem;display:flex;flex-direction:column;justify-content:space-between;color:#fff;
+  background:radial-gradient(70% 60% at 25% 20%,rgba(255,255,255,.28),transparent 60%),var(--pod-bg);box-shadow:0 30px 60px -25px var(--sh-2)}
+.podcover b{font-family:var(--f-disp);font-size:clamp(2rem,3.6vw,3rem);line-height:1.3;font-weight:800}
+.podcover .mic{position:absolute;inset-inline-start:1.2rem;bottom:1.2rem;width:4.5rem;height:4.5rem;opacity:.85}
+.eps{display:flex;flex-direction:column;gap:.6rem}
+.ep{display:grid;grid-template-columns:2.6rem minmax(0,1fr) auto;gap:1rem;align-items:center;padding:.8rem 1rem;border-radius:1.1rem}
+.ep .n{font-family:var(--f-disp);font-size:1.6rem;color:var(--acc-ink);text-align:center}
+.ep b{display:block;color:var(--ink);font-size:.95rem}
+.ep small{color:var(--ink-3);font-size:.76rem}
+.play{width:2.7rem;height:2.7rem;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,var(--plum-2),var(--plum));color:var(--ink-inv)}
+.play[aria-pressed="true"]{background:var(--acc-grad);color:#fff}
+
+.stackhead{font-family:var(--f-disp);line-height:1.25;color:var(--ink);font-weight:800}
+.stackhead small{display:block;font-size:1.8rem;color:var(--ink-3)}
+.stackhead span{display:block;font-size:clamp(3.6rem,8vw,6.5rem)}
+.stackhead em{display:block;font-style:normal;font-size:1.5rem;color:var(--acc-ink)}
+.blogwrap{display:grid;grid-template-columns:16rem minmax(0,1fr);gap:2rem;align-items:start}
+.blogwrap>*{min-width:0}
+
+.bookband{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:2.5rem;align-items:center;padding:2.6rem 3rem;overflow:hidden}
+.bookband>*{min-width:0}
+.bigcover{position:relative;justify-self:center}
+.bigcover .cover{width:12.5rem;padding:1.4rem 1.1rem;transform:perspective(900px) rotateY(-18deg) rotateZ(-2deg)}
+.bigcover .cover b{font-size:2rem;line-height:1.15}
+.bigcover .cover small{font-size:.8rem}
+.burst{position:absolute;top:-1.2rem;inset-inline-start:-2.2rem;width:6.4rem;height:6.4rem;display:grid;place-items:center;text-align:center;color:#3d2a12;font-size:.8rem;font-weight:700;line-height:1.4;transform:rotate(-14deg);
+  background:var(--gold);clip-path:polygon(50% 0,61% 13%,77% 6%,80% 23%,96% 26%,90% 42%,100% 55%,87% 65%,91% 82%,74% 83%,66% 99%,52% 89%,37% 99%,30% 83%,12% 84%,15% 66%,0 56%,10% 42%,4% 26%,21% 23%,24% 6%,39% 13%)}
+
+.library{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.2rem}
+.library>*{min-width:0}
+.course{position:relative;display:flex;flex-direction:column;gap:.6rem;padding:1.4rem;min-height:17rem;overflow:hidden}
+.course .no{font-family:var(--f-disp);font-size:3.6rem;line-height:1.15;font-weight:800;color:var(--c)}
+.course .blob{position:absolute;inset-inline-end:-3rem;top:-3rem;width:9rem;height:9rem;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--c) 55%,transparent),transparent 70%);z-index:-1}
+.course h3{font-size:1.08rem;line-height:1.6}
+.course .more{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:.85rem;font-weight:600;color:var(--ink)}
+.course .more i{font-style:normal;width:2.2rem;height:2.2rem;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 30%,transparent)}
+
+.ev-date{position:absolute;inset:0;margin:auto;width:11rem;height:12rem;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-4deg);text-align:center}
+.ev-date b{font-family:var(--f-disp);font-weight:800;font-size:4.6rem;line-height:1.15;color:var(--ink)}
+.ev-date>span:last-child{font-size:.85rem;color:var(--ink-3)}
+.bigq{font-family:var(--f-disp);font-size:5rem;line-height:.6;height:2.2rem;color:var(--gold)}
+
+.news{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2.5rem;align-items:center;padding:2.4rem 2.8rem}
+.news>*{min-width:0}
+.envwrap{position:relative;width:11rem;height:11rem}
+.envwrap .spin-badge{position:absolute;inset:0;width:100%;height:100%}
+.envwrap .env{position:absolute;inset:30%;display:grid;place-items:center}
+
+
+/* ===== palette: navy & gold ===== */
+:root[data-palette="navy"]{--bg:#F7F5F0; --sky-a:#efdfbd; --sky-b:#dde2ec; --sky-c:#b9c9e3; --sun:#fff3d8;
+  --m1:#b0bdd8; --m2:#8495ba; --m3:#566a97; --m4:#24345c; --city:#7f90b4; --lights:#ffe2a0;
+  --ink:#0f1a33; --ink-2:#28344f; --ink-3:#59637d; --ink-4:#939bb0; --ink-inv:#faf8f2;
+  --plum:#14213d; --plum-2:#2e4a7d;
+  --acc-1:#1d3461; --acc-2:#2e4a7d; --acc-3:#c8a048; --acc-ink:#24407a; --acc-soft:rgba(46,74,125,.11);
+  --g-card:rgba(255,254,250,.52); --g-strong:rgba(253,252,248,.8); --g-field:rgba(238,236,228,.64);
+  --g-edge-hi:rgba(255,255,255,.95); --g-edge-lo:rgba(170,145,85,.45); --g-sheen:rgba(255,255,255,.6);
+  --sh:rgba(16,28,60,.13); --sh-2:rgba(16,28,60,.23);
+  --ok:#2e7d4f; --ok-bg:rgba(46,125,79,.13); --warn:#94650f; --warn-bg:rgba(200,160,72,.24); --bad:#a8323e; --bad-bg:rgba(168,50,62,.11);
+  --gold:#c8a048;--lav:#5a74a8;--peach:#d3a26a;--rose:#8a5a5a;--sage:#2e4a7d;
+  --ph-bg:linear-gradient(165deg,#c9d5ea,#e9e2cf 58%,#f5ecd8);--pod-bg:linear-gradient(150deg,#0e1830,#24407a 58%,#a8843a);--band-bg:linear-gradient(120deg,#0e1830,#1d3461,#2e4a7d,#a8843a,#0e1830);--promo-bg:linear-gradient(90deg,#0e1830,#1d3461 60%,#8c6d2c);--promo-ink:#14213d;--acc-shadow:rgba(29,52,97,.4);--shape-a:#E2E8F3;--shape-b:#D3DDEC;--shape-n:#14213D;--shape-g:#C8A048;}
+@media (prefers-color-scheme:dark){:root[data-palette="navy"]:not([data-theme="light"]){--bg:#0A1120; --shape-a:#101B31; --shape-b:#15233F; --shape-n:#2E4A7D; --shape-g:#B8923F; --sky-a:#3a3322; --sky-b:#1c2a48; --sky-c:#0b1328; --sun:#e2b66a;
+  --m1:#1c2a4a; --m2:#16223e; --m3:#101a33; --m4:#0a1226; --city:#142040; --lights:#f1cf86;
+  --ink:#f4f1e8; --ink-2:#d3d9e6; --ink-3:#9ea8c0; --ink-4:#6c7690; --ink-inv:#0a1226;
+  --plum:#f1e3c2; --plum-2:#d9bd82; --acc-ink:#a9c1f0; --acc-soft:rgba(120,150,230,.16);
+  --g-card:rgba(24,36,70,.46); --g-strong:rgba(12,20,42,.8); --g-field:rgba(4,8,20,.5);
+  --g-edge-hi:rgba(215,225,245,.4); --g-edge-lo:rgba(200,160,72,.42); --g-sheen:rgba(220,230,250,.1);
+  --sh:rgba(0,4,14,.45); --sh-2:rgba(0,4,14,.6);
+  --ok:#6fd3a0; --ok-bg:rgba(111,211,160,.14); --warn:#f0c46a; --warn-bg:rgba(240,196,106,.14); --bad:#f08b8f; --bad-bg:rgba(240,139,143,.14);
+  color-scheme:dark}}
+:root[data-palette="navy"][data-theme="dark"]{--bg:#0A1120; --shape-a:#101B31; --shape-b:#15233F; --shape-n:#2E4A7D; --shape-g:#B8923F; --sky-a:#3a3322; --sky-b:#1c2a48; --sky-c:#0b1328; --sun:#e2b66a;
+  --m1:#1c2a4a; --m2:#16223e; --m3:#101a33; --m4:#0a1226; --city:#142040; --lights:#f1cf86;
+  --ink:#f4f1e8; --ink-2:#d3d9e6; --ink-3:#9ea8c0; --ink-4:#6c7690; --ink-inv:#0a1226;
+  --plum:#f1e3c2; --plum-2:#d9bd82; --acc-ink:#a9c1f0; --acc-soft:rgba(120,150,230,.16);
+  --g-card:rgba(24,36,70,.46); --g-strong:rgba(12,20,42,.8); --g-field:rgba(4,8,20,.5);
+  --g-edge-hi:rgba(215,225,245,.4); --g-edge-lo:rgba(200,160,72,.42); --g-sheen:rgba(220,230,250,.1);
+  --sh:rgba(0,4,14,.45); --sh-2:rgba(0,4,14,.6);
+  --ok:#6fd3a0; --ok-bg:rgba(111,211,160,.14); --warn:#f0c46a; --warn-bg:rgba(240,196,106,.14); --bad:#f08b8f; --bad-bg:rgba(240,139,143,.14);
+  color-scheme:dark}
+.pal-dot{width:1.2rem;height:1.2rem;border-radius:50%;background:conic-gradient(var(--plum-2) 0 50%,var(--gold) 50% 100%);box-shadow:0 0 0 2px var(--g-strong)}
+@media (max-width:1100px){.library,.topics{grid-template-columns:repeat(2,minmax(0,1fr))}.freebies{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:900px){
+  .jhero,.pod,.bookband,.blogwrap{grid-template-columns:1fr}.collage{max-width:22rem}
+  .quizband{grid-template-columns:1fr;text-align:center;padding:1.8rem}.quizband .big em{text-align:center}.qnum{display:none}
+  .news{grid-template-columns:1fr;justify-items:center;text-align:center}.bookband{padding:2rem 1.4rem}
+}
+@media (max-width:560px){
+  .freebies,.library{grid-template-columns:1fr}.topics{gap:.6rem}.topic{padding:1rem .5rem}
+  .promo{font-size:.76rem;padding-inline-end:2.6rem}.st-ep{display:none}.spin-badge{width:6.5rem;height:6.5rem}
+  .statband{padding:2rem 1rem}.statband .grid4{gap:1.4rem .6rem}.seen{border-radius:1.2rem;padding-inline:1rem}.seen>b{display:none}
+}
+@media (max-width:900px){#cbwrap{grid-template-columns:1fr!important}}
+@media (max-width:1100px){.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.foot-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:900px){
+  html{font-size:15px}
+  .nav,.hdr-cta{display:none}.burger{display:inline-flex}.hdr{justify-content:space-between}
+  .hero{grid-template-columns:1fr;padding-top:2rem;gap:2rem}.orb-stage{max-width:20rem}
+  .grid3,.grid2,.two-col,.ev-feature{grid-template-columns:1fr}.sticky,.side{position:static}
+  .admin{grid-template-columns:1fr}.side nav{flex-direction:row;overflow-x:auto}.side .me{display:none}
+  .ev-row{grid-template-columns:4.5rem minmax(0,1fr)}.ev-row>:last-child{grid-column:1/-1}
+}
+@media (max-width:560px){
+  .opts,.form-grid{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr;gap:.7rem}
+  .cart-line{grid-template-columns:3rem minmax(0,1fr) auto}.cart-line>:nth-child(4){grid-column:2/-1}
+  .pad{padding:1.2rem}.foot-grid{grid-template-columns:1fr}.orb-card{display:none}
+  .hdr-theme{display:none}.hdr{gap:.4rem;padding-inline-start:.8rem}.hdr-actions{gap:.25rem}.brand svg{display:none}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+
+<div id="world" aria-hidden="true"></div>
+<div id="veil" aria-hidden="true"></div>
+<div class="promo" id="promo" hidden></div>
+<header class="site-header">
+  <div class="hdr glass-pill">
+    <a href="#home" class="brand" aria-label="آرزو زحمت‌بران — خانه">
+      <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="20" cy="20" r="16.5" opacity=".35"/><path d="M7 27c4-9 9-13 13-13s9 4 13 13"/><path d="M20 30V18"/><path d="M20 21c-1-4-4.5-6-8-5.6.3 3.6 3.2 6 8 5.6Z"/><path d="M20 19c1-4 4.2-5.8 7.6-5.5-.2 3.4-3 5.8-7.6 5.5Z"/></svg>
+      <span>آرزو زحمت‌بران</span>
+    </a>
+    <nav class="nav" id="nav" aria-label="ناوبری اصلی"></nav>
+    <div class="hdr-actions">
+      <button class="btn btn-glass btn-icon hdr-theme" data-act="theme" aria-label="تغییر حالت روشن و تاریک" title="حالت روشن و تاریک">◐</button>
+      <a href="#cart" class="btn btn-glass btn-icon" aria-label="سبد خرید" id="cartBtn" style="position:relative">🛍</a>
+      <button class="btn btn-glass btn-icon" data-act="account" aria-label="حساب کاربری" title="حساب کاربری">👤</button>
+      <a href="#consult" class="btn btn-primary hdr-cta">درخواست مشاوره</a>
+      <button class="btn btn-glass btn-icon burger" data-act="drawer" aria-label="باز کردن منو" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+<main id="main" tabindex="-1"></main>
+<footer class="site">
+  <div class="foot-grid glass">
+    <div class="stack" style="gap:.6rem">
+      <b style="color:var(--ink)">آرزو زحمت‌بران</b>
+      <p class="muted" style="font-size:.88rem">مشاور منابع انسانی برای سازمان‌هایی که می‌خواهند آدم‌محور بمانند و رشد کنند. مشاورهٔ فردی، آموزش سازمانی و طراحی فرایندهای منابع انسانی.</p>
+      <p class="faint" style="font-size:.78rem">پرداخت، پیامک و ایمیل در این نسخه شبیه‌سازی شده‌اند.</p>
+    </div>
+    <div><h4>خدمات</h4><ul><li><a href="#services">خدمات سازمانی و فردی</a></li><li><a href="#booking">رزرو جلسه</a></li><li><a href="#events">دوره‌ها و وبینارها</a></li><li><a href="#shop">کتاب‌ها</a></li></ul></div>
+    <div><h4>منابع</h4><ul><li><a href="#blog">مجله</a></li><li><a href="#about">درباره من</a></li><li><a href="#contact">تماس</a></li><li><a href="#terms">قوانین و حریم خصوصی</a></li></ul></div>
+    <div><h4>تماس</h4><ul><li class="ltr" style="text-align:end">۰۲۱-۸۸۰۰۱۲۳۴</li><li class="ltr" style="text-align:end">hello@arezoo-hr.ir</li><li>تهران، ونک، خیابان ملاصدرا</li><li class="row" style="gap:.5rem"><span class="glass-pill" style="padding:.3rem .7rem;font-size:.72rem">جای نماد اعتماد (اینماد)</span></li></ul></div>
+  </div>
+</footer>
+<a class="wa" href="https://wa.me/989121234567" target="_blank" rel="noopener" aria-label="گفت‌وگو در واتساپ">✆</a>
+<div class="dock" id="dock"></div>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+<div id="modalRoot"></div>
+
+<script>
+"use strict";
+/* The owner's photo is not kept in the public repo; the site takes it from the panel. */
+const PHOTO="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 420'%3E%3Ccircle cx='150' cy='120' r='70' fill='%2393a0b8'/%3E%3Cpath d='M30 420c0-110 54-170 120-170s120 60 120 170z' fill='%2393a0b8'/%3E%3C/svg%3E";
+/* ---------- utils ---------- */
+const DAY=864e5, H=36e5, OFF=210*6e4;
+const fa=n=>Number(n).toLocaleString('fa-IR');
+const faD=s=>String(s).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const toEn=s=>String(s).replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+const toman=r=>r===0?'رایگان':fa(Math.round(r/10))+' تومان';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm=s=>toEn(s).replace(/[يى]/g,'ی').replace(/ك/g,'ک').replace(/‌/g,' ').toLowerCase().trim();
+const id=p=>p+Math.random().toString(36).slice(2,8);
+const dFmt=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{timeZone:'Asia/Tehran',weekday:'long',day:'numeric',month:'long',year:'numeric'});
+const tFmt=new Intl.DateTimeFormat('fa-IR',{timeZone:'Asia/Tehran',hour:'2-digit',minute:'2-digit',hour12:false});
+const parts=t=>Object.fromEntries(dFmt.formatToParts(new Date(t)).map(p=>[p.type,p.value]));
+const jDate=(t,o={})=>{const p=parts(t);return [o.wd?p.weekday:'',p.day,p.month,o.y?p.year:''].filter(Boolean).join(' ')};
+const jTime=t=>tFmt.format(new Date(t));
+const dayStart=t=>Math.floor((t+OFF)/DAY)*DAY-OFF;
+const wday=t=>new Date(t+OFF).getUTCDay();
+const at=(day,hm)=>{const[h,m]=hm.split(':').map(Number);return day+(h*60+m)*6e4};
+const rel=t=>{const d=t-Date.now(),a=Math.abs(d),m=Math.round(a/6e4);let s=m<60?fa(m)+' دقیقه':m<1440?fa(Math.round(m/60))+' ساعت':fa(Math.round(m/1440))+' روز';return m<1?'همین حالا':d<0?s+' پیش':s+' دیگر'};
+const validMobile=v=>/^09\d{9}$/.test(toEn(v).replace(/\s|-/g,''));
+const validEmail=v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+
+/* ---------- seed ---------- */
+function seed(){
+  const now=Date.now(), t=dayStart(now), d=(n,hm)=>at(t+n*DAY,hm);
+  return {v:2,
+  user:null, role:'guest', cart:[], coupon:null, invoiceNo:1041, orderNo:2210,
+  sessionTypes:[
+    {id:'intro',title:'تماس آشنایی',mode:'تلفنی',dur:20,price:0,buf:10,desc:'گفت‌وگوی کوتاه برای شناخت نیاز و پیشنهاد مسیر مناسب.'},
+    {id:'online',title:'مشاورهٔ فردی آنلاین',mode:'آنلاین',dur:60,price:18000000,buf:15,desc:'مسیر شغلی، تصمیم‌های استخدامی یا چالش‌های تیم.'},
+    {id:'inperson',title:'مشاورهٔ حضوری',mode:'حضوری، دفتر ونک',dur:90,price:29000000,buf:30,desc:'بررسی عمیق مستندات و برنامه‌ریزی کنار هم.'},
+    {id:'coach',title:'کوچینگ مدیران',mode:'آنلاین',dur:60,price:24000000,buf:15,desc:'بازخورد، تفویض و رهبری تیم برای مدیران تازه‌کار.'}],
+  bookings:[
+    {id:'b1',name:'سارا رحیمی',type:'online',start:d(1,'10:00'),status:'confirmed',user:'x'},
+    {id:'b2',name:'رضا محمدی',type:'coach',start:d(1,'15:00'),status:'confirmed',user:'x'},
+    {id:'b3',name:'ندا کریمی',type:'inperson',start:d(2,'10:00'),status:'confirmed',user:'x'},
+    {id:'b4',name:'علی توکلی',type:'intro',start:d(3,'17:00'),status:'confirmed',user:'x'}],
+  events:[
+    {id:'e1',kind:'وبینار',title:'پنج اشتباه رایج در مصاحبهٔ استخدامی',start:d(6,'18:00'),dur:75,cap:300,reg:140,price:0,venue:'آنلاین (اسکای‌روم)',outline:['چرا مصاحبهٔ بی‌ساختار پیش‌بینی ضعیفی است','پنج اشتباه پرتکرار با نمونهٔ واقعی','ساخت فرم امتیازدهی ساده','پرسش و پاسخ']},
+    {id:'e2',kind:'دوره',title:'طراحی نظام ارزیابی عملکرد',start:d(12,'17:00'),dur:150,cap:25,reg:19,price:68000000,venue:'آنلاین، ۴ جلسهٔ هفتگی',outline:['اهداف ارزیابی و خطاهای رایج','شایستگی‌ها و شاخص‌های کلیدی','طراحی فرم و مقیاس امتیازدهی','جلسهٔ بازخورد و اتصال به پاداش']},
+    {id:'e3',kind:'وبینار',title:'برند کارفرمایی با بودجهٔ کم',start:d(9,'19:00'),dur:90,cap:6,reg:6,price:4500000,venue:'آنلاین (اسکای‌روم)',outline:['برند کارفرمایی دقیقاً چیست','روایت کارکنان فعلی','صفحهٔ فرصت‌های شغلی که تبدیل می‌کند']},
+    {id:'e4',kind:'وبینار',title:'آیندهٔ کار: انعطاف یا بهره‌وری؟',start:d(-20,'18:00'),dur:80,cap:200,reg:171,price:0,venue:'آنلاین',outline:['داده‌های کار ترکیبی','سنجش خروجی به‌جای حضور'],rec:true}],
+  regs:[], waitlist:[],
+  products:[
+    {id:'p1',kind:'physical',fmt:'کتاب چاپی',title:'آدم‌ها پیش از فرایندها',sub:'۲۴۸ صفحه · نشر روشنا',price:3800000,stock:42,hue:268},
+    {id:'p2',kind:'digital',fmt:'کتاب الکترونیکی',title:'آدم‌ها پیش از فرایندها',sub:'PDF · ۸٫۴ مگابایت',price:1900000,hue:300},
+    {id:'p3',kind:'digital',fmt:'کتاب صوتی',title:'گفت‌وگوهای استخدام',sub:'۴ ساعت و ۱۰ دقیقه',price:1500000,hue:200},
+    {id:'p4',kind:'digital',fmt:'بستهٔ آموزشی',title:'قالب‌های ارزیابی عملکرد',sub:'اکسل و ورد · ۱۴ فایل',price:6900000,compare:8500000,hue:160},
+    {id:'p5',kind:'physical',fmt:'کتاب چاپی',title:'راهنمای مصاحبهٔ ساختاریافته',sub:'۱۳۶ صفحه',price:2900000,stock:0,hue:25}],
+  coupons:[
+    {code:'WELCOME10',type:'percent',value:10,scope:'all',to:now+60*DAY},
+    {code:'BOOK50',type:'amount',value:500000,scope:'product',to:now+20*DAY},
+    {code:'WEBINAR20',type:'percent',value:20,scope:'event',to:now+15*DAY},
+    {code:'SUMMER',type:'percent',value:15,scope:'all',to:now-20*DAY}],
+  leads:[
+    {id:'l1',type:'آموزش سازمانی',name:'فرهاد صدری',company:'فناوران ابر آسا',mobile:'09121230011',status:'new',at:now-2*H,note:'مصاحبهٔ ساختاریافته برای ۱۸ مدیر فنی'},
+    {id:'l2',type:'مشاورهٔ سازمانی',name:'مهسا یزدانی',company:'گروه غذایی گلستان',mobile:'09351230022',status:'new',at:now-5*H,note:'هم‌پوشانی شرح وظایف پس از ادغام'},
+    {id:'l3',type:'درخواست تماس',name:'حمید شکوهی',company:'',mobile:'09191230033',status:'new',at:now-7*H,note:'عصرها بعد از ۱۷'},
+    {id:'l4',type:'دانلود کاتالوگ',name:'زهرا قاسمی',company:'',mobile:'09121230044',status:'contacted',at:now-26*H,note:'کاتالوگ خدمات ۱۴۰۵'},
+    {id:'l5',type:'دعوت به سخنرانی',name:'انجمن مدیران جوان',company:'انجمن مدیران جوان',mobile:'02188776655',status:'meeting',at:now-30*H,note:'همایش سالانهٔ رهبری، ۴۰۰ نفر'},
+    {id:'l6',type:'آموزش سازمانی',name:'نرگس فاضلی',company:'داروسازی سپیدار',mobile:'09131230066',status:'proposal',at:now-72*H,note:'بازخورد مؤثر برای ۳۵ سرپرست'},
+    {id:'l7',type:'مشاورهٔ سازمانی',name:'سینا کاظمی',company:'هلدینگ پارس‌مهر',mobile:'09128007788',status:'won',at:now-120*H,note:'ارزیابی عملکرد ۶۰۰ نفر'},
+    {id:'l8',type:'مشاورهٔ فردی',name:'پریسا امینی',company:'',mobile:'09381230088',status:'lost',at:now-220*H,note:'تغییر مسیر شغلی'}],
+  orders:[...Array(14)].map((_,i)=>({id:'o'+i,no:2190+i,user:'x',name:['لیلا نوروزی','کاوه بهرامی','سینا کاظمی','شیرین مرادی','سارا رحیمی'][i%5],items:[{title:['آدم‌ها پیش از فرایندها','قالب‌های ارزیابی عملکرد','مشاورهٔ فردی آنلاین','دورهٔ ارزیابی عملکرد'][i%4],price:[3800000,6900000,18000000,68000000][i%4],qty:1,type:'x'}],total:[4180000,7590000,19800000,74800000][i%4]*(i%3?1:1),status:'paid',at:now-(i*2+1)*DAY+3*H,invoice:1027+i})),
+  downloads:[], notifs:[]};
+}
+let S; try{S=JSON.parse(localStorage.getItem('arz-hr'));if(!S||S.v!==2)S=seed()}catch(e){S=seed()}
+const save=()=>{try{localStorage.setItem('arz-hr',JSON.stringify(S))}catch(e){}};
+const ui={bk:{type:null,day:null,slot:null},consult:{step:0,kind:'سازمانی',d:{}},blog:{q:'',type:'all'},svc:'all',adm:'dash',acc:'orders',formula:false,dock:false};
+
+const SERVICES=[
+ {slug:'hire',aud:'corporate',icon:'shield',title:'جذب و استخدام استعداد',short:'آدم درست، برای نقش درست.',problem:'استخدام‌های عجولانه، مصاحبه‌های بی‌معیار و خروج زودهنگام نیروهای تازه.',method:['تحلیل شغل و تعریف شایستگی‌ها','مصاحبهٔ ساختاریافته و فرم امتیازدهی','آموزش مصاحبه‌گرها','طراحی تجربهٔ کارجو و دورهٔ ورود'],out:['پروفایل شایستگی نقش‌های کلیدی','بانک سؤال و فرم امتیازدهی','راهنمای فرایند استخدام'],dur:'۴ تا ۸ هفته',price:null,case:'استارتاپ رهنما: زمان استخدام از ۵۲ به ۲۶ روز'},
+ {slug:'develop',aud:'corporate',icon:'sprout',title:'توسعهٔ کارکنان',short:'رشد امروز، رهبری فردا.',problem:'آموزش‌های پراکنده که به رفتار کاری تبدیل نمی‌شوند.',method:['نیازسنجی آموزشی','طراحی مسیر یادگیری','کارگاه و مربی‌گری','سنجش اثر آموزش'],out:['نقشهٔ مسیر یادگیری','کارگاه‌های اختصاصی','گزارش سنجش اثر'],dur:'۲ تا ۶ ماه',price:null,case:'داروسازی سپیدار: کاهش ۲۲٪ خروج داوطلبانه'},
+ {slug:'strategy',aud:'corporate',icon:'route',title:'استراتژی منابع انسانی',short:'آدم، فرهنگ و فرایند برای رشد پایدار.',problem:'منابع انسانی درگیر کارهای روزمره است و به استراتژی کسب‌وکار وصل نیست.',method:['ارزیابی وضع موجود','هم‌راستاسازی با اهداف کسب‌وکار','تدوین نقشهٔ راه','همراهی در اجرا'],out:['گزارش ارزیابی','نقشهٔ راه ۱۲ ماهه','شاخص‌های کلیدی HR'],dur:'۶ تا ۱۰ هفته',price:null,case:'بیمهٔ آسوده: نقشهٔ راه ۱۲ ماهه'},
+ {slug:'perform',aud:'corporate',icon:'gauge',title:'نظام ارزیابی عملکرد',short:'ارزیابی‌ای که به گفت‌وگو ختم می‌شود.',problem:'فرم‌های طولانی، نمره‌های بی‌اثر و جلسه‌های بازخوردی که با دلخوری تمام می‌شوند.',method:['تعریف اهداف ارزیابی','شایستگی‌ها و شاخص‌ها','طراحی فرم و چرخه','آموزش مدیران برای بازخورد'],out:['فرم‌ها و راهنما','تقویم چرخهٔ ارزیابی','کارگاه بازخورد'],dur:'۶ تا ۱۲ هفته',price:null,case:'هلدینگ پارس‌مهر: ۸۹٪ تکمیل در موعد'},
+ {slug:'structure',aud:'corporate',icon:'network',title:'طراحی ساختار سازمانی',short:'نقش‌های روشن، گزارش‌دهی ساده.',problem:'هم‌پوشانی وظایف، تصمیم‌گیری کند و ابهام در اختیارات.',method:['مصاحبه با مدیران','تحلیل جریان کار','گزینه‌های ساختار','شرح شغل و ماتریس اختیارات'],out:['نمودار سازمانی','شرح شغل‌ها','ماتریس اختیارات'],dur:'۴ تا ۸ هفته',price:null,case:'آریان‌فولاد: حذف ۱۴ نقش هم‌پوشان'},
+ {slug:'career',aud:'individual',icon:'compass',title:'مشاورهٔ مسیر شغلی',short:'تصمیم شغلی بعدی را آگاهانه بگیرید.',problem:'سردرگمی در تغییر شغل، مذاکرهٔ حقوق یا انتخاب بین دو پیشنهاد.',method:['شناخت ارزش‌ها و مهارت‌ها','بررسی گزینه‌ها','برنامهٔ اقدام'],out:['برنامهٔ اقدام مکتوب','بازبینی رزومه'],dur:'یک تا سه جلسه',price:18000000,st:'online'},
+ {slug:'coach',aud:'individual',icon:'spark',title:'کوچینگ مدیران',short:'از متخصص خوب به مدیر خوب.',problem:'مدیران تازه‌کار که همه‌کار را خودشان انجام می‌دهند.',method:['تعریف هدف کوچینگ','جلسه‌های دوهفته‌ای','تمرین در محیط کار'],out:['برنامهٔ توسعهٔ فردی','یادداشت جلسه‌ها'],dur:'۶ جلسه',price:24000000,st:'coach'},
+ {slug:'resume',aud:'individual',icon:'doc',title:'رزومه و آمادگی مصاحبه',short:'رزومه‌ای که خوانده شود، مصاحبه‌ای که بدرخشد.',problem:'رزومه‌هایی که پاسخی نمی‌گیرند و مصاحبه‌هایی که با استرس خراب می‌شوند.',method:['بازبینی رزومه','تمرین مصاحبهٔ رفتاری','بازخورد مکتوب'],out:['رزومهٔ بازنویسی‌شده','فهرست داستان‌های رفتاری'],dur:'یک جلسه',price:18000000,st:'online'}];
+const POSTS=[
+ {id:'p1',type:'مقاله',title:'ساختن فرهنگ یادگیری مستمر',cat:'فرهنگ سازمانی',ago:2,read:8,scene:2,ex:'فرهنگ یادگیری با رفتار مدیران ساخته می‌شود، نه با دستورالعمل.',body:['فرهنگ یادگیری با یک دستورالعمل ساخته نمی‌شود؛ با رفتار مدیران ساخته می‌شود. وقتی مدیر اشتباهش را در جلسه می‌گوید و از آن درس می‌گیرد، تیم اجازهٔ یادگیری پیدا می‌کند.','سه نشانهٔ فرهنگ یادگیری: اشتباه‌ها بدون ترس گزارش می‌شوند، دانش در سند مشترک ثبت می‌شود و زمان یادگیری در برنامهٔ کاری دیده شده است.','برای شروع، یک «ساعت یادگیری» هفتگی تعریف کنید و خروجی آن را در جلسهٔ تیم به اشتراک بگذارید.']},
+ {id:'p2',type:'پادکست',title:'اپیزود ۱۲: مصاحبهٔ رفتاری دقیقاً چیست؟',cat:'جذب و استخدام',ago:5,read:41,scene:3,ex:'با یک مدیر استخدام دربارهٔ سؤال‌های «یک نمونه بگویید» و روش امتیازدهی حرف زده‌ایم.',body:['در این اپیزود به سه سؤال پاسخ می‌دهیم: چرا گذشته بهترین پیش‌بینی آینده است، چطور جواب‌ها را با روش موقعیت، کار، اقدام و نتیجه بشنویم و چطور سوگیری مصاحبه‌گر را کم کنیم.']},
+ {id:'p3',type:'مقاله',title:'آیندهٔ کار: انعطاف یا بهره‌وری؟',cat:'آیندهٔ کار',ago:9,read:7,scene:1,ex:'سؤال درست این است که خروجی کار را چطور می‌سنجیم.',body:['در دو سال گذشته تقریباً هر سازمانی که با آن کار کرده‌ام یک سؤال تکراری داشته: کارکنان چند روز در هفته باید در دفتر باشند؟','مشکل این است که حضور فیزیکی را به‌جای خروجی اندازه می‌گیریم. پیش از تصمیم دربارهٔ انعطاف، تعریف کنید کار «تمام‌شده» در هر نقش یعنی چه.','سه قدم عملی: برای هر تیم سه تا پنج خروجی ماهانه بنویسید، جلسه‌های هماهنگی را به روزهای مشخص ببرید و بعد از سه ماه داده‌ها را مقایسه کنید.']},
+ {id:'p4',type:'ویدئو',title:'سه سؤال طلایی در جلسهٔ ارزیابی عملکرد',cat:'ارزیابی عملکرد',ago:12,read:10,scene:0,ex:'سه سؤالی که جلسهٔ ارزیابی را از قضاوت به گفت‌وگو می‌برد.',body:['جلسهٔ ارزیابی اگر فقط اعلام نمره باشد، کسی از آن چیزی یاد نمی‌گیرد. در این ویدئو سه سؤال ساده را تمرین می‌کنیم.']},
+ {id:'p5',type:'مقاله',title:'چطور برند کارفرمایی قوی بسازیم',cat:'جذب و استخدام',ago:15,read:6,scene:2,ex:'برند کارفرمایی مجموع تجربه‌هایی است که کارکنان و کارجوها تعریف می‌کنند.',body:['کارجوی امروز پیش از ارسال رزومه با کارکنان فعلی شما حرف می‌زند و نظرها را می‌خواند.','نقطهٔ شروع شنیدن است: یک نظرسنجی کوتاه بگیرید و بپرسید چرا مانده‌اند. همین جمله‌ها صادقانه‌ترین پیام برند شما هستند.']},
+ {id:'p6',type:'مقاله',title:'اهمیت یادگیری مستمر',cat:'توسعهٔ کارکنان',ago:22,read:5,scene:1,ex:'مهارت‌ها سریع‌تر از چرخهٔ بودجهٔ آموزش کهنه می‌شوند.',body:['تقویم آموزشی سالانه برای دنیایی طراحی شده بود که مهارت‌ها کند تغییر می‌کردند.','به‌جای دوره‌های طولانی، روی یادگیری در جریان کار سرمایه‌گذاری کنید: جلسه‌های کوتاه هم‌آموزی و مربی‌گری داخلی.']}];
+const TESTI=[
+ {n:'سینا کاظمی',r:'مدیر منابع انسانی، هلدینگ پارس‌مهر',q:'برای اولین بار فرم ارزیابی را مدیران خودشان پر کردند، نه از سر اجبار. جلسه‌های بازخورد واقعاً گفت‌وگو شد.'},
+ {n:'نرگس فاضلی',r:'مدیر آموزش، داروسازی سپیدار',q:'دورهٔ بازخورد مؤثر با مثال‌های خود سازمان ما طراحی شد. سرپرستان هنوز از قالب‌ها استفاده می‌کنند.'},
+ {n:'آیدا نیک‌نام',r:'هم‌بنیان‌گذار، استارتاپ رهنما',q:'در سه ماه زمان استخدام برنامه‌نویس را نصف کردیم، بدون اینکه کیفیت پایین بیاید.'}];
+const CLIENTS=['هلدینگ پارس‌مهر','داروسازی سپیدار','استارتاپ رهنما','آریان‌فولاد','فناوران ابر آسا','بیمهٔ آسوده'];
+const STATUS={new:['جدید','b-acc'],contacted:['تماس گرفته شد','b-neu'],meeting:['جلسهٔ اولیه','b-neu'],proposal:['پیشنهاد ارسال شد','b-warn'],won:['برنده','b-ok'],lost:['بازنده','b-bad']};
+const SORDER=['new','contacted','meeting','proposal','won','lost'];
+
+/* ---------- icons ---------- */
+const IC={shield:'<path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/>',sprout:'<path d="M12 21v-8"/><path d="M12 13c-1-4-4-6-8-5 0 4 3 6 8 5Z"/><path d="M12 11c1-4 4-6 8-5 0 4-3 6-8 5Z"/>',route:'<circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h7a3.5 3.5 0 0 0 0-7H9a3.5 3.5 0 0 1 0-7h7"/>',gauge:'<path d="M3.5 18a9 9 0 1 1 17 0"/><path d="m12 14 4-4"/>',network:'<rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M6 16v-3h12v3M12 8v5"/>',compass:'<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',spark:'<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18"/>',doc:'<path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/>',
+ dash:'<rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>',inbox:'<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13l3.5 7v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/>',cal:'<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/>',bag:'<path d="M5 7h14l-1 14H6z"/><path d="M9 7a3 3 0 0 1 6 0"/>',mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>'};
+const icon=(n,s='')=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" ${s}>${IC[n]||''}</svg>`;
+
+/* ---------- world scene ---------- */
+function rng(s){return()=>(s=(s*1664525+1013904223)>>>0)/4294967296}
+function ridge(seed,w,base,amp,peaks){const r=rng(seed);let d=`M0 ${base}`;for(let x=0;x<=w;x+=18){let y=base-r()*amp*.3;for(const[px,ph]of peaks){const k=Math.max(0,1-Math.abs(x-px)/(ph*2.4));y-=ph*k*k*(3-2*k)}d+=` L${x} ${y.toFixed(1)}`}return d+` L${w} 2000 L0 2000Z`}
+function scene(w=1440,h=860,simple=false,seed=7){
+  const cs=getComputedStyle(document.documentElement),v=n=>cs.getPropertyValue(n).trim(),r=rng(seed);
+  if(simple){const g='tg';return`<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="${g}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14213D"/><stop offset="1" stop-color="#2E4A7D"/></linearGradient></defs><rect width="${w}" height="${h}" fill="url(#${g})"/>
+   <circle cx="${(w*(.12+r()*.3)).toFixed(0)}" cy="${(h*(.7+r()*.25)).toFixed(0)}" r="${(h*(.38+r()*.18)).toFixed(0)}" fill="#C8A048"/>
+   <circle cx="${(w*(.66+r()*.2)).toFixed(0)}" cy="${(h*(.22+r()*.25)).toFixed(0)}" r="${(h*.24).toFixed(0)}" fill="none" stroke="#F7F5F0" stroke-opacity=".75" stroke-width="3"/>
+   <circle cx="${(w*(.48+r()*.16)).toFixed(0)}" cy="${(h*.82).toFixed(0)}" r="${(h*.07).toFixed(0)}" fill="#F7F5F0"/>
+   <path d="M${(w*.55).toFixed(0)} 0 L${w} 0 L${w} ${(h*.18).toFixed(0)}Z" fill="#F7F5F0" fill-opacity=".08"/></svg>`}
+  const m=Math.min(w,h);
+  return`<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice"><defs><pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.6" fill="${v('--ink-4')}"/></pattern></defs>
+  <rect width="${w}" height="${h}" fill="${v('--bg')}"/>
+  <circle cx="${w*.1}" cy="${h*.16}" r="${m*.5}" fill="${v('--shape-a')}"/>
+  <circle cx="${w*.9}" cy="${h*.98}" r="${m*.42}" fill="${v('--shape-b')}"/>
+  <rect x="${w*.44}" y="${h*.06}" width="${m*.22}" height="${m*.22}" fill="url(#dots)" opacity=".45"/>
+  <circle cx="${w*.8}" cy="${h*.2}" r="${m*.12}" fill="none" stroke="${v('--shape-g')}" stroke-width="3"/>
+  <circle cx="${w*.34}" cy="${h*.88}" r="${m*.032}" fill="${v('--shape-g')}"/>
+  <circle cx="${w*.955}" cy="${h*.52}" r="${m*.05}" fill="${v('--shape-n')}"/>
+  <path d="M${w*.6} ${h} L${w*.6+m*.06} ${h-m*.1}" stroke="${v('--shape-g')}" stroke-width="3" stroke-linecap="round"/></svg>`;
+}
+function paintWorld(){document.getElementById('world').innerHTML=scene(Math.max(320,innerWidth),Math.max(480,innerHeight))}
+let _rw;addEventListener('resize',()=>{clearTimeout(_rw);_rw=setTimeout(paintWorld,200)});
+const thumb=n=>scene(760,330,true,[...String(n)].reduce((a,c)=>a*31+c.charCodeAt(0)>>>0,9)).replace(/id="(\w+)"/g,`id="$1${n}"`).replace(/url\(#(\w+)\)/g,`url(#$1${n})`);
+
+/* ---------- toast / modal ---------- */
+function toast(title,body='',kind='info',code=''){
+  const el=document.createElement('div');el.className='toast glass-strong';
+  el.innerHTML=`<span class="mini-orb" style="${kind==='bad'?'filter:hue-rotate(110deg)':kind==='ok'?'filter:hue-rotate(-120deg)':''}"></span><div style="min-width:0"><b>${esc(title)}</b>${code?`<span>کد ورود: <span class="code-big ltr">${faD(code)}</span></span>`:`<span class="muted" style="font-size:.8rem">${esc(body)}</span>`}</div>`;
+  document.getElementById('toasts').append(el);setTimeout(()=>el.remove(),code?14000:5200);
+}
+function sms(to,text){S.notifs.unshift({to,text,at:Date.now()});save();toast('پیامک به '+faD(to.slice(0,4))+'•••'+faD(to.slice(-4)),text,'info')}
+let modalCb=null;
+function modal(html,wide=false){const r=document.getElementById('modalRoot');r.innerHTML=`<div class="scrim" data-scrim><div class="modal glass-strong ${wide?'wide':''}" role="dialog" aria-modal="true">${html}</div></div>`;setTimeout(()=>r.querySelector('input,button.btn')?.focus(),30)}
+function closeModal(){document.getElementById('modalRoot').innerHTML='';if(modalCb){const c=modalCb;modalCb=null;c(null)}}
+
+/* ---------- auth (OTP simulated) ---------- */
+let pendingOtp=null;
+function requireLogin(reason){return new Promise(res=>{if(S.user)return res(S.user);modalCb=res;loginModal(reason)})}
+function loginModal(reason=''){modal(`<div class="row between"><h2 class="disp" style="font-size:1.7rem">ورود با موبایل</h2><button class="btn btn-ghost btn-icon" data-act="close" aria-label="بستن">✕</button></div>
+ ${reason?`<p class="muted" style="font-size:.88rem;margin-top:.3rem">${esc(reason)}</p>`:''}
+ <form data-form="otp1" class="stack" style="margin-top:1rem" novalidate>
+  <div class="field"><label for="m-mob">شمارهٔ موبایل</label><input id="m-mob" class="input ltr" inputmode="tel" placeholder="09xxxxxxxxx" autocomplete="tel"><span class="help">کد یکبارمصرف ۶ رقمی پیامک می‌شود؛ رمز عبور لازم نیست. <span class="sim">شبیه‌سازی</span></span></div>
+  <div class="field"><label for="m-name">نام و نام خانوادگی</label><input id="m-name" class="input" autocomplete="name" placeholder="برای فاکتور و پیامک‌ها"></div>
+  <button class="btn btn-primary btn-block">ارسال کد ورود</button></form>`)}
+function otpStep(mobile,name){pendingOtp={mobile,name,code:String(Math.floor(1e5+Math.random()*9e5)),exp:Date.now()+12e4,tries:0};
+ toast('پیامک کد ورود','', 'info',pendingOtp.code);
+ modal(`<div class="row between"><h2 class="disp" style="font-size:1.7rem">کد را وارد کنید</h2><button class="btn btn-ghost btn-icon" data-act="close" aria-label="بستن">✕</button></div>
+ <p class="muted" style="font-size:.88rem">کد به <b class="ltr">${faD(mobile)}</b> فرستاده شد و ۲ دقیقه اعتبار دارد.</p>
+ <form data-form="otp2" class="stack" style="margin-top:1rem" novalidate><div class="field"><label for="m-code">کد ۶ رقمی</label><input id="m-code" class="input ltr" inputmode="numeric" maxlength="6" autocomplete="one-time-code" style="text-align:center;letter-spacing:.5em;font-size:1.2rem"></div><button class="btn btn-primary btn-block">ورود</button></form>`)}
+function setErr(input,msg){input.setAttribute('aria-invalid','true');let n=input.parentElement.querySelector('.err');if(!n){n=document.createElement('span');n.className='err';n.setAttribute('role','alert');input.parentElement.append(n)}n.textContent=msg}
+function clrErr(form){form.querySelectorAll('[aria-invalid]').forEach(i=>i.removeAttribute('aria-invalid'));form.querySelectorAll('.err').forEach(e=>e.remove())}
+
+/* ---------- commerce core ---------- */
+function slotsFor(st,from,days=14){const out=[],now=Date.now(),lead=now+3*H;let d=dayStart(from);
+ const avail={6:[['10:00','13:00'],['15:00','19:00']],0:[['10:00','13:00'],['15:00','19:00']],1:[['10:00','13:00'],['15:00','19:00']],2:[['10:00','13:00'],['15:00','19:00']],3:[['10:00','13:00'],['15:00','19:00']],4:[['10:00','13:00']],5:[]};
+ const busy=S.bookings.filter(b=>b.status==='confirmed'||(b.status==='held'&&b.exp>now)).map(b=>{const t=S.sessionTypes.find(x=>x.id===b.type);return[b.start-t.buf*6e4,b.start+(t.dur+t.buf)*6e4]});
+ for(let i=0;i<days;i++,d+=DAY){const wd=wday(d+12*H),sl=[];for(const[a,b]of avail[wd]){for(let s=at(d,a);s+st.dur*6e4<=at(d,b);s+=(st.dur+st.buf)*6e4){const e=s+st.dur*6e4;if(s<lead||busy.some(([x,y])=>s<y&&x<e))continue;sl.push(s)}}out.push({day:d,wd,slots:sl,closed:!avail[wd].length})}return out}
+const scopeOf=it=>it.type==='product'?'product':it.type==='reg'?'event':it.type==='booking'?'booking':'x';
+function couponErr(c,items){if(!c)return'این کد تخفیف وجود ندارد. حروف کد را دوباره بررسی کنید.';if(Date.now()>c.to)return'مهلت استفاده از این کد تمام شده است.';if(c.scope!=='all'&&!items.some(i=>scopeOf(i)===c.scope))return`این کد فقط برای ${c.scope==='product'?'کتاب و محصولات':c.scope==='event'?'دوره‌ها و وبینارها':'جلسه‌ها'} معتبر است.`;return null}
+function calc(items,code){const sub=items.reduce((s,i)=>s+i.price*i.qty,0),c=code&&S.coupons.find(x=>x.code===code);const base=c?items.filter(i=>c.scope==='all'||scopeOf(i)===c.scope).reduce((s,i)=>s+i.price*i.qty,0):0;
+ const disc=c?(c.type==='percent'?Math.floor(base*c.value/100/10)*10:Math.min(c.value,base)):0;const taxable=sub-disc,tax=Math.floor(taxable*.1/10)*10;
+ const phys=items.some(i=>i.type==='product'&&S.products.find(p=>p.id===i.ref)?.kind==='physical');const ship=phys?(taxable>=8000000?0:650000):0;
+ return{sub,disc,base,taxable,tax,ship,phys,total:taxable+tax+ship,c}}
+function linesHtml(k){return`<div class="lines num"><div class="ln"><span>جمع اقلام</span><span>${toman(k.sub)}</span></div>
+ ${k.disc?`<div class="ln"><span>تخفیف ${esc(k.c.code)}</span><span style="color:var(--ok)">− ${toman(k.disc)}</span></div>`:''}
+ <div class="ln"><span>مالیات بر ارزش افزوده (۱۰٪)</span><span>${toman(k.tax)}</span></div>
+ ${k.phys?`<div class="ln"><span>ارسال پستی</span><span>${k.ship?toman(k.ship):'رایگان'}</span></div>`:''}
+ <div class="ln total"><span>مبلغ قابل پرداخت</span><span>${toman(k.total)}</span></div></div>
+ <button class="link" style="margin-top:.5rem" data-act="formula" aria-expanded="${ui.formula}">${ui.formula?'پنهان کردن ریز محاسبه':'ریز محاسبه (ریال)'}</button>
+ ${ui.formula?`<div class="code" style="margin-top:.5rem">subtotal = Σ price×qty = ${k.sub.toLocaleString('en')}
+discount = ${k.c?(k.c.type==='percent'?`floor(${k.base.toLocaleString('en')}×${k.c.value}%/10)×10`:`min(${k.c.value.toLocaleString('en')}, ${k.base.toLocaleString('en')})`):'0'} = ${k.disc.toLocaleString('en')}
+tax = floor(${k.taxable.toLocaleString('en')}×10%/10)×10 = ${k.tax.toLocaleString('en')}
+shipping = ${k.phys?`taxable ≥ 8,000,000 ? 0 : 650,000 = ${k.ship.toLocaleString('en')}`:'0'}
+total = ${k.total.toLocaleString('en')} IRR → ${(k.total/10).toLocaleString('en')} Toman</div>`:''}`}
+function createOrder(items,code){const k=calc(items,code);const o={id:id('o'),no:++S.orderNo,user:S.user.mobile,name:S.user.name,items,code:k.c?.code||null,sub:k.sub,disc:k.disc,tax:k.tax,ship:k.ship,total:k.total,status:'pending',at:Date.now()};S.orders.unshift(o);save();return o}
+function pay(o){if(o.total===0){settle(o);return}
+ const auth='A'+Math.floor(1e9+Math.random()*9e9);o.authority=auth;save();
+ modal(`<div class="row between"><b style="color:var(--ink)">درگاه پرداخت آزمایشی</b><span class="sim">شبیه‌سازی بانک</span></div>
+ <p class="muted" style="font-size:.84rem;margin-top:.3rem">این صفحه جای درگاه بانکی است. اطلاعات کارتی وارد یا ذخیره نمی‌شود.</p>
+ <dl class="kv" style="margin-top:1rem"><dt>پذیرنده</dt><dd>آرزو زحمت‌بران</dd><dt>شمارهٔ سفارش</dt><dd class="ltr">AZ-${o.no}</dd><dt>Authority</dt><dd class="ltr" style="font-family:monospace">${auth}</dd><dt>مبلغ</dt><dd class="price" style="font-size:1.2rem">${toman(o.total)}</dd></dl>
+ <div class="stack" style="margin-top:1.3rem;gap:.55rem"><button class="btn btn-primary btn-block" data-act="gw" data-r="ok" data-o="${o.id}">پرداخت موفق و بازگشت به سایت</button>
+ <button class="btn btn-glass btn-block" data-act="gw" data-r="fail" data-o="${o.id}">پرداخت ناموفق (موجودی کافی نیست)</button>
+ <button class="btn btn-ghost btn-block" data-act="gw" data-r="cancel" data-o="${o.id}">انصراف از پرداخت</button></div>`)}
+function verifyAndReturn(oid,result){const o=S.orders.find(x=>x.id===oid);document.getElementById('modalRoot').innerHTML='';
+ // server-side verify: state from gateway + amount match; callback params are never trusted
+ if(result==='ok'&&o.status==='pending'){o.ref=String(Math.floor(1e9+Math.random()*9e9));settle(o);
+   modal(`<div class="empty"><span class="mini-orb" style="width:3.4rem;height:3.4rem"></span><h2 class="disp" style="font-size:1.9rem">پرداخت موفق بود</h2><p class="muted">سفارش AZ-${faD(o.no)} قطعی شد. فاکتور شمارهٔ ${fa(o.invoice)} صادر شد.</p>
+   <dl class="kv" style="width:100%;margin-top:.8rem"><dt>کد پیگیری بانک</dt><dd class="ltr">${o.ref}</dd><dt>مبلغ</dt><dd>${toman(o.total)}</dd><dt>پاسخ verify</dt><dd class="ltr">100 · OK</dd></dl>
+   <div class="row" style="margin-top:1rem;justify-content:center"><button class="btn btn-primary" data-act="close">ادامه</button><a class="btn btn-glass" href="#account" data-act="close">حساب کاربری من</a></div></div>`)}
+ else{o.status=result==='cancel'?'cancelled':'failed';releaseFor(o);save();
+   modal(`<div class="empty"><h2 class="disp" style="font-size:1.9rem">پرداخت انجام نشد</h2><p class="muted">${result==='cancel'?'پرداخت را لغو کردید.':'بانک تراکنش را رد کرد.'} مبلغی از حساب شما کم نشده است. اگر کم شده باشد، ظرف ۷۲ ساعت برمی‌گردد.</p><button class="btn btn-primary" data-act="close" style="margin-top:.8rem">بازگشت</button></div>`);sms(S.user.mobile,`پرداخت سفارش AZ-${faD(o.no)} ناموفق بود. می‌توانید دوباره تلاش کنید.`)}
+ render()}
+function releaseFor(o){for(const it of o.items){if(it.type==='booking'){const b=S.bookings.find(x=>x.id===it.ref);if(b&&b.status==='held')b.status='cancelled'}if(it.type==='reg'){const r=S.regs.find(x=>x.id===it.ref);if(r&&r.status==='pending'){r.status='cancelled';S.events.find(e=>e.id===r.ev).reg--}}}}
+function settle(o){o.status='paid';o.paidAt=Date.now();o.invoice=++S.invoiceNo;
+ for(const it of o.items){
+  if(it.type==='booking'){const b=S.bookings.find(x=>x.id===it.ref);b.status='confirmed';const st=S.sessionTypes.find(t=>t.id===b.type);if(st.mode==='آنلاین')b.link='meet.arezoo-hr.ir/r/'+b.id;sms(S.user.mobile,`جلسهٔ «${st.title}» برای ${jDate(b.start,{wd:1})} ساعت ${jTime(b.start)} قطعی شد.`)}
+  if(it.type==='reg'){const r=S.regs.find(x=>x.id===it.ref);r.status='paid';const e=S.events.find(x=>x.id===r.ev);sms(S.user.mobile,`ثبت‌نام در «${e.title}» قطعی شد. لینک ورود در حساب کاربری شماست.`)}
+  if(it.type==='product'){const p=S.products.find(x=>x.id===it.ref);if(p.kind==='physical')p.stock-=it.qty;else S.downloads.unshift({id:id('d'),user:S.user.mobile,pid:p.id,exp:Date.now()+7*DAY,left:5})}}
+ if(o.code){const c=S.coupons.find(x=>x.code===o.code);c.used=(c.used||0)+1}
+ if(o.items.some(i=>i.type==='product'&&S.products.find(p=>p.id===i.ref).kind==='physical'))o.ful='در حال آماده‌سازی';
+ save()}
+
+/* ---------- views ---------- */
+const NAV=[['home','خانه'],['about','درباره من'],['services','خدمات'],['events','آموزش و رویدادها'],['shop','کتاب‌ها'],['blog','مجله'],['contact','تماس']];
+function coverHtml(p){return`<div class="cover" style="background:linear-gradient(160deg,hsl(${p.hue} 34% 58%),hsl(${p.hue+24} 30% 36%))"><b>${esc(p.title)}</b><small>${esc(p.fmt)}</small></div>`}
+function svcCard(s){return`<button class="svc glass" data-act="svc" data-s="${s.slug}" style="text-align:start"><span class="icon-disc">${icon(s.icon)}</span><h3>${s.title}</h3><p class="muted" style="font-size:.92rem">${s.short}</p><div class="foot"><span class="price" style="font-size:.88rem">${s.price?'از '+toman(s.price):'استعلام پس از جلسهٔ تشخیص'}</span><span class="arrow" aria-hidden="true">←</span></div></button>`}
+function postCard(p,i){return`<a href="#post-${p.id}" class="post glass"><div class="thumb">${thumb('t'+i+p.id)}<span class="badge b-acc">${p.type}</span></div><div class="body"><span class="eyebrow" style="font-size:.72rem">${p.cat}</span><h3>${p.title}</h3><div class="meta"><span>${jDate(Date.now()-p.ago*DAY)}</span><span>${p.type==='مقاله'?fa(p.read)+' دقیقه مطالعه':fa(p.read)+' دقیقه'}</span></div></div></a>`}
+function bookCard(p){const out=p.kind==='physical'&&!p.stock;return`<div class="book glass"><div class="cover-wrap">${coverHtml(p)}</div><span class="badge ${p.kind==='digital'?'b-acc':'b-neu'}" style="align-self:flex-start">${p.fmt}</span><h3>${p.title}</h3><p class="faint" style="font-size:.78rem">${p.sub}</p><div class="foot"><span class="price">${p.compare?`<del>${toman(p.compare)}</del>`:''}${toman(p.price)}</span>${out?'<span class="badge b-warn">ناموجود</span>':`<button class="btn btn-glass btn-xs" data-act="add" data-p="${p.id}">افزودن به سبد</button>`}</div></div>`}
+function pageHero(eye,title,lead){return`<section class="page-hero"><div class="crumbs"><a href="#home">خانه</a><span>/</span><span>${title}</span></div><p class="eyebrow" style="margin-top:.8rem">${eye}</p><h1>${title}</h1>${lead?`<p>${lead}</p>`:''}</section>`}
+
+const V={};
+function callbackForm(k){return`<form data-form="callback" class="form-grid" style="margin-top:1.2rem" novalidate><div class="field"><label for="cb-n${k}">نام</label><input id="cb-n${k}" class="input" autocomplete="name" placeholder="مثلاً مریم احمدی"></div><div class="field"><label for="cb-m${k}">موبایل</label><input id="cb-m${k}" class="input ltr" inputmode="tel" placeholder="09xxxxxxxxx"></div><div class="full"><button class="btn btn-primary">با من تماس بگیرید</button></div></form>`}
+
+V.about=()=>`${pageHero('درباره من','آرزو زحمت‌بران','مشاور منابع انسانی، مدرس و نویسندهٔ کتاب «آدم‌ها پیش از فرایندها».')}
+<div class="two-col"><div class="glass-strong pad prose"><p>چهارده سال پیش کارم را در واحد منابع انسانی یک شرکت تولیدی شروع کردم؛ جایی که فهمیدم بیشتر مشکل‌های «فرایندی» در واقع مشکل اعتماد و گفت‌وگو هستند. از آن روز تمرکزم این بوده که فرایندهای منابع انسانی را طوری طراحی کنم که آدم‌ها واقعاً از آن‌ها استفاده کنند.</p><p>با بیش از ۶۰ سازمان در صنعت، دارو، فناوری و خدمات مالی کار کرده‌ام: طراحی نظام ارزیابی عملکرد، ساختار سازمانی پس از ادغام، فرایند استخدام و برنامه‌های توسعهٔ مدیران.</p><p>هر پروژه با شنیدن شروع می‌شود. خروجی کارم باید بعد از رفتن من هم زنده بماند؛ برای همین آموزش تیم داخلی بخشی از هر پروژه است.</p></div>
+<aside class="stack sticky"><div class="glass" style="padding:0;overflow:hidden;position:relative;height:22rem;background:var(--ph-bg)"><img src="${PHOTO}" alt="آرزو زحمت‌بران در حال سخنرانی" style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:96%;max-width:none"><span class="sticker st-hello script" style="top:1rem;inset-inline-end:1rem;font-size:1.2rem">سلام!</span></div><div class="glass pad"><h3 style="font-size:1rem">تحصیلات و مدارک</h3><ul class="stack" style="gap:.4rem;margin-top:.7rem;font-size:.9rem"><li>کارشناسی ارشد مدیریت منابع انسانی، دانشگاه تهران</li><li>کوچ حرفه‌ای (ACC)</li><li>گواهی کانون ارزیابی و شایستگی</li></ul></div>
+<div class="glass pad"><h3 style="font-size:1rem">رزومهٔ کامل</h3><p class="muted" style="font-size:.85rem">موبایل‌تان را بگذارید تا لینک دانلود برایتان پیامک شود.</p><form data-form="catalog" data-file="رزومه" class="stack" style="margin-top:.8rem;gap:.7rem" novalidate><div class="field"><label for="cv-n">نام</label><input id="cv-n" class="input"></div><div class="field"><label for="cv-m">موبایل یا ایمیل</label><input id="cv-m" class="input ltr"></div><button class="btn btn-glass">دریافت رزومه</button></form></div></aside></div>`;
+
+V.services=()=>{const list=SERVICES.filter(s=>ui.svc==='all'||s.aud===ui.svc);return`${pageHero('خدمات','از استخدام تا استراتژی','برای سازمان‌ها پروژه‌های مشاوره و آموزش؛ برای افراد جلسه‌های مسیر شغلی و کوچینگ.')}
+<div class="row between" style="margin-bottom:1.4rem"><div class="seg glass-pill" role="group" aria-label="مخاطب">${[['all','همه'],['corporate','سازمانی'],['individual','فردی']].map(([v,l])=>`<button aria-pressed="${ui.svc===v}" data-act="svcf" data-v="${v}">${l}</button>`).join('')}</div><div class="row"><a href="#consult" class="btn btn-glass btn-sm">درخواست سازمانی</a><a href="#booking" class="btn btn-primary btn-sm">رزرو جلسهٔ فردی</a></div></div>
+<div class="grid3">${list.map(svcCard).join('')}</div>
+<section class="section"><div class="glass-strong pad"><h2 class="disp" style="font-size:1.8rem">روند همکاری سازمانی</h2><ol class="grid4" style="margin-top:1rem;padding:0;list-style:none">${['جلسهٔ تشخیص رایگان، ۳۰ دقیقه','پیشنهاد مکتوب و پیش‌فاکتور','قرارداد و پرداخت آنلاین یا حواله','اجرا و گزارش اثر'].map((t,i)=>`<li class="glass" style="padding:1rem"><span class="eyebrow">مرحلهٔ ${fa(i+1)}</span><p style="color:var(--ink);margin-top:.3rem">${t}</p></li>`).join('')}</ol></div></section>`};
+
+V.booking=()=>{const b=ui.bk,st=S.sessionTypes.find(t=>t.id===b.type);const held=S.user&&S.bookings.find(x=>x.user===S.user.mobile&&x.status==='held'&&x.exp>Date.now());
+ if(held){const o=S.orders.find(x=>x.items[0]?.ref===held.id&&x.status==='pending');const t=S.sessionTypes.find(x=>x.id===held.type);
+  return`${pageHero('مشاورهٔ فردی','رزرو جلسهٔ مشاوره')}${steps(3)}<div class="two-col"><div class="glass-strong pad"><div class="row between"><h2 class="disp" style="font-size:1.6rem">۴. پرداخت</h2><span class="hold" data-hold="${held.exp}" role="timer"></span></div><p class="muted" style="font-size:.88rem">زمان شما ۱۵ دقیقه نگه داشته می‌شود. اگر پرداخت انجام نشود، خودکار آزاد می‌شود.</p>
+  <dl class="kv" style="margin-top:1rem"><dt>جلسه</dt><dd>${t.title}</dd><dt>زمان</dt><dd>${jDate(held.start,{wd:1})}، ${jTime(held.start)}</dd><dt>مدت</dt><dd>${fa(t.dur)} دقیقه</dd></dl>
+  <hr style="border:0;height:1px;background:color-mix(in srgb,var(--ink-4) 25%,transparent);margin:1rem 0">${linesHtml(calc(o.items,o.code))}
+  ${o.code?'':`<form data-form="ocoupon" data-o="${o.id}" class="row" style="margin-top:1rem;align-items:flex-end" novalidate><div class="field" style="flex:1"><label for="oc">کد تخفیف</label><input id="oc" class="input ltr" placeholder="WELCOME10"></div><button class="btn btn-glass">اعمال</button></form>`}</div>
+  <aside class="glass pad stack sticky"><p style="font-size:.86rem">با پرداخت، <a class="link" href="#terms">قوانین لغو و بازگشت وجه</a> را می‌پذیرید.</p><button class="btn btn-accent btn-block" data-act="payo" data-o="${o.id}">پرداخت ${toman(calc(o.items,o.code).total)}</button><button class="btn btn-ghost btn-block btn-sm" data-act="unhold" data-o="${o.id}">تغییر زمان</button></aside></div>`}
+ const days=st?slotsFor(st,Date.now()):[];if(st&&b.day===null){const f=days.find(d=>d.slots.length);b.day=f?.day??null}const cur=days.find(d=>d.day===b.day);
+ return`${pageHero('مشاورهٔ فردی','رزرو جلسهٔ مشاوره','نوع جلسه و زمان را انتخاب کنید. ساعت‌ها به وقت تهران است و یادآور پیامکی ۲۴ و ۱ ساعت قبل ارسال می‌شود.')}${steps(st?(b.slot?2:1):0)}
+ <div class="two-col"><div class="stack" style="gap:1.4rem"><div class="glass-strong pad"><h2 class="disp" style="font-size:1.5rem;margin-bottom:1rem">۱. نوع جلسه</h2><div class="opts" role="radiogroup" aria-label="نوع جلسه">${S.sessionTypes.map(t=>`<button class="opt" role="radio" aria-checked="${b.type===t.id}" data-act="bktype" data-t="${t.id}"><span style="min-width:0"><b>${t.title}</b><span>${fa(t.dur)} دقیقه · ${t.mode}</span><span>${t.desc}</span></span><span class="p">${toman(t.price)}</span></button>`).join('')}</div></div>
+ ${st?`<div class="glass-strong pad"><h2 class="disp" style="font-size:1.5rem;margin-bottom:1rem">۲. روز و ساعت</h2><div class="days" role="group" aria-label="روزهای ۱۴ روز آینده">${days.map(d=>{const p=parts(d.day+12*H);return`<button class="day" aria-pressed="${b.day===d.day}" ${d.slots.length?'':'disabled'} data-act="bkday" data-d="${d.day}" title="${d.closed?'تعطیل':fa(d.slots.length)+' زمان آزاد'}"><small>${p.weekday}</small><b>${p.day}</b><small>${p.month}</small></button>`}).join('')}</div>
+ ${cur?`<p class="muted" style="font-size:.84rem;margin:1rem 0 .6rem">${jDate(cur.day+12*H,{wd:1})}</p><div class="slots" role="group" aria-label="ساعت‌های آزاد">${cur.slots.map(s=>`<button class="slot" aria-pressed="${b.slot===s}" data-act="bkslot" data-s="${s}">${jTime(s)}</button>`).join('')}</div>`:'<p class="muted">در ۱۴ روز آینده زمان آزادی نمانده است.</p>'}</div>`:''}</div>
+ <aside class="glass pad stack sticky"><h2 class="disp" style="font-size:1.4rem">۳. خلاصه و تأیید</h2>${st?`<dl class="kv"><dt>جلسه</dt><dd>${st.title}</dd><dt>مدت</dt><dd>${fa(st.dur)} دقیقه</dd><dt>زمان</dt><dd>${b.slot?jDate(b.slot,{wd:1})+'، '+jTime(b.slot):'—'}</dd><dt>مبلغ</dt><dd class="price">${toman(st.price)}</dd></dl>
+ <button class="btn btn-primary btn-block" ${b.slot?'':'disabled'} data-act="hold">${st.price?'نگه داشتن زمان و ادامهٔ پرداخت':'ثبت جلسهٔ رایگان'}</button><p class="faint" style="font-size:.76rem">لغو یا جابه‌جایی تا ۲۴ ساعت پیش از جلسه با بازگشت کامل وجه.</p>`:'<p class="muted" style="font-size:.9rem">ابتدا نوع جلسه را انتخاب کنید.</p>'}</aside></div>`};
+function steps(c){return`<ol class="steps" style="list-style:none;padding:0" aria-label="مراحل">${['نوع جلسه','روز و ساعت','ورود و تأیید','پرداخت'].map((s,i)=>`<li class="${i<c?'done':i===c?'cur':''}" ${i===c?'aria-current="step"':''}><i></i><span>${fa(i+1)}. ${s}</span></li>`).join('')}</ol>`}
+
+V.consult=()=>{const c=ui.consult,org=c.kind==='سازمانی';const st=org?['سازمان','نیاز','اندازه و زمان','تماس']:['نیاز','زمان','تماس'];const cur=st[c.step],d=c.d;
+ const opt=(k,v,multi)=>`<button type="button" class="opt" style="padding:.75rem 1rem" role="${multi?'checkbox':'radio'}" aria-checked="${multi?(d[k]||[]).includes(v):d[k]===v}" data-act="cpick" data-k="${k}" data-v="${v}" ${multi?'data-m="1"':''}><b>${v}</b></button>`;
+ const needs=org?['ساختار سازمانی','جذب و استخدام','ارزیابی عملکرد','آموزش سازمانی','استراتژی منابع انسانی']:['مسیر شغلی','کوچینگ مدیریتی','رزومه و مصاحبه'];
+ return`${pageHero('فرم درخواست','درخواست مشاوره','چند سؤال کوتاه، کمتر از دو دقیقه. پاسخ را ظرف یک روز کاری می‌دهم.')}
+ <div class="glass-strong pad" style="max-width:48rem;margin-inline:auto"><div class="row between" style="margin-bottom:1.2rem"><div class="seg glass-pill" role="group" aria-label="نوع درخواست">${['سازمانی','فردی'].map(k=>`<button aria-pressed="${c.kind===k}" data-act="ckind" data-v="${k}">${k}</button>`).join('')}</div><span class="faint" style="font-size:.8rem">مرحلهٔ ${fa(c.step+1)} از ${fa(st.length)}</span></div>
+ <ol class="steps" style="list-style:none;padding:0">${st.map((s,i)=>`<li class="${i<c.step?'done':i===c.step?'cur':''}"><i></i><span>${s}</span></li>`).join('')}</ol>
+ <form data-form="consult" class="stack" novalidate>
+ ${cur==='سازمان'?`<div class="field"><label for="c-org">نام سازمان</label><input id="c-org" class="input" value="${esc(d.org||'')}"></div><div class="field"><span style="font-size:.85rem;font-weight:500">حوزهٔ فعالیت</span><div class="opts" role="radiogroup">${['فناوری','تولیدی و صنعتی','خدمات مالی','سلامت و دارو','بازرگانی','سایر'].map(v=>opt('ind',v)).join('')}</div><span class="err" data-e="ind"></span></div>`:''}
+ ${cur==='نیاز'?`<div class="field"><span style="font-size:.85rem;font-weight:500">به چه کمکی نیاز دارید؟</span><div class="opts" role="group">${needs.map(v=>opt('needs',v,1)).join('')}</div><span class="err" data-e="needs"></span></div><div class="field"><label for="c-desc">کمی توضیح دهید (اختیاری)</label><textarea id="c-desc" class="textarea" placeholder="مسئلهٔ اصلی یا تلاش‌های قبلی">${esc(d.desc||'')}</textarea></div>`:''}
+ ${cur==='اندازه و زمان'?`<div class="field"><span style="font-size:.85rem;font-weight:500">اندازهٔ سازمان</span><div class="opts" role="radiogroup">${['کمتر از ۵۰ نفر','۵۰ تا ۲۰۰ نفر','۲۰۰ تا ۱۰۰۰ نفر','بیش از ۱۰۰۰ نفر'].map(v=>opt('size',v)).join('')}</div><span class="err" data-e="size"></span></div>`:''}
+ ${cur==='اندازه و زمان'||cur==='زمان'?`<div class="field"><span style="font-size:.85rem;font-weight:500">زمان‌بندی</span><div class="opts" role="radiogroup">${['فوری','تا یک ماه آینده','یک تا سه ماه آینده','فقط در حال بررسی'].map(v=>opt('time',v)).join('')}</div><span class="err" data-e="time"></span></div>`:''}
+ ${cur==='تماس'?`<div class="form-grid"><div class="field"><label for="c-name">نام و نام خانوادگی</label><input id="c-name" class="input" value="${esc(d.name||S.user?.name||'')}"></div><div class="field"><label for="c-mob">موبایل</label><input id="c-mob" class="input ltr" inputmode="tel" placeholder="09xxxxxxxxx" value="${esc(d.mobile||S.user?.mobile||'')}"></div><div class="field full"><label for="c-mail">ایمیل (اختیاری)</label><input id="c-mail" class="input ltr" value="${esc(d.email||'')}"></div></div>`:''}
+ <div class="row between" style="margin-top:.5rem">${c.step>0?'<button type="button" class="btn btn-ghost" data-act="cback">مرحلهٔ قبل</button>':'<span></span>'}<button class="btn btn-primary">${c.step<st.length-1?'مرحلهٔ بعد <span class="arrow">←</span>':'ثبت درخواست مشاوره'}</button></div></form></div>`};
+
+V.events=()=>{const up=S.events.filter(e=>e.start>Date.now()).sort((a,b)=>a.start-b.start),past=S.events.filter(e=>e.start<=Date.now());
+ const row=e=>{const p=parts(e.start),free=e.cap-e.reg,mine=S.user&&S.regs.find(r=>r.ev===e.id&&r.user===S.user.mobile&&r.status!=='cancelled'),wl=S.user&&S.waitlist.find(w=>w.ev===e.id&&w.user===S.user.mobile),isPast=e.start<Date.now();
+  return`<article class="ev-row glass"><div class="date-tile field-well"><b>${p.day}</b><span>${p.month}</span></div><div style="min-width:0"><div class="row" style="gap:.4rem"><span class="badge ${e.kind==='دوره'?'b-neu':'b-acc'}">${e.kind}</span>${isPast?'<span class="badge b-neu">برگزار شد</span>':free<=0?'<span class="badge b-warn">ظرفیت تکمیل · فهرست انتظار</span>':free<=6?`<span class="badge b-warn">${fa(free)} جای خالی</span>`:'<span class="badge b-ok">ثبت‌نام باز است</span>'}</div>
+  <h3 style="font-size:1.1rem;margin-top:.4rem">${e.title}</h3><p class="muted" style="font-size:.84rem">${p.weekday}، ساعت ${jTime(e.start)} · ${e.venue}</p><p class="faint" style="font-size:.8rem;margin-top:.3rem">${e.outline.join(' · ')}</p>
+  <div class="cap" title="${fa(e.reg)} از ${fa(e.cap)}"><i style="width:${Math.min(100,e.reg/e.cap*100)}%"></i></div><span class="faint" style="font-size:.72rem">${fa(e.reg)} از ${fa(e.cap)} نفر</span></div>
+  <div class="stack" style="align-items:flex-end;gap:.5rem"><span class="price">${toman(e.price)}</span>${isPast?(e.rec?'<span class="faint" style="font-size:.8rem">ضبط فقط برای ثبت‌نام‌کنندگان</span>':''):mine?`<span class="badge ${mine.status==='paid'?'b-ok':'b-warn'}">${mine.status==='paid'?'ثبت‌نام شما قطعی است':'در انتظار پرداخت'}</span>`:wl?'<span class="badge b-warn">در فهرست انتظار هستید</span>':`<button class="btn ${free<=0?'btn-glass':'btn-primary'} btn-sm" data-act="reg" data-e="${e.id}">${free<=0?'ثبت در فهرست انتظار':e.price?'ثبت‌نام و پرداخت':'ثبت‌نام رایگان'}</button>`}</div></article>`};
+ return`${pageHero('آموزش و رویدادها','دوره‌ها و وبینارها','وبینارهای رایگان و دوره‌های کارگاهی برای مدیران و کارشناسان منابع انسانی. لینک ورود و یادآور پیامکی برای ثبت‌نام‌کنندگان ارسال می‌شود.')}
+ <div class="stack">${up.map(row).join('')}<h2 class="sec-title" style="font-size:1.6rem;margin-top:1.4rem">برگزارشده</h2>${past.map(row).join('')}</div>`};
+
+V.shop=()=>`${pageHero('فروشگاه','کتاب‌ها و منابع آموزشی','ارسال رایگان برای خرید بالای ۸۰۰٬۰۰۰ تومان. فایل‌های دیجیتال با لینک امن ۷ روزه و ۵ بار دانلود.')}<div class="grid4">${S.products.map(bookCard).join('')}</div>
+<div class="notice n-info" style="margin-top:1.4rem"><span>کدهای آزمایشی: <b class="ltr">WELCOME10</b> (۱۰٪ همه‌چیز) · <b class="ltr">BOOK50</b> (۵۰ هزار تومان روی محصولات) · <b class="ltr">SUMMER</b> (منقضی)</span></div>`;
+
+V.cart=()=>{const items=cartItems();if(!items.length)return`${pageHero('سبد','سبد خرید')}<div class="glass-strong empty"><span class="mini-orb" style="width:3rem;height:3rem"></span><h3>سبد خرید خالی است</h3><p class="muted">کتاب‌ها و بسته‌های آموزشی را از فروشگاه انتخاب کنید.</p><a href="#shop" class="btn btn-primary">رفتن به فروشگاه</a></div>`;
+ const k=calc(items,S.coupon);
+ return`${pageHero('سبد','سبد خرید')}<div class="two-col"><div class="glass-strong pad">${items.map(i=>{const p=S.products.find(x=>x.id===i.ref);return`<div class="cart-line">${coverHtml(p)}<div style="min-width:0"><b style="color:var(--ink)">${p.title}</b><div class="faint" style="font-size:.78rem">${p.fmt} · ${toman(p.price)}</div></div>${p.kind==='physical'?`<div class="qty field-well" role="group" aria-label="تعداد"><button data-act="qty" data-p="${p.id}" data-d="1" aria-label="افزودن یکی" ${i.qty>=p.stock?'disabled':''}>+</button><span class="num" style="min-width:1.4rem;text-align:center">${fa(i.qty)}</span><button data-act="qty" data-p="${p.id}" data-d="-1" aria-label="کم کردن یکی">−</button></div>`:'<span class="badge b-acc">دیجیتال</span>'}<div class="row" style="gap:.3rem"><span class="price">${toman(p.price*i.qty)}</span><button class="btn btn-ghost btn-icon btn-sm" data-act="qty" data-p="${p.id}" data-d="-99" aria-label="حذف">✕</button></div></div>`}).join('')}</div>
+ <aside class="glass pad stack sticky">${S.coupon?`<div class="row between"><span class="badge b-ok">کد ${esc(S.coupon)} اعمال شد</span><button class="link" data-act="uncoupon">حذف کد</button></div>`:`<form data-form="coupon" class="row" style="align-items:flex-end" novalidate><div class="field" style="flex:1"><label for="cp">کد تخفیف</label><input id="cp" class="input ltr" placeholder="BOOK50"></div><button class="btn btn-glass">اعمال</button></form>`}
+ ${linesHtml(k)}${k.phys&&k.ship?`<p class="faint" style="font-size:.76rem">با ${toman(8000000-k.taxable)} خرید بیشتر، ارسال رایگان می‌شود.</p>`:''}
+ ${k.phys?`<div class="field"><label for="addr">نشانی و کد پستی</label><textarea id="addr" class="textarea" style="min-height:4.5rem" placeholder="شهر، خیابان، پلاک، واحد · کد پستی ۱۰ رقمی"></textarea></div>`:''}
+ <button class="btn btn-accent btn-block" data-act="checkout">${S.user?'پرداخت '+toman(k.total):'ورود و ادامهٔ خرید'}</button></aside></div>`};
+const cartItems=()=>S.cart.map(c=>{const p=S.products.find(x=>x.id===c.p);return{type:'product',ref:p.id,title:p.title,price:p.price,qty:c.q}});
+
+V.blog=()=>{const q=norm(ui.blog.q),list=POSTS.filter(p=>(ui.blog.type==='all'||p.type===ui.blog.type)&&(!q||q.split(' ').every(w=>norm(p.title+' '+p.ex+' '+p.cat+' '+p.body.join(' ')).includes(w))));
+ return`${pageHero('مجله','مقاله، پادکست و ویدئو','یادداشت‌های کوتاه و کاربردی دربارهٔ جذب، ارزیابی، فرهنگ و رهبری.')}
+ <div class="row between" style="margin-bottom:1.4rem"><div class="seg glass-pill" role="group" aria-label="نوع محتوا">${['all','مقاله','پادکست','ویدئو'].map(v=>`<button aria-pressed="${ui.blog.type===v}" data-act="btype" data-v="${v}">${v==='all'?'همه':v}</button>`).join('')}</div>
+ <div class="field" style="min-width:min(18rem,100%)"><label class="sr" for="bq">جست‌وجو در مجله</label><input id="bq" class="input" placeholder="جست‌وجو؛ ی و ک عربی هم پیدا می‌شود" value="${esc(ui.blog.q)}" data-input="bq"></div></div>
+ <div id="blist">${list.length?`<div class="grid3">${list.map(postCard).join('')}</div>`:`<div class="glass-strong empty"><h3>نتیجه‌ای برای «${esc(ui.blog.q)}» پیدا نشد</h3><p class="muted">املای دیگری امتحان کنید یا فیلترها را بردارید.</p><button class="btn btn-glass" data-act="bclear">نمایش همهٔ مطالب</button></div>`}</div>`};
+V.post=(pid)=>{const p=POSTS.find(x=>x.id===pid);if(!p)return V.notfound();return`${pageHero(p.type+' · '+p.cat,p.title,`${jDate(Date.now()-p.ago*DAY,{y:1})} · ${fa(p.read)} دقیقه`)}
+ <div class="two-col"><article class="stack" style="gap:1.4rem"><div class="glass" style="height:16rem;overflow:hidden;padding:0">${thumb('pp')}</div><div class="glass-strong pad prose">${p.body.map(x=>`<p>${x}</p>`).join('')}</div>
+ <div class="glass pad"><h3 style="font-size:1.05rem">نظر شما</h3><p class="muted" style="font-size:.84rem">نظرها پس از تأیید مدیر منتشر می‌شوند.</p><form data-form="comment" class="stack" style="gap:.7rem;margin-top:.8rem" novalidate><div class="field"><label for="cm-n">نام</label><input id="cm-n" class="input"></div><div class="field"><label for="cm-t">متن نظر</label><textarea id="cm-t" class="textarea"></textarea></div><div><button class="btn btn-primary btn-sm">ارسال نظر</button></div></form></div></article>
+ <aside class="stack sticky"><div class="glass pad"><h3 style="font-size:1rem">مطالب مرتبط</h3><ul class="stack" style="gap:.6rem;margin-top:.7rem">${POSTS.filter(x=>x.id!==p.id).slice(0,3).map(x=>`<li><a class="link" href="#post-${x.id}">${x.title}</a></li>`).join('')}</ul></div><a href="#consult" class="btn btn-primary">درخواست مشاوره</a></aside></div>`};
+
+V.contact=()=>`${pageHero('تماس','راه‌های ارتباط','برای پروژهٔ سازمانی از فرم درخواست مشاوره استفاده کنید؛ برای پرسش کوتاه، همین‌جا.')}
+<div class="two-col"><div class="glass-strong pad"><h2 class="disp" style="font-size:1.6rem">پیام بفرستید</h2><form data-form="contact" class="form-grid" style="margin-top:1rem" novalidate><div class="field"><label for="ct-n">نام</label><input id="ct-n" class="input" autocomplete="name"></div><div class="field"><label for="ct-m">موبایل</label><input id="ct-m" class="input ltr" inputmode="tel" placeholder="09xxxxxxxxx"></div><div class="field full"><label for="ct-t">پیام</label><textarea id="ct-t" class="textarea"></textarea></div><div class="full"><button class="btn btn-primary">ارسال پیام</button></div></form></div>
+<aside class="glass pad stack sticky" style="font-size:.9rem"><div><b style="color:var(--ink)">تلفن دفتر</b><p class="ltr muted" style="text-align:end">۰۲۱-۸۸۰۰۱۲۳۴</p></div><div><b style="color:var(--ink)">ایمیل</b><p class="ltr muted" style="text-align:end">hello@arezoo-hr.ir</p></div><div><b style="color:var(--ink)">ساعت پاسخ‌گویی</b><p class="muted">شنبه تا چهارشنبه، ۱۰ تا ۱۸</p></div><div><b style="color:var(--ink)">دفتر</b><p class="muted">تهران، ونک، خیابان ملاصدرا، پلاک ۴۸، طبقهٔ ۳</p></div></aside></div>`;
+
+V.terms=()=>`${pageHero('قوانین','قوانین خرید و حریم خصوصی')}<div class="glass-strong pad prose" style="max-width:52rem"><p><b>جلسه‌ها:</b> هر زمان انتخابی ۱۵ دقیقه برای پرداخت نگه داشته می‌شود. لغو یا جابه‌جایی تا ۲۴ ساعت پیش از جلسه با بازگشت کامل وجه ممکن است.</p><p><b>دوره‌ها:</b> ثبت‌نام تا پیش از جلسهٔ اول قابل لغو است. وقتی ظرفیت پر است، ثبت‌نام به فهرست انتظار می‌رود.</p><p><b>محصول دیجیتال:</b> لینک دانلود ۷ روز و ۵ بار معتبر است و پس از دانلود بازگشت ندارد.</p><p><b>حریم خصوصی:</b> نام، موبایل، ایمیل و اطلاعات سازمان فقط برای پاسخ، تأیید سفارش و یادآور استفاده می‌شود و به هیچ شخص ثالثی فروخته نمی‌شود. اطلاعات کارت بانکی در این سایت ذخیره نمی‌شود.</p><p class="faint">این متن نمونه است و پیش از انتشار باید توسط مشاور حقوقی بازبینی شود.</p></div>`;
+
+V.account=()=>{if(!S.user)return`${pageHero('حساب','حساب کاربری')}<div class="glass-strong empty"><h3>برای دیدن سفارش‌ها و جلسه‌ها وارد شوید</h3><p class="muted">ورود فقط با موبایل و کد یکبارمصرف است.</p><button class="btn btn-primary" data-act="login">ورود با موبایل</button></div>`;
+ const u=S.user.mobile,orders=S.orders.filter(o=>o.user===u),bks=S.bookings.filter(b=>b.user===u&&b.status!=='held'),regs=S.regs.filter(r=>r.user===u&&r.status!=='cancelled'),dls=S.downloads.filter(d=>d.user===u);
+ const tabs=[['orders','سفارش‌ها',orders.length],['bookings','جلسه‌ها',bks.length],['events','دوره‌ها',regs.length],['downloads','دانلودها',dls.length]];
+ let body='';
+ if(ui.acc==='orders')body=orders.length?`<div class="tbl-wrap"><table><thead><tr><th>شماره</th><th>اقلام</th><th>تاریخ</th><th>مبلغ</th><th>وضعیت</th><th></th></tr></thead><tbody>${orders.map(o=>`<tr><td class="strong ltr">AZ-${o.no}</td><td>${o.items.map(i=>esc(i.title)).join('، ')}${o.ful?`<div class="faint" style="font-size:.74rem">${o.ful}</div>`:''}</td><td>${jDate(o.at)}</td><td class="num">${toman(o.total)}</td><td>${badgeOrder(o)}</td><td>${o.status==='paid'?`<button class="btn btn-glass btn-xs" data-act="invoice" data-o="${o.id}">فاکتور ${fa(o.invoice)}</button>`:o.status==='pending'?`<button class="btn btn-primary btn-xs" data-act="payo" data-o="${o.id}">پرداخت</button>`:''}</td></tr>`).join('')}</tbody></table></div>`:emptyAcc('سفارشی ثبت نکرده‌اید','#shop','فروشگاه');
+ if(ui.acc==='bookings')body=bks.length?`<div class="stack">${bks.map(b=>{const t=S.sessionTypes.find(x=>x.id===b.type),can=b.status==='confirmed'&&b.start-Date.now()>24*H;return`<div class="glass row between" style="padding:1rem 1.2rem"><div><b style="color:var(--ink)">${t.title}</b> <span class="badge ${b.status==='confirmed'?'b-ok':'b-neu'}">${b.status==='confirmed'?'تأییدشده':'لغوشده'}</span><p class="muted" style="font-size:.85rem">${jDate(b.start,{wd:1})}، ${jTime(b.start)} · ${t.mode}${b.link?` · <span class="ltr">${b.link}</span>`:''}</p></div>${b.status==='confirmed'?`<button class="btn btn-ghost btn-sm" data-act="cancelbk" data-b="${b.id}" ${can?'':'disabled title="کمتر از ۲۴ ساعت مانده"'}>لغو جلسه</button>`:''}</div>`}).join('')}</div>`:emptyAcc('جلسه‌ای رزرو نکرده‌اید','#booking','رزرو جلسه');
+ if(ui.acc==='events')body=regs.length?`<div class="stack">${regs.map(r=>{const e=S.events.find(x=>x.id===r.ev);return`<div class="glass row between" style="padding:1rem 1.2rem"><div><b style="color:var(--ink)">${e.title}</b><p class="muted" style="font-size:.85rem">${jDate(e.start,{wd:1})}، ${jTime(e.start)} · ورود ${rel(e.start)}</p></div><span class="badge ${r.status==='paid'?'b-ok':'b-warn'}">${r.status==='paid'?'قطعی':'در انتظار پرداخت'}</span></div>`}).join('')}</div>`:emptyAcc('در رویدادی ثبت‌نام نکرده‌اید','#events','دیدن رویدادها');
+ if(ui.acc==='downloads')body=dls.length?`<div class="tbl-wrap"><table><thead><tr><th>فایل</th><th>اعتبار</th><th>باقی‌مانده</th><th></th></tr></thead><tbody>${dls.map(d=>{const p=S.products.find(x=>x.id===d.pid);return`<tr><td class="strong">${p.title} <span class="faint">(${p.fmt})</span></td><td>تا ${jDate(d.exp)}</td><td>${fa(d.left)} از ۵</td><td><button class="btn btn-primary btn-xs" data-act="dl" data-d="${d.id}" ${d.left?'':'disabled'}>دانلود</button></td></tr>`}).join('')}</tbody></table></div>`:emptyAcc('فایلی نخریده‌اید','#shop','کتاب‌ها و بسته‌ها');
+ return`${pageHero('حساب','سلام، '+esc(S.user.name.split(' ')[0]),'جلسه‌ها، دوره‌ها، سفارش‌ها و فایل‌های شما در یک جا.')}<div class="glass-strong pad"><div class="tabs" role="tablist">${tabs.map(([v,l,n])=>`<button role="tab" aria-selected="${ui.acc===v}" data-act="acctab" data-v="${v}">${l} <span class="faint">${fa(n)}</span></button>`).join('')}</div>${body}</div>`};
+const emptyAcc=(t,h,l)=>`<div class="empty"><h3>${t}</h3><a href="${h}" class="btn btn-glass btn-sm">${l}</a></div>`;
+const badgeOrder=o=>({paid:'<span class="badge b-ok">پرداخت‌شده</span>',pending:'<span class="badge b-warn">در انتظار پرداخت</span>',failed:'<span class="badge b-bad">ناموفق</span>',cancelled:'<span class="badge b-neu">لغوشده</span>',refunded:'<span class="badge b-acc">بازگشت وجه</span>'}[o.status]);
+
+const ROLES={admin:{name:'آرزو زحمت‌بران',title:'مدیر کل',desc:'همهٔ بخش‌ها',mobile:'09121234567',tabs:['dash','leads','bookings','events','orders','content','messages']},
+ editor:{name:'نگار شریفی',title:'ویراستار محتوا',desc:'فقط محتوا، نظرها و رویدادها',mobile:'09122223344',tabs:['content','events']},
+ support:{name:'امید رستمی',title:'پشتیبان',desc:'جلسه‌ها، رویدادها، سفارش‌ها، پیام‌ها',mobile:'09123334455',tabs:['bookings','events','orders','messages']},
+ customer:{name:'مریم احمدی',title:'مشتری',desc:'حساب کاربری',mobile:'09351112233'},
+ guest:{name:'بازدیدکنندهٔ مهمان',title:'مهمان',desc:'بدون ورود'}};
+const isStaff=()=>['admin','editor','support'].includes(S.role);
+function ensureExtra(){if(!S.comments){const n=Date.now();S.comments=[{id:'c1',post:'p3',name:'کیوان م.',text:'سه قدم عملی آخر مقاله دقیقاً همان چیزی بود که دنبالش بودم. ممنون.',at:n-3*H,status:'pending'},{id:'c2',post:'p1',name:'seo-best',text:'خرید بک‌لینک ارزان http://x.example http://y.example',at:n-5*H,status:'spam'},{id:'c3',post:'p5',name:'لیلا ن.',text:'برای شرکت ۲۰ نفره هم این کار جواب می‌دهد؟',at:n-26*H,status:'approved'}]}
+ if(!S.msgSeeded){S.msgSeeded=1;const n=Date.now();S.notifs.push({to:'09121003344',text:'یادآوری: جلسهٔ «مشاورهٔ فردی آنلاین» فردا ساعت ۱۰:۰۰ شروع می‌شود.',at:n-20*H,ch:'پیامک'},{to:'09121234567',text:'سرنخ جدید: فرهاد صدری (آموزش سازمانی).',at:n-2*H,ch:'پیامک'},{to:'sara@example.com',text:'رسید پرداخت سفارش AZ-2203',at:n-30*H,ch:'ایمیل'})}}
+V.admin=()=>{ensureExtra();if(!isStaff())return`${pageHero('پنل','پنل مدیریت')}<div class="glass-strong empty"><h3>به این بخش دسترسی ندارید</h3><p class="muted">اطلاعات سرنخ‌ها و یادداشت‌های جلسه محرمانه‌اند. در نسخهٔ نمایشی از دکمهٔ «ورود به‌جای…» پایین صفحه وارد نقش مدیر شوید.</p><button class="btn btn-primary" data-act="as" data-r="admin">ورود به‌جای مدیر</button></div>`;
+ const R=ROLES[S.role];if(!R.tabs.includes(ui.adm))ui.adm=R.tabs[0];
+ const now=Date.now(),newL=S.leads.filter(l=>l.status==='new').length,up=S.bookings.filter(b=>b.status==='confirmed'&&b.start>now).sort((a,b)=>a.start-b.start);
+ const paid=S.orders.filter(o=>o.status==='paid'),m30=paid.filter(o=>o.at>now-30*DAY).reduce((s,o)=>s+o.total,0);
+ const pend=S.comments.filter(c=>c.status!=='approved'&&c.status!=='rejected').length;
+ const nav=[['dash','داشبورد','dash'],['leads','سرنخ‌ها','inbox',newL],['bookings','جلسه‌ها','cal'],['events','رویدادها','mic'],['orders','فروش','bag'],['content','محتوا','doc',pend],['messages','پیام‌ها','inbox']].filter(x=>R.tabs.includes(x[0]));
+ let body='';
+ if(ui.adm==='dash'){const days=[...Array(14)].map((_,i)=>{const d=dayStart(now)-(13-i)*DAY;return{d,v:paid.filter(o=>o.at>=d&&o.at<d+DAY).reduce((s,o)=>s+o.total,0)}}),mx=Math.max(1,...days.map(x=>x.v));
+  const open=S.leads.filter(l=>!['won','lost'].includes(l.status)),corp=S.leads.filter(l=>l.at>now-DAY);
+  body=`<div class="grid4">${[['سرنخ‌های باز',fa(open.length),`${fa(newL)} سرنخ جدید منتظر تماس`],['جلسه‌های ۷ روز آینده',fa(up.filter(b=>b.start<now+7*DAY).length),'همه تأییدشده'],['فروش ۳۰ روز',fa(Math.round(m30/1e7))+' م.ت','میلیون تومان، با مالیات'],['ثبت‌نام رویدادها',fa(S.events.filter(e=>e.start>now).reduce((s,e)=>s+e.reg,0)),'در رویدادهای پیش رو']].map(([a,b,c])=>`<div class="stat-tile glass"><span>${a}</span><b class="num">${b}</b><span class="faint" style="font-size:.74rem">${c}</span></div>`).join('')}</div>
+  <div class="grid2" style="margin-top:1.3rem"><div class="glass pad"><h3 style="font-size:1rem;margin-bottom:.8rem">فروش روزانهٔ ۱۴ روز اخیر</h3><div class="bars" role="img" aria-label="نمودار فروش روزانه">${days.map(x=>`<div title="${jDate(x.d)}: ${toman(x.v)}"><i style="height:${x.v/mx*100}%"></i><span>${parts(x.d+H).day}</span></div>`).join('')}</div><p class="faint" style="font-size:.74rem;margin-top:.6rem">جمع مبلغ نهایی سفارش‌های پرداخت‌شده در هر روز.</p></div>
+  <div class="glass pad"><div class="ai"><span class="mini-orb"></span><div style="min-width:0"><b style="color:var(--ink)">خلاصهٔ دستیار</b><div class="aibar" style="margin-top:.4rem"><span style="color:var(--ok);font-weight:600">آماده</span><span>ساخته‌شده همین حالا</span><span>منابع: جدول سرنخ‌ها، سفارش‌ها</span><span class="sim">شبیه‌سازی</span></div>
+  <div class="lines" style="font-size:.84rem"><div class="ln"><span>سرنخ ۲۴ ساعت اخیر</span><span>${fa(corp.length)}</span></div><div class="ln"><span>سرنخ در انتظار پیشنهاد</span><span>${fa(S.leads.filter(l=>l.status==='proposal').length)}</span></div></div>
+  <p style="font-size:.85rem;margin-top:.6rem;padding:.6rem .8rem;border-radius:.7rem;border:1px dashed color-mix(in srgb,var(--acc-1) 50%,transparent)"><span class="eyebrow" style="font-size:.68rem;display:block">برداشت دستیار، جدا از اعداد</span>${corp[0]?`اول با ${esc(corp[0].name)}${corp[0].company?' از '+esc(corp[0].company):''} تماس بگیرید؛ درخواست‌های سازمانی معمولاً ارزش قرارداد بیشتری دارند.`:'سرنخ تازه‌ای نیست؛ پیگیری پیشنهادهای ارسال‌شده در اولویت است.'}</p></div></div></div></div>
+  <div class="glass pad" style="margin-top:1.3rem"><h3 style="font-size:1rem;margin-bottom:.6rem">جلسه‌های پیش رو</h3><div class="tbl-wrap"><table><thead><tr><th>مراجع</th><th>نوع</th><th>زمان</th><th>وضعیت</th></tr></thead><tbody>${up.slice(0,5).map(b=>`<tr><td class="strong">${esc(b.name)}</td><td>${S.sessionTypes.find(t=>t.id===b.type).title}</td><td>${jDate(b.start,{wd:1})}، ${jTime(b.start)}</td><td><span class="badge b-ok">تأییدشده</span></td></tr>`).join('')}</tbody></table></div></div>`}
+ if(ui.adm==='leads')body=`<p class="muted" style="font-size:.86rem;margin-bottom:.8rem">همهٔ فرم‌ها در یک قیف. با دکمه‌های هر کارت وضعیت را جابه‌جا کنید.</p><div class="kanban">${SORDER.map(s=>`<div class="kcol glass"><h4><span>${STATUS[s][0]}</span><span class="faint">${fa(S.leads.filter(l=>l.status===s).length)}</span></h4>${S.leads.filter(l=>l.status===s).map(l=>`<div class="kcard glass-strong"><b>${esc(l.name)}</b><small>${esc(l.company||l.type)}</small><small>${esc(l.type)} · ${rel(l.at)}</small><small style="margin-top:.3rem;color:var(--ink-2)">${esc(l.note||'')}</small><small class="ltr" style="text-align:end">${faD(l.mobile)}</small><div class="row" style="gap:.3rem;margin-top:.4rem"><button class="btn btn-ghost btn-xs" data-act="lead" data-l="${l.id}" data-d="-1" ${s==='new'?'disabled':''} aria-label="مرحلهٔ قبل">→</button><button class="btn btn-glass btn-xs" data-act="lead" data-l="${l.id}" data-d="1" ${s==='lost'?'disabled':''}>مرحلهٔ بعد ←</button></div></div>`).join('')}</div>`).join('')}</div>`;
+ if(ui.adm==='bookings')body=`<div class="tbl-wrap"><table><thead><tr><th>مراجع</th><th>نوع</th><th>زمان</th><th>وضعیت</th></tr></thead><tbody>${[...S.bookings].sort((a,b)=>b.start-a.start).map(b=>`<tr><td class="strong">${esc(b.name)}</td><td>${S.sessionTypes.find(t=>t.id===b.type).title}</td><td>${jDate(b.start,{wd:1})}، ${jTime(b.start)}</td><td><span class="badge ${b.status==='confirmed'?'b-ok':b.status==='held'?'b-warn':'b-neu'}">${{confirmed:'تأییدشده',held:'قفل موقت',cancelled:'لغوشده'}[b.status]}</span></td></tr>`).join('')}</tbody></table></div><p class="faint" style="font-size:.78rem;margin-top:.8rem">ساعات کاری: شنبه تا چهارشنبه ۱۰–۱۳ و ۱۵–۱۹، پنجشنبه ۱۰–۱۳ · فاصلهٔ بین جلسه‌ها طبق نوع جلسه · قفل موقت ۱۵ دقیقه.</p>`;
+ if(ui.adm==='orders')body=`<div class="tbl-wrap"><table><thead><tr><th>شماره</th><th>خریدار</th><th>اقلام</th><th>مبلغ</th><th>وضعیت</th><th></th></tr></thead><tbody>${S.orders.slice(0,20).map(o=>`<tr><td class="strong ltr">AZ-${o.no}</td><td>${esc(o.name)}</td><td>${o.items.map(i=>esc(i.title)).join('، ')}</td><td class="num">${toman(o.total)}</td><td>${badgeOrder(o)}</td><td>${o.status==='paid'&&S.role==='admin'?`<button class="btn btn-danger btn-xs" data-act="refund" data-o="${o.id}">بازگشت وجه</button>`:''}</td></tr>`).join('')}</tbody></table></div>
+  ${S.role!=='admin'?'<p class="faint" style="font-size:.78rem;margin-top:.6rem">بازگشت وجه و کدهای تخفیف فقط برای مدیر کل فعال است.</p>':''}<h3 style="font-size:1rem;margin:1.3rem 0 .6rem">کدهای تخفیف</h3><div class="tbl-wrap"><table><thead><tr><th>کد</th><th>مقدار</th><th>دامنه</th><th>استفاده</th><th>اعتبار</th></tr></thead><tbody>${S.coupons.map(c=>`<tr><td class="strong ltr">${c.code}</td><td>${c.type==='percent'?fa(c.value)+'٪':toman(c.value)}</td><td>${{all:'همه',product:'محصولات',event:'رویدادها'}[c.scope]}</td><td>${fa(c.used||0)}</td><td>${c.to<now?'<span class="badge b-neu">منقضی</span>':'تا '+jDate(c.to)}</td></tr>`).join('')}</tbody></table></div>`;
+ if(ui.adm==='content')body=`<p class="muted" style="font-size:.86rem;margin-bottom:.8rem">ویرایش متن در نسخهٔ واقعی با سیستم مدیریت محتوا انجام می‌شود؛ اینجا وضعیت انتشار و نظرها مدیریت می‌شود.</p>
+  <h3 style="font-size:1rem;margin-bottom:.6rem">نظرهای منتظر بررسی</h3>${S.comments.filter(c=>c.status==='pending'||c.status==='spam').length?`<div class="stack" style="gap:.6rem">${S.comments.filter(c=>c.status==='pending'||c.status==='spam').map(c=>`<div class="glass" style="padding:.9rem 1.1rem"><div class="row between"><b style="color:var(--ink)">${esc(c.name)}</b><span class="badge ${c.status==='spam'?'b-bad':'b-warn'}">${c.status==='spam'?'مشکوک به اسپم':'در انتظار تأیید'}</span></div><p style="font-size:.88rem;margin-top:.3rem">${esc(c.text)}</p><p class="faint" style="font-size:.74rem">زیر «${POSTS.find(x=>x.id===c.post).title}» · ${rel(c.at)}</p><div class="row" style="margin-top:.5rem;gap:.4rem"><button class="btn btn-primary btn-xs" data-act="cmt" data-c="${c.id}" data-s="approved">تأیید و انتشار</button><button class="btn btn-ghost btn-xs" data-act="cmt" data-c="${c.id}" data-s="rejected">رد</button></div></div>`).join('')}</div>`:'<div class="empty" style="padding:1.2rem"><p class="muted">نظر منتظری نیست.</p></div>'}
+  <h3 style="font-size:1rem;margin:1.3rem 0 .6rem">مطالب</h3><div class="tbl-wrap"><table><thead><tr><th>عنوان</th><th>نوع</th><th>انتشار</th><th>وضعیت</th></tr></thead><tbody>${POSTS.map(x=>`<tr><td class="strong">${x.title}</td><td>${x.type}</td><td>${jDate(now-x.ago*DAY)}</td><td><span class="badge b-ok">منتشرشده</span></td></tr>`).join('')}<tr><td class="strong">شاخص‌های کلیدی منابع انسانی برای مدیران</td><td>مقاله</td><td>${jDate(now+12*DAY)}</td><td><span class="badge b-warn">زمان‌بندی‌شده</span></td></tr></tbody></table></div>`;
+ if(ui.adm==='messages')body=`<p class="muted" style="font-size:.86rem;margin-bottom:.8rem">لاگ پیامک و ایمیل. همهٔ ارسال‌ها در این نسخه شبیه‌سازی شده‌اند.</p><div class="tbl-wrap"><table><thead><tr><th>زمان</th><th>کانال</th><th>گیرنده</th><th>متن</th><th>وضعیت</th></tr></thead><tbody>${[...S.notifs].sort((a,b)=>b.at-a.at).map(m=>`<tr><td>${rel(m.at)}</td><td>${m.ch||'پیامک'}</td><td class="ltr" style="text-align:end">${S.role==='admin'?faD(m.to):faD(m.to.slice(0,4))+'•••'+faD(m.to.slice(-3))}</td><td style="min-width:16rem">${esc(m.text)}</td><td><span class="badge b-ok">ارسال شد</span></td></tr>`).join('')}</tbody></table></div>${S.role!=='admin'?'<p class="faint" style="font-size:.76rem;margin-top:.6rem">شماره‌ها برای نقش پشتیبان نیمه‌پنهان نمایش داده می‌شوند.</p>':''}`;
+ if(ui.adm==='events')body=`<div class="tbl-wrap"><table><thead><tr><th>عنوان</th><th>شروع</th><th>ظرفیت</th><th>فهرست انتظار</th><th>قیمت</th></tr></thead><tbody>${S.events.map(e=>`<tr><td class="strong">${e.title}</td><td>${jDate(e.start)}، ${jTime(e.start)}</td><td>${fa(e.reg)} / ${fa(e.cap)}</td><td>${fa(S.waitlist.filter(w=>w.ev===e.id).length)}</td><td>${toman(e.price)}</td></tr>`).join('')}</tbody></table></div>`;
+ return`<div class="admin"><aside class="side glass-strong"><div class="me"><span class="avatar">${R.name[0]}</span><div><b style="color:var(--ink);display:block;font-size:.95rem">${R.name}</b><span class="faint" style="font-size:.76rem">${R.title}</span></div></div><nav aria-label="منوی پنل">${nav.map(([v,l,ic,n])=>`<button data-act="admtab" data-v="${v}" ${ui.adm===v?'aria-current="page"':''}>${icon(ic)}<span>${l}</span>${n?`<span class="cnt">${fa(n)}</span>`:''}</button>`).join('')}</nav></aside>
+ <section><div style="margin-bottom:1.2rem"><div class="row between"><h1 class="disp" style="font-size:2.1rem">${greet()}، ${R.name.split(' ')[0]}</h1><span class="role-chip">نقش: ${R.title} · ${R.desc}</span></div><p class="muted">${jDate(now,{wd:1,y:1})} · ${S.role==='admin'?'نگاهی به کارهای امروز سایت و مشاوره‌ها.':'فقط بخش‌هایی را می‌بینید که نقش شما اجازه می‌دهد.'}</p></div><div class="glass-strong pad">${body}</div></section></div>`};
+const greet=()=>{const h=+toEn(jTime(Date.now()).split(':')[0]);return h<12?'صبح بخیر':h<17?'روز بخیر':'عصر بخیر'};
+V.notfound=()=>`${pageHero('خطای ۴۰۴','این صفحه پیدا نشد','شاید نشانی تغییر کرده باشد.')}<a class="btn btn-primary" href="#home">صفحهٔ اصلی</a>`;
+
+/* ---------- render ---------- */
+function render(){const r=(location.hash.slice(1)||'home');let html;
+ if(r.startsWith('post-'))html=V.post(r.slice(5));else html=(V[r]||V.notfound)();
+ const main=document.getElementById('main');main.innerHTML=html;
+ document.body.classList.toggle('inner',r!=='home');
+ document.getElementById('nav').innerHTML=NAV.map(([h,l])=>`<a href="#${h}" ${r===h||(h==='blog'&&r.startsWith('post-'))||(h==='services'&&(r==='booking'||r==='consult'))?'aria-current="page"':''}>${l}</a>`).join('');
+ const n=S.cart.reduce((s,c)=>s+c.q,0);const cb=document.getElementById('cartBtn');cb.innerHTML='🛍'+(n?`<span class="cart-dot">${fa(n)}</span>`:'');
+ const cur=ROLES[S.role]||ROLES.guest;
+ document.getElementById('dock').innerHTML=`<button class="btn btn-glass" data-act="dock" aria-expanded="${ui.dock}" aria-haspopup="menu"><span class="mini-orb" style="width:1.2rem;height:1.2rem"></span><span>${S.role==='guest'?'ورود به‌جای…':'نمایشی: '+esc(S.role==='customer'&&S.user?S.user.name:cur.name)}</span></button>${ui.dock?`<div class="menu glass-strong" role="menu"><div class="menu-h">ورود به‌جای یک کاربر (فقط در نسخهٔ نمایشی)</div>${Object.entries(ROLES).map(([k,r])=>`<button role="menuitemradio" aria-checked="${S.role===k}" data-act="as" data-r="${k}"><span class="avatar">${k==='guest'?'؟':r.name[0]}</span><span style="min-width:0">${r.name}<small>${r.title} — ${r.desc}</small></span>${S.role===k?'<span class="ck">✓</span>':''}</button>`).join('')}<hr><button role="menuitem" data-act="reset">↺ بازنشانی دادهٔ نمایشی<small>همه‌چیز از نو ساخته می‌شود</small></button></div>`:''}`;
+ renderPromo();tick()}
+function tick(){const now=Date.now();
+ document.querySelectorAll('[data-cd]').forEach(el=>{const d=Math.max(0,+el.dataset.cd-now);el.innerHTML=[[Math.floor(d/DAY),'روز'],[Math.floor(d/H)%24,'ساعت'],[Math.floor(d/6e4)%60,'دقیقه'],[Math.floor(d/1e3)%60,'ثانیه']].map(([v,l])=>`<div class="field-well"><b class="num">${fa(v)}</b><span>${l}</span></div>`).join('')});
+ document.querySelectorAll('[data-hold]').forEach(el=>{const s=Math.max(0,Math.floor((+el.dataset.hold-now)/1e3));el.textContent=`زمان شما تا ${faD(Math.floor(s/60))}:${faD(String(s%60).padStart(2,'0'))} نگه داشته شده`;if(!s){expire();render()}})}
+function expire(){let ch=0;for(const b of S.bookings)if(b.status==='held'&&b.exp<Date.now()){b.status='cancelled';const o=S.orders.find(x=>x.items[0]?.ref===b.id&&x.status==='pending');if(o)o.status='cancelled';ch=1}if(ch){save();toast('مهلت نگه‌داری زمان تمام شد','زمان انتخابی آزاد شد تا دیگران هم بتوانند رزرو کنند.','warn')}}
+setInterval(tick,1000);setInterval(()=>{expire()},15000);
+
+/* ---------- actions ---------- */
+const A={
+ close:closeModal,
+ theme(){const r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('arz-theme',r.dataset.theme)}catch(e){}paintWorld();render()},
+ palette(){const r=document.documentElement,L=['navy','emerald','burgundy'],N={navy:'سرمه‌ای و طلایی',emerald:'زمردی و شامپاینی',burgundy:'زرشکی و کرم'},n=L[(L.indexOf(r.dataset.palette)+1)%3];r.dataset.palette=n;try{localStorage.setItem('arz-palette',n)}catch(e){}paintWorld();render();toast('رنگ‌بندی '+N[n],'بعدی: '+N[L[(L.indexOf(n)+1)%3]]+'. با هر بار زدن دکمه، رنگ‌بندی عوض می‌شود.','ok')},
+ drawer(el){modal(`<div class="row between"><b style="color:var(--ink)">منو</b><button class="btn btn-ghost btn-icon" data-act="close" aria-label="بستن">✕</button></div><nav class="stack" style="gap:.3rem;margin-top:1rem">${NAV.map(([h,l])=>`<a class="btn btn-ghost" style="justify-content:flex-start" href="#${h}" data-act="close">${l}</a>`).join('')}<a class="btn btn-ghost" style="justify-content:flex-start" href="#booking" data-act="close">رزرو جلسه</a><button class="btn btn-ghost" style="justify-content:flex-start" data-act="theme">◐ حالت روشن / تاریک</button><a class="btn btn-primary" href="#consult" data-act="close" style="margin-top:.6rem">درخواست مشاوره</a></nav>`)},
+ account(){if(isStaff())location.hash='admin';else if(S.user)location.hash='account';else requireLogin('برای دیدن سفارش‌ها و جلسه‌ها وارد شوید.').then(u=>{if(u)location.hash='account'})},
+ login(){requireLogin().then(()=>render())},
+ dock(){ui.dock=!ui.dock;render()},
+ as(el){ui.dock=false;const r=el.dataset.r,R=ROLES[r];S.role=r;S.user=r==='guest'?null:{mobile:R.mobile,name:R.name};save();closeModal();const h=r==='guest'?'home':r==='customer'?'account':'admin';if(location.hash.slice(1)===h)render();else location.hash=h;scrollTo(0,0);toast('حالا به‌جای '+R.name+' هستید',R.title+' — '+R.desc,'ok')},
+ cmt(el){const c=S.comments.find(x=>x.id===el.dataset.c);c.status=el.dataset.s;save();toast(c.status==='approved'?'نظر منتشر شد':'نظر رد شد','','ok');render()},
+ reset(){S=seed();ui.dock=false;save();toast('دادهٔ نمایشی از نو ساخته شد','','ok');location.hash='home';render()},
+ svc(el){const s=SERVICES.find(x=>x.slug===el.dataset.s);modal(`<div class="row between" style="align-items:flex-start"><div class="row"><span class="icon-disc">${icon(s.icon)}</span><div><span class="eyebrow">${s.aud==='corporate'?'خدمت سازمانی':'خدمت فردی'}</span><h2 class="disp" style="font-size:1.8rem">${s.title}</h2></div></div><button class="btn btn-ghost btn-icon" data-act="close" aria-label="بستن">✕</button></div>
+  <p style="margin-top:1rem"><b style="color:var(--ink)">مسئله: </b>${s.problem}</p><div class="grid2" style="margin-top:1rem;gap:1rem"><div class="glass" style="padding:1rem"><b style="color:var(--ink);font-size:.9rem">روش کار</b><ol style="font-size:.88rem;margin-top:.4rem">${s.method.map(m=>`<li>${m}</li>`).join('')}</ol></div><div class="glass" style="padding:1rem"><b style="color:var(--ink);font-size:.9rem">خروجی‌ها</b><ul style="font-size:.88rem;margin-top:.4rem">${s.out.map(m=>`<li>✓ ${m}</li>`).join('')}</ul></div></div>
+  <dl class="kv" style="margin-top:1rem"><dt>مدت</dt><dd>${s.dur}</dd><dt>هزینه</dt><dd class="price">${s.price?toman(s.price):'پس از جلسهٔ تشخیص'}</dd>${s.case?`<dt>نمونهٔ موفق</dt><dd>${s.case}</dd>`:''}</dl>
+  <div class="row" style="margin-top:1.3rem">${s.st?`<button class="btn btn-primary" data-act="gobook" data-t="${s.st}">رزرو جلسه</button>`:`<button class="btn btn-primary" data-act="goconsult" data-n="${s.title}">درخواست مشاورهٔ سازمانی</button>`}<button class="btn btn-ghost" data-act="close">بستن</button></div>`,true)},
+ svcf(el){ui.svc=el.dataset.v;render()},
+ gobook(el){closeModal();ui.bk={type:el.dataset.t,day:null,slot:null};location.hash='booking'},
+ goconsult(el){closeModal();ui.consult={step:0,kind:'سازمانی',d:{}};location.hash='consult'},
+ bktype(el){ui.bk={type:el.dataset.t,day:null,slot:null};render()},
+ bkday(el){ui.bk.day=+el.dataset.d;ui.bk.slot=null;render()},
+ bkslot(el){ui.bk.slot=+el.dataset.s;render()},
+ async hold(){const u=await requireLogin('برای نگه داشتن زمان، با موبایل وارد شوید. اگر حساب ندارید، همین الان ساخته می‌شود.');if(!u)return;
+  const st=S.sessionTypes.find(t=>t.id===ui.bk.type),s=ui.bk.slot;
+  if(!slotsFor(st,s,1)[0].slots.includes(s)){toast('این زمان دیگر آزاد نیست','لطفاً زمان دیگری انتخاب کنید.','warn');ui.bk.slot=null;render();return}
+  const b={id:id('b'),name:u.name,type:st.id,start:s,status:'held',exp:Date.now()+15*6e4,user:u.mobile};S.bookings.push(b);
+  const o=createOrder([{type:'booking',ref:b.id,title:`${st.title} · ${jDate(s)} ساعت ${jTime(s)}`,price:st.price,qty:1}],null);
+  if(st.price===0){S.bookings.find(x=>x.id===b.id);settle(o);ui.bk={type:null,day:null,slot:null};toast('جلسه ثبت شد','جزئیات برایتان پیامک شد.','ok');location.hash='account';ui.acc='bookings';render();return}
+  ui.bk.slot=null;save();render()},
+ unhold(el){const o=S.orders.find(x=>x.id===el.dataset.o);o.status='cancelled';releaseFor(o);save();render()},
+ payo(el){pay(S.orders.find(x=>x.id===el.dataset.o))},
+ gw(el){verifyAndReturn(el.dataset.o,el.dataset.r)},
+ formula(){ui.formula=!ui.formula;render()},
+ ckind(el){ui.consult={step:0,kind:el.dataset.v,d:{}};render()},
+ cpick(el){const d=ui.consult.d,k=el.dataset.k,v=el.dataset.v;if(el.dataset.m){d[k]=d[k]||[];d[k]=d[k].includes(v)?d[k].filter(x=>x!==v):[...d[k],v]}else d[k]=v;keepConsultText();render()},
+ cback(){keepConsultText();ui.consult.step--;render()},
+ async reg(el){const e=S.events.find(x=>x.id===el.dataset.e);const u=await requireLogin(`برای ثبت‌نام در «${e.title}» وارد شوید.`);if(!u)return;
+  if(S.regs.find(r=>r.ev===e.id&&r.user===u.mobile&&r.status!=='cancelled')){toast('قبلاً ثبت‌نام کرده‌اید','','info');location.hash='account';ui.acc='events';render();return}
+  if(e.cap-e.reg<=0){if(!S.waitlist.find(w=>w.ev===e.id&&w.user===u.mobile)){S.waitlist.push({ev:e.id,user:u.mobile,at:Date.now()});save();sms(u.mobile,`ظرفیت «${e.title}» پر است؛ شما در فهرست انتظار نفر ${fa(S.waitlist.filter(w=>w.ev===e.id).length)} هستید.`)}render();return}
+  const r={id:id('r'),ev:e.id,user:u.mobile,status:e.price?'pending':'paid'};S.regs.push(r);e.reg++;
+  if(!e.price){save();sms(u.mobile,`ثبت‌نام در «${e.title}» قطعی شد. ${jDate(e.start)} ساعت ${jTime(e.start)}.`);render();return}
+  const o=createOrder([{type:'reg',ref:r.id,title:`${e.kind}: ${e.title}`,price:e.price,qty:1}],null);render();pay(o)},
+ add(el){const p=S.products.find(x=>x.id===el.dataset.p),c=S.cart.find(x=>x.p===p.id);
+  if(p.kind==='digital'&&c){toast('در سبد شماست','محصول دیجیتال یک نسخه کافی است.','info');return}
+  if(p.kind==='physical'&&(c?.q||0)+1>p.stock){toast('موجودی کافی نیست',`فقط ${fa(p.stock)} نسخه موجود است.`,'warn');return}
+  c?c.q++:S.cart.push({p:p.id,q:1});save();toast('به سبد خرید اضافه شد',p.title,'ok');render()},
+ qty(el){const c=S.cart.find(x=>x.p===el.dataset.p);c.q+=+el.dataset.d;if(c.q<=0)S.cart=S.cart.filter(x=>x!==c);if(!S.cart.length)S.coupon=null;save();render()},
+ uncoupon(){S.coupon=null;save();render()},
+ async checkout(){const u=await requireLogin('نیازی به ثبت‌نام جداگانه نیست؛ حساب با تأیید موبایل ساخته می‌شود.');if(!u)return render();
+  const items=cartItems(),k=calc(items,S.coupon),addr=document.getElementById('addr');
+  if(k.phys&&addr&&addr.value.trim().length<15){setErr(addr,'نشانی را کامل بنویسید: شهر، خیابان، پلاک، واحد و کد پستی ۱۰ رقمی.');addr.focus();return}
+  for(const d of items){const p=S.products.find(x=>x.id===d.ref);if(p.kind==='digital'&&S.downloads.find(x=>x.user===u.mobile&&x.pid===p.id)){toast('قبلاً خریده‌اید',`«${p.title}» در بخش دانلودها در دسترس است.`,'warn');return}}
+  const o=createOrder(items,S.coupon);S.cart=[];S.coupon=null;save();render();pay(o)},
+ acctab(el){ui.acc=el.dataset.v;render()},
+ cancelbk(el){const b=S.bookings.find(x=>x.id===el.dataset.b);b.status='cancelled';const o=S.orders.find(x=>x.items[0]?.ref===b.id&&x.status==='paid');if(o&&o.total)o.status='refunded';save();sms(S.user.mobile,`جلسه لغو شد.${o&&o.total?' مبلغ ظرف ۷۲ ساعت کاری بازمی‌گردد.':''}`);render()},
+ dl(el){const d=S.downloads.find(x=>x.id===el.dataset.d);d.left--;save();toast('دانلود شروع شد',`${fa(d.left)} بار دیگر می‌توانید دانلود کنید. فایل از مسیر محافظت‌شده تحویل می‌شود.`,'ok');render()},
+ invoice(el){const o=S.orders.find(x=>x.id===el.dataset.o);modal(`<div class="row between"><h2 class="disp" style="font-size:1.7rem">فاکتور فروش ${fa(o.invoice)}</h2><button class="btn btn-ghost btn-icon" data-act="close" aria-label="بستن">✕</button></div><p class="muted" style="font-size:.84rem">سفارش <span class="ltr">AZ-${o.no}</span> · ${jDate(o.paidAt||o.at,{y:1})} · خریدار: ${esc(o.name)}</p><div class="tbl-wrap" style="margin-top:1rem"><table><thead><tr><th>شرح</th><th>تعداد</th><th>مبلغ</th></tr></thead><tbody>${o.items.map(i=>`<tr><td>${esc(i.title)}</td><td>${fa(i.qty)}</td><td>${toman(i.price*i.qty)}</td></tr>`).join('')}</tbody></table></div><div class="lines" style="margin-top:1rem"><div class="ln"><span>تخفیف</span><span>${toman(o.disc||0)}</span></div><div class="ln"><span>مالیات</span><span>${toman(o.tax||0)}</span></div><div class="ln total"><span>مبلغ کل</span><span>${toman(o.total)}</span></div></div><p class="faint" style="font-size:.76rem;margin-top:.8rem">اطلاعات خریدار در لحظهٔ صدور ذخیره شده است. نسخهٔ PDF در نسخهٔ واقعی ساخته می‌شود.</p>`,true)},
+ admtab(el){ui.adm=el.dataset.v;render()},
+ lead(el){const l=S.leads.find(x=>x.id===el.dataset.l);const i=SORDER.indexOf(l.status)+ +el.dataset.d;if(i<0||i>=SORDER.length)return;l.status=SORDER[i];save();toast('وضعیت سرنخ تغییر کرد',`${l.name}: ${STATUS[l.status][0]}`,'ok');render()},
+ refund(el){const o=S.orders.find(x=>x.id===el.dataset.o);modal(`<h2 class="disp" style="font-size:1.6rem">بازگشت وجه سفارش AZ-${faD(o.no)}</h2><p class="muted" style="margin-top:.5rem">مبلغ ${toman(o.total)} بازگشت داده می‌شود، لینک‌های دانلود باطل و جلسه‌های این سفارش لغو می‌شوند. این کار برگشت‌پذیر نیست.</p><div class="row" style="margin-top:1.2rem"><button class="btn btn-danger" data-act="refundok" data-o="${o.id}">بازگشت ${toman(o.total)}</button><button class="btn btn-ghost" data-act="close">انصراف</button></div>`)},
+ refundok(el){const o=S.orders.find(x=>x.id===el.dataset.o);o.status='refunded';S.downloads=S.downloads.filter(d=>!o.items.some(i=>i.ref===d.pid&&o.user===d.user));for(const i of o.items)if(i.type==='booking'){const b=S.bookings.find(x=>x.id===i.ref);if(b)b.status='cancelled'}save();closeModal();toast('وجه بازگشت داده شد','','ok');render()},
+ btype(el){ui.blog.type=el.dataset.v;render()},
+ bclear(){ui.blog={q:'',type:'all'};render()},
+};
+function keepConsultText(){const d=ui.consult.d,g=i=>document.getElementById(i);if(g('c-org'))d.org=g('c-org').value;if(g('c-desc'))d.desc=g('c-desc').value;if(g('c-name'))d.name=g('c-name').value;if(g('c-mob'))d.mobile=g('c-mob').value;if(g('c-mail'))d.email=g('c-mail').value}
+function addLead(type,name,mobile,company,note){S.leads.unshift({id:id('l'),type,name,mobile:toEn(mobile),company:company||'',status:'new',at:Date.now(),note:note||''});save()}
+
+const F={
+ otp1(f){clrErr(f);const m=f.querySelector('#m-mob'),n=f.querySelector('#m-name');if(!validMobile(m.value))return setErr(m,'شماره باید ۱۱ رقم باشد و با ۰۹ شروع شود؛ مثل ۰۹۱۲۳۴۵۶۷۸۹.');otpStep(toEn(m.value).replace(/\D/g,''),n.value.trim()||'کاربر جدید')},
+ otp2(f){clrErr(f);const c=f.querySelector('#m-code'),p=pendingOtp;if(Date.now()>p.exp)return setErr(c,'اعتبار کد تمام شده است. دوباره کد بگیرید.');if(toEn(c.value)!==p.code){p.tries++;return setErr(c,p.tries>=5?'تعداد تلاش‌ها تمام شد. یک کد تازه بگیرید.':`کد درست نیست. ${fa(5-p.tries)} تلاش دیگر باقی مانده است.`)}
+  S.user={mobile:p.mobile,name:p.name};S.role=isStaff()?S.role:'customer';save();document.getElementById('modalRoot').innerHTML='';toast('وارد شدید','خوش آمدید، '+p.name,'ok');const cb=modalCb;modalCb=null;cb&&cb(S.user);render()},
+ callback(f){clrErr(f);const[n,m]=f.querySelectorAll('input');let ok=true;if(n.value.trim().length<2){setErr(n,'نام و نام خانوادگی را بنویسید.');ok=false}if(!validMobile(m.value)){setErr(m,'شماره باید ۱۱ رقم باشد و با ۰۹ شروع شود.');ok=false}if(!ok)return;
+  addLead('درخواست تماس',n.value.trim(),m.value,'','');f.outerHTML=`<div class="notice n-ok" style="margin-top:1.2rem"><span><b>درخواست تماس ثبت شد.</b> ظرف یک روز کاری با شمارهٔ شما تماس می‌گیرم.</span></div>`;sms(toEn(m.value),`${n.value.trim()} عزیز، درخواست شما ثبت شد. ظرف یک روز کاری تماس می‌گیریم.`)},
+ catalog(f){clrErr(f);const[n,m]=f.querySelectorAll('input');let ok=true;const v=m.value.trim();if(n.value.trim().length<2){setErr(n,'نام را بنویسید.');ok=false}if(!validMobile(v)&&!validEmail(v)){setErr(m,'موبایل ۱۱ رقمی یا ایمیل معتبر بنویسید؛ مثل name@example.com.');ok=false}if(!ok)return;
+  const file=f.dataset.file||'کاتالوگ خدمات سازمانی';addLead('دانلود '+file,n.value.trim(),validMobile(v)?v:'—','','');f.outerHTML=`<div class="notice n-ok" style="margin-top:1rem"><span><b>${file} آماده است.</b> لینک دانلود برایتان ارسال شد. <span class="sim">شبیه‌سازی</span></span></div>`},
+ consult(f){keepConsultText();const c=ui.consult,d=c.d,org=c.kind==='سازمانی',st=org?['سازمان','نیاز','اندازه و زمان','تماس']:['نیاز','زمان','تماس'],cur=st[c.step];clrErr(f);let ok=true;
+  const e=(k,msg)=>{const s=f.querySelector(`[data-e="${k}"]`);if(s)s.textContent=msg;ok=false};
+  if(cur==='سازمان'){if(!d.org||d.org.trim().length<2){setErr(f.querySelector('#c-org'),'نام سازمان را بنویسید.');ok=false}if(!d.ind)e('ind','حوزهٔ فعالیت را انتخاب کنید.')}
+  if(cur==='نیاز'&&!(d.needs||[]).length)e('needs','دست‌کم یک نیاز را انتخاب کنید.');
+  if(cur==='اندازه و زمان'&&!d.size)e('size','اندازهٔ سازمان را انتخاب کنید.');
+  if((cur==='اندازه و زمان'||cur==='زمان')&&!d.time)e('time','زمان‌بندی را انتخاب کنید.');
+  if(cur==='تماس'){if(!d.name||d.name.trim().length<2){setErr(f.querySelector('#c-name'),'نام و نام خانوادگی را بنویسید.');ok=false}if(!validMobile(d.mobile||'')){setErr(f.querySelector('#c-mob'),'شماره باید ۱۱ رقم باشد و با ۰۹ شروع شود.');ok=false}if(d.email&&!validEmail(d.email)){setErr(f.querySelector('#c-mail'),'ایمیل معتبر نیست؛ مثل name@example.com. اگر نمی‌خواهید، خالی بگذارید.');ok=false}}
+  if(!ok){f.querySelector('[aria-invalid],.err:not(:empty)')?.scrollIntoView({block:'center',behavior:'smooth'});return}
+  if(c.step<st.length-1){c.step++;render();return}
+  addLead(org?'مشاورهٔ سازمانی':'مشاورهٔ فردی',d.name.trim(),d.mobile,d.org,(d.needs||[]).join('، ')+(d.size?' · '+d.size:'')+' · '+d.time);sms(toEn(d.mobile),`${d.name.trim()} عزیز، درخواست شما ثبت شد. ظرف یک روز کاری تماس می‌گیریم.`);ui.consult={step:0,kind:'سازمانی',d:{}};
+  document.getElementById('main').innerHTML=`${pageHero('سپاس','درخواست شما ثبت شد')}<div class="glass-strong empty"><span class="mini-orb" style="width:3.4rem;height:3.4rem"></span><h3>درخواست مشاوره رسید</h3><p class="muted">پیامک تأیید برایتان ارسال شد. ظرف یک روز کاری برای هماهنگی جلسهٔ آشنایی تماس می‌گیرم.</p><div class="row" style="justify-content:center"><a href="#blog" class="btn btn-glass">خواندن مجله</a><a href="#home" class="btn btn-primary">بازگشت به خانه</a></div></div>`},
+ coupon(f){clrErr(f);const i=f.querySelector('input'),code=i.value.trim().toUpperCase(),c=S.coupons.find(x=>x.code===code),err=couponErr(c,cartItems());if(err)return setErr(i,err);S.coupon=code;save();render()},
+ ocoupon(f){clrErr(f);const i=f.querySelector('input'),o=S.orders.find(x=>x.id===f.dataset.o),code=i.value.trim().toUpperCase(),c=S.coupons.find(x=>x.code===code),err=couponErr(c,o.items);if(err)return setErr(i,err);const k=calc(o.items,code);Object.assign(o,{code,disc:k.disc,tax:k.tax,total:k.total});save();render()},
+ contact(f){clrErr(f);const n=f.querySelector('#ct-n'),m=f.querySelector('#ct-m'),t=f.querySelector('#ct-t');let ok=true;if(n.value.trim().length<2){setErr(n,'نام را بنویسید.');ok=false}if(!validMobile(m.value)){setErr(m,'شماره باید ۱۱ رقم باشد و با ۰۹ شروع شود.');ok=false}if(t.value.trim().length<10){setErr(t,'پیام را کمی کامل‌تر بنویسید (حداقل ۱۰ حرف).');ok=false}if(!ok)return;addLead('پیام تماس',n.value.trim(),m.value,'',t.value.trim().slice(0,60));f.outerHTML='<div class="notice n-ok" style="margin-top:1rem"><span><b>پیام شما رسید.</b> ظرف یک روز کاری پاسخ می‌دهم.</span></div>'},
+ comment(f){clrErr(f);const n=f.querySelector('#cm-n'),t=f.querySelector('#cm-t');let ok=true;if(n.value.trim().length<2){setErr(n,'نامتان را بنویسید (حداقل دو حرف).');ok=false}if(t.value.trim().length<5){setErr(t,'متن نظر خیلی کوتاه است.');ok=false}if(!ok)return;const spam=(t.value.match(/https?:\/\//g)||[]).length>1;ensureExtra();S.comments.unshift({id:id('c'),post:location.hash.slice(6),name:n.value.trim(),text:t.value.trim(),at:Date.now(),status:spam?'spam':'pending'});save();f.outerHTML=`<div class="notice ${spam?'n-warn':'n-ok'}" style="margin-top:1rem"><span><b>${spam?'نظر شما برای بررسی دستی نگه داشته شد.':'نظر شما ثبت شد.'}</b> پس از تأیید مدیر نمایش داده می‌شود.</span></div>`},
+};
+
+const FREEBIES=[
+ {id:'f1',topic:'hire',title:'چک‌لیست مصاحبهٔ ساختاریافته',fmt:'PDF · ۶ صفحه',btn:'دانلود رایگان',c:'var(--lav)'},
+ {id:'f2',topic:'perform',title:'قالب فرم ارزیابی عملکرد',fmt:'اکسل · ۳ برگه با فرمول',btn:'دانلود رایگان',c:'var(--peach)'},
+ {id:'f3',topic:'lead',title:'مینی‌دورهٔ ایمیلی «۵ روز تا مدیر بهتر»',fmt:'۵ ایمیل · روزی ۱۰ دقیقه',btn:'عضویت رایگان',c:'var(--rose)'},
+ {id:'f4',topic:'career',title:'کاربرگ «تصمیم شغلی بعدی»',fmt:'PDF · ۴ صفحه',btn:'کاربرگ رایگان',c:'var(--sage)'},
+ {id:'f5',topic:'hire',title:'کاتالوگ خدمات سازمانی ۱۴۰۵',fmt:'PDF · ۲٫۲ مگابایت',btn:'دریافت کاتالوگ',c:'var(--gold)'},
+ {id:'f6',topic:'perform',title:'۲۰ سؤال برای جلسهٔ بازخورد',fmt:'PDF · ۳ صفحه',btn:'دانلود رایگان',c:'var(--lav)'}];
+const TOPICS=[['hire','جذب و استخدام','shield'],['perform','ارزیابی عملکرد','gauge'],['lead','رهبری تیم','spark'],['career','مسیر شغلی','compass']];
+const EPISODES=[{n:12,t:'مصاحبهٔ رفتاری دقیقاً چیست؟',d:41,g:'جذب و استخدام'},{n:9,t:'چرا بهترین کارمندها می‌روند؟',d:38,g:'نگهداشت'},{n:15,t:'مدیر تازه‌کار: سه ماه اول',d:44,g:'رهبری'},{n:7,t:'حقوق را چطور مذاکره کنیم؟',d:33,g:'مسیر شغلی'},{n:18,t:'فرهنگ سازمانی را نمی‌شود نوشت',d:36,g:'فرهنگ'}];
+const QUIZ=[
+ {q:'وقتی نیروی جدید لازم دارید، استخدام چطور پیش می‌رود؟',o:['هر بار یک‌جور؛ آگهی و گپ آزاد','فرم مصاحبه داریم، ولی همه از آن استفاده نمی‌کنند','شایستگی‌ها تعریف شده و مصاحبه ساختاریافته است']},
+ {q:'ارزیابی عملکرد در سازمان شما…',o:['نداریم یا فقط روی کاغذ است','سالی یک بار فرمی پر می‌شود','چرخهٔ منظم دارد و به جلسهٔ بازخورد ختم می‌شود']},
+ {q:'شرح وظایف نقش‌ها…',o:['مکتوب نیست','هست، ولی قدیمی است','به‌روز و روشن است و همه می‌دانند']},
+ {q:'آموزش کارکنان…',o:['پراکنده و موردی','تقویم آموزشی داریم','بر اساس نیازسنجی است و اثرش را می‌سنجیم']},
+ {q:'وقتی کسی استعفا می‌دهد…',o:['واقعاً نمی‌دانیم چرا رفت','حدس‌هایی داریم','مصاحبهٔ خروج داریم و داده‌اش را مرور می‌کنیم']}];
+const QRES=[
+ {max:3,name:'مرحلهٔ بنیان',txt:'سازمان شما با انرژی آدم‌ها جلو می‌رود، نه با سیستم. اولین قدم: روشن کردن نقش‌ها و یک فرایند استخدام ساده و تکرارپذیر.',svc:'structure'},
+ {max:7,name:'مرحلهٔ نظم‌دهی',txt:'پایه‌ها را دارید ولی یکدست اجرا نمی‌شوند. بیشترین اثر را یک نظام ارزیابی عملکرد گفت‌وگومحور می‌گذارد.',svc:'perform'},
+ {max:10,name:'مرحلهٔ رشد',txt:'منابع انسانی شما بالغ است. وقت آن است که آن را به استراتژی کسب‌وکار وصل کنید و رهبران آینده را بسازید.',svc:'strategy'}];
+const LIB=[
+ {c:'var(--lav)',kind:'دوره · ۴ جلسه',title:'طراحی نظام ارزیابی عملکرد',meta:'شروع ۱۲ روز دیگر',go:'#events'},
+ {c:'var(--peach)',kind:'وبینار رایگان',title:'پنج اشتباه رایج در مصاحبهٔ استخدامی',meta:'۷۵ دقیقه · آنلاین',go:'#events'},
+ {c:'var(--gold)',kind:'بستهٔ آموزشی',title:'قالب‌های ارزیابی عملکرد',meta:'۱۴ فایل اکسل و ورد',go:'#shop'},
+ {c:'var(--rose)',kind:'کوچینگ · ۶ جلسه',title:'از متخصص خوب به مدیر خوب',meta:'جلسه‌های دوهفته‌ای',go:'#booking'}];
+Object.assign(ui,{free:'all',playing:null,promo:true,quiz:null});
+
+function spinBadge(uid,text,center=''){return`<svg viewBox="0 0 200 200" aria-hidden="true"><defs><path id="cp${uid}" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0"/></defs><circle cx="100" cy="100" r="97" fill="var(--g-strong)" stroke="var(--g-edge-hi)"/><g class="ring-t"><text direction="ltr" font-family="Vazirmatn,sans-serif" font-size="15.5" font-weight="600" fill="var(--ink-2)" letter-spacing="0"><textPath href="#cp${uid}" startOffset="0">${text}</textPath></text></g>${center}</svg>`}
+const scribble=(c='var(--gold)')=>`<svg viewBox="0 0 200 20" preserveAspectRatio="none" aria-hidden="true"><path d="M3 13 C40 4 80 4 120 9 S180 15 197 6" fill="none" stroke="${c}" stroke-width="4.5" stroke-linecap="round"/></svg>`;
+function portrait(){return`<svg viewBox="0 0 300 340" preserveAspectRatio="xMidYMid slice" role="img" aria-label="تصویرسازی آرزو زحمت‌بران"><defs>
+ <linearGradient id="pbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9c8ef"/><stop offset=".6" stop-color="#f4cdbd"/><stop offset="1" stop-color="#f7e2cf"/></linearGradient>
+ <linearGradient id="pbz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5e4f86"/><stop offset="1" stop-color="#3d3252"/></linearGradient>
+ <radialGradient id="psh" cx=".3" cy=".1" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></radialGradient></defs>
+ <rect width="300" height="340" fill="url(#pbg)"/><circle cx="210" cy="95" r="62" fill="#fbe6d3" opacity=".9"/>
+ <g fill="#9fbfa9" opacity=".9"><path d="M28 340 C30 280 22 240 40 205"  stroke="#7fa48c" stroke-width="3" fill="none"/><ellipse cx="44" cy="214" rx="9" ry="20" transform="rotate(25 44 214)"/><ellipse cx="26" cy="246" rx="8" ry="18" transform="rotate(-30 26 246)"/><ellipse cx="40" cy="276" rx="8" ry="18" transform="rotate(28 40 276)"/></g>
+ <path d="M96 168 C86 118 112 86 152 86 C194 86 214 118 206 168 C208 206 220 236 232 254 L70 254 C82 236 92 206 96 168Z" fill="#3a2a36"/>
+ <rect x="134" y="196" width="32" height="46" rx="14" fill="#d9a184"/>
+ <ellipse cx="150" cy="158" rx="41" ry="49" fill="#e8b597"/>
+ <path d="M108 150 C112 112 136 100 158 102 C178 104 192 118 194 150 C176 140 160 124 154 112 C146 130 128 144 108 150Z" fill="#3a2a36"/>
+ <circle cx="110" cy="176" r="4" fill="#d9a548"/><circle cx="190" cy="176" r="4" fill="#d9a548"/>
+ <path d="M150 226 C190 226 238 244 252 290 L262 340 L38 340 L48 290 C62 244 110 226 150 226Z" fill="url(#pbz)"/>
+ <path d="M131 230 L150 284 L169 230 C162 236 138 236 131 230Z" fill="#f7ede6"/>
+ <path d="M150 284 L116 236 L126 228 L150 266 L174 228 L184 236Z" fill="#4a3d68"/>
+ <rect x="196" y="270" width="26" height="4" rx="2" fill="#d9a548" transform="rotate(-8 209 272)"/>
+ <rect width="300" height="340" fill="url(#psh)"/></svg>`}
+
+V.home=()=>{const now=Date.now(),next=S.events.filter(e=>e.start>now).sort((a,b)=>a.start-b.start)[0];const fl=FREEBIES.filter(f=>ui.free==='all'||f.topic===ui.free).slice(0,3);
+const clients=[...CLIENTS,'گروه غذایی گلستان','انجمن مدیران جوان','داروسازی تولیدارو'];const mq=clients.map(c=>`<span>${c}</span>`).join('');
+return`<section class="jhero">
+ <div><span class="kicker glass-pill"><span class="ast">✳</span> مشاور منابع انسانی، مدرس و نویسنده</span>
+  <h1>سازمانی بسازید که <span class="scrib">آدم‌ها${scribble()}</span> در آن رشد کنند…</h1>
+  <p class="script after">…بی‌آنکه خودتان در شلوغی‌اش گم شوید.</p>
+  <p class="lead">چهارده سال است کنار مدیرها و تیم‌های منابع انسانی کار می‌کنم تا استخدام، ارزیابی و رشد آدم‌ها ساده‌تر، منصفانه‌تر و انسانی‌تر شود.</p>
+  <div class="hero-cta"><a href="#consult" class="btn btn-primary">درخواست مشاورهٔ سازمانی</a><a href="#booking" class="btn btn-glass">رزرو جلسهٔ فردی <span class="arrow">←</span></a></div></div>
+ <div class="collage"><div class="polaroid glass"><div class="ph"><span class="ph-sun"></span></div><img class="cutout" src="${PHOTO}" alt="آرزو زحمت‌بران در حال سخنرانی"><div class="cap script">روی صحنه، در حال سخنرانی</div></div>
+  <div class="sticker st-hello script">سلام!</div>
+  <div class="spin-badge">${spinBadge('h','چهارده سال تجربه ✳ مشاور منابع انسانی ✳ مدرس ✳ نویسنده ✳','<text x="100" y="114" text-anchor="middle" font-family="Vazirmatn,sans-serif" font-size="44" font-weight="800" fill="var(--acc-ink)">آ</text>')}</div>
+  <div class="sticker st-ep glass"><span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span><b>پادکست «آدم‌ها پیش از فرایندها»</b><span>اپیزود ۱۸ منتشر شد</span></span></div></div>
+</section>
+<div class="seen glass-pill"><b>همکاری با</b><div class="marquee" style="flex:1;min-width:0"><div class="track">${mq}${mq}</div></div></div>
+
+<section class="section hello"><h2>سلام، من <span class="hl">آرزو</span> هستم.</h2>
+ <p>کمک می‌کنم سازمان‌ها <span class="hl-lav hl">آدم‌محور</span> بمانند، مدیرها <span class="hl-peach hl">بازخورد خوب</span> بدهند و کارجوها تصمیم شغلی بعدی‌شان را آگاهانه بگیرند. از کجا شروع کنیم؟</p>
+ <div class="paths"><a class="glass-pill" href="#consult">مدیرعامل یا مدیر سازمانم <small>مشاورهٔ سازمانی</small> <span class="arrow">←</span></a><a class="glass-pill" href="#events">در تیم منابع انسانی کار می‌کنم <small>دوره‌ها</small> <span class="arrow">←</span></a><a class="glass-pill" href="#booking">دنبال مسیر شغلی‌ام <small>جلسهٔ فردی</small> <span class="arrow">←</span></a></div></section>
+
+<section class="section"><div class="quizband glass-strong"><div class="big"><small class="script">آماده‌اید برای</small><span>سطح بعدی؟</span></div>
+ <div><h3 style="font-size:1.25rem">منابع انسانی سازمان شما در کدام مرحله است؟</h3><p class="muted" style="margin-top:.4rem">پنج سؤال، دو دقیقه. در پایان می‌گویم بیشترین اثر را کدام قدم دارد.</p><button class="btn btn-accent" style="margin-top:1rem" data-act="quiz">کنجکاوید؟ آزمون را شروع کنید <span class="arrow">←</span></button></div><span class="qnum" aria-hidden="true">؟</span></div></section>
+
+<section class="section"><div class="sec-head"><div><p class="script" style="color:var(--acc-ink);font-size:1.3rem">هدیه‌ای از من</p><h2 class="sec-title">منابع رایگان</h2></div><p class="muted" style="max-width:24rem;font-size:.9rem">قالب‌ها و چک‌لیست‌هایی که در پروژه‌ها واقعاً استفاده می‌کنم. موضوع را انتخاب کنید.</p></div>
+ <div class="topics" role="group" aria-label="موضوع">${TOPICS.map(([v,l,ic])=>`<button class="topic glass" aria-pressed="${ui.free===v}" data-act="free" data-v="${v}"><span class="icon-disc">${icon(ic)}</span><b>${l}</b></button>`).join('')}</div>
+ <div class="freebies">${fl.map(f=>`<div class="free glass"><div class="mock" style="background:radial-gradient(80% 80% at 50% 30%,color-mix(in srgb,${f.c} 45%,transparent),color-mix(in srgb,${f.c} 12%,transparent))"><div class="paper back"><i class="t"></i><i></i><i></i></div><div class="paper"><i class="t" style="background:${f.c}"></i><i></i><i></i><i style="width:80%"></i><i></i><i style="width:60%"></i></div></div><span class="tag">${TOPICS.find(t=>t[0]===f.topic)[1]}</span><h3>${f.title}</h3><p class="faint" style="font-size:.78rem">${f.fmt}</p><button class="btn btn-primary btn-sm" style="align-self:flex-start" data-act="freebie" data-f="${f.id}">${f.btn} <span class="arrow">←</span></button></div>`).join('')}</div>
+ ${ui.free!=='all'?'<button class="link" style="margin-top:1rem" data-act="free" data-v="all">نمایش همهٔ منابع</button>':''}</section>
+
+<section class="section statband" aria-label="آمار"><div class="grid4">${[['۹٬۸۰۰+','شرکت‌کننده در دوره‌ها'],['۶۰+','سازمان همکار'],['۲۱۰ هزار','بار شنیدن پادکست'],['۴٫۸ از ۵','رضایت از دوره‌ها']].map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('')}</div></section>
+
+<section class="section pod"><div class="podcover"><span style="font-size:.8rem;opacity:.9">پادکست هفتگی</span><b>آدم‌ها<br>پیش از<br>فرایندها</b><svg class="mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">${IC.mic}</svg><span class="script" style="font-size:1.1rem;text-align:end">با آرزو زحمت‌بران</span></div>
+ <div><p class="eyebrow">پرطرفدارترین اپیزودها</p><h2 class="sec-title" style="margin:.3rem 0 1rem">گوش کنید، در راه کار</h2>
+ <div class="eps">${EPISODES.map(e=>`<div class="ep glass"><span class="n">${fa(e.n)}</span><span style="min-width:0"><b>${e.t}</b><small>${e.g} · ${fa(e.d)} دقیقه</small></span><button class="play" aria-pressed="${ui.playing===e.n}" data-act="play" data-n="${e.n}" aria-label="${ui.playing===e.n?'توقف':'پخش'} اپیزود ${fa(e.n)}">${ui.playing===e.n?'<span class="eq"><i></i><i></i><i></i></span>':'▶'}</button></div>`).join('')}</div>
+ ${ui.playing?`<p class="faint" style="font-size:.76rem;margin-top:.6rem">پخش نمایشی است؛ فایل صوتی در این نسخه متصل نیست. <span class="sim">شبیه‌سازی</span></p>`:''}<a class="link" href="#blog" style="margin-top:.8rem">همهٔ اپیزودها در مجله <span class="arrow">←</span></a></div></section>
+
+<section class="section blogwrap"><div class="stackhead"><small>نه یک</small><span>وبلاگ</span><em class="script">معمولی منابع انسانی</em><p class="muted" style="font-size:.92rem;line-height:1.9;margin-top:1rem;font-family:var(--f-body)">یادداشت‌های کوتاه و کاربردی، بدون اصطلاحات قلمبه.</p><a class="btn btn-glass btn-sm" href="#blog" style="margin-top:1rem">همهٔ نوشته‌ها</a></div>
+ <div class="grid3">${POSTS.filter(p=>p.type!=='پادکست').slice(0,3).map(postCard).join('')}</div></section>
+
+<section class="section bookband glass-strong"><div class="bigcover"><span class="burst">پرفروش<br>۱۴۰۴</span>${coverHtml(S.products[0])}</div>
+ <div><p class="script" style="color:var(--acc-ink);font-size:1.3rem">کتاب تازه</p><h2 class="sec-title">آدم‌ها پیش از فرایندها</h2><p style="margin-top:.8rem;font-size:1.02rem">دوازده فصل از پروژه‌های واقعی: از استخدامی که اشتباه شد تا ارزیابی‌ای که بالاخره گفت‌وگو شد. برای مدیرهایی که می‌خواهند منابع انسانی را بفهمند، نه فقط اجرا کنند.</p>
+ <figure class="glass" style="margin:1.2rem 0 0;padding:1rem 1.2rem"><blockquote style="margin:0;font-size:.92rem;color:var(--ink)">«کتابی که دوست داشتم روز اول مدیریتم داشته باشم.»</blockquote><figcaption class="faint" style="font-size:.76rem;margin-top:.3rem">آیدا نیک‌نام، هم‌بنیان‌گذار رهنما</figcaption></figure>
+ <div class="row" style="margin-top:1.3rem"><button class="btn btn-accent" data-act="add" data-p="p1">همین امروز سفارش دهید · ${toman(S.products[0].price)}</button><button class="btn btn-glass" data-act="add" data-p="p2">نسخهٔ الکترونیکی</button></div></div></section>
+
+<section class="section"><div class="sec-head"><div><p class="eyebrow">کتابخانهٔ آموزشی</p><h2 class="sec-title">یاد بگیرید، با سرعت خودتان</h2></div><a class="link" href="#events">تقویم رویدادها <span class="arrow">←</span></a></div>
+ <div class="library">${LIB.map((l,i)=>`<a href="${l.go}" class="course glass" style="--c:${l.c}"><span class="blob"></span><span class="no">${faD('0'+(i+1))}</span><span class="tag">${l.kind}</span><h3>${l.title}</h3><span class="faint" style="font-size:.8rem">${l.meta}</span><span class="more">اطلاعات بیشتر <i class="arrow">←</i></span></a>`).join('')}</div></section>
+
+<section class="section ev-feature glass-strong" style="padding:0;overflow:hidden"><div class="ev-art">${thumb('ev')}<div class="ev-date glass"><span class="script" style="font-size:1.2rem;color:var(--acc-ink)">ثبتش کنید</span><b>${parts(next.start).day}</b><span>${parts(next.start).month} · ${parts(next.start).weekday}</span></div></div><div class="ev-body"><div class="row"><span class="badge b-acc">${next.kind} پیش رو</span><span class="badge ${next.price?'b-neu':'b-ok'}">${toman(next.price)}</span><span class="badge b-warn">${fa(next.cap-next.reg)} جای خالی</span></div>
+ <h3 class="disp" style="font-size:2rem;line-height:1.3">${next.title}</h3><p class="muted" style="font-size:.9rem">${jDate(next.start,{wd:1})}، ساعت ${jTime(next.start)} · ${next.venue}</p><div class="countdown" data-cd="${next.start}" role="timer" aria-label="زمان باقی‌مانده تا شروع"></div><div><button class="btn btn-accent" data-act="reg" data-e="${next.id}">بله! جای من را نگه دار</button></div></div></section>
+
+<section class="section"><div class="sec-head"><div><p class="script" style="color:var(--acc-ink);font-size:1.3rem">از زبان خودشان</p><h2 class="sec-title">همکاران چه می‌گویند</h2></div></div>
+ <div class="grid3">${TESTI.map(t=>`<figure class="quote glass" style="margin:0"><span class="bigq" aria-hidden="true" dir="ltr">“</span><blockquote>${t.q}</blockquote><figcaption class="row"><span class="avatar">${t.n[0]}</span><span><b style="color:var(--ink);display:block;font-size:.9rem">${t.n}</b><span class="faint" style="font-size:.78rem">${t.r}</span></span></figcaption></figure>`).join('')}</div></section>
+
+<section class="section news glass-strong"><div class="envwrap">${spinBadge('n','خبرنامه‌ای واقعی ✳ برای صندوق شما ✳ هر دو هفته ✳','')}<div class="env"><svg viewBox="0 0 64 48" width="64"><rect x="2" y="4" width="60" height="40" rx="6" fill="var(--peach)"/><path d="M4 8 32 28 60 8" fill="none" stroke="#fff" stroke-width="3"/><circle cx="50" cy="10" r="7" fill="var(--rose)"/></svg></div></div>
+ <div><h2 class="sec-title">نامه‌ای کوتاه، هر دو هفته یک بار</h2><p class="muted" style="margin-top:.5rem">یک ایده، یک قالب و یک سؤال برای جلسهٔ بعدی تیم‌تان. بدون تبلیغ؛ هر وقت خواستید لغو کنید.</p>
+ <form data-form="news" class="row" style="margin-top:1rem;align-items:flex-start" novalidate><div class="field" style="flex:1;min-width:min(16rem,100%)"><label class="sr" for="nw">ایمیل</label><input id="nw" class="input ltr" placeholder="name@example.com" autocomplete="email"></div><button class="btn btn-primary">پایه‌ام، عضوم کن</button></form></div></section>
+
+<section class="section"><div class="glass-strong pad" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:2rem;align-items:center" id="cbwrap"><div><h2 class="sec-title">پروژهٔ سازمانی دارید؟</h2><p class="muted" style="margin-top:.5rem">نام و شماره‌تان را بگذارید؛ برای یک گفت‌وگوی ۲۰ دقیقه‌ای و بدون هزینه تماس می‌گیرم.</p></div><div>${callbackForm('h')}</div></div></section>`};
+
+function quizView(){const z=ui.quiz;if(z.i<QUIZ.length){const q=QUIZ[z.i];return`<div class="row between"><span class="eyebrow">سؤال ${fa(z.i+1)} از ${fa(QUIZ.length)}</span><button class="btn btn-ghost btn-icon" data-act="close" aria-label="بستن">✕</button></div>
+ <div class="cap" style="margin:.6rem 0 1.2rem"><i style="width:${(z.i)/QUIZ.length*100}%"></i></div><h2 class="disp" style="font-size:1.7rem;line-height:1.4">${q.q}</h2>
+ <div class="stack" style="gap:.6rem;margin-top:1.2rem" role="radiogroup">${q.o.map((o,j)=>`<button class="opt" role="radio" aria-checked="false" data-act="qans" data-v="${j}"><b style="font-weight:500">${o}</b></button>`).join('')}</div>
+ ${z.i?'<button class="link" style="margin-top:1rem" data-act="qback">سؤال قبل</button>':''}`}
+ const s=z.a.reduce((x,y)=>x+y,0),r=QRES.find(x=>s<=x.max),sv=SERVICES.find(x=>x.slug===r.svc);
+ return`<div class="row between"><span class="eyebrow">نتیجهٔ شما</span><button class="btn btn-ghost btn-icon" data-act="close" aria-label="بستن">✕</button></div>
+ <p class="script" style="font-size:1.3rem;color:var(--acc-ink);margin-top:.4rem">سازمان شما در</p><h2 class="disp" style="font-size:2.6rem">${r.name}</h2>
+ <div class="cap" style="margin:.8rem 0"><i style="width:${s/10*100}%"></i></div><p class="faint" style="font-size:.78rem">امتیاز ${fa(s)} از ۱۰</p><p style="margin-top:.8rem">${r.txt}</p>
+ <div class="glass" style="padding:1rem 1.1rem;margin-top:1rem;display:flex;gap:.8rem;align-items:center"><span class="icon-disc">${icon(sv.icon)}</span><div style="min-width:0"><span class="tag">قدم پیشنهادی</span><b style="display:block;color:var(--ink)">${sv.title}</b></div></div>
+ <div class="row" style="margin-top:1.2rem"><button class="btn btn-primary" data-act="qgo">درخواست جلسهٔ تشخیص رایگان</button><button class="btn btn-ghost" data-act="quiz">دوباره</button></div>`}
+Object.assign(A,{
+ quiz(){ui.quiz={i:0,a:[]};modal(quizView())},
+ qans(el){ui.quiz.a[ui.quiz.i]=+el.dataset.v;ui.quiz.i++;document.querySelector('.modal').innerHTML=quizView();document.querySelector('.modal button.opt,.modal .btn-primary')?.focus()},
+ qback(){ui.quiz.i--;document.querySelector('.modal').innerHTML=quizView()},
+ qgo(){const s=ui.quiz.a.reduce((x,y)=>x+y,0),r=QRES.find(x=>s<=x.max),sv=SERVICES.find(x=>x.slug===r.svc);closeModal();ui.consult={step:0,kind:'سازمانی',d:{needs:[{structure:'ساختار سازمانی',perform:'ارزیابی عملکرد',strategy:'استراتژی منابع انسانی'}[sv.slug]],desc:`نتیجهٔ آزمون: ${r.name} (امتیاز ${s} از ۱۰)`}};location.hash='consult'},
+ free(el){ui.free=ui.free===el.dataset.v?'all':el.dataset.v;render()},
+ freebie(el){const f=FREEBIES.find(x=>x.id===el.dataset.f);modal(`<div class="row between"><span class="tag">${TOPICS.find(t=>t[0]===f.topic)[1]}</span><button class="btn btn-ghost btn-icon" data-act="close" aria-label="بستن">✕</button></div><h2 class="disp" style="font-size:1.8rem;margin-top:.3rem">${f.title}</h2><p class="muted" style="font-size:.88rem">${f.fmt} · لینک دانلود برایتان پیامک یا ایمیل می‌شود.</p>
+  <form data-form="catalog" data-file="${f.title}" class="stack" style="margin-top:1rem;gap:.8rem" novalidate><div class="field"><label for="fb-n">نام</label><input id="fb-n" class="input" autocomplete="name"></div><div class="field"><label for="fb-m">موبایل یا ایمیل</label><input id="fb-m" class="input ltr" placeholder="09xxxxxxxxx"></div><button class="btn btn-primary">${f.btn}</button><p class="faint" style="font-size:.74rem">با دریافت فایل، عضو خبرنامه هم می‌شوید و هر وقت بخواهید لغو می‌کنید.</p></form>`)},
+ play(el){const n=+el.dataset.n;ui.playing=ui.playing===n?null:n;render()},
+ promoX(){ui.promo=false;try{sessionStorage.setItem('arz-promo','0')}catch(e){}renderPromo()},
+});
+F.news=f=>{clrErr(f);const i=f.querySelector('input');if(!validEmail(i.value))return setErr(i,'ایمیل معتبر نیست؛ مثل name@example.com.');addLead('عضویت خبرنامه',i.value.trim(),'—','','');f.outerHTML=`<div class="notice n-ok" style="margin-top:1rem"><span><b>تقریباً تمام است!</b> یک ایمیل تأیید به <span class="ltr">${esc(i.value.trim())}</span> فرستادم؛ روی لینکش بزنید. <span class="sim">شبیه‌سازی</span></span></div>`};
+function renderPromo(){const el=document.getElementById('promo');if(!el)return;const e=S.events.filter(x=>x.start>Date.now()&&!x.price).sort((a,b)=>a.start-b.start)[0];
+ if(!ui.promo||!e){el.hidden=true;return}el.hidden=false;el.innerHTML=`<span>✳ <b>وبینار رایگان:</b> ${e.title} · ${jDate(e.start,{wd:1})}</span><button class="btn" data-act="reg" data-e="${e.id}">بله! جای من را نگه دار</button><button class="x" data-act="promoX" aria-label="بستن نوار">✕</button>`}
+try{if(sessionStorage.getItem('arz-promo')==='0')ui.promo=false}catch(e){}
+
+document.addEventListener('click',e=>{const inDock=!!e.target.closest('#dock');const s=e.target.closest('[data-scrim]');if(s&&e.target===s){closeModal();return}
+ const el=e.target.closest('[data-act]');if(!el)return;const a=A[el.dataset.act];if(a){if(el.tagName!=='A')e.preventDefault();a(el)}
+ if(ui.dock&&!inDock){ui.dock=false;render()}});
+document.addEventListener('submit',e=>{const f=e.target.closest('[data-form]');if(!f)return;e.preventDefault();F[f.dataset.form]?.(f)});
+document.addEventListener('input',e=>{if(e.target.dataset.input==='bq'){ui.blog.q=e.target.value;const tmp=document.createElement('div');tmp.innerHTML=V.blog();document.getElementById('blist').innerHTML=tmp.querySelector('#blist').innerHTML}
+ if(e.target.getAttribute('aria-invalid')){e.target.removeAttribute('aria-invalid');e.target.parentElement.querySelector('.err')?.remove()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(document.getElementById('modalRoot').innerHTML)closeModal();else if(ui.dock){ui.dock=false;render()}}});
+addEventListener('hashchange',()=>{closeModal();render();scrollTo(0,0)});
+document.documentElement.dataset.palette='navy';try{const t=localStorage.getItem('arz-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}
+paintWorld();render();
+</script>
+</body></html>

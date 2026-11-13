@@ -1,0 +1,3 @@
+{% extends "wagtailadmin/home.html" %}
+{# The panel's home greets with the brand name from Site Settings (REPORT #055) #}
+{% block branding_welcome %}{{ settings.content.SiteSettings.brand_name }}{% endblock %}

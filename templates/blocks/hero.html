@@ -1,19 +1,35 @@
-{% load wagtailimages_tags %}
-<section class="relative overflow-hidden bg-gradient-to-b from-brand-50 to-white">
-  <div class="container-page grid items-center gap-10 py-14 sm:py-20 lg:grid-cols-2">
+{% load wagtailcore_tags wagtailimages_tags content_tags %}
+{# The demo's first section (REPORT #058): a kicker, the title with one underlined word and a coloured #}
+{# line after it, then a photo collage — a tilted glass frame, a sticker, a turning badge, the newest podcast. #}
+{% split_highlight value.title value.highlight as parts %}
+<section class="under-header relative">
+  <div class="container-page hero-grid">
     <div>
-      <h1 class="heading-1 text-4xl sm:text-5xl">{{ value.title }}</h1>
-      {% if value.subtitle %}<p class="lead mt-5 max-w-xl">{{ value.subtitle }}</p>{% endif %}
+      {% if value.eyebrow %}<p class="kicker surface">{% include "components/icon.html" with name="asterisk" size="14" class="kicker-star" %}{{ value.eyebrow }}</p>{% endif %}
+      <h1 class="hero-title">{% if parts %}{{ parts.0 }}<span class="scrib">{{ parts.1 }}{% include "components/scribble.html" %}</span>{{ parts.2 }}{% else %}{{ value.title }}{% endif %}</h1>
+      {% if value.quote %}<p class="hero-after">{{ value.quote }}</p>{% endif %}
+      {% if value.subtitle %}<p class="lead mt-4 max-w-[33rem]">{{ value.subtitle }}</p>{% endif %}
       {% if value.buttons %}
       <div class="mt-8 flex flex-wrap gap-3">
-        {% for button in value.buttons %}<a href="{{ button.href }}" class="btn {% if button.style == 'secondary' %}btn-secondary{% else %}btn-primary{% endif %}">{{ button.label }}</a>{% endfor %}
+        {% for button in value.buttons %}<a href="{{ button.href }}" class="btn {% if button.style == 'secondary' %}btn-secondary{% else %}btn-primary{% endif %}">{{ button.label }}{% if button.style == 'secondary' %} {% include "components/icon.html" with name="arrow" size="16" %}{% endif %}</a>{% endfor %}
       </div>
       {% endif %}
     </div>
-    {% if value.image %}
-    <div class="justify-self-center lg:justify-self-end">
-      {% picture value.image format-{avif,webp,jpeg} fill-560x640 sizes="(min-width: 1024px) 480px, 90vw" class="aspect-[7/8] w-full max-w-md rounded-[2rem] object-cover shadow-xl" alt="" fetchpriority="high" %}
+
+    <div class="collage">
+      <figure class="polaroid surface">
+        <div class="polaroid-photo {% if not value.image %}scene scene-window{% endif %}">{% if value.image %}<span class="polaroid-sun" aria-hidden="true"></span>{% endif %}</div>
+        {% if value.image %}{% image value.image height-760 format-webp class="hero-cutout" alt=value.photo_caption|default:"" fetchpriority="high" %}{% endif %}
+        {% if value.photo_caption %}<figcaption class="polaroid-caption">{{ value.photo_caption }}</figcaption>{% endif %}
+      </figure>
+      {% if value.sticker %}<p class="sticker-hello" aria-hidden="true">{{ value.sticker }}</p>{% endif %}
+      {% if value.badge_text %}<div class="spin-badge">{% include "components/spin_badge.html" with uid="hero" text=value.badge_text center=settings.content.SiteSettings.brand_name|first %}</div>{% endif %}
+      {% if episode %}
+      <a href="{% pageurl episode %}" class="podcast-sticker surface">
+        <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span class="min-w-0"><b class="block text-[0.82rem] leading-6 text-ink">اپیزود تازهٔ پادکست</b><span class="line-clamp-1 text-xs text-ink-3">{{ episode.title }}</span></span>
+      </a>
+      {% endif %}
     </div>
-    {% endif %}
   </div>
 </section>

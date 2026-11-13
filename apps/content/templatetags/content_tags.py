@@ -57,6 +57,63 @@ def is_active(context, href):
     return "true" if path.startswith(href) else ""
 
 
+@register.simple_tag(takes_context=True)
+def group_active(context, group):
+    """'true' when the current URL is inside any link of a menu group."""
+    return "true" if any(is_active(context, link.href) for link in group["links"]) else ""
+
+
+@register.filter
+def menu_links(menu):
+    """The plain links of the main menu, without its dropdown groups."""
+    return [item.value for item in menu if item.block_type == "link"]
+
+
+SCENES = ("scene-window", "scene-window-1", "scene-window-2")
+
+
+@register.filter
+def scene_class(obj):
+    """A drawn picture for a card without a photo; the same one for an object every time."""
+    return SCENES[(obj.pk or 0) % len(SCENES)]
+
+
+@register.simple_tag
+def split_highlight(text, word):
+    """(before, word, after) around the first place `word` appears in `text`, or None.
+
+    For a title with one marked word; the template escapes each part.
+    """
+    if not word or word not in (text or ""):
+        return None
+    before, _, after = text.partition(word)
+    return (before, word, after)
+
+
+BOOK_COVERS = 5
+
+
+@register.filter
+def cover_class(obj):
+    """A drawn cover colour for a product without a cover image; the same one every time."""
+    return f"book-cover-{(obj.pk or 0) % BOOK_COVERS + 1}"
+
+
+@register.simple_tag(takes_context=True)
+def legal_pages(context):
+    """Live legal pages of this site, linked from the footer."""
+    from wagtail.models import Site
+
+    from ..models import LegalPage
+
+    request = context.get("request")
+    site = Site.find_for_request(request) if request else None
+    pages = LegalPage.objects.live().public()
+    if site:
+        pages = pages.descendant_of(site.root_page)
+    return pages.order_by("path")
+
+
 @register.simple_tag(name="jsonld")
 def _jsonld(data):
     # Escape "<" so content can never close the <script> element

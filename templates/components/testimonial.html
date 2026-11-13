@@ -1,13 +1,15 @@
 {% load wagtailimages_tags %}
 {# Usage: {% include "components/testimonial.html" with testimonial=t %} #}
+{# The demo's quote card: a large gold quote mark, the quote, then the person with a photo or their initial #}
 <figure class="card">
-  <div class="card-body">
-    <blockquote class="text-[0.98rem] leading-8 text-slate-700">«{{ testimonial.quote }}»</blockquote>
-    <figcaption class="mt-auto flex items-center gap-3 pt-4">
-      {% if testimonial.photo %}{% image testimonial.photo fill-96x96 format-webp class="h-12 w-12 rounded-full object-cover" loading="lazy" alt="" %}{% endif %}
+  <div class="card-body gap-4 p-7">
+    <span class="quote-mark" dir="ltr" aria-hidden="true">“</span>
+    <blockquote class="text-[0.98rem] leading-8 text-ink">{{ testimonial.quote }}</blockquote>
+    <figcaption class="mt-auto flex items-center gap-3 pt-2">
+      {% if testimonial.photo %}{% image testimonial.photo fill-96x96 format-webp class="size-11 rounded-full object-cover" loading="lazy" alt="" %}{% else %}<span class="avatar" aria-hidden="true">{{ testimonial.author_name|first }}</span>{% endif %}
       <div>
-        <p class="font-bold text-slate-900">{{ testimonial.author_name }}</p>
-        <p class="muted">{{ testimonial.author_title }}{% if testimonial.client %}{% if testimonial.author_title %}، {% endif %}{{ testimonial.client.name }}{% endif %}</p>
+        <p class="text-[0.95rem] font-semibold text-ink">{{ testimonial.author_name }}</p>
+        <p class="text-xs leading-6 text-ink-3">{{ testimonial.author_title }}{% if testimonial.client %}{% if testimonial.author_title %}، {% endif %}{{ testimonial.client.name }}{% endif %}</p>
       </div>
     </figcaption>
   </div>
