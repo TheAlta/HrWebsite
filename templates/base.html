@@ -19,6 +19,7 @@
 <body class="flex min-h-screen flex-col font-sans {% block body_class %}{% endblock %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
   {% block world %}{% include "includes/world.html" with world_class="world-inner" %}{% endblock %}
   <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-surface focus:px-4 focus:py-2 focus:text-ink focus:shadow-lift">رفتن به محتوای اصلی</a>
+  {% block event_bar %}{% include "includes/event_bar.html" %}{% endblock %}
   {% block header %}{% include "includes/header.html" %}{% endblock %}
   <main id="main" class="flex-1">
     {% if messages %}

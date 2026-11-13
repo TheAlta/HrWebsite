@@ -96,6 +96,9 @@
   --ph-bg: linear-gradient(165deg, #c9d5ea, #e9e2cf 58%, #f5ecd8); /* behind the hero's cut-out photo */
   --band-bg: linear-gradient(120deg, #0e1830, #1d3461, #2e4a7d, #8c6d2c, #0e1830); /* AA under white text, demo gold #a8843a */
   --on-gold: #3d2a12; /* text on the gold sticker */
+  --promo-bg: linear-gradient(90deg, #0e1830, #1d3461 60%, #8c6d2c); /* the event bar, white text */
+  --promo-btn: #f6ecd4;
+  --promo-ink: #14213d; /* navy on the light button, in both themes */
   --mark-gold: color-mix(in srgb, #c8a048 50%, transparent);
   --mark-blue: color-mix(in srgb, #5a74a8 45%, transparent);
   --mark-peach: color-mix(in srgb, #d3a26a 50%, transparent);
@@ -746,6 +749,20 @@
    SITE FRAME — header, menus, footer, floating chat
    ========================================================================== */
 @layer components {
+  /* The bar above the header for the next free event (includes/event_bar.html) */
+  .event-bar {
+    background: var(--promo-bg);
+    @apply relative z-50 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 py-2 ps-4 pe-12 text-center text-[0.84rem] leading-6 text-white;
+  }
+  .event-bar b {
+    @apply font-semibold;
+  }
+  .event-bar-btn {
+    @apply inline-flex h-8 items-center rounded-full bg-(--promo-btn) px-3.5 text-[0.78rem] font-semibold text-(--promo-ink) transition-transform hover:-translate-y-px;
+  }
+  .event-bar-close {
+    @apply absolute end-3 top-1/2 grid size-7 -translate-y-1/2 place-items-center rounded-full text-white transition-colors hover:bg-white/20;
+  }
   /* The header floats as a glass pill (with .surface for the edge and blur) */
   .site-header {
     @apply sticky top-0 z-40 py-3;

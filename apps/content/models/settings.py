@@ -73,6 +73,12 @@ class SiteSettings(BaseSiteSetting):
         related_name="+",
     )
     footer_text = models.TextField("متن فوتر", blank=True)
+    # The bar above the header for the next free course or webinar (REPORT #058)
+    show_event_bar = models.BooleanField(
+        "نوار رویداد رایگان",
+        default=True,
+        help_text="بالای همهٔ صفحه‌ها، دوره یا وبینار رایگان بعدی را با دکمهٔ ثبت‌نام نشان می‌دهد.",
+    )
     trust_seal_html = models.TextField(
         "کد نماد اعتماد",
         blank=True,
@@ -150,6 +156,7 @@ class SiteSettings(BaseSiteSetting):
                     MultiFieldPanel(
                         [FieldPanel("cta_label"), FieldPanel("cta_page")], heading="دکمه برجسته"
                     ),
+                    FieldPanel("show_event_bar"),
                     FieldPanel("footer_text"),
                     FieldPanel("trust_seal_html"),
                 ],

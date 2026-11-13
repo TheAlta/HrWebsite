@@ -86,6 +86,16 @@ document.addEventListener("alpine:init", () => {
     },
   }));
 
+  // The free-event bar above the header: closing it is remembered for this visit,
+  // in a cookie the server reads, so later pages arrive without it (no jump on load)
+  Alpine.data("eventBar", () => ({
+    open: true,
+    close() {
+      this.open = false;
+      document.cookie = `event_bar_closed=${this.$root.dataset.event}; path=/; samesite=lax`;
+    },
+  }));
+
   // Light or dark. The choice is kept in a cookie so the server can put it on
   // <html> before the page paints; without one the device setting decides.
   Alpine.data("themeSwitch", () => ({

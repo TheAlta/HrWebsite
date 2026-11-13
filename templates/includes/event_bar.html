@@ -1,0 +1,13 @@
+{% load wagtailcore_tags core_tags event_tags %}
+{# The demo's bar above the header: the next free course or webinar (REPORT #058). Closing it sets a cookie #}
+{# for this visit, so the server leaves it out of the next pages instead of hiding it after they load. #}
+{% if settings.content.SiteSettings.show_event_bar %}{% event_bar as bar %}{% if bar %}
+<aside class="event-bar" aria-label="رویداد رایگان" x-data="eventBar" data-event="{{ bar.pk }}" x-show="open">
+  <p class="flex flex-wrap items-center justify-center gap-x-1.5">
+    {% include "components/icon.html" with name="asterisk" size="13" class="text-gold" %}
+    <b>{{ bar.get_kind_display }} رایگان:</b> {{ bar.title }} · {{ bar.start_at|jweekday }} {{ bar.start_at|jdate }}
+  </p>
+  <a href="{% pageurl bar %}" class="event-bar-btn">بله! جای من را نگه دار</a>
+  <button type="button" class="event-bar-close" @click="close" aria-label="بستن نوار">{% include "components/icon.html" with name="close" size="16" %}</button>
+</aside>
+{% endif %}{% endif %}
