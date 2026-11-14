@@ -9,7 +9,7 @@
     {% if mode == "codes" %}
     <div class="card-body gap-4">
       <div>
-        <h1 class="text-xl font-extrabold text-ink">کدهای پشتیبان</h1>
+        <h1 class="text-xl font-bold text-ink">کدهای پشتیبان</h1>
         <p class="muted mt-1">ورود دومرحله‌ای فعال شد.</p>
       </div>
       {% include "components/alert.html" with level="info" text="این کدها فقط همین یک بار نشان داده می‌شوند. آن‌ها را بنویسید یا جای امنی نگه دارید. اگر گوشی در دسترس نبود، هر کد یک بار به‌جای کد اپ کار می‌کند." %}
@@ -24,7 +24,7 @@
       <input type="hidden" name="next" value="{{ next }}">
       {% if mode == "setup" %}
       <div>
-        <h1 class="text-xl font-extrabold text-ink">فعال کردن ورود دومرحله‌ای</h1>
+        <h1 class="text-xl font-bold text-ink">فعال کردن ورود دومرحله‌ای</h1>
         <p class="muted mt-1">برای ورود به پنل، علاوه بر رمز، کدی از گوشی‌تان لازم است. این کار یک بار انجام می‌شود.</p>
       </div>
       <ol class="list-decimal space-y-3 ps-5 text-[0.95rem] leading-7 text-ink-2">
@@ -38,7 +38,7 @@
       </ol>
       {% else %}
       <div>
-        <h1 class="text-xl font-extrabold text-ink">ورود دومرحله‌ای</h1>
+        <h1 class="text-xl font-bold text-ink">ورود دومرحله‌ای</h1>
         <p class="muted mt-1">کد ۶ رقمی اپ Authenticator را وارد کنید. اگر گوشی در دسترس نیست، یکی از کدهای پشتیبان را وارد کنید.</p>
       </div>
       {% endif %}

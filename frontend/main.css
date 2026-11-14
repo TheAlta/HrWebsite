@@ -9,8 +9,8 @@
 /* One typeface for every text, headings included (REPORT #058).
    Font URLs are relative to the built file static/css/main.css */
 @font-face {
-  font-family: "Vazirmatn";
-  src: url("../fonts/vazirmatn/Vazirmatn-Variable-fa.woff2") format("woff2");
+  font-family: "Estedad";
+  src: url("../fonts/estedad/Estedad-Variable-fa.woff2") format("woff2");
   font-weight: 100 900;
   font-style: normal;
   font-display: swap;
@@ -106,11 +106,13 @@
   --envelope: #d3a26a;
   --envelope-dot: #8a5a5a;
 
-  /* The page's shapes, behind everything */
-  --shape-a: #e2e8f3;
-  --shape-b: #d3ddec;
-  --shape-n: #14213d;
-  --shape-g: #c8a048;
+  /* The page's backdrop: navy light from the top corner, a warm gold glow
+     lower down, a faint blue pool at the foot, on bone paper */
+  --backdrop:
+    radial-gradient(70% 60% at 100% -10%, rgb(46 74 125 / 0.2), transparent 65%),
+    radial-gradient(55% 50% at -5% 35%, rgb(200 160 72 / 0.16), transparent 70%),
+    radial-gradient(65% 55% at 60% 115%, rgb(20 33 61 / 0.1), transparent 70%),
+    linear-gradient(180deg, #f9f7f3 0%, #f4f1ea 55%, #efebe2 100%);
 
   --sh-1: 0 1px 2px rgb(16 28 60 / 0.13), 0 18px 44px -12px rgb(16 28 60 / 0.13);
   --sh-2: 0 2px 6px rgb(16 28 60 / 0.13), 0 24px 60px -18px rgb(16 28 60 / 0.23);
@@ -163,10 +165,11 @@
     --sheen: radial-gradient(120% 70% at 75% -15%, rgb(230 240 250 / 0.1), transparent 62%);
     --scrim: rgb(0 4 14 / 0.55);
 
-    --shape-a: #101b31;
-    --shape-b: #15233f;
-    --shape-n: #2e4a7d;
-    --shape-g: #b8923f;
+    --backdrop:
+      radial-gradient(70% 60% at 100% -10%, rgb(46 74 125 / 0.55), transparent 65%),
+      radial-gradient(50% 45% at -5% 40%, rgb(200 160 72 / 0.13), transparent 70%),
+      radial-gradient(70% 55% at 55% 115%, rgb(29 52 97 / 0.45), transparent 70%),
+      linear-gradient(180deg, #0c1427 0%, #0a1120 50%, #080e1b 100%);
 
     --sh-1: 0 1px 2px rgb(0 4 14 / 0.45), 0 18px 44px -12px rgb(0 4 14 / 0.45);
     --sh-2: 0 2px 6px rgb(0 4 14 / 0.45), 0 24px 60px -18px rgb(0 4 14 / 0.6);
@@ -177,8 +180,8 @@
 
 /* The palette as Tailwind names: text-ink, bg-page, border-line, text-ok ... */
 @theme inline {
-  --font-sans: "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Vazirmatn", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Estedad", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Estedad", ui-sans-serif, system-ui, sans-serif;
 
   --color-ink: var(--ink);
   --color-ink-2: var(--ink-2);
@@ -214,7 +217,22 @@
   --shadow-float: var(--sh-3);
 }
 
+/* The type scale (REPORT #059): five sizes for titles, all bold, never heavier.
+   Estedad is already dense, so the titles stay modest and the space does the work. */
 @theme {
+  --text-display: clamp(2.125rem, 1.55rem + 2.2vw, 3.125rem);
+  --text-display--line-height: 1.5;
+  --text-title: clamp(1.875rem, 1.5rem + 1.5vw, 2.5rem);
+  --text-title--line-height: 1.55;
+  --text-section: clamp(1.625rem, 1.35rem + 1.1vw, 2.125rem);
+  --text-section--line-height: 1.6;
+  --text-subsection: clamp(1.375rem, 1.2rem + 0.7vw, 1.75rem);
+  --text-subsection--line-height: 1.6;
+  --text-h3: 1.25rem;
+  --text-h3--line-height: 1.7;
+  --text-lead: 1.125rem;
+  --text-lead--line-height: 2;
+
   --radius-card: 1.3rem;
   --radius-control: 0.85rem;
 }
@@ -226,7 +244,8 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-page leading-8 text-ink-2 antialiased;
+    @apply bg-page text-base leading-8 text-ink-2 antialiased;
+    font-feature-settings: "ss01";
   }
   h1,
   h2,
@@ -255,62 +274,20 @@
 }
 
 /* ==========================================================================
-   THE PAGE'S SHAPES — the demo's background world: two soft discs, a dotted
-   square, a gold ring and two dots, fixed behind every page (base.html).
-   A wide drawing for landscape screens and a tall one for portrait.
+   THE PAGE'S BACKDROP (REPORT #059): one fixed layer of soft gradients in the
+   site's colours (--backdrop), behind every page (base.html). It does not
+   scroll or repeat, so it reads as light on the page, not as a wallpaper.
    ========================================================================== */
 .world {
   position: fixed;
   inset: 0;
   z-index: -10;
-  overflow: hidden;
   pointer-events: none;
-  background: var(--page);
+  background: var(--backdrop);
 }
-.world svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-.world .world-tall {
-  display: none;
-}
-@media (orientation: portrait) {
-  .world .world-wide {
-    display: none;
-  }
-  .world .world-tall {
-    display: block;
-  }
-}
-/* Inner pages: the shapes recede a little behind the content */
-.world-inner::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: color-mix(in srgb, var(--page) 22%, transparent);
-}
-.world .w-a {
-  fill: var(--shape-a);
-}
-.world .w-b {
-  fill: var(--shape-b);
-}
-.world .w-n {
-  fill: var(--shape-n);
-}
-.world .w-g {
-  fill: var(--shape-g);
-}
-.world .w-dot {
-  fill: var(--ink-4);
-}
-.world .w-ring,
-.world .w-line {
-  fill: none;
-  stroke: var(--shape-g);
-  stroke-width: 3;
-  stroke-linecap: round;
+/* Inner pages: the same light, quieter behind long text */
+.world-inner {
+  opacity: 0.75;
 }
 
 @layer components {
@@ -534,7 +511,7 @@
   }
   /* A page's title */
   .heading-1 {
-    @apply font-display text-[2.4rem] leading-[1.35] font-extrabold text-ink sm:text-[3rem] lg:text-[3.5rem];
+    @apply font-display text-title font-bold text-ink;
   }
   /* The short gradient rule under a page's title */
   .title-rule {
@@ -543,22 +520,22 @@
   }
   /* A home or landing section's title: the demo's larger section heading */
   .heading-section {
-    @apply font-display text-[2rem] leading-[1.35] font-extrabold text-ink sm:text-[2.5rem] lg:text-[2.9rem];
+    @apply font-display text-section font-bold text-ink;
   }
   /* A section's title */
   .heading-2 {
-    @apply font-display text-[1.85rem] leading-[1.4] font-extrabold text-ink sm:text-[2.2rem];
+    @apply font-display text-subsection font-bold text-ink;
   }
   /* A card's or a result's own title: login, payment result */
   .heading-3 {
-    @apply font-display text-[1.6rem] leading-[1.45] font-bold text-ink;
+    @apply font-display text-h3 font-bold text-ink;
   }
   /* The price beside a buy or book button */
   .price-lg {
-    @apply font-display text-[1.75rem] leading-snug font-extrabold text-ink;
+    @apply font-display text-[1.5rem] leading-snug font-bold text-ink tabular-nums;
   }
   .lead {
-    @apply text-lg leading-9 text-ink-2;
+    @apply text-lead text-ink-2;
   }
   .muted {
     @apply text-sm text-ink-3;
@@ -851,7 +828,7 @@
     @apply grid min-w-16 place-items-center rounded-2xl px-3 py-2 text-center;
   }
   .count-tile b {
-    @apply font-display text-2xl leading-8 font-extrabold text-ink tabular-nums;
+    @apply font-display text-2xl leading-8 font-bold text-ink tabular-nums;
   }
   .count-tile span {
     @apply text-xs text-ink-3;
@@ -873,7 +850,7 @@
   }
   /* The large opening quote mark of a quote card */
   .quote-mark {
-    @apply block h-9 font-display text-[5rem] leading-[0.75] font-extrabold text-gold;
+    @apply block h-9 font-display text-[4rem] leading-[0.75] font-bold text-gold;
   }
   /* A date in a tile: the day large, the month under it */
   .date-tile {
@@ -882,7 +859,7 @@
     @apply grid shrink-0 content-center rounded-2xl px-1 py-2 text-center;
   }
   .date-tile b {
-    @apply font-display text-[1.9rem] leading-tight font-extrabold text-ink;
+    @apply font-display text-[1.6rem] leading-tight font-bold text-ink;
   }
   .date-tile span {
     @apply text-xs text-ink-3;
@@ -895,7 +872,7 @@
     @apply flex aspect-[0.7] w-28 max-w-full flex-col justify-between rounded-[4px_8px_8px_4px] px-3 py-3.5 text-white transition-transform duration-300 group-hover:-translate-y-1;
   }
   .book-cover b {
-    @apply text-[1.05rem] leading-snug font-extrabold;
+    @apply text-[1rem] leading-snug font-bold;
   }
   .book-cover small {
     @apply text-[0.65rem] opacity-90;
@@ -919,7 +896,7 @@
     @apply flex flex-col gap-1 p-6;
   }
   .stat-tile b {
-    @apply font-display text-[2.4rem] leading-tight font-extrabold text-ink tabular-nums;
+    @apply font-display text-[2rem] leading-tight font-bold text-ink tabular-nums;
   }
   .logo-strip {
     @apply flex flex-wrap items-center justify-around gap-x-10 gap-y-4 px-6 py-5;
@@ -937,7 +914,7 @@
     @apply inline-block text-gold;
   }
   .hero-title {
-    @apply mt-4 font-display text-[2.4rem] leading-[1.35] font-extrabold text-ink sm:text-[3.1rem] lg:text-[3.9rem];
+    @apply mt-5 font-display text-display font-bold text-ink;
   }
   /* One word underlined by a gold hand-drawn stroke */
   .scrib {
@@ -958,7 +935,7 @@
     stroke-linecap: round;
   }
   .hero-after {
-    @apply mt-1 text-[1.3rem] leading-relaxed font-semibold text-accent-ink sm:text-[1.55rem];
+    @apply mt-2 text-[1.125rem] leading-relaxed font-medium text-accent-ink sm:text-[1.3rem];
   }
   /* The photo collage: a tilted glass frame the cut-out photo rises out of */
   .collage {
@@ -984,7 +961,7 @@
   }
   .sticker-hello {
     box-shadow: 0 10px 24px -8px rgb(160 110 30 / 0.5);
-    @apply absolute -end-[4%] -top-[2%] -rotate-12 rounded-2xl bg-gold px-5 pt-0.5 pb-1.5 text-[1.5rem] font-extrabold text-(--on-gold);
+    @apply absolute -end-[4%] -top-[2%] -rotate-12 rounded-2xl bg-gold px-5 pt-0.5 pb-1.5 text-[1.25rem] font-bold text-(--on-gold);
   }
   .spin-badge {
     @apply absolute -start-[4%] -bottom-[1%] size-28 sm:size-34;
@@ -1006,8 +983,8 @@
   }
   .spin-center {
     fill: var(--accent-ink);
-    font-size: 44px;
-    font-weight: 800;
+    font-size: 40px;
+    font-weight: 700;
   }
   .spin-ring {
     transform-origin: 100px 100px;
@@ -1058,7 +1035,7 @@
     @apply flex;
   }
   .marquee-list li {
-    @apply inline-flex items-center gap-9 pe-9 text-[1.3rem] font-bold whitespace-nowrap text-ink-3;
+    @apply inline-flex items-center gap-9 pe-9 text-[1.1rem] font-semibold whitespace-nowrap text-ink-3;
   }
   /* The demo's ✳ between names, drawn (the web font has no such character) */
   .marquee-list li::after {
@@ -1070,10 +1047,10 @@
 
   /* --- «سلام، من …» (blocks/intro.html) --- */
   .hello-title {
-    @apply font-display text-[2.5rem] leading-[1.35] font-extrabold text-ink sm:text-[3.5rem] lg:text-[4.4rem];
+    @apply font-display text-display font-bold text-ink;
   }
   .hello-text {
-    @apply mt-4 text-[1.12rem] leading-9 text-ink-2;
+    @apply mt-5 text-lead text-ink-2;
   }
   /* Highlighter marks: the title's word in gold, the text's bold words in blue and peach */
   .mark-gold,
@@ -1104,19 +1081,19 @@
     @apply grid items-center gap-6 p-7 text-center sm:p-10 md:grid-cols-[auto_minmax(0,1fr)_auto] md:gap-10 md:text-start;
   }
   .quiz-big {
-    @apply font-display leading-[1.25] font-extrabold text-ink;
+    @apply font-display leading-[1.4] font-bold text-ink;
   }
   .quiz-big small {
-    @apply block text-[1.3rem] font-semibold text-accent-ink;
+    @apply block text-[1.1rem] font-medium text-accent-ink;
   }
   .quiz-big span {
-    @apply block text-[2.8rem] sm:text-[3.6rem] lg:text-[4.4rem];
+    @apply block text-display;
   }
   /* The large outlined question mark at the end of the band */
   .quiz-mark {
     color: transparent;
     -webkit-text-stroke: 1.5px color-mix(in srgb, var(--accent) 60%, transparent);
-    @apply hidden font-display text-[5rem] leading-none font-extrabold md:block;
+    @apply hidden font-display text-[4.5rem] leading-none font-bold md:block;
   }
   .quiz-answer {
     background: var(--tile);
@@ -1158,7 +1135,7 @@
     @apply flex aspect-square flex-col justify-between rounded-[1.6rem] p-7 text-white;
   }
   .podcover b {
-    @apply max-w-[12ch] text-[2.2rem] leading-[1.3] font-extrabold sm:text-[2.8rem];
+    @apply max-w-[12ch] text-[1.875rem] leading-[1.45] font-bold sm:text-[2.25rem];
   }
 
   /* --- Featured book (blocks/featured_book.html) --- */
@@ -1167,7 +1144,7 @@
     @apply w-52 px-5 py-6;
   }
   .book-cover-lg b {
-    @apply text-[1.8rem];
+    @apply text-[1.5rem];
   }
   .burst {
     clip-path: polygon(50% 0, 61% 13%, 77% 6%, 80% 23%, 96% 26%, 90% 42%, 100% 55%, 87% 65%, 91% 82%, 74% 83%, 66% 99%, 52% 89%, 37% 99%, 30% 83%, 12% 84%, 15% 66%, 0 56%, 10% 42%, 4% 26%, 21% 23%, 24% 6%, 39% 13%);
@@ -1179,7 +1156,7 @@
     @apply min-h-64 gap-2 p-6 transition-transform hover:-translate-y-1;
   }
   .library-no {
-    @apply font-display text-[3.4rem] leading-none font-extrabold;
+    @apply font-display text-[2.5rem] leading-none font-bold;
   }
   .library-card-1 .library-no {
     color: var(--accent);
@@ -1207,21 +1184,21 @@
     @apply pointer-events-none absolute inset-0;
   }
   .statband-number {
-    @apply block text-[2.3rem] leading-tight font-extrabold tabular-nums sm:text-[3.2rem];
+    @apply block text-[2rem] leading-tight font-bold tabular-nums sm:text-[2.5rem];
   }
 
   /* --- The magazine's stacked heading (blocks/latest_articles.html) --- */
   .stackhead {
-    @apply font-display leading-[1.2] text-ink;
+    @apply font-display leading-[1.45] text-ink;
   }
   .stackhead small {
-    @apply block text-[1.6rem] font-bold text-ink-3;
+    @apply block text-[1.2rem] font-semibold text-ink-3;
   }
   .stackhead span {
-    @apply block text-[3.6rem] font-extrabold sm:text-[4.6rem];
+    @apply block text-display font-bold;
   }
   .stackhead em {
-    @apply block text-[1.4rem] font-semibold text-accent-ink not-italic;
+    @apply mt-1 block text-[1.1rem] font-medium text-accent-ink not-italic;
   }
 
   /* --- The featured event's date on its picture (blocks/upcoming_event.html) --- */
@@ -1229,7 +1206,7 @@
     @apply absolute inset-0 m-auto flex h-48 w-44 -rotate-4 flex-col items-center justify-center rounded-(--radius-card) text-center;
   }
   .ev-date b {
-    @apply font-display text-[4.2rem] leading-[1.15] font-extrabold text-ink;
+    @apply font-display text-[3.25rem] leading-[1.2] font-bold text-ink;
   }
 
   /* --- The newsletter band's envelope (blocks/newsletter.html) --- */

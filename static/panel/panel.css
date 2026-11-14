@@ -1,14 +1,14 @@
 /* The panel in the site's colours and font (REPORT #055). Wagtail reads these
    variables for its sidebar, buttons and links; values come from frontend/main.css. */
 @font-face {
-  font-family: "Vazirmatn";
-  src: url("../fonts/vazirmatn/Vazirmatn-Variable-fa.woff2") format("woff2");
+  font-family: "Estedad";
+  src: url("../fonts/estedad/Estedad-Variable-fa.woff2") format("woff2");
   font-weight: 100 900;
   font-display: swap;
 }
 
 :root {
-  --w-font-sans: "Vazirmatn", system-ui, sans-serif;
+  --w-font-sans: "Estedad", system-ui, sans-serif;
 
   /* Sidebar: the site's deep plum */
   --w-color-primary: #3a3348;
