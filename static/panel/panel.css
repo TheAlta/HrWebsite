@@ -10,19 +10,19 @@
 :root {
   --w-font-sans: "Estedad", system-ui, sans-serif;
 
-  /* Sidebar: the site's deep plum */
-  --w-color-primary: #3a3348;
-  --w-color-primary-200: #5b5167;
+  /* Sidebar: the site's deep navy (REPORT #058) */
+  --w-color-primary: #14213d;
+  --w-color-primary-200: #2e4a7d;
 
   /* Buttons and links: the site's accent, dark enough for white text (AA) */
-  --w-color-secondary: #725a9e;
-  --w-color-secondary-600: #5f4a86;
-  --w-color-secondary-400: #8f74bd;
-  --w-color-secondary-100: #d8c9ee;
-  --w-color-secondary-75: #e6ddf0;
-  --w-color-secondary-50: #f3eef8;
+  --w-color-secondary: #2e4a7d;
+  --w-color-secondary-600: #1d3461;
+  --w-color-secondary-400: #5a74a8;
+  --w-color-secondary-100: #cfd9ec;
+  --w-color-secondary-75: #e1e7f2;
+  --w-color-secondary-50: #f0f3f9;
 
-  --w-color-focus: #8f74bd;
+  --w-color-focus: #c8a048;
 }
 
 /* The site's logo in the sidebar, in place of Wagtail's bird */
@@ -31,19 +31,67 @@
   place-items: center;
   width: 100%;
   height: 100%;
-  color: #faf5f2;
+  color: #f7f5f0;
 }
 .panel-brand svg {
   width: 2.5rem;
   height: 2.5rem;
 }
 .login-logo .panel-brand {
-  color: #3a3348;
+  color: #14213d;
 }
 .w-theme-dark .login-logo .panel-brand {
-  color: #f1e9ef;
+  color: #f4f1e8;
 }
 .login-logo .panel-brand svg {
   width: 4rem;
   height: 4rem;
+}
+
+/* The panel's home page (apps/dashboard): the greeting and the two-week sales bars */
+.hr-greeting {
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(105deg, #14213d, #2e4a7d 60%, #8c6d2c);
+  color: #fff;
+}
+.hr-greeting h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+}
+.hr-greeting p {
+  margin: 0.25rem 0 0;
+  opacity: 0.9;
+}
+.hr-chart-total {
+  font-weight: 700;
+}
+.hr-chart {
+  display: flex;
+  align-items: stretch;
+  gap: 0.35rem;
+  height: 10rem;
+  margin: 1rem 0;
+}
+.hr-chart-day {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.3rem;
+}
+.hr-chart-bar {
+  display: block;
+  width: 100%;
+  min-height: 2px;
+  border-radius: 0.3rem 0.3rem 0 0;
+  background: linear-gradient(180deg, #c8a048, #2e4a7d);
+}
+.hr-chart-label {
+  font-size: 0.75rem;
+  color: var(--w-color-text-meta);
 }

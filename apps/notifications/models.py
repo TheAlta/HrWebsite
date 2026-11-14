@@ -1,4 +1,6 @@
+from django.contrib import admin
 from django.db import models
+from django.utils.text import Truncator
 
 
 class Notification(models.Model):
@@ -36,3 +38,7 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"{self.get_channel_display()} → {self.to}: {self.template}"
+
+    @admin.display(description="متن")
+    def body_preview(self):
+        return Truncator(self.body).chars(60)

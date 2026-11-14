@@ -892,6 +892,15 @@
   .book-cover-5 {
     background: linear-gradient(160deg, #96693a, #5a3a1c);
   }
+  /* How full an event is (components/card_event.html) */
+  .seat-bar {
+    background: var(--accent-soft);
+    @apply block h-1.5 flex-1 overflow-hidden rounded-full;
+  }
+  .seat-bar i {
+    background: var(--accent-line);
+    @apply block h-full rounded-full;
+  }
   .stat-tile {
     @apply flex flex-col gap-1 p-6;
   }

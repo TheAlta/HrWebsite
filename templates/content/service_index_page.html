@@ -4,6 +4,11 @@
 {% block content %}
 {% include "components/page_header.html" with title=page.title intro=page.intro|richtext %}
 <div class="container-page py-12">
+  {# The demo's filter: links, so it works without JavaScript and each view has its own address #}
+  <nav class="segmented mb-10" aria-label="مخاطب خدمات">
+    <a href="{{ page.url }}"{% if not audience %} aria-current="page"{% endif %}>همه</a>
+    {% for choice in audience_choices %}<a href="?audience={{ choice.value }}"{% if audience == choice.value %} aria-current="page"{% endif %}>{{ choice.label }}</a>{% endfor %}
+  </nav>
   {% if corporate_services %}
   <section aria-labelledby="corporate-heading">
     <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
@@ -17,7 +22,7 @@
   {% endif %}
 
   {% if individual_services %}
-  <section aria-labelledby="individual-heading" class="mt-14">
+  <section aria-labelledby="individual-heading"{% if corporate_services %} class="mt-14"{% endif %}>
     <h2 id="individual-heading" class="heading-2 mb-6">خدمات فردی</h2>
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {% for service in individual_services %}{% include "components/card_service.html" with service=service %}{% endfor %}

@@ -1,0 +1,5 @@
+{# The panel's welcome line (apps/dashboard/wagtail_hooks.py, GreetingPanel) #}
+<section class="hr-greeting" aria-label="خوش‌آمد">
+    <h2>سلام {{ name }}</h2>
+    <p>{% if roles %}{{ roles }} · {% endif %}{{ today }}</p>
+</section>

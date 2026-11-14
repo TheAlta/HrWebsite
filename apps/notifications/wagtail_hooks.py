@@ -13,7 +13,7 @@ class NotificationViewSet(ModelViewSet):
     menu_label = "پیام‌های ارسالی"
     menu_order = 900
     add_to_admin_menu = True
-    list_display = ["to", "channel", "template", "status", "created_at"]
+    list_display = ["to", "channel", "template", "body_preview", "status", "created_at"]
     list_filter = ["channel", "status"]
     search_fields = ["to", "template"]
     ordering = ["-created_at"]

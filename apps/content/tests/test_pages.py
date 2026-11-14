@@ -275,3 +275,20 @@ def test_home_has_free_files_podcast_featured_book_and_library(client, demo_site
     assert "<audio controls" in html
     assert "/cart/add/" in html  # the featured book goes straight to the cart
     assert html.count("library-card-") == 4
+
+
+def test_services_filter_shows_one_audience(client, demo_site):
+    from apps.content.models import HomePage, ServiceIndexPage, ServicePage
+
+    index = ServiceIndexPage.objects.first()
+    if index is None:
+        index = ServiceIndexPage(title="خدمات", slug="services")
+        HomePage.objects.get().add_child(instance=index)
+    for title, audience in (("ارزیابی سازمان", "corporate"), ("کوچینگ فردی", "individual")):
+        index.add_child(instance=ServicePage(title=title, summary="خلاصه", audience=audience))
+    every = client.get("/services/").content.decode()
+    assert "ارزیابی سازمان" in every and "کوچینگ فردی" in every
+    corporate = client.get("/services/?audience=corporate").content.decode()
+    assert "ارزیابی سازمان" in corporate and "کوچینگ فردی" not in corporate
+    assert 'href="?audience=corporate" aria-current="page"' in corporate
+    assert "کوچینگ فردی" in client.get("/services/?audience=x").content.decode()

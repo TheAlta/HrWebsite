@@ -90,9 +90,18 @@ def index_context(page, request) -> dict:
     )
     if request.GET.get("view") == "month":
         return {"view": "month", **month_view(events, request)}
+    from .services import seats_left
+
     now = timezone.now()
+    upcoming = list(events.filter(end_at__gte=now).order_by("start_at"))
+    # The demo's seat bar on each upcoming row: how full the event is
+    for event in upcoming:
+        if event.capacity:
+            event.seats_left = seats_left(event, now)
+            event.seats_filled = round(100 * (event.capacity - event.seats_left) / event.capacity)
+            event.seat_bar = True
     return {
         "view": "list",
-        "upcoming": events.filter(end_at__gte=now).order_by("start_at"),
+        "upcoming": upcoming,
         "past": events.filter(end_at__lt=now).order_by("-start_at")[:PAST_EVENTS_SHOWN],
     }

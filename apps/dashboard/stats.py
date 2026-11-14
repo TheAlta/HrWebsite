@@ -11,6 +11,7 @@ from django.db.models import Count, Q, Sum
 from django.utils import timezone
 
 from apps.booking.models import Booking
+from apps.content.models import Comment
 from apps.core import jalali
 from apps.core.text import to_fa_digits
 from apps.crm.models import Lead, LeadStatus
@@ -31,6 +32,10 @@ def new_leads():
     return Lead.objects.filter(status=LeadStatus.NEW)
 
 
+def pending_comments():
+    return Comment.objects.filter(status=Comment.Status.PENDING)
+
+
 def sessions_today_and_tomorrow():
     start, _ = day_bounds(timezone.localdate())
     return (
@@ -42,6 +47,49 @@ def sessions_today_and_tomorrow():
         .select_related("session_type", "user")
         .order_by("start_at")
     )
+
+
+def sessions_this_week():
+    start, _ = day_bounds(timezone.localdate())
+    return Booking.objects.filter(
+        status=Booking.Status.CONFIRMED,
+        start_at__gte=start,
+        start_at__lt=start + dt.timedelta(days=7),
+    )
+
+
+def upcoming_registrations():
+    """Seats taken in events that have not started: paid, or held and not yet expired."""
+    return Registration.objects.filter(event__start_at__gt=timezone.now()).filter(
+        Q(status=Registration.Status.PAID)
+        | Q(status=Registration.Status.PENDING, hold_expires_at__gt=timezone.now())
+    )
+
+
+def daily_sales(days: int) -> list[dict]:
+    """The last `days` days, oldest first: each day's label, paid total and bar height (%)."""
+    today = timezone.localdate()
+    first = today - dt.timedelta(days=days - 1)
+    start, _ = day_bounds(first)
+    totals = defaultdict(int)
+    for paid_at, total in Order.objects.filter(status__in=SOLD, paid_at__gte=start).values_list(
+        "paid_at", "total"
+    ):
+        totals[timezone.localtime(paid_at).date()] += total
+    top = max(totals.values(), default=0)
+    rows = []
+    for offset in range(days):
+        day = first + dt.timedelta(days=offset)
+        total = totals.get(day, 0)
+        rows.append(
+            {
+                "label": to_fa_digits(jalali.to_jalali(day).day),
+                "date": to_fa_digits(jalali.format_date(day)),
+                "total": total,
+                "height": round(100 * total / top) if top else 0,
+            }
+        )
+    return rows
 
 
 def upcoming_events(limit=3):

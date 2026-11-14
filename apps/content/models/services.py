@@ -44,8 +44,16 @@ class ServiceIndexPage(BasePage):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
         services = ServicePage.objects.child_of(self).live().select_related("cover_image")
-        context["individual_services"] = services.filter(audience=Audience.INDIVIDUAL)
-        context["corporate_services"] = services.filter(audience=Audience.CORPORATE)
+        # The demo's filter: ?audience=corporate or individual shows one group, as plain links
+        shown = request.GET.get("audience", "")
+        if shown not in Audience.values:
+            shown = ""
+        context["audience"] = shown
+        context["audience_choices"] = [Audience.CORPORATE, Audience.INDIVIDUAL]
+        if shown != Audience.CORPORATE:
+            context["individual_services"] = services.filter(audience=Audience.INDIVIDUAL)
+        if shown != Audience.INDIVIDUAL:
+            context["corporate_services"] = services.filter(audience=Audience.CORPORATE)
         context["corporate_page"] = CorporateServicesPage.objects.child_of(self).live().first()
         return context
 

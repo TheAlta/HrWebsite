@@ -29,6 +29,7 @@ ROLE_PERMISSIONS = {
         "content.view_comment",
         "content.change_comment",
         "content.delete_comment",
+        "events.view_eventpage",  # seat and waiting-list counts on the panel's home page
         *_crud("portfolio", "client", "project", "testimonial"),
     ],
     SUPPORT: [

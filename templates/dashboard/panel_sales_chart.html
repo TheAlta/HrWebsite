@@ -1,0 +1,18 @@
+{% load wagtailadmin_tags core_tags %}
+{# Paid sales per day for two weeks (SalesChartPanel). The bars are a picture; the same numbers are in a table for screen readers #}
+{% panel id="dashboard-sales-chart" heading=heading classname="w-panel--dashboard" %}
+    <p class="hr-chart-total">جمع: {{ total }}</p>
+    <div class="hr-chart" aria-hidden="true">
+        {% for day in days %}
+        <div class="hr-chart-day" title="{{ day.date }}: {{ day.total|toman }}">
+            <span class="hr-chart-bar" style="height: {{ day.height }}%"></span>
+            <span class="hr-chart-label">{{ day.label }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    <table class="w-sr-only">
+        <thead><tr><th>روز</th><th>فروش</th></tr></thead>
+        <tbody>{% for day in days %}<tr><td>{{ day.date }}</td><td>{{ day.total|toman }}</td></tr>{% endfor %}</tbody>
+    </table>
+    <p><a href="{% url 'sales_report' %}">گزارش کامل فروش</a></p>
+{% endpanel %}

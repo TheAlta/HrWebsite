@@ -11,6 +11,8 @@ import io
 import random
 
 from django.conf import settings as django_settings
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.core.files.images import ImageFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.management.base import BaseCommand, CommandError
@@ -24,6 +26,7 @@ from wagtail.models import Page, Site
 from wagtail.rich_text import RichText
 
 from apps.accounts.models import Organization
+from apps.accounts.roles import EDITOR, FULL_ADMIN, SUPPORT, setup_roles
 from apps.billing.models import Invoice, ProForma
 from apps.booking.models import Availability, Booking, BookingPage, SessionType
 from apps.certificates.models import Certificate
@@ -51,6 +54,13 @@ from apps.payments.models import Payment
 from apps.portfolio.models import Client, PortfolioPage, Project, Testimonial
 from apps.shop.models import Coupon, CouponUse, DownloadToken, Product, Shipment, ShopPage
 
+# (mobile, first name, role) — a role of None is a customer with no panel access
+ROLE_USERS = (
+    ("09000000001", "مدیر", FULL_ADMIN),
+    ("09000000002", "ویراستار", EDITOR),
+    ("09000000003", "پشتیبان", SUPPORT),
+    ("09000000004", "مشتری", None),
+)
 DEMO_TAG = "[demo]"  # marks sample images/documents so --reset can remove them
 
 # The site's own colours (frontend/main.css), so sample pictures sit well in the design
@@ -907,10 +917,24 @@ class Command(BaseCommand):
             ("link", {"label": "تماس", "page": contact, "url": ""}),
         ]
         settings.save()
+        self._role_users()
 
         self.stdout.write(
             self.style.SUCCESS(f"Sample content created: {Page.objects.count() - 1} pages.")
         )
+
+    def _role_users(self):
+        """One sample person per role (REPORT #058, P10), to sign in as each with an OTP.
+
+        Only where seed_demo runs at all (local and Staging); kept across --reset.
+        """
+        setup_roles()
+        for mobile, first_name, role in ROLE_USERS:
+            user, _ = get_user_model().objects.get_or_create(
+                mobile=mobile, defaults={"first_name": first_name, "last_name": "(نمونه)"}
+            )
+            user.groups.set(Group.objects.filter(name=role) if role else [])
+            self.stdout.write(f"  {role or 'مشتری'}: {mobile}")
 
     def _reset(self, home):
         # Invoices, pre-invoices and refunds protect their orders, and certificates
