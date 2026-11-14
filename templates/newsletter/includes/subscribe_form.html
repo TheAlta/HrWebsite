@@ -1,7 +1,7 @@
 {# Footer newsletter form (LEAD-6). Replaced in place by HTMX after a submit. #}
 <div id="newsletter-form">
 {% if done %}
-  <p class="text-sm leading-7 text-white" role="status">عضویت شما ثبت شد. هر وقت خواستید، از لینک پایین هر ایمیل لغو کنید.</p>
+  <p class="alert alert-success" role="status">عضویت شما ثبت شد. هر وقت خواستید، از لینک پایین هر ایمیل لغو کنید.</p>
 {% else %}
 <form method="post" action="{% url 'newsletter:subscribe' %}" hx-post="{% url 'newsletter:subscribe' %}" hx-target="#newsletter-form" hx-swap="outerHTML" class="space-y-2" novalidate>
   {% csrf_token %}
@@ -10,13 +10,13 @@
   <input id="nl-email" type="email" name="email" value="{{ newsletter_form.email.value|default:'' }}" placeholder="ایمیل" dir="ltr" class="field-input py-2 text-sm" autocomplete="email">
   <label for="nl-mobile" class="sr-only">موبایل</label>
   <input id="nl-mobile" type="text" name="mobile" value="{{ newsletter_form.mobile.value|default:'' }}" placeholder="یا موبایل" dir="ltr" inputmode="tel" class="field-input py-2 text-sm" autocomplete="tel">
-  <label class="flex items-start gap-2 text-xs leading-6 text-brand-100">
-    <input type="checkbox" name="consent" class="mt-1 h-4 w-4 shrink-0 accent-accent-500" {% if newsletter_form.consent.value %}checked{% endif %}>
+  <label class="flex items-start gap-2 text-xs leading-6 text-ink-3">
+    <input type="checkbox" name="consent" class="mt-1 h-4 w-4 shrink-0 accent-accent" {% if newsletter_form.consent.value %}checked{% endif %}>
     <span>{{ newsletter_form.consent.label }}</span>
   </label>
-  {% if error %}<p class="text-xs text-red-200">{{ error }}</p>{% endif %}
-  {% for message in newsletter_form.non_field_errors %}<p class="text-xs text-red-200">{{ message }}</p>{% endfor %}
-  {% for field in newsletter_form %}{% for message in field.errors %}<p class="text-xs text-red-200">{{ message }}</p>{% endfor %}{% endfor %}
+  {% if error %}<p class="field-error mt-0 text-xs">{{ error }}</p>{% endif %}
+  {% for message in newsletter_form.non_field_errors %}<p class="field-error mt-0 text-xs">{{ message }}</p>{% endfor %}
+  {% for field in newsletter_form %}{% for message in field.errors %}<p class="field-error mt-0 text-xs">{{ message }}</p>{% endfor %}{% endfor %}
   <button type="submit" class="btn btn-primary btn-sm">عضویت در خبرنامه</button>
 </form>
 {% endif %}

@@ -24,7 +24,7 @@ class CouponViewSet(ModelViewSet):
     url_prefix = "coupons"
     icon = "tag"
     menu_label = "کدهای تخفیف"
-    list_display = ["code", "type", "value", "max_uses", "is_active"]
+    list_display = ["code", "type", "value", "uses_display", "validity_display", "is_active"]
     list_filter = ["type", "is_active"]
     search_fields = ["code"]
 

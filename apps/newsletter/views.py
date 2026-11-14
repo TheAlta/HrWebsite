@@ -7,12 +7,24 @@ from . import services
 from .forms import SubscribeForm
 from .models import Subscriber
 
+# Where a form can sit: its own markup comes back, and the subscriber's source says where
+PLACES = {
+    "footer": "newsletter/includes/subscribe_form.html",
+    "home": "newsletter/includes/subscribe_band.html",
+}
+
 
 @require_POST
 def subscribe(request):
-    """The footer form. HTMX swaps the form for the result; without JavaScript a page shows it."""
+    """The footer form, or the home page's band (REPORT #058).
+
+    HTMX swaps the form for the result; without JavaScript a page shows it.
+    """
     form = SubscribeForm(request.POST)
-    template = "newsletter/includes/subscribe_form.html"
+    place = request.POST.get("place")
+    if place not in PLACES:
+        place = "footer"
+    template = PLACES[place]
     context = {"newsletter_form": form}
     if form.is_bot:
         context["done"] = True  # pretend success, save nothing
@@ -21,7 +33,7 @@ def subscribe(request):
             services.subscribe(
                 email=form.cleaned_data["email"],
                 mobile=form.cleaned_data["mobile"],
-                source="footer",
+                source=place,
                 ip_hash=hashed_ip(request),
             )
             context["done"] = True

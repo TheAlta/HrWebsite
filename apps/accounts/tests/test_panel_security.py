@@ -55,8 +55,11 @@ def set_up_app(client):
 
 def test_the_site_runs_only_its_own_scripts(client, demo_site):
     policy = client.get("/")["Content-Security-Policy"]
-    assert "script-src 'self';" in policy
-    assert "unsafe-inline" not in policy.split("style-src-attr")[0]
+    # Directives in any order: the header does not keep a fixed one
+    directives = dict(part.strip().split(" ", 1) for part in policy.split(";") if part.strip())
+    assert directives["script-src"] == "'self'"
+    unsafe = [name for name, value in directives.items() if "unsafe-inline" in value]
+    assert unsafe == ["style-src-attr"]
     assert "unsafe-eval" not in policy
     assert "frame-ancestors 'none'" in policy
     assert "object-src 'none'" in policy

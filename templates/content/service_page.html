@@ -11,7 +11,7 @@
     <section class="mt-10">
       <h2 class="heading-2 mb-4">خروجی‌ها</h2>
       <ul class="grid gap-3 sm:grid-cols-2">
-        {% for item in page.deliverables %}<li class="flex items-start gap-2 rounded-(--radius-control) bg-slate-50 px-4 py-3">{% include "components/icon.html" with name="check" size="18" class="mt-1.5 text-brand-600" %}<span>{{ item.value }}</span></li>{% endfor %}
+        {% for item in page.deliverables %}<li class="tile flex items-start gap-2 px-4 py-3">{% include "components/icon.html" with name="check" size="18" class="mt-1.5 text-accent-ink" %}<span>{{ item.value }}</span></li>{% endfor %}
       </ul>
     </section>
     {% endif %}
@@ -25,11 +25,11 @@
     {% endif %}
   </article>
 
-  <aside class="space-y-6 lg:sticky lg:top-24 lg:self-start">
+  <aside class="space-y-6 lg:sticky lg:top-28 lg:self-start">
     <div class="card"><div class="card-body">
       <span class="badge self-start">{{ page.get_audience_display }}</span>
-      {% if page.duration %}<p class="flex items-center gap-2">{% include "components/icon.html" with name="clock" size="18" class="text-brand-600" %}{{ page.duration }}</p>{% endif %}
-      <p class="text-xl font-extrabold text-slate-900">{% if page.price %}{{ page.price|toman }}{% else %}استعلام قیمت{% endif %}</p>
+      {% if page.duration %}<p class="flex items-center gap-2">{% include "components/icon.html" with name="clock" size="18" class="text-accent-ink" %}{{ page.duration }}</p>{% endif %}
+      <p class="price-lg">{% if page.price %}{{ page.price|toman }}{% else %}استعلام قیمت{% endif %}</p>
       {% if settings.content.SiteSettings.cta_page %}<a href="{% pageurl settings.content.SiteSettings.cta_page %}" class="btn btn-primary mt-2">{{ settings.content.SiteSettings.cta_label }}</a>{% endif %}
       {% if settings.content.SiteSettings.whatsapp_url %}<a href="{{ settings.content.SiteSettings.whatsapp_url }}" target="_blank" rel="noopener" class="btn btn-secondary">پرسش در واتساپ</a>{% endif %}
     </div></div>

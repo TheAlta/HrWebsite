@@ -5,7 +5,7 @@
 {% include "components/page_header.html" with title=page.title intro=page.intro|richtext %}
 <div class="container-page py-12">
   {% if products %}
-  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+  <div class="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
     {% for product in products %}{% include "components/card_product.html" with product=product %}{% endfor %}
   </div>
   {% else %}

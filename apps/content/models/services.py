@@ -8,6 +8,19 @@ from wagtail.search import index
 from ..blocks import BodyBlock
 from .base import BasePage
 
+# Icons a service card can show (templates/components/icon.html), from the owner's demo
+SERVICE_ICONS = [
+    ("briefcase", "کیف کار"),
+    ("shield", "سپر"),
+    ("users", "افراد"),
+    ("route", "مسیر"),
+    ("gauge", "سنجه"),
+    ("network", "ساختار"),
+    ("compass", "قطب‌نما"),
+    ("sprout", "رشد"),
+    ("file", "سند"),
+]
+
 
 class Audience(models.TextChoices):
     INDIVIDUAL = "individual", "فردی"
@@ -31,8 +44,16 @@ class ServiceIndexPage(BasePage):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
         services = ServicePage.objects.child_of(self).live().select_related("cover_image")
-        context["individual_services"] = services.filter(audience=Audience.INDIVIDUAL)
-        context["corporate_services"] = services.filter(audience=Audience.CORPORATE)
+        # The demo's filter: ?audience=corporate or individual shows one group, as plain links
+        shown = request.GET.get("audience", "")
+        if shown not in Audience.values:
+            shown = ""
+        context["audience"] = shown
+        context["audience_choices"] = [Audience.CORPORATE, Audience.INDIVIDUAL]
+        if shown != Audience.CORPORATE:
+            context["individual_services"] = services.filter(audience=Audience.INDIVIDUAL)
+        if shown != Audience.INDIVIDUAL:
+            context["corporate_services"] = services.filter(audience=Audience.CORPORATE)
         context["corporate_page"] = CorporateServicesPage.objects.child_of(self).live().first()
         return context
 
@@ -44,6 +65,13 @@ class ServicePage(BasePage):
         "مخاطب", max_length=20, choices=Audience.choices, default=Audience.INDIVIDUAL
     )
     summary = models.TextField("خلاصه", max_length=300, help_text="در کارت خدمت نمایش داده می‌شود.")
+    icon = models.CharField(
+        "آیکن کارت",
+        max_length=20,
+        choices=SERVICE_ICONS,
+        default="briefcase",
+        help_text="در کارت خدمت، مثل دموی طراحی",
+    )
     cover_image = models.ForeignKey(
         "wagtailimages.Image",
         verbose_name="تصویر",
@@ -91,6 +119,7 @@ class ServicePage(BasePage):
             [
                 FieldPanel("audience"),
                 FieldPanel("summary"),
+                FieldPanel("icon"),
                 FieldPanel("cover_image"),
                 FieldPanel("is_featured"),
             ],

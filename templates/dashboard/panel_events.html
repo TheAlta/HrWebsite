@@ -6,7 +6,7 @@
         <tbody>
             {% for event in rows %}
             <tr>
-                <td><a href="{% url 'panel_registrations:index' %}?event={{ event.pk }}">{{ event.title }}</a></td>
+                <td>{% if perms.events.view_registration %}<a href="{% url 'panel_registrations:index' %}?event={{ event.pk }}">{{ event.title }}</a>{% else %}{{ event.title }}{% endif %}</td>
                 <td>{{ event.start_at|jdatetime }}</td>
                 <td>{{ event.taken|fa_digits }}{% if event.capacity %} از {{ event.capacity|fa_digits }}{% endif %}</td>
                 <td>{{ event.waiting|fa_digits }}</td>

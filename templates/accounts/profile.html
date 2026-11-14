@@ -3,8 +3,8 @@
 {% block title %}مشخصات من | {{ settings.content.SiteSettings.brand_name }}{% endblock %}
 
 {% block account_content %}
-<h1 class="heading-1">مشخصات من</h1>
-<form method="post" class="card mt-6 max-w-xl" novalidate>
+<h1 class="heading-2">مشخصات من</h1>
+<form method="post" class="panel-box mt-6 max-w-xl" novalidate>
   {% csrf_token %}
   <div class="card-body gap-4">
     <p class="muted">شماره موبایل: <span dir="ltr">{{ user.mobile|fa_digits }}</span></p>

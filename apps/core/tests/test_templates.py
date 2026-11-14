@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 
 from django.conf import settings
@@ -30,3 +31,21 @@ def test_the_web_font_covers_every_character_in_the_templates():
         if ord(char) > 0x7F and ord(char) not in covered
     }
     assert missing == set()
+
+
+# Raw Tailwind palettes: a template names a colour role instead (text-ink, bg-surface ...)
+RAW_COLOUR = re.compile(
+    r"\b(?:bg|text|border|ring|from|to|via|divide|outline|fill|stroke|shadow|accent|decoration)-"
+    r"(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky"
+    r"|blue|indigo|violet|purple|fuchsia|pink|rose|brand)-\d{2,3}\b"
+)
+
+
+def test_templates_take_colours_from_the_palette():
+    """Every colour comes from frontend/main.css, so light and dark both follow (REPORT #055)."""
+    found = [
+        f"{path.relative_to(TEMPLATES)}: {match.group()}"
+        for path in TEMPLATES.rglob("*.html")
+        for match in RAW_COLOUR.finditer(path.read_text(encoding="utf-8"))
+    ]
+    assert found == []

@@ -1,0 +1,34 @@
+{# The demo's free resources (REPORT #058): topic buttons filter the files; each file opens its own #}
+{# download form (LEAD-4) with a separate newsletter consent box (LEAD-6). Without JavaScript every file shows. #}
+{% if items %}
+<section class="section" x-data="resourceFilter">
+  <div class="container-page">
+    {% include "components/section_header.html" with eyebrow=value.eyebrow title=value.title intro=value.intro %}
+    {% if value.topics %}
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-4" role="group" aria-label="موضوع">
+      {% for topic in value.topics %}
+      <button type="button" class="topic-tile surface" data-topic="{{ topic.label }}" aria-pressed="false" @click="pick">
+        <span class="icon-disc">{% include "components/icon.html" with name=topic.icon size="22" %}</span><b>{{ topic.label }}</b>
+      </button>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {% for resource, form in items %}
+      <article class="card" data-resource="{{ resource.topic }}" x-data="disclosure">
+        <div class="card-body gap-2">
+          <div class="resource-mock" aria-hidden="true"><span class="paper paper-back"></span><span class="paper"></span></div>
+          <p class="text-xs font-semibold text-accent-ink">{{ resource.topic }}</p>
+          <h3 class="leading-8 font-semibold text-ink">{{ resource.title }}</h3>
+          {% if resource.format %}<p class="text-xs text-ink-3">{{ resource.format }}</p>{% endif %}
+          <button type="button" class="btn btn-primary btn-sm mt-2 self-start" @click="toggle" :aria-expanded="open.toString()" aria-expanded="false" aria-controls="resource-{{ forloop.counter }}">{{ resource.button_label }} {% include "components/icon.html" with name="arrow" size="16" %}</button>
+        </div>
+        <div id="resource-{{ forloop.counter }}" class="border-t border-line" x-show="open" x-cloak>
+          {% include "crm/includes/download_form.html" with form=form title=resource.title button_label=resource.button_label %}
+        </div>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}

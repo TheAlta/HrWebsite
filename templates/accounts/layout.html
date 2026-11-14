@@ -1,23 +1,41 @@
 {% extends "base.html" %}
-{% load core_tags %}
+{% load wagtailcore_tags core_tags %}
 {% block meta %}<meta name="robots" content="noindex">{% endblock %}
 
 {% block content %}
-<div class="container-page grid gap-8 py-10 lg:grid-cols-[14rem_1fr]">
-  <nav aria-label="پنل کاربر" class="min-w-0">
-    <ul class="flex gap-1 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible lg:pb-0">
-      {% include "accounts/includes/nav_item.html" with key="home" url_name="accounts:account" label="خلاصه" %}
-      {% include "accounts/includes/nav_item.html" with key="orders" url_name="accounts:orders" label="سفارش‌ها" %}
-      {% include "accounts/includes/nav_item.html" with key="invoices" url_name="accounts:invoices" label="فاکتورها" %}
-      {% include "accounts/includes/nav_item.html" with key="sessions" url_name="accounts:sessions" label="جلسات" %}
-      {% include "accounts/includes/nav_item.html" with key="courses" url_name="accounts:courses" label="دوره‌ها" %}
-      {% include "accounts/includes/nav_item.html" with key="downloads" url_name="accounts:downloads" label="دانلودها" %}
-      {% include "accounts/includes/nav_item.html" with key="profile" url_name="accounts:profile" label="مشخصات من" %}
-    </ul>
-    <form method="post" action="{% url 'accounts:logout' %}" class="mt-2 hidden lg:block">{% csrf_token %}<button type="submit" class="btn btn-ghost btn-sm">خروج</button></form>
-  </nav>
-  <section class="min-w-0">
-    {% block account_content %}{% endblock %}
-  </section>
+{# The demo's customer panel: the page picture behind, a side menu, the content beside it (REPORT #055) #}
+<div class="under-header relative isolate">
+  {# Only the top of the picture, fading into the page: the panel itself stays calm #}
+  <div class="container-page grid gap-6 pt-10 pb-14 lg:grid-cols-[16rem_1fr]">
+    <aside class="min-w-0 space-y-4">
+      <nav aria-label="پنل کاربر" class="panel-box p-2 lg:p-3">
+        <div class="mb-2 hidden items-center gap-3 border-b border-line px-2 pb-3 lg:flex">
+          <span class="icon-disc size-11 font-display text-lg font-semibold" aria-hidden="true">{% if user.first_name %}{{ user.first_name|first }}{% else %}{% include "components/icon.html" with name="user" size="18" %}{% endif %}</span>
+          <div class="min-w-0">
+            <p class="truncate font-semibold text-ink">{% firstof user.get_full_name "حساب کاربری" %}</p>
+            <p class="muted" dir="ltr">{{ user.mobile|fa_digits }}</p>
+          </div>
+        </div>
+        <ul class="flex gap-1 overflow-x-auto lg:flex-col lg:overflow-visible">
+          {% include "accounts/includes/nav_item.html" with key="home" url_name="accounts:account" label="خلاصه" icon="dashboard" %}
+          {% include "accounts/includes/nav_item.html" with key="orders" url_name="accounts:orders" label="سفارش‌ها" icon="cart" %}
+          {% include "accounts/includes/nav_item.html" with key="invoices" url_name="accounts:invoices" label="فاکتورها" icon="receipt" %}
+          {% include "accounts/includes/nav_item.html" with key="sessions" url_name="accounts:sessions" label="جلسات" icon="calendar" %}
+          {% include "accounts/includes/nav_item.html" with key="courses" url_name="accounts:courses" label="دوره‌ها" icon="graduation" %}
+          {% include "accounts/includes/nav_item.html" with key="downloads" url_name="accounts:downloads" label="دانلودها" icon="download" %}
+          {% include "accounts/includes/nav_item.html" with key="profile" url_name="accounts:profile" label="مشخصات من" icon="user" %}
+        </ul>
+        <form method="post" action="{% url 'accounts:logout' %}" class="mt-2 hidden border-t border-line pt-2 lg:block">{% csrf_token %}<button type="submit" class="menu-link w-full">{% include "components/icon.html" with name="logout" size="18" class="mt-1 text-ink-3" %}خروج</button></form>
+      </nav>
+      {% with cta=settings.content.SiteSettings.cta_page %}{% if cta %}
+      <a href="{% pageurl cta %}" class="scene scene-tall group relative hidden h-72 overflow-hidden rounded-(--radius-card) shadow-card lg:block">
+        <span class="absolute inset-x-3 bottom-3 flex items-center justify-between gap-2 rounded-2xl bg-(--popover) px-4 py-3 text-sm font-medium text-ink shadow-card">{{ settings.content.SiteSettings.cta_label }} {% include "components/icon.html" with name="arrow" size="16" class="transition-transform group-hover:-translate-x-1" %}</span>
+      </a>
+      {% endif %}{% endwith %}
+    </aside>
+    <section class="min-w-0">
+      {% block account_content %}{% endblock %}
+    </section>
+  </div>
 </div>
 {% endblock %}

@@ -1,0 +1,10 @@
+{% if products and shop %}
+<section class="section">
+  <div class="container-page">
+    {% include "components/section_header.html" with title=value.title intro=value.intro link=shop.url link_label="فروشگاه" %}
+    <div class="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+      {% for product in products %}{% include "components/card_product.html" with product=product page=shop heading="h3" %}{% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}

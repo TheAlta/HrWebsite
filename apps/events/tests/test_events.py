@@ -590,3 +590,11 @@ def test_event_with_registrations_cannot_be_deleted(admin_client, free_event, cu
     assert admin_client.get(url).status_code == 200
     admin_client.post(url)
     assert EventPage.objects.filter(pk=free_event.pk).exists()
+
+
+def test_upcoming_rows_show_how_full_an_event_is(client, make_event):
+    make_event(title="کارگاه ظرفیت‌دار", capacity=20)
+    make_event(title="وبینار بی‌سقف")
+    content = client.get("/events/").content.decode()
+    assert "۲۰ جای خالی از ۲۰" in content
+    assert content.count('class="seat-bar"') == 1

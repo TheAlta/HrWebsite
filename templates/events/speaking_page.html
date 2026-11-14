@@ -7,7 +7,7 @@
   <section aria-labelledby="talks-heading" class="min-w-0">
     <h2 id="talks-heading" class="heading-2">سوابق سخنرانی</h2>
     {% if talks %}
-    <div class="mt-6 grid gap-6 sm:grid-cols-2">
+    <div class="mt-6 grid gap-4">
       {% for talk in talks %}{% include "components/card_event.html" with event=talk %}{% endfor %}
     </div>
     {% else %}

@@ -7,9 +7,11 @@
 {% block content %}
 {% include "components/page_header.html" with title="تغییر زمان جلسه" intro=booking.session_type.title %}
 <div class="container-page py-12">
-  <p class="mb-6 text-slate-600">زمان فعلی: <span class="font-semibold text-slate-900">{{ booking.start_at|jdatetime }}</span></p>
+  <div class="panel-box p-5 sm:p-6">
+  <p class="mb-6 text-ink-3">زمان فعلی: <span class="font-semibold text-ink">{{ booking.start_at|jdatetime }}</span></p>
   {% url 'booking:reschedule' booking.pk as action %}
   {% include "booking/includes/slot_picker.html" with days=days action=action method="post" %}
+  </div>
   <p class="mt-8"><a href="{% url 'accounts:account' %}" class="btn btn-ghost">انصراف</a></p>
 </div>
 {% endblock %}

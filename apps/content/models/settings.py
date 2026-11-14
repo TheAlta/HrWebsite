@@ -8,7 +8,7 @@ from wagtail.models import Site
 
 from apps.core.fields import MobileField
 
-from ..blocks import LinkBlock
+from ..blocks import LinkBlock, MenuGroupBlock
 
 SOCIAL_NETWORKS = [
     # (field, label)
@@ -57,7 +57,12 @@ class SiteSettings(BaseSiteSetting):
     youtube_url = models.URLField("یوتیوب", blank=True)
 
     # Navigation
-    main_menu = StreamField([("link", LinkBlock())], blank=True, verbose_name="منوی اصلی")
+    main_menu = StreamField(
+        [("link", LinkBlock()), ("group", MenuGroupBlock())],
+        blank=True,
+        verbose_name="منوی اصلی",
+        help_text="«گروه کشویی» در هدر یک فهرست کوتاه باز می‌کند و در فوتر یک ستون می‌شود.",
+    )
     cta_label = models.CharField("متن دکمه برجسته", max_length=50, default="درخواست مشاوره")
     cta_page = models.ForeignKey(
         "wagtailcore.Page",
@@ -68,6 +73,12 @@ class SiteSettings(BaseSiteSetting):
         related_name="+",
     )
     footer_text = models.TextField("متن فوتر", blank=True)
+    # The bar above the header for the next free course or webinar (REPORT #058)
+    show_event_bar = models.BooleanField(
+        "نوار رویداد رایگان",
+        default=True,
+        help_text="بالای همهٔ صفحه‌ها، دوره یا وبینار رایگان بعدی را با دکمهٔ ثبت‌نام نشان می‌دهد.",
+    )
     trust_seal_html = models.TextField(
         "کد نماد اعتماد",
         blank=True,
@@ -145,6 +156,7 @@ class SiteSettings(BaseSiteSetting):
                     MultiFieldPanel(
                         [FieldPanel("cta_label"), FieldPanel("cta_page")], heading="دکمه برجسته"
                     ),
+                    FieldPanel("show_event_bar"),
                     FieldPanel("footer_text"),
                     FieldPanel("trust_seal_html"),
                 ],

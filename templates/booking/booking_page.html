@@ -4,23 +4,27 @@
 {% block content %}
 {% include "components/page_header.html" with title=page.title intro=page.intro|richtext %}
 <div class="container-page py-12">
+  {% include "components/steps.html" with steps="نوع جلسه|روز و ساعت|ورود و تأیید|پرداخت" current=1 label="مراحل رزرو" %}
   {% if session_types %}
-  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-    {% for session in session_types %}
-    {% routablepageurl page "slots" session.pk as slots_url %}
-    <article class="card">
-      <div class="card-body">
-        <span class="badge self-start">{{ session.get_mode_display }}</span>
-        <h2 class="card-title"><a href="{{ slots_url }}" class="hover:text-brand-700">{{ session.title }}</a></h2>
-        {% if session.description %}<p class="text-[0.95rem] leading-7 text-slate-600">{{ session.description }}</p>{% endif %}
-        <p class="flex items-center gap-2 text-sm text-slate-600">{% include "components/icon.html" with name="clock" size="16" class="text-brand-600" %}{{ session.duration_min|fa_digits }} دقیقه</p>
-        <div class="mt-auto flex items-center justify-between pt-3">
-          <span class="text-sm font-semibold text-slate-700">{% if session.price %}{{ session.price|toman }}{% else %}رایگان{% endif %}</span>
-          <a href="{{ slots_url }}" class="btn btn-primary btn-sm">انتخاب زمان</a>
+  <div class="panel-box mt-8 p-5 sm:p-6">
+    <h2 class="heading-2 mb-5 text-[1.6rem]">نوع جلسه را انتخاب کنید</h2>
+    <div class="grid gap-4 md:grid-cols-2">
+      {% for session in session_types %}
+      {% routablepageurl page "slots" session.pk as slots_url %}
+      <article class="tile flex gap-4 p-5">
+        <span class="icon-disc size-11">{% if session.mode == "phone" %}{% include "components/icon.html" with name="phone" size="18" %}{% elif session.mode == "in_person" %}{% include "components/icon.html" with name="map" size="18" %}{% else %}{% include "components/icon.html" with name="video" size="18" %}{% endif %}</span>
+        <div class="flex flex-1 flex-col gap-1">
+          <div class="flex items-start justify-between gap-3">
+            <h3 class="font-semibold text-ink"><a href="{{ slots_url }}" class="transition-colors hover:text-accent-ink">{{ session.title }}</a></h3>
+            <span class="text-sm whitespace-nowrap text-ink-2">{% if session.price %}{{ session.price|toman }}{% else %}رایگان{% endif %}</span>
+          </div>
+          <p class="text-sm text-ink-3">{{ session.duration_min|fa_digits }} دقیقه · {{ session.get_mode_display }}</p>
+          {% if session.description %}<p class="text-sm leading-7 text-ink-3">{{ session.description }}</p>{% endif %}
+          <a href="{{ slots_url }}" class="btn btn-secondary btn-sm mt-3 self-start">انتخاب زمان {% include "components/icon.html" with name="arrow" size="16" %}</a>
         </div>
-      </div>
-    </article>
-    {% endfor %}
+      </article>
+      {% endfor %}
+    </div>
   </div>
   {% else %}
   <p class="lead py-10 text-center">فعلاً جلسه‌ای برای رزرو تعریف نشده است.</p>

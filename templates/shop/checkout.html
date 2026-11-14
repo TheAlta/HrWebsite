@@ -6,11 +6,12 @@
 
 {% block content %}
 {% include "components/page_header.html" with title="تکمیل خرید" %}
-<form method="post" class="container-page grid gap-10 py-12 lg:grid-cols-[1fr_20rem]" novalidate>
+<div class="container-page pt-12">{% include "components/steps.html" with steps="سبد خرید|تکمیل خرید|پرداخت" current=2 label="مراحل خرید" %}</div>
+<form method="post" class="container-page grid gap-6 pt-8 pb-12 lg:grid-cols-[1fr_20rem]" novalidate>
   {% csrf_token %}
   <div class="min-w-0 space-y-6">
     {% if form %}
-    <section class="card" aria-labelledby="address-heading">
+    <section class="panel-box" aria-labelledby="address-heading">
       <div class="card-body gap-4">
         <h2 id="address-heading" class="card-title">نشانی ارسال</h2>
         <div class="grid gap-4 sm:grid-cols-2">
@@ -24,19 +25,19 @@
       </div>
     </section>
     {% endif %}
-    <section class="card" aria-labelledby="items-heading">
+    <section class="panel-box" aria-labelledby="items-heading">
       <div class="card-body">
         <h2 id="items-heading" class="card-title">اقلام سفارش</h2>
-        <ul class="divide-y divide-slate-200">
+        <ul class="divide-y divide-line">
           {% for line in quote.lines %}
-          <li class="flex items-center justify-between gap-4 py-2"><span>{{ line.product.title }}{% if line.qty > 1 %} × {{ line.qty|fa_digits }}{% endif %}</span><span class="font-semibold">{% if line.total %}{{ line.total|toman }}{% else %}رایگان{% endif %}</span></li>
+          <li class="flex items-center justify-between gap-4 py-2"><span>{{ line.product.title }}{% if line.qty > 1 %} × {{ line.qty|fa_digits }}{% endif %}</span><span class="font-semibold text-ink">{% if line.total %}{{ line.total|toman }}{% else %}رایگان{% endif %}</span></li>
           {% endfor %}
         </ul>
       </div>
     </section>
   </div>
 
-  <aside class="card self-start">
+  <aside class="panel-box self-start lg:sticky lg:top-28">
     <div class="card-body gap-4">
       {% include "shop/includes/totals.html" %}
       <button type="submit" class="btn btn-primary">{% if quote.total %}پرداخت{% else %}ثبت سفارش{% endif %}</button>

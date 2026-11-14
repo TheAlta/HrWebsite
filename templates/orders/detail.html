@@ -6,35 +6,35 @@
 
 {% block content %}
 <section class="container-page max-w-xl py-12">
-  <div class="card" role="status">
+  <div class="panel-box" role="status">
     <div class="card-body items-center gap-3 py-10 text-center">
       {% if order.status == "paid" %}
         <span hidden data-conversion="purchase" data-conversion-id="{{ order.number }}" data-conversion-value="{{ order.total }}"></span>
-        <span class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">{% include "components/icon.html" with name="check" size="28" %}</span>
-        <h1 class="card-title">{% if order.total %}پرداخت با موفقیت انجام شد{% else %}ثبت شد{% endif %}</h1>
+        <span class="grid size-16 place-items-center rounded-full bg-ok-soft text-ok ring-1 ring-ok-line ring-inset">{% include "components/icon.html" with name="check" size="28" %}</span>
+        <h1 class="heading-3">{% if order.total %}پرداخت با موفقیت انجام شد{% else %}ثبت شد{% endif %}</h1>
         <p class="muted">پیامک تأیید برایتان ارسال می‌شود.</p>
       {% elif order.status == "pending" %}
-        <span class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-accent-100 text-accent-700">{% include "components/icon.html" with name="clock" size="28" %}</span>
-        <h1 class="card-title">{% if payment %}پرداخت انجام نشد{% else %}در انتظار پرداخت{% endif %}</h1>
+        <span class="grid size-16 place-items-center rounded-full bg-warn-soft text-warn ring-1 ring-warn-line ring-inset">{% include "components/icon.html" with name="clock" size="28" %}</span>
+        <h1 class="heading-3">{% if payment %}پرداخت انجام نشد{% else %}در انتظار پرداخت{% endif %}</h1>
         <p class="muted">اگر مبلغی از حسابتان کم شده، نگران نباشید: وضعیت پرداخت تا چند دقیقه دیگر خودکار بررسی می‌شود.</p>
       {% else %}
-        <span class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-500">{% include "components/icon.html" with name="close" size="28" %}</span>
-        <h1 class="card-title">این سفارش {{ order.get_status_display }} است</h1>
+        <span class="grid size-16 place-items-center rounded-full bg-line text-ink-3">{% include "components/icon.html" with name="close" size="28" %}</span>
+        <h1 class="heading-3">این سفارش {{ order.get_status_display }} است</h1>
         <p class="muted">مهلت پرداخت این سفارش تمام شده است و باید دوباره ثبت شود.</p>
       {% endif %}
     </div>
   </div>
 
-  <dl class="card mt-6 divide-y divide-slate-200 text-[0.95rem]">
-    <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">شماره سفارش</dt><dd class="font-semibold">{{ order.number|fa_digits }}</dd></div>
+  <dl class="surface mt-6 divide-y divide-line text-[0.95rem]">
+    <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">شماره سفارش</dt><dd class="font-semibold text-ink">{{ order.number|fa_digits }}</dd></div>
     {% for item in order.items.all %}
-    <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">شرح</dt><dd class="font-semibold">{{ item.title_snapshot }}</dd></div>
+    <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">شرح</dt><dd class="font-semibold text-ink">{{ item.title_snapshot }}</dd></div>
     {% endfor %}
-    {% if order.discount %}<div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">تخفیف</dt><dd class="font-semibold">{{ order.discount|toman }}</dd></div>{% endif %}
-    {% if order.shipping %}<div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">هزینه ارسال</dt><dd class="font-semibold">{{ order.shipping|toman }}</dd></div>{% endif %}
-    <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">مبلغ</dt><dd class="font-semibold">{% if order.total %}{{ order.total|toman }}{% else %}رایگان{% endif %}</dd></div>
+    {% if order.discount %}<div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">تخفیف</dt><dd class="font-semibold text-ink">{{ order.discount|toman }}</dd></div>{% endif %}
+    {% if order.shipping %}<div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">هزینه ارسال</dt><dd class="font-semibold text-ink">{{ order.shipping|toman }}</dd></div>{% endif %}
+    <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">مبلغ</dt><dd class="font-semibold text-ink">{% if order.total %}{{ order.total|toman }}{% else %}رایگان{% endif %}</dd></div>
     {% if order.status == "paid" and payment.ref_id %}
-    <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">کد پیگیری</dt><dd class="font-semibold" dir="ltr">{{ payment.ref_id }}</dd></div>
+    <div class="flex items-center justify-between gap-4 px-5 py-3"><dt class="muted">کد پیگیری</dt><dd class="font-semibold text-ink" dir="ltr">{{ payment.ref_id }}</dd></div>
     {% endif %}
   </dl>
 

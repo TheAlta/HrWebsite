@@ -1,0 +1,28 @@
+{% load wagtailimages_tags core_tags content_tags %}
+{# The demo's book band: a tilted cover with a star badge, the text, a quote and buttons straight to the cart #}
+{% if book %}
+<section class="section">
+  <div class="container-page">
+    <div class="panel-box grid items-center gap-10 p-7 sm:p-11 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+      <div class="relative mx-auto">
+        {% if value.badge %}<span class="burst" aria-hidden="true">{{ value.badge }}</span>{% endif %}
+        {% if book.cover_image %}{% image book.cover_image max-320x440 format-webp class="w-52 rounded-md shadow-lift" loading="lazy" alt="" %}
+        {% else %}<div class="book-cover book-cover-lg {{ book|cover_class }}" aria-hidden="true"><b>{{ book.title }}</b><small>{{ book.get_kind_display }}</small></div>{% endif %}
+      </div>
+      <div>
+        {% if value.eyebrow %}<p class="eyebrow">{{ value.eyebrow }}</p>{% endif %}
+        <h2 class="heading-section mt-1">{{ book.title }}</h2>
+        {% if value.text %}<p class="lead mt-3">{{ value.text }}</p>{% endif %}
+        {% if value.quote %}<figure class="tile mt-5 p-4"><blockquote class="text-[0.95rem] leading-8 text-ink">«{{ value.quote }}»</blockquote>{% if value.quote_by %}<figcaption class="mt-1 text-xs text-ink-3">{{ value.quote_by }}</figcaption>{% endif %}</figure>{% endif %}
+        <div class="mt-6 flex flex-wrap gap-3">
+          {% for item in books %}
+          <form method="post" action="{% url 'shop:cart_add' item.pk %}">{% csrf_token %}
+            <button type="submit" class="btn {% if forloop.first %}btn-accent{% else %}btn-secondary{% endif %}" {% if not item.in_stock %}disabled{% endif %}>{% if forloop.first %}سفارش {{ item.get_kind_display }}{% else %}{{ item.get_kind_display }}{% endif %} · {% if item.price %}{{ item.price|toman }}{% else %}رایگان{% endif %}</button>
+          </form>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}

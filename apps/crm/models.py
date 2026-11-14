@@ -153,9 +153,26 @@ class ConsultationPage(BasePage):
     class Meta:
         verbose_name = "درخواست مشاوره"
 
+    # A suggested note from a link is kept short; the visitor can still edit it
+    SUGGESTED_NOTE_LENGTH = 300
+
     def get_context(self, request, *args, **kwargs):
         from .forms import ConsultationForm
 
         context = super().get_context(request, *args, **kwargs)
-        context["form"] = kwargs.get("form") or ConsultationForm()
+        context["form"] = kwargs.get("form") or ConsultationForm(initial=self.suggested(request))
         return context
+
+    def suggested(self, request):
+        """A link may suggest one known topic and a short note — the home page quiz's
+        result does (REPORT #058). Only an initial value: nothing is saved from it."""
+        from .forms import TOPICS
+
+        initial = {}
+        topic = request.GET.get("topic")
+        if topic in dict(TOPICS):
+            initial.update(topics=[topic], audience="corporate")
+        note = request.GET.get("note", "").strip()[: self.SUGGESTED_NOTE_LENGTH]
+        if note:
+            initial["description"] = note
+        return initial

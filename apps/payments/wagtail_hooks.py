@@ -106,7 +106,7 @@ class OrderViewSet(ModelViewSet):
     url_prefix = "orders"
     icon = "list-ul"
     menu_label = "سفارش‌ها"
-    list_display = ["number", "user", "status", "total_display", "created_display"]
+    list_display = ["number", "user", "items_display", "status", "total_display", "created_display"]
     list_filter = ["status"]
     search_fields = ["number", "user__mobile"]
     ordering = ["-created_at"]

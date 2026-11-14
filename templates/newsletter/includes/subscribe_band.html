@@ -1,0 +1,25 @@
+{# The newsletter form in the home page's band (LEAD-6, REPORT #058): email, the separate consent, one button. #}
+{# Its own id and the hidden "place" keep it apart from the footer's form when HTMX swaps the result in. #}
+<div id="newsletter-band">
+{% if done %}
+  <p class="alert alert-success" role="status">عضویت شما ثبت شد. هر وقت خواستید، از لینک پایین هر ایمیل لغو کنید.</p>
+{% else %}
+<form method="post" action="{% url 'newsletter:subscribe' %}" hx-post="{% url 'newsletter:subscribe' %}" hx-target="#newsletter-band" hx-swap="outerHTML" class="space-y-3" novalidate>
+  {% csrf_token %}
+  <input type="hidden" name="place" value="home">
+  <div class="hp-field" aria-hidden="true"><label for="nb-website">وب‌سایت</label><input type="text" name="website" id="nb-website" tabindex="-1" autocomplete="off"></div>
+  <div class="flex flex-wrap items-start gap-3">
+    <label for="nb-email" class="sr-only">ایمیل</label>
+    <input id="nb-email" type="email" name="email" value="{{ newsletter_form.email.value|default:'' }}" placeholder="name@example.com" dir="ltr" class="field-input min-w-0 flex-1 basis-60" autocomplete="email">
+    <button type="submit" class="btn btn-primary">عضو می‌شوم</button>
+  </div>
+  <label class="flex items-start gap-2 text-sm leading-6 text-ink-3">
+    <input type="checkbox" name="consent" class="mt-1 h-4 w-4 shrink-0 accent-accent" {% if newsletter_form.consent.value %}checked{% endif %}>
+    <span>{{ newsletter_form.consent.label }}</span>
+  </label>
+  {% if error %}<p class="field-error mt-0">{{ error }}</p>{% endif %}
+  {% for message in newsletter_form.non_field_errors %}<p class="field-error mt-0">{{ message }}</p>{% endfor %}
+  {% for field in newsletter_form %}{% for message in field.errors %}<p class="field-error mt-0">{{ message }}</p>{% endfor %}{% endfor %}
+</form>
+{% endif %}
+</div>

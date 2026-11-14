@@ -32,6 +32,20 @@ def test_subscribe_with_email_needs_consent(client):
     assert (subscriber.email_ok, subscriber.sms_ok, subscriber.source) == (True, False, "footer")
 
 
+def test_home_band_gets_its_own_form_back_and_records_the_place(client):
+    """The band on the home page (REPORT #058) must not swap in the footer's form."""
+    response = post(client, email="a@example.com", place="home")
+    assert 'id="newsletter-band"' in response.content.decode()  # the error comes back in the band
+    response = post(client, email="a@example.com", consent="on", place="home")
+    assert 'id="newsletter-band"' in response.content.decode()
+    assert Subscriber.objects.get().source == "home"
+
+
+def test_an_unknown_place_counts_as_the_footer(client):
+    post(client, email="a@example.com", consent="on", place="<script>")
+    assert Subscriber.objects.get().source == "footer"
+
+
 def test_mobile_consent_is_for_sms_only(client):
     post(client, mobile="۰۹۱۲۱۲۳۴۵۶۷", consent="on")
     subscriber = Subscriber.objects.get()

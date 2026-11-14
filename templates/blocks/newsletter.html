@@ -1,0 +1,16 @@
+{# The demo's newsletter band: an envelope inside a turning badge, then the title, a line and the form #}
+<section class="section">
+  <div class="container-page">
+    <div class="panel-box grid items-center gap-8 p-7 sm:p-10 md:grid-cols-[auto_minmax(0,1fr)] md:gap-10">
+      <div class="relative mx-auto size-40 sm:size-44" aria-hidden="true">
+        {% if value.badge_text %}<div class="spin-badge-fill">{% include "components/spin_badge.html" with uid="newsletter" text=value.badge_text %}</div>{% endif %}
+        <svg viewBox="0 0 64 48" class="newsletter-envelope" focusable="false"><rect class="env-paper" x="2" y="4" width="60" height="40" rx="6"/><path class="env-fold" d="M4 8 32 28 60 8"/><circle class="env-dot" cx="50" cy="10" r="7"/></svg>
+      </div>
+      <div>
+        <h2 class="heading-section">{{ value.title }}</h2>
+        {% if value.text %}<p class="lead mt-2">{{ value.text }}</p>{% endif %}
+        <div class="mt-5 max-w-xl">{% include "newsletter/includes/subscribe_band.html" %}</div>
+      </div>
+    </div>
+  </div>
+</section>

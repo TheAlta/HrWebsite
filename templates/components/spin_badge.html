@@ -1,0 +1,8 @@
+{% comment %}A round badge whose words turn slowly around its edge, as in the owner's demo. Decorative.
+Usage: {% include "components/spin_badge.html" with uid="hero" text="..." center="آ" %}{% endcomment %}
+<svg viewBox="0 0 200 200" class="spin-badge-svg" aria-hidden="true" focusable="false">
+  <defs><path id="spin-path-{{ uid }}" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0"/></defs>
+  <circle class="spin-face" cx="100" cy="100" r="97"/>
+  <g class="spin-ring"><text class="spin-text" direction="ltr"><textPath href="#spin-path-{{ uid }}">{{ text }}</textPath></text></g>
+  {% if center %}<text class="spin-center" x="100" y="114" text-anchor="middle">{{ center }}</text>{% endif %}
+</svg>

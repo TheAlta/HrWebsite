@@ -6,5 +6,8 @@
 
 {% block content %}
 {% include "components/page_header.html" with title="سبد خرید" %}
-<div class="container-page py-12">{% include "shop/includes/cart_body.html" %}</div>
+<div class="container-page py-12">
+  {% include "components/steps.html" with steps="سبد خرید|تکمیل خرید|پرداخت" current=1 label="مراحل خرید" %}
+  <div class="mt-8">{% include "shop/includes/cart_body.html" %}</div>
+</div>
 {% endblock %}

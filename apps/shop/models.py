@@ -20,7 +20,7 @@ from apps.core import jalali
 from apps.core.fields import MobileField
 from apps.core.money import format_toman
 from apps.core.storage import private_storage
-from apps.core.text import to_en_digits
+from apps.core.text import to_en_digits, to_fa_digits
 from apps.core.widgets import JalaliDateTimeInput
 from apps.orders.models import Order
 
@@ -256,6 +256,22 @@ class Coupon(models.Model):
     def save(self, *args, **kwargs):
         self.code = normalize_code(self.code)
         super().save(*args, **kwargs)
+
+    @admin.display(description="استفاده")
+    def uses_display(self):
+        used = to_fa_digits(self.uses.count())
+        return f"{used} از {to_fa_digits(self.max_uses)}" if self.max_uses else used
+
+    @admin.display(description="اعتبار")
+    def validity_display(self):
+        now = timezone.now()
+        if self.valid_to and self.valid_to < now:
+            return "منقضی"
+        if self.valid_from and self.valid_from > now:
+            return f"از {jalali.format_date(self.valid_from)}"
+        if self.valid_to:
+            return f"تا {jalali.format_date(self.valid_to)}"
+        return "بدون تاریخ"
 
     def clean(self):
         self.code = normalize_code(self.code)

@@ -1,42 +1,62 @@
-{% load wagtailcore_tags core_tags %}{% with site=settings.content.SiteSettings %}
-<footer class="mt-16 border-t border-slate-200 bg-brand-900 text-brand-100">
-  <div class="container-page grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
-    <div class="lg:col-span-2">
-      <p class="text-xl font-extrabold text-white">{{ site.brand_name }}</p>
-      {% if site.tagline %}<p class="mt-1 text-brand-200">{{ site.tagline }}</p>{% endif %}
-      {% if site.footer_text %}<p class="mt-4 max-w-md text-sm leading-7 text-brand-200">{{ site.footer_text|linebreaksbr }}</p>{% endif %}
+{% load wagtailcore_tags wagtailimages_tags core_tags content_tags %}{% with site=settings.content.SiteSettings %}
+{# The demo's footer: one glass card with about, one column per menu group, contact, trust seal (REPORT #058). #}
+<footer class="site-footer">
+  <div class="container-page">
+  <div class="surface grid gap-10 rounded-[1.75rem] p-7 sm:grid-cols-2 sm:p-9 lg:auto-cols-fr lg:grid-flow-col lg:grid-cols-[1.5fr]">
+    <div class="sm:col-span-2 lg:col-span-1">
+      <a href="/" class="flex items-center gap-2.5 font-semibold text-ink">
+        {% if site.logo %}{% image site.logo height-40 class="h-10 w-auto" alt="" %}{% else %}{% include "components/brand_mark.html" %}{% endif %}
+        {{ site.brand_name }}
+      </a>
+      {% if site.footer_text %}<p class="mt-3 max-w-sm text-sm leading-7 text-ink-3">{{ site.footer_text|linebreaksbr }}</p>{% elif site.tagline %}<p class="mt-3 text-sm text-ink-3">{{ site.tagline }}</p>{% endif %}
       {% if site.social_links %}
-      <ul class="mt-5 flex flex-wrap gap-2" aria-label="شبکه‌های اجتماعی">
+      <ul class="mt-4 flex flex-wrap gap-2" aria-label="شبکه‌های اجتماعی">
         {% for link in site.social_links %}
-        <li><a href="{{ link.url }}" class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20" rel="noopener" target="_blank" aria-label="{{ link.label }}">{% include "components/icon.html" with name=link.key %}</a></li>
+        <li><a href="{{ link.url }}" class="btn btn-secondary btn-sm" rel="noopener" target="_blank">{% include "components/icon.html" with name=link.key size="16" %}{{ link.label }}</a></li>
         {% endfor %}
       </ul>
       {% endif %}
     </div>
 
-    <nav aria-label="لینک‌های فوتر">
-      <p class="font-bold text-white">دسترسی سریع</p>
-      <ul class="mt-3 space-y-2 text-sm">
-        {% for item in site.main_menu %}<li><a href="{{ item.value.href }}" class="hover:text-white">{{ item.value.label }}</a></li>{% endfor %}
+    {% for item in site.main_menu %}{% if item.block_type == "group" %}
+    <nav aria-label="{{ item.value.label }}">
+      <h2 class="footer-heading">{{ item.value.label }}</h2>
+      <ul class="footer-links">
+        {% for link in item.value.links %}<li><a href="{{ link.href }}">{{ link.label }}</a></li>{% endfor %}
       </ul>
     </nav>
+    {% endif %}{% endfor %}
+    {% with links=site.main_menu|menu_links %}{% if links %}
+    <nav aria-label="دسترسی سریع">
+      <h2 class="footer-heading">دسترسی سریع</h2>
+      <ul class="footer-links">
+        {% for link in links %}<li><a href="{{ link.href }}">{{ link.label }}</a></li>{% endfor %}
+      </ul>
+    </nav>
+    {% endif %}{% endwith %}
 
     <div>
-      <p class="font-bold text-white">تماس</p>
-      <ul class="mt-3 space-y-2 text-sm">
-        {% if site.phone %}<li><a href="tel:{{ site.phone|cut:' ' }}" class="hover:text-white" dir="ltr">{{ site.phone|fa_digits }}</a></li>{% endif %}
-        {% if site.email %}<li><a href="mailto:{{ site.email }}" class="hover:text-white">{{ site.email }}</a></li>{% endif %}
-        {% if site.address %}<li>{{ site.address|linebreaksbr }}</li>{% endif %}
+      <h2 class="footer-heading">تماس</h2>
+      <ul class="footer-links">
+        {% if site.phone %}<li><a href="tel:{{ site.phone|cut:' ' }}" class="inline-flex items-center gap-2">{% include "components/icon.html" with name="phone" size="14" %}<span dir="ltr">{{ site.phone|fa_digits }}</span></a></li>{% endif %}
+        {% if site.email %}<li><a href="mailto:{{ site.email }}" class="inline-flex items-center gap-2">{% include "components/icon.html" with name="mail" size="14" %}<span dir="ltr">{{ site.email }}</span></a></li>{% endif %}
+        {% if site.address %}<li class="flex items-start gap-2 text-ink-3">{% include "components/icon.html" with name="map" size="14" class="mt-2" %}<span>{{ site.address|linebreaksbr }}</span></li>{% endif %}
+        {% legal_pages as legal %}{% for legal_page in legal %}<li><a href="{% pageurl legal_page %}">{{ legal_page.title }}</a></li>{% endfor %}
       </ul>
-      {% if site.trust_seal_html %}<div class="mt-4">{{ site.trust_seal_html|safe }}</div>{% endif %}
-      <p class="mt-6 font-bold text-white">خبرنامه</p>
-      <div class="mt-3">{% include "newsletter/includes/subscribe_form.html" %}</div>
+    </div>
+
+    <div class="sm:col-span-2 lg:col-span-1">
+      {% if site.trust_seal_html %}
+      <h2 class="footer-heading">نماد اعتماد</h2>
+      <div class="tile mb-6 inline-block p-3">{{ site.trust_seal_html|safe }}</div>
+      {% endif %}
+      <h2 class="footer-heading">خبرنامه</h2>
+      {% include "newsletter/includes/subscribe_form.html" %}
     </div>
   </div>
-  <div class="border-t border-white/10">
-    <div class="container-page flex flex-col gap-2 py-5 text-xs text-brand-200 sm:flex-row sm:items-center sm:justify-between">
-      <p>© {% now_jalali_year %} {{ site.brand_name }}. همه حقوق محفوظ است.</p>
-    </div>
+  <div class="flex flex-col gap-2 px-2 py-5 text-xs text-ink-3 sm:flex-row sm:items-center sm:justify-between">
+    <p>همهٔ حقوق برای {{ site.brand_name }} محفوظ است · {% now_jalali_year %}</p>
+  </div>
   </div>
 </footer>
 {% endwith %}
